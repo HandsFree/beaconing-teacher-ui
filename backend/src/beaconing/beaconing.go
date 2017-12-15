@@ -8,14 +8,14 @@ import (
 )
 
 var ROUTES = map[string]gin.HandlerFunc{
-	"/": handleRoot,
-	"/lesson_manager": handleLessonManager,
-	"/intent/token": handleToken,
-	"/intent/students": handleStudents,
-	"/intent/student/:id/*action": handleStudent,
+	"/":                               handleRoot,
+	"/lesson_manager":                 handleLessonManager,
+	"/intent/token":                   handleToken,
+	"/intent/students":                handleStudents,
+	"/intent/student/:id/*action":     handleStudent,
 	"/intent/assign/:student/to/:glp": handleAssign,
-	"/intent/glps": handleGLPs,
-	"/intent/glp/:id": handleGLP,
+	"/intent/glps":                    handleGLPs,
+	"/intent/glp/:id":                 handleGLP,
 }
 
 func main() {
@@ -29,6 +29,6 @@ func main() {
 	}
 
 	if err := router.Run(":8081"); err != nil {
-		log.Fatal(err)		
+		log.Fatal(err)
 	}
 }

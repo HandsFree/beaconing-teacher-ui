@@ -20,7 +20,8 @@ func assignGLP(studentID string, glpID string, accessToken string) (string, erro
 		return "", err
 	}
 
-	response, err := http.Post(fmt.Sprintf("https://core.beaconing.eu/api/students/%s/assignedGlps?access_token=%s", studentID, accessToken), "application/json", bytes.NewBuffer(assignJSON))
+	postURL := fmt.Sprintf("https://core.beaconing.eu/api/students/%s/assignedGlps?access_token=%s", studentID, accessToken)
+	response, err := http.Post(postURL, "application/json", bytes.NewBuffer(assignJSON))
 	if err != nil {
 		return "", err
 	}

@@ -12,7 +12,7 @@ import (
 func handlePage(c *gin.Context, obj interface{}) {
 	_, keyDefined := tokenDetails.Get("code")
 	if !keyDefined {
-		c.Redirect(http.StatusTemporaryRedirect, authLink)		
+		c.Redirect(http.StatusTemporaryRedirect, authLink)
 	}
 	c.HTML(http.StatusOK, "index.html", obj)
 }
