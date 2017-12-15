@@ -7,24 +7,28 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+var ROUTES = map[string]gin.HandlerFunc{
+	"/": handleRoot,
+	"/lesson_manager": handleLessonManager,
+	"/intent/token": handleToken,
+	"/intent/students": handleStudents,
+	"/intent/student/:id/*action": handleStudent,
+	"/intent/assign/:student/to/:glp": handleAssign,
+	"/intent/glps": handleGLPs,
+	"/intent/glp/:id": handleGLP,
+}
+
 func main() {
 	router := gin.Default()
 	router.Use(gzip.Gzip(gzip.BestSpeed))
 
 	router.LoadHTMLFiles("frontend/public/index.html")
 	router.Static("/dist", "./frontend/public/dist")
+	for key, val := range ROUTES {
+		router.GET(key, val)
+	}
 
-	router.GET("/", handleRoot)
-	router.GET("/lesson_manager", handleLessonManager)
-	router.GET("/intent/token", handleToken)
-	router.GET("/intent/students", handleStudents)
-	router.GET("/intent/student/:id/*action", handleStudent)
-	router.GET("/intent/assign/:student/to/:glp", handleAssign)
-	router.GET("/intent/glps", handleGLPs)
-	router.GET("/intent/glp/:id", handleGLP)
-
-	err := router.Run(":8081")
-	if err != nil {
-		log.Fatal(err)
+	if err := router.Run(":8081"); err != nil {
+		log.Fatal(err)		
 	}
 }

@@ -30,7 +30,7 @@ func getRedirectBaseLink() string {
 		return getOutboundIP().String()
 	}
 	// is this correct?
-	return "localhost"
+	return "bcn-dev.ejudd.uk"
 }
 
 // Base link for api redirects
