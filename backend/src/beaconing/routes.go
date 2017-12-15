@@ -34,7 +34,6 @@ func handleLessonManager(c *gin.Context) {
 func handleToken(c *gin.Context) {
 	if code := c.Query("code"); code != "" {
 		tokenDetails.Set("code", code)
-		// fmt.Println(DB["code"])
 		getToken()
 		c.Redirect(http.StatusTemporaryRedirect, "/")
 	}
