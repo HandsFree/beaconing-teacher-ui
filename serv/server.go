@@ -3,14 +3,14 @@ package serv
 // hmm think about me
 
 import (
+	"bytes"
 	"git.juddus.com/HFC/beaconing.git/auth"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
+	"io/ioutil"
 	"log"
 	"net"
 	"net/http"
-	"io/ioutil"
-	"bytes"
 )
 
 // NOTE:
@@ -50,7 +50,7 @@ var AuthLink = "https://core.beaconing.eu/auth/auth?response_type=code&client_id
 
 type BeaconingServer struct {
 	RouterEngine *gin.Engine
-	TokenStore *auth.TokenDatabase
+	TokenStore   *auth.TokenDatabase
 }
 
 func NewBeaconingInst(router *gin.Engine) *BeaconingServer {
@@ -62,7 +62,7 @@ func NewBeaconingInst(router *gin.Engine) *BeaconingServer {
 	}
 }
 
-// move this into a TokenDatabase 
+// move this into a TokenDatabase
 // thingy rather than modifying a global
 // database thing?
 func (serv *BeaconingServer) GetToken() {

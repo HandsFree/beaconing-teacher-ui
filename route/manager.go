@@ -1,19 +1,19 @@
 package route
 
 import (
-	"github.com/gin-gonic/gin"
 	"git.juddus.com/HFC/beaconing.git/serv"
+	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
 type RouteManager struct {
-	routes map[string]Route
+	routes   map[string]Route
 	ServInst *serv.BeaconingServer
 }
 
 func NewRouteManager(servInst *serv.BeaconingServer) *RouteManager {
-	return &RouteManager {
-		routes: map[string]Route{},
+	return &RouteManager{
+		routes:   map[string]Route{},
 		ServInst: servInst,
 	}
 }
@@ -28,7 +28,7 @@ func (r *RouteManager) RegisterRoute(route Route) {
 	route.SetManager(r)
 	r.routes[route.GetPath()] = route
 	r.ServInst.RouterEngine.GET(route.GetPath(), func(ctx *gin.Context) {
-		route.Handle(ctx)	
+		route.Handle(ctx)
 	})
 }
 

@@ -23,13 +23,13 @@ type TokenResponse struct {
 	TokenType    string `json:"token_type"`
 }
 
-// FromJSON turns byte array containing JSON 
+// FromJSON turns byte array containing JSON
 // to a TokenResponse
 func (tc *TokenResponse) FromJSON(respJSON []byte) error {
 	return jsoniter.Unmarshal(respJSON, tc)
 }
 
-// AssignRequest is the structure of json 
+// AssignRequest is the structure of json
 // to update a glp
 type AssignRequest struct {
 	StudentID string `json:"studentId"`

@@ -9,13 +9,13 @@ import (
 
 type Page struct {
 	route.SimpleManagedRoute
-	title string
+	title  string
 	script string
 }
 
 func NewPage(path string, title string, script string) *Page {
 	page := &Page{
-		title: title,
+		title:  title,
 		script: script,
 	}
 	page.SetPath(path)

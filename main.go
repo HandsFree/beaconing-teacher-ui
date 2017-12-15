@@ -6,9 +6,9 @@ import (
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-gonic/gin"
 
-	"git.juddus.com/HFC/beaconing.git/route"
-	"git.juddus.com/HFC/beaconing.git/req"
 	"git.juddus.com/HFC/beaconing.git/page"
+	"git.juddus.com/HFC/beaconing.git/req"
+	"git.juddus.com/HFC/beaconing.git/route"
 	"git.juddus.com/HFC/beaconing.git/serv"
 )
 
@@ -16,7 +16,7 @@ import (
 var ROUTES_OLD = map[string]gin.HandlerFunc{
 	"/":                               handleRoot,
 	"/lesson_manager":                 handleLessonManager,
-	
+
 	"/intent/token":                   handleToken,
 	"/intent/students":                handleStudents,
 	"/intent/student/:id/*action":     handleStudent,
@@ -42,10 +42,10 @@ func main() {
 		page.NewPage("/", "Home", "dist/beaconing/pages/home/index.js"),
 		page.NewPage("/lesson_manager", "Lesson Manager", "dist/beaconing/pages/lesson_manager/index.js"),
 
-		// for now just so it works til i 
+		// for now just so it works til i
 		// design this properly?
 		req.NewRequest("/intent/token"))
-	
+
 	if err := router.Run(":8081"); err != nil {
 		log.Fatal(err)
 	}

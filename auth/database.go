@@ -2,7 +2,7 @@ package auth
 
 import "sync"
 
-// TokenDatabase is a struct with embedded mutex for the 
+// TokenDatabase is a struct with embedded mutex for the
 // database which contains the token details
 type TokenDatabase struct {
 	sync.Mutex

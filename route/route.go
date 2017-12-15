@@ -17,7 +17,7 @@ type Route interface {
 type SimpleManagedRoute struct {
 	Route
 	manager *RouteManager
-	path string
+	path    string
 }
 
 func (s *SimpleManagedRoute) SetManager(m *RouteManager) {
