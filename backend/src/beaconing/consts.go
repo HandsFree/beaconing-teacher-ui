@@ -29,13 +29,14 @@ func getOutboundIP() net.IP {
 
 func getRedirectBaseLink() string {
 	if gin.IsDebugging() {
-		return getOutboundIP().String()
+		// we have to slap the port on there
+		return getOutboundIP().String() + ":8081"
 	}
 	return "bcn-dev.ejudd.uk"
 }
 
 // Base link for api redirects
-var redirectBaseLink = "http://" + getRedirectBaseLink() + ":8081/intent/token/"
+var redirectBaseLink = "http://" + getRedirectBaseLink() + "/intent/token/"
 
 // Provides an access code to retrieve and access token
 var authLink = "https://core.beaconing.eu/auth/auth?response_type=code&client_id=teacherui&redirect_uri=" + redirectBaseLink
