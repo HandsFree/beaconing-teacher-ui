@@ -9,30 +9,26 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Page functions have similar code, would be nice to 
-// have one function for all of them
-func handleRoot(c *gin.Context) {
+func handlePage(c *gin.Context, obj interface{}) {
 	_, keyDefined := tokenDetails.Get("code")
-	if keyDefined {
-		c.HTML(http.StatusOK, "index.html", gin.H{
-			"pageTitle":  "Beaconing | Home",
-			"pageScript": "dist/beaconing/pages/home/index.js",
-		})
-	} else {
+	if !keyDefined {
 		c.Redirect(http.StatusTemporaryRedirect, authLink)		
 	}
+	c.HTML(http.StatusOK, "index.html", obj)
+}
+
+func handleRoot(c *gin.Context) {
+	handlePage(c, gin.H{
+		"pageTitle":  "Beaconing | Home",
+		"pageScript": "dist/beaconing/pages/home/index.js",
+	})
 }
 
 func handleLessonManager(c *gin.Context) {
-	_, keyDefined := tokenDetails.Get("code")
-	if keyDefined {
-		c.HTML(http.StatusOK, "index.html", gin.H{
-			"pageTitle":  "Beaconing | Lesson Manager",
-			"pageScript": "dist/beaconing/pages/lesson_manager/index.js",
-		})
-	} else {
-		c.Redirect(http.StatusTemporaryRedirect, authLink)
-	}
+	handlePage(c, gin.H{
+		"pageTitle":  "Beaconing | Lesson Manager",
+		"pageScript": "dist/beaconing/pages/lesson_manager/index.js",
+	})
 }
 
 func handleToken(c *gin.Context) {

@@ -12,6 +12,8 @@ import (
 // no longer enforced by the compiler
 // when this goes out in production we should change
 // this but for now we calculate the IP at runtime
+// therefore we must have it as "var" because
+// we cant run a function at compile-time as a compile-time const :(
 
 func getOutboundIP() net.IP {
     conn, err := net.Dial("udp", "8.8.8.8:80")
@@ -29,7 +31,6 @@ func getRedirectBaseLink() string {
 	if gin.IsDebugging() {
 		return getOutboundIP().String()
 	}
-	// is this correct?
 	return "bcn-dev.ejudd.uk"
 }
 
