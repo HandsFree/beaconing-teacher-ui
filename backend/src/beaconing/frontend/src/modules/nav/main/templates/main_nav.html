@@ -1,0 +1,34 @@
+<nav id="main">
+  <div class="nav-group">
+    <a href="./" class="${scope.path === '' ? 'item active' : 'item'}">
+      <i class="icon-home"></i>
+      <span>Home</span>
+    </a>
+    <a href="./classroom/" class="${/^classroom/.test(scope.path) ? 'item active-orange' : 'item'}">
+      <i class="icon-graduation-cap"></i>
+      <span>Classroom</span>
+    </a>
+    <a href="./lesson_manager/" class="${/^lesson_manager/.test(scope.path) ? 'item active-orange' : 'item'}">
+      <i class="icon-check"></i>
+      <span>Lesson Manager</span>
+    </a>
+    <a class="${/^messages/.test(scope.path) ? 'item active' : 'item'}">
+      <i class="icon-chat"></i>
+      <span>Messages</span>
+    </a>
+  </div>
+  <div class="nav-group">
+    <a class="${/^search/.test(scope.path) ? 'item active' : 'item'}">
+      <i class="icon-search"></i>
+      <span>Search</span>
+    </a>
+    <a class="${/^settings/.test(scope.path) ? 'item active' : 'item'}">
+      <i class="icon-cogs"></i>
+      <span>Settings</span>
+    </a>
+    <a class="item">
+      <i class="icon-key-inv"></i>
+      <span>Accessibility</span>
+    </a>
+  </div>
+</nav>

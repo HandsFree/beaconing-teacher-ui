@@ -1,0 +1,115 @@
+#student-overview {
+	flex-direction: column;
+	flex-grow: 1;
+
+	.sorting {
+		justify-content: space-between;
+
+		.sort-menu {
+			color: #e6eaec;
+
+			a {
+				text-decoration: none;
+				margin: 0 0.15em;
+
+				&:hover {
+					text-decoration: underline;
+					cursor: pointer;
+				}
+			}
+
+			a.active {
+				text-decoration: underline;
+			}
+		}
+	}
+
+	.student-section {
+		flex-grow: 1;
+		flex-direction: column;
+		padding: 0.25em;
+
+		> .title {
+			padding: 1.5em 0.25em;
+			flex-grow: 1;
+
+			h3 {
+				font-weight: 300;
+				text-align: center;
+				font-size: 1.25em;
+				margin: 0;
+			}
+		}
+	}
+
+	.students {
+		flex-direction: column;
+		padding: 0 0.75em;
+
+		.student {
+			border-bottom: 1px solid rgba(#7c8ea0, 0.5);
+			padding: 0.75em 0;
+
+			&:last-child {
+				border-bottom: none;
+			}
+
+			.student-profile-image {
+				margin: 0.5em 0.5em 0.5em 0;
+				align-items: center;
+				justify-content: center;
+
+				&:hover {
+					cursor: pointer;
+				}
+
+				img {
+					border-radius: 50%;
+					padding: 0.25em;
+					height: auto;
+					width: 75%;
+					min-width: 48px;
+				}
+			}
+
+			.student-name {
+				color: #91cdff;
+				font-weight: 400;
+
+				&:hover {
+					text-decoration: underline;
+					cursor: pointer;
+				}
+
+				p {
+					margin: 0;
+				}
+			}
+
+			.student-percentage {
+				flex-direction: column;
+
+				p {
+					margin: 0.25em 0;
+				}
+			}
+
+			.progress-bar {
+				border: 1px solid rgba(152, 152, 152, 0.2);
+			    background: rgba(white, 0.1);
+				//padding: 0.1em;
+				div {
+					justify-content: center;
+					align-items: center;
+					text-align: center;
+
+					span {
+						color: white;
+						text-shadow: 0 0 1px rgba(88, 88, 88, 0.5);
+						font-weight: 400;
+					}
+				}
+			}
+		}
+	}
+}

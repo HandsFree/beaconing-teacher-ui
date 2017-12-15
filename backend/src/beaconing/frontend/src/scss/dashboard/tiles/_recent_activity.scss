@@ -1,0 +1,24 @@
+#recent-activity {
+	flex-direction: column;
+	flex-grow: 1;
+
+	.activity {
+		padding: 1em;
+		justify-content: space-between;
+
+		a {
+			margin-left: 0.4em;
+			font-weight: 400;
+		}
+
+		.info {
+			display: inherit;
+		}
+
+		.time {
+			display: inherit;
+			margin-left: 0.5em;
+			font-weight: 400;
+		}
+	}
+}

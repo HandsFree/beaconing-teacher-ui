@@ -1,0 +1,18 @@
+{
+	"presets": [
+		"flow",
+		"env"
+	],
+	"plugins": [
+		"syntax-dynamic-import",
+		"syntax-async-functions",
+		["transform-runtime", {
+			"helpers": false,
+			"polyfill": false,
+			"regenerator": true,
+			"moduleName": "babel-runtime"
+		}],
+		"transform-object-rest-spread",
+		"transform-class-properties"
+	]
+}

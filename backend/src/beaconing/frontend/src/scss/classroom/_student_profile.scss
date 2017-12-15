@@ -1,0 +1,22 @@
+.student-profile {
+	.name {
+		h2 {
+			font-size: 1.4em;
+			font-weight: 400;
+			margin: 1em 0;
+		}
+	}
+
+	.info {
+		flex-direction: column;
+	}
+
+	figure {
+		//display: flex;
+
+		img {
+			max-width: 15em;
+			border: 1px solid $bcn_light_orange;
+		}
+	}
+}

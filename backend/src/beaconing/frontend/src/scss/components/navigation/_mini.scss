@@ -1,0 +1,22 @@
+nav.mini {
+	color: #1e272d; // #52595e;
+	align-items: center;
+
+	&.spaced {
+		padding: 0.25em;
+	}
+
+	a {
+		text-decoration: none;
+		margin: 0 0.15em;
+
+		&:hover {
+			text-decoration: underline;
+			cursor: pointer;
+		}
+	}
+
+	a.active {
+		text-decoration: underline;
+	}
+}

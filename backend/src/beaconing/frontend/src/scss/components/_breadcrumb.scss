@@ -1,0 +1,24 @@
+.breadcrumb {
+	align-items: center;
+	margin: 0.5em 0;
+
+	.item {
+		padding: 0.15em;
+		margin: 0 0.15em;
+		display: flex;
+		align-items: center;
+
+		&:hover {
+			span {
+				text-decoration: underline;
+			}
+		}
+
+		&:after {
+			content: ">";
+			padding-left: 0.5em;
+			color: $bcn_light_orange;
+			font-size: 1.25em;
+		}
+	}
+}

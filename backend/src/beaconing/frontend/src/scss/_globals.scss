@@ -1,0 +1,29 @@
+body {
+	// text-rendering: optimizeLegibility;
+	font-family: $primary_font;
+	font-weight: 300;
+	color: $primary_font_colour;
+
+	@media screen and (min-width: 40em) and (max-width: 63.9375em) {
+		font-size: 90%;
+	}
+
+	@media screen and (max-width: 39.9375em) {
+		font-size: 80%;
+	}
+}
+
+* {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+div, nav, header, main, section, form {
+	display: flex;
+}
+
+a {
+	text-decoration: none;
+	color: inherit;
+}

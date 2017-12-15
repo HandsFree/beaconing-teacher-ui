@@ -1,0 +1,15 @@
+textarea {
+	flex-grow: 1;
+	min-height: 8em;
+	background: rgba(white, 0.2);
+	outline: none;
+	border: 1px dashed $bcn_light_orange;
+	padding: 0.5em;
+	font-size: 1.15em;
+	line-height: 1.25;
+
+	&:focus {
+		//border: 2px dashed $bcn_light_orange;
+		background: white;
+	}
+}

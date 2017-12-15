@@ -1,0 +1,33 @@
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+	left: 0;
+	right: 0;
+	margin: 0 auto;
+	width: 80%; /* Full width */
+	min-height: 5em;
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.8); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+	display: block;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 100%;
+    min-height: 100%;
+}
+/*Questions*/
+.modal-content-question {
+	display: block;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 10px;
+    width: 100%;
+    height: auto;
+}

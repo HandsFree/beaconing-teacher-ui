@@ -1,0 +1,16 @@
+section.bordered {
+	flex-direction: column;
+	border: 1px solid rgba(0, 0, 0, 0.15);
+    padding: 2em;
+
+    .section-title {
+    	position: relative;
+    	background: white;
+    	bottom: 2.7em;
+    	line-height: 0;
+    	//font-weight: bold;
+    	padding: 0.5em;
+    	font-family: $secondary_font;
+    	color: #52595e;
+    }
+}

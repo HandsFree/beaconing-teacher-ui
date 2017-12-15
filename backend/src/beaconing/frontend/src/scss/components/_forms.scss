@@ -1,0 +1,43 @@
+.assign {
+	.assign-form {
+
+		label {
+			padding: 0.25em;
+			align-items: center;
+
+			span, input, select {
+				margin: 0.25em;
+			}
+
+			input {
+				padding: 0.25em;
+			}
+
+			select {
+				padding: 0.25em;
+				background: none;
+				outline: none;
+				border: none;
+				border-bottom: 1px solid $bcn_light_orange;
+
+				&:focus {
+					border-bottom: 2px solid $bcn_light_orange;
+				}
+			}
+		}
+	}
+
+	.assign-form-section {
+		padding: 1em;
+
+		> .title {
+			padding: 1em;
+			border-bottom: 1px solid $bcn_light_orange;
+			font-size: 1.2em;
+		}
+
+		> .content {
+			padding: 1em;
+		}
+	}
+}

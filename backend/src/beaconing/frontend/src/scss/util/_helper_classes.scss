@@ -1,0 +1,136 @@
+// margin and padding classes
+@for $i from 1 through 4 {
+  .margin-top-#{$i} { margin-top: 1px * $i; }
+  .margin-right-#{$i} { margin-right: 1px * $i; }
+  .margin-bottom-#{$i} { margin-bottom: 1px * $i; }
+  .margin-left-#{$i} { margin-left: 1px * $i; }
+  .margin-#{$i} { margin: 1px * $i; }
+  .pad-top-#{$i} { padding-top: 1px * $i; }
+  .pad-right-#{$i} { padding-right: 1px * $i; }
+  .pad-bottom-#{$i} { padding-bottom: 1px * $i; }
+  .pad-left-#{$i} { padding-left: 1px * $i; }
+  .pad-#{$i} { padding: 1px * $i; }
+}
+
+@for $i from 1 through 20 {
+  $a: 5 * $i;
+  .margin-top-#{$a} { margin-top: 5px * $i; }
+  .margin-right-#{$a} { margin-right: 5px * $i; }
+  .margin-bottom-#{$a} { margin-bottom: 5px * $i; }
+  .margin-left-#{$a} { margin-left: 5px * $i; }
+  .margin-#{$a} { margin: 5px * $i; }
+  .pad-top-#{$a} { padding-top: 5px * $i; }
+  .pad-right-#{$a} { padding-right: 5px * $i; }
+  .pad-bottom-#{$a} { padding-bottom: 5px * $i; }
+  .pad-left-#{$a} { padding-left: 5px * $i; }
+  .pad-#{$a} { padding: 5px * $i; }
+}
+
+// content control
+.hide {
+	display: none;
+}
+
+.expand {
+	height: 100%;
+	flex: 100%;
+}
+
+.width-expand {
+	width: 100%;
+}
+
+// flex helpers
+.flex-row {
+	flex-direction: row;
+}
+
+.flex-column {
+	flex-direction: column;
+}
+.flex-spacebetween {
+	justify-content: space-between;
+}
+
+.flex-spacearound {
+	justify-content: space-around;
+}
+
+.flex-wrap {
+	flex-wrap: wrap;
+}
+
+.flex-align-center {
+	align-items: center;
+}
+
+.flex-align-start {
+	align-items: flex-start;
+}
+
+.flex-align-end {
+	align-items: flex-end;
+}
+
+.flex-justify-center {
+	justify-content: center;
+}
+
+.flex-justify-end {
+	justify-content: flex-end;
+}
+
+.flex-grow {
+	flex-grow: 1;
+}
+
+.flex-column {
+	flex-direction: column;
+}
+
+.flex-align-self-center {
+	align-self: center;
+}
+
+.flex-3 {
+	flex: 33%;
+}
+
+.flex-2 {
+	flex: 50%;
+}
+
+.flex-1 {
+	flex: 100%;
+}
+
+// device restrictions
+.mobile-collapse {
+	@media screen and (max-width: 39.9375em) {
+		flex-direction: column;
+	}
+}
+
+.mobile-wrap {
+	@media screen and (max-width: 39.9375em) {
+		flex-wrap: wrap;
+	}
+}
+
+.mobile-hide {
+	@media screen and (max-width: 39.9375em) {
+		display: none;
+	}
+}
+
+.tablet-hide {
+	@media screen and (max-width: 63.9375em) {
+		display: none;
+	}
+}
+
+.tablet-wrap {
+	@media screen and (max-width: 63.9375em) {
+		flex-wrap: wrap;
+	}
+}

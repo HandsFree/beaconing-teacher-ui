@@ -1,0 +1,59 @@
+#main-header {
+	font-family: $secondary_font;
+	background: $primary_element_background;
+	color: $secondary_font_colour;
+	justify-content: space-between;
+	align-items: center;
+	box-shadow: $primary_element_box_shadow;
+
+	.logo {
+		padding: 0.5em 1.5em;
+
+		img {
+			height: 3.5em;
+
+			@media screen and (max-width: 39.9375em) {
+				height: 2.5em;
+			}
+		}
+	}
+
+	.profile {
+		display: flex;
+		padding: 1em;
+		align-items: center;
+
+		.profile-img {
+			// border-right: 1px solid #dde3e8;
+			padding: 0.3em;
+			display: flex;
+			justify-content: center;
+
+			&:hover {
+				cursor: pointer;
+			}
+
+			img {
+				border-radius: 50%;
+				height: 65%;
+				width: 65%;
+				padding: 0.25em;
+			}
+
+			@media screen and (max-width: 39.9375em) {
+				display: none;
+			}
+		}
+
+		.logout {
+			padding: 0.5em;
+			display: flex;
+			flex-direction: column;
+
+			a {
+				@extend .link-underline;
+				font-weight: 400;
+			}
+		}
+	}
+}

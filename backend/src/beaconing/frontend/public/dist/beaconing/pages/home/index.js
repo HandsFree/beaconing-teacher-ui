@@ -1,0 +1,1920 @@
+/*!
+ * --- Compiled in Developer Mode ---
+ * 
+ * Beaconing Teacher UI
+ * ------------
+ * Authors:
+ * Elliott Judd <elliott.judd@hands-free.co.uk>
+ */
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = "./modules/home/index.js");
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ "../node_modules/babel-runtime/regenerator/index.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = __webpack_require__("../node_modules/regenerator-runtime/runtime-module.js");
+
+/***/ }),
+
+/***/ "../node_modules/regenerator-runtime/runtime-module.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+// This method of obtaining a reference to the global object needs to be
+// kept identical to the way it is obtained in runtime.js
+var g = function () {
+  return this;
+}() || Function("return this")();
+
+// Use `getOwnPropertyNames` because not all browsers support calling
+// `hasOwnProperty` on the global `self` object in a worker. See #183.
+var hadRuntime = g.regeneratorRuntime && Object.getOwnPropertyNames(g).indexOf("regeneratorRuntime") >= 0;
+
+// Save the old regeneratorRuntime in case it needs to be restored later.
+var oldRuntime = hadRuntime && g.regeneratorRuntime;
+
+// Force reevalutation of runtime.js.
+g.regeneratorRuntime = undefined;
+
+module.exports = __webpack_require__("../node_modules/regenerator-runtime/runtime.js");
+
+if (hadRuntime) {
+  // Restore the original runtime.
+  g.regeneratorRuntime = oldRuntime;
+} else {
+  // Remove the global property added by runtime.js.
+  try {
+    delete g.regeneratorRuntime;
+  } catch (e) {
+    g.regeneratorRuntime = undefined;
+  }
+}
+
+/***/ }),
+
+/***/ "../node_modules/regenerator-runtime/runtime.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(module) {
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+/**
+ * Copyright (c) 2014, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * https://raw.github.com/facebook/regenerator/master/LICENSE file. An
+ * additional grant of patent rights can be found in the PATENTS file in
+ * the same directory.
+ */
+
+!function (global) {
+  "use strict";
+
+  var Op = Object.prototype;
+  var hasOwn = Op.hasOwnProperty;
+  var undefined; // More compressible than void 0.
+  var $Symbol = typeof Symbol === "function" ? Symbol : {};
+  var iteratorSymbol = $Symbol.iterator || "@@iterator";
+  var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
+  var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
+
+  var inModule = ( false ? "undefined" : _typeof(module)) === "object";
+  var runtime = global.regeneratorRuntime;
+  if (runtime) {
+    if (inModule) {
+      // If regeneratorRuntime is defined globally and we're in a module,
+      // make the exports object identical to regeneratorRuntime.
+      module.exports = runtime;
+    }
+    // Don't bother evaluating the rest of this file if the runtime was
+    // already defined globally.
+    return;
+  }
+
+  // Define the runtime globally (as expected by generated code) as either
+  // module.exports (if we're in a module) or a new, empty object.
+  runtime = global.regeneratorRuntime = inModule ? module.exports : {};
+
+  function wrap(innerFn, outerFn, self, tryLocsList) {
+    // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
+    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
+    var generator = Object.create(protoGenerator.prototype);
+    var context = new Context(tryLocsList || []);
+
+    // The ._invoke method unifies the implementations of the .next,
+    // .throw, and .return methods.
+    generator._invoke = makeInvokeMethod(innerFn, self, context);
+
+    return generator;
+  }
+  runtime.wrap = wrap;
+
+  // Try/catch helper to minimize deoptimizations. Returns a completion
+  // record like context.tryEntries[i].completion. This interface could
+  // have been (and was previously) designed to take a closure to be
+  // invoked without arguments, but in all the cases we care about we
+  // already have an existing method we want to call, so there's no need
+  // to create a new function object. We can even get away with assuming
+  // the method takes exactly one argument, since that happens to be true
+  // in every case, so we don't have to touch the arguments object. The
+  // only additional allocation required is the completion record, which
+  // has a stable shape and so hopefully should be cheap to allocate.
+  function tryCatch(fn, obj, arg) {
+    try {
+      return { type: "normal", arg: fn.call(obj, arg) };
+    } catch (err) {
+      return { type: "throw", arg: err };
+    }
+  }
+
+  var GenStateSuspendedStart = "suspendedStart";
+  var GenStateSuspendedYield = "suspendedYield";
+  var GenStateExecuting = "executing";
+  var GenStateCompleted = "completed";
+
+  // Returning this object from the innerFn has the same effect as
+  // breaking out of the dispatch switch statement.
+  var ContinueSentinel = {};
+
+  // Dummy constructor functions that we use as the .constructor and
+  // .constructor.prototype properties for functions that return Generator
+  // objects. For full spec compliance, you may wish to configure your
+  // minifier not to mangle the names of these two functions.
+  function Generator() {}
+  function GeneratorFunction() {}
+  function GeneratorFunctionPrototype() {}
+
+  // This is a polyfill for %IteratorPrototype% for environments that
+  // don't natively support it.
+  var IteratorPrototype = {};
+  IteratorPrototype[iteratorSymbol] = function () {
+    return this;
+  };
+
+  var getProto = Object.getPrototypeOf;
+  var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
+  if (NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
+    // This environment has a native %IteratorPrototype%; use it instead
+    // of the polyfill.
+    IteratorPrototype = NativeIteratorPrototype;
+  }
+
+  var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype);
+  GeneratorFunction.prototype = Gp.constructor = GeneratorFunctionPrototype;
+  GeneratorFunctionPrototype.constructor = GeneratorFunction;
+  GeneratorFunctionPrototype[toStringTagSymbol] = GeneratorFunction.displayName = "GeneratorFunction";
+
+  // Helper for defining the .next, .throw, and .return methods of the
+  // Iterator interface in terms of a single ._invoke method.
+  function defineIteratorMethods(prototype) {
+    ["next", "throw", "return"].forEach(function (method) {
+      prototype[method] = function (arg) {
+        return this._invoke(method, arg);
+      };
+    });
+  }
+
+  runtime.isGeneratorFunction = function (genFun) {
+    var ctor = typeof genFun === "function" && genFun.constructor;
+    return ctor ? ctor === GeneratorFunction ||
+    // For the native GeneratorFunction constructor, the best we can
+    // do is to check its .name property.
+    (ctor.displayName || ctor.name) === "GeneratorFunction" : false;
+  };
+
+  runtime.mark = function (genFun) {
+    if (Object.setPrototypeOf) {
+      Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
+    } else {
+      genFun.__proto__ = GeneratorFunctionPrototype;
+      if (!(toStringTagSymbol in genFun)) {
+        genFun[toStringTagSymbol] = "GeneratorFunction";
+      }
+    }
+    genFun.prototype = Object.create(Gp);
+    return genFun;
+  };
+
+  // Within the body of any async function, `await x` is transformed to
+  // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
+  // `hasOwn.call(value, "__await")` to determine if the yielded value is
+  // meant to be awaited.
+  runtime.awrap = function (arg) {
+    return { __await: arg };
+  };
+
+  function AsyncIterator(generator) {
+    function invoke(method, arg, resolve, reject) {
+      var record = tryCatch(generator[method], generator, arg);
+      if (record.type === "throw") {
+        reject(record.arg);
+      } else {
+        var result = record.arg;
+        var value = result.value;
+        if (value && (typeof value === "undefined" ? "undefined" : _typeof(value)) === "object" && hasOwn.call(value, "__await")) {
+          return Promise.resolve(value.__await).then(function (value) {
+            invoke("next", value, resolve, reject);
+          }, function (err) {
+            invoke("throw", err, resolve, reject);
+          });
+        }
+
+        return Promise.resolve(value).then(function (unwrapped) {
+          // When a yielded Promise is resolved, its final value becomes
+          // the .value of the Promise<{value,done}> result for the
+          // current iteration. If the Promise is rejected, however, the
+          // result for this iteration will be rejected with the same
+          // reason. Note that rejections of yielded Promises are not
+          // thrown back into the generator function, as is the case
+          // when an awaited Promise is rejected. This difference in
+          // behavior between yield and await is important, because it
+          // allows the consumer to decide what to do with the yielded
+          // rejection (swallow it and continue, manually .throw it back
+          // into the generator, abandon iteration, whatever). With
+          // await, by contrast, there is no opportunity to examine the
+          // rejection reason outside the generator function, so the
+          // only option is to throw it from the await expression, and
+          // let the generator function handle the exception.
+          result.value = unwrapped;
+          resolve(result);
+        }, reject);
+      }
+    }
+
+    var previousPromise;
+
+    function enqueue(method, arg) {
+      function callInvokeWithMethodAndArg() {
+        return new Promise(function (resolve, reject) {
+          invoke(method, arg, resolve, reject);
+        });
+      }
+
+      return previousPromise =
+      // If enqueue has been called before, then we want to wait until
+      // all previous Promises have been resolved before calling invoke,
+      // so that results are always delivered in the correct order. If
+      // enqueue has not been called before, then it is important to
+      // call invoke immediately, without waiting on a callback to fire,
+      // so that the async generator function has the opportunity to do
+      // any necessary setup in a predictable way. This predictability
+      // is why the Promise constructor synchronously invokes its
+      // executor callback, and why async functions synchronously
+      // execute code before the first await. Since we implement simple
+      // async functions in terms of async generators, it is especially
+      // important to get this right, even though it requires care.
+      previousPromise ? previousPromise.then(callInvokeWithMethodAndArg,
+      // Avoid propagating failures to Promises returned by later
+      // invocations of the iterator.
+      callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg();
+    }
+
+    // Define the unified helper method that is used to implement .next,
+    // .throw, and .return (see defineIteratorMethods).
+    this._invoke = enqueue;
+  }
+
+  defineIteratorMethods(AsyncIterator.prototype);
+  AsyncIterator.prototype[asyncIteratorSymbol] = function () {
+    return this;
+  };
+  runtime.AsyncIterator = AsyncIterator;
+
+  // Note that simple async functions are implemented on top of
+  // AsyncIterator objects; they just return a Promise for the value of
+  // the final result produced by the iterator.
+  runtime.async = function (innerFn, outerFn, self, tryLocsList) {
+    var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList));
+
+    return runtime.isGeneratorFunction(outerFn) ? iter // If outerFn is a generator, return the full iterator.
+    : iter.next().then(function (result) {
+      return result.done ? result.value : iter.next();
+    });
+  };
+
+  function makeInvokeMethod(innerFn, self, context) {
+    var state = GenStateSuspendedStart;
+
+    return function invoke(method, arg) {
+      if (state === GenStateExecuting) {
+        throw new Error("Generator is already running");
+      }
+
+      if (state === GenStateCompleted) {
+        if (method === "throw") {
+          throw arg;
+        }
+
+        // Be forgiving, per 25.3.3.3.3 of the spec:
+        // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
+        return doneResult();
+      }
+
+      context.method = method;
+      context.arg = arg;
+
+      while (true) {
+        var delegate = context.delegate;
+        if (delegate) {
+          var delegateResult = maybeInvokeDelegate(delegate, context);
+          if (delegateResult) {
+            if (delegateResult === ContinueSentinel) continue;
+            return delegateResult;
+          }
+        }
+
+        if (context.method === "next") {
+          // Setting context._sent for legacy support of Babel's
+          // function.sent implementation.
+          context.sent = context._sent = context.arg;
+        } else if (context.method === "throw") {
+          if (state === GenStateSuspendedStart) {
+            state = GenStateCompleted;
+            throw context.arg;
+          }
+
+          context.dispatchException(context.arg);
+        } else if (context.method === "return") {
+          context.abrupt("return", context.arg);
+        }
+
+        state = GenStateExecuting;
+
+        var record = tryCatch(innerFn, self, context);
+        if (record.type === "normal") {
+          // If an exception is thrown from innerFn, we leave state ===
+          // GenStateExecuting and loop back for another invocation.
+          state = context.done ? GenStateCompleted : GenStateSuspendedYield;
+
+          if (record.arg === ContinueSentinel) {
+            continue;
+          }
+
+          return {
+            value: record.arg,
+            done: context.done
+          };
+        } else if (record.type === "throw") {
+          state = GenStateCompleted;
+          // Dispatch the exception by looping back around to the
+          // context.dispatchException(context.arg) call above.
+          context.method = "throw";
+          context.arg = record.arg;
+        }
+      }
+    };
+  }
+
+  // Call delegate.iterator[context.method](context.arg) and handle the
+  // result, either by returning a { value, done } result from the
+  // delegate iterator, or by modifying context.method and context.arg,
+  // setting context.delegate to null, and returning the ContinueSentinel.
+  function maybeInvokeDelegate(delegate, context) {
+    var method = delegate.iterator[context.method];
+    if (method === undefined) {
+      // A .throw or .return when the delegate iterator has no .throw
+      // method always terminates the yield* loop.
+      context.delegate = null;
+
+      if (context.method === "throw") {
+        if (delegate.iterator.return) {
+          // If the delegate iterator has a return method, give it a
+          // chance to clean up.
+          context.method = "return";
+          context.arg = undefined;
+          maybeInvokeDelegate(delegate, context);
+
+          if (context.method === "throw") {
+            // If maybeInvokeDelegate(context) changed context.method from
+            // "return" to "throw", let that override the TypeError below.
+            return ContinueSentinel;
+          }
+        }
+
+        context.method = "throw";
+        context.arg = new TypeError("The iterator does not provide a 'throw' method");
+      }
+
+      return ContinueSentinel;
+    }
+
+    var record = tryCatch(method, delegate.iterator, context.arg);
+
+    if (record.type === "throw") {
+      context.method = "throw";
+      context.arg = record.arg;
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    var info = record.arg;
+
+    if (!info) {
+      context.method = "throw";
+      context.arg = new TypeError("iterator result is not an object");
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    if (info.done) {
+      // Assign the result of the finished delegate to the temporary
+      // variable specified by delegate.resultName (see delegateYield).
+      context[delegate.resultName] = info.value;
+
+      // Resume execution at the desired location (see delegateYield).
+      context.next = delegate.nextLoc;
+
+      // If context.method was "throw" but the delegate handled the
+      // exception, let the outer generator proceed normally. If
+      // context.method was "next", forget context.arg since it has been
+      // "consumed" by the delegate iterator. If context.method was
+      // "return", allow the original .return call to continue in the
+      // outer generator.
+      if (context.method !== "return") {
+        context.method = "next";
+        context.arg = undefined;
+      }
+    } else {
+      // Re-yield the result returned by the delegate method.
+      return info;
+    }
+
+    // The delegate iterator is finished, so forget it and continue with
+    // the outer generator.
+    context.delegate = null;
+    return ContinueSentinel;
+  }
+
+  // Define Generator.prototype.{next,throw,return} in terms of the
+  // unified ._invoke helper method.
+  defineIteratorMethods(Gp);
+
+  Gp[toStringTagSymbol] = "Generator";
+
+  // A Generator should always return itself as the iterator object when the
+  // @@iterator function is called on it. Some browsers' implementations of the
+  // iterator prototype chain incorrectly implement this, causing the Generator
+  // object to not be returned from this call. This ensures that doesn't happen.
+  // See https://github.com/facebook/regenerator/issues/274 for more details.
+  Gp[iteratorSymbol] = function () {
+    return this;
+  };
+
+  Gp.toString = function () {
+    return "[object Generator]";
+  };
+
+  function pushTryEntry(locs) {
+    var entry = { tryLoc: locs[0] };
+
+    if (1 in locs) {
+      entry.catchLoc = locs[1];
+    }
+
+    if (2 in locs) {
+      entry.finallyLoc = locs[2];
+      entry.afterLoc = locs[3];
+    }
+
+    this.tryEntries.push(entry);
+  }
+
+  function resetTryEntry(entry) {
+    var record = entry.completion || {};
+    record.type = "normal";
+    delete record.arg;
+    entry.completion = record;
+  }
+
+  function Context(tryLocsList) {
+    // The root entry object (effectively a try statement without a catch
+    // or a finally block) gives us a place to store values thrown from
+    // locations where there is no enclosing try statement.
+    this.tryEntries = [{ tryLoc: "root" }];
+    tryLocsList.forEach(pushTryEntry, this);
+    this.reset(true);
+  }
+
+  runtime.keys = function (object) {
+    var keys = [];
+    for (var key in object) {
+      keys.push(key);
+    }
+    keys.reverse();
+
+    // Rather than returning an object with a next method, we keep
+    // things simple and return the next function itself.
+    return function next() {
+      while (keys.length) {
+        var key = keys.pop();
+        if (key in object) {
+          next.value = key;
+          next.done = false;
+          return next;
+        }
+      }
+
+      // To avoid creating an additional object, we just hang the .value
+      // and .done properties off the next function object itself. This
+      // also ensures that the minifier will not anonymize the function.
+      next.done = true;
+      return next;
+    };
+  };
+
+  function values(iterable) {
+    if (iterable) {
+      var iteratorMethod = iterable[iteratorSymbol];
+      if (iteratorMethod) {
+        return iteratorMethod.call(iterable);
+      }
+
+      if (typeof iterable.next === "function") {
+        return iterable;
+      }
+
+      if (!isNaN(iterable.length)) {
+        var i = -1,
+            next = function next() {
+          while (++i < iterable.length) {
+            if (hasOwn.call(iterable, i)) {
+              next.value = iterable[i];
+              next.done = false;
+              return next;
+            }
+          }
+
+          next.value = undefined;
+          next.done = true;
+
+          return next;
+        };
+
+        return next.next = next;
+      }
+    }
+
+    // Return an iterator with no values.
+    return { next: doneResult };
+  }
+  runtime.values = values;
+
+  function doneResult() {
+    return { value: undefined, done: true };
+  }
+
+  Context.prototype = {
+    constructor: Context,
+
+    reset: function reset(skipTempReset) {
+      this.prev = 0;
+      this.next = 0;
+      // Resetting context._sent for legacy support of Babel's
+      // function.sent implementation.
+      this.sent = this._sent = undefined;
+      this.done = false;
+      this.delegate = null;
+
+      this.method = "next";
+      this.arg = undefined;
+
+      this.tryEntries.forEach(resetTryEntry);
+
+      if (!skipTempReset) {
+        for (var name in this) {
+          // Not sure about the optimal order of these conditions:
+          if (name.charAt(0) === "t" && hasOwn.call(this, name) && !isNaN(+name.slice(1))) {
+            this[name] = undefined;
+          }
+        }
+      }
+    },
+
+    stop: function stop() {
+      this.done = true;
+
+      var rootEntry = this.tryEntries[0];
+      var rootRecord = rootEntry.completion;
+      if (rootRecord.type === "throw") {
+        throw rootRecord.arg;
+      }
+
+      return this.rval;
+    },
+
+    dispatchException: function dispatchException(exception) {
+      if (this.done) {
+        throw exception;
+      }
+
+      var context = this;
+      function handle(loc, caught) {
+        record.type = "throw";
+        record.arg = exception;
+        context.next = loc;
+
+        if (caught) {
+          // If the dispatched exception was caught by a catch block,
+          // then let that catch block handle the exception normally.
+          context.method = "next";
+          context.arg = undefined;
+        }
+
+        return !!caught;
+      }
+
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        var record = entry.completion;
+
+        if (entry.tryLoc === "root") {
+          // Exception thrown outside of any try block that could handle
+          // it, so set the completion value of the entire function to
+          // throw the exception.
+          return handle("end");
+        }
+
+        if (entry.tryLoc <= this.prev) {
+          var hasCatch = hasOwn.call(entry, "catchLoc");
+          var hasFinally = hasOwn.call(entry, "finallyLoc");
+
+          if (hasCatch && hasFinally) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            } else if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+          } else if (hasCatch) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            }
+          } else if (hasFinally) {
+            if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+          } else {
+            throw new Error("try statement without catch or finally");
+          }
+        }
+      }
+    },
+
+    abrupt: function abrupt(type, arg) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) {
+          var finallyEntry = entry;
+          break;
+        }
+      }
+
+      if (finallyEntry && (type === "break" || type === "continue") && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc) {
+        // Ignore the finally entry if control is not jumping to a
+        // location outside the try/catch block.
+        finallyEntry = null;
+      }
+
+      var record = finallyEntry ? finallyEntry.completion : {};
+      record.type = type;
+      record.arg = arg;
+
+      if (finallyEntry) {
+        this.method = "next";
+        this.next = finallyEntry.finallyLoc;
+        return ContinueSentinel;
+      }
+
+      return this.complete(record);
+    },
+
+    complete: function complete(record, afterLoc) {
+      if (record.type === "throw") {
+        throw record.arg;
+      }
+
+      if (record.type === "break" || record.type === "continue") {
+        this.next = record.arg;
+      } else if (record.type === "return") {
+        this.rval = this.arg = record.arg;
+        this.method = "return";
+        this.next = "end";
+      } else if (record.type === "normal" && afterLoc) {
+        this.next = afterLoc;
+      }
+
+      return ContinueSentinel;
+    },
+
+    finish: function finish(finallyLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.finallyLoc === finallyLoc) {
+          this.complete(entry.completion, entry.afterLoc);
+          resetTryEntry(entry);
+          return ContinueSentinel;
+        }
+      }
+    },
+
+    "catch": function _catch(tryLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc === tryLoc) {
+          var record = entry.completion;
+          if (record.type === "throw") {
+            var thrown = record.arg;
+            resetTryEntry(entry);
+          }
+          return thrown;
+        }
+      }
+
+      // The context.catch method must only be called with a location
+      // argument that corresponds to a known catch block.
+      throw new Error("illegal catch attempt");
+    },
+
+    delegateYield: function delegateYield(iterable, resultName, nextLoc) {
+      this.delegate = {
+        iterator: values(iterable),
+        resultName: resultName,
+        nextLoc: nextLoc
+      };
+
+      if (this.method === "next") {
+        // Deliberately forget the last sent value so that we don't
+        // accidentally pass it on to the delegate.
+        this.arg = undefined;
+      }
+
+      return ContinueSentinel;
+    }
+  };
+}(
+// In sloppy mode, unbound `this` refers to the global object, fallback to
+// Function constructor if we're in global strict mode. That is sadly a form
+// of indirect eval which violates Content Security Policy.
+function () {
+  return this;
+}() || Function("return this")());
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__("../node_modules/webpack/buildin/module.js")(module)))
+
+/***/ }),
+
+/***/ "../node_modules/webpack/buildin/module.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function (module) {
+	if (!module.webpackPolyfill) {
+		module.deprecate = function () {};
+		module.paths = [];
+		// module.parent = undefined by default
+		if (!module.children) module.children = [];
+		Object.defineProperty(module, "loaded", {
+			enumerable: true,
+			get: function get() {
+				return module.l;
+			}
+		});
+		Object.defineProperty(module, "id", {
+			enumerable: true,
+			get: function get() {
+				return module.i;
+			}
+		});
+		module.webpackPolyfill = 1;
+	}
+	return module;
+};
+
+/***/ }),
+
+/***/ "./core/component.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _regenerator = __webpack_require__("../node_modules/babel-runtime/regenerator/index.js");
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/* eslint-disable class-methods-use-this */
+
+var Component = function () {
+    function Component() {
+        _classCallCheck(this, Component);
+
+        this.model = {};
+    }
+
+    _createClass(Component, [{
+        key: "preparePage",
+        value: function () {
+            var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee(templatePath, locals) {
+                var template;
+                return _regenerator2.default.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                _context.next = 2;
+                                return __webpack_require__("./modules eager recursive ^\\.\\/.*\\.html$")("./" + templatePath + ".html");
+
+                            case 2:
+                                template = _context.sent;
+                                return _context.abrupt("return", template(locals));
+
+                            case 4:
+                            case "end":
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function preparePage(_x, _x2) {
+                return _ref.apply(this, arguments);
+            }
+
+            return preparePage;
+        }()
+    }]);
+
+    return Component;
+}();
+
+exports.default = Component;
+
+/***/ }),
+
+/***/ "./core/router.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _regenerator = __webpack_require__("../node_modules/babel-runtime/regenerator/index.js");
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/* eslint-disable no-restricted-syntax */
+
+var Router = function () {
+    function Router() {
+        _classCallCheck(this, Router);
+
+        this.routes = new Map();
+    }
+
+    _createClass(Router, [{
+        key: 'initRoute',
+        value: function initRoute(path, controller) {
+            this.routes.set(path, controller);
+        }
+    }, {
+        key: 'setRoutes',
+        value: function setRoutes(routes) {
+            var _this = this;
+
+            routes.forEach(function (routeObj) {
+                _this.initRoute(routeObj.path, routeObj.controller);
+            });
+        }
+    }, {
+        key: 'start',
+        value: function start() {
+            this.initEvents();
+            this.findController();
+        }
+    }, {
+        key: 'initEvents',
+        value: function initEvents() {
+            window.addEventListener('hashchange', this);
+        }
+    }, {
+        key: 'handleEvent',
+        value: function handleEvent() {
+            this.findController();
+        }
+    }, {
+        key: 'findController',
+        value: function () {
+            var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee() {
+                var hash, path, controller, container, _container;
+
+                return _regenerator2.default.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                hash = window.location.hash;
+                                path = hash.slice(1).split('?')[0];
+
+
+                                if (path === '') {
+                                    path = '/';
+                                }
+
+                                // console.log(path);
+
+                                if (!this.routes.has(path)) {
+                                    _context.next = 12;
+                                    break;
+                                }
+
+                                controller = this.routes.get(path);
+                                container = document.getElementById('app');
+
+                                if (!(container && controller)) {
+                                    _context.next = 10;
+                                    break;
+                                }
+
+                                _context.next = 9;
+                                return controller.render();
+
+                            case 9:
+                                container.innerHTML = _context.sent;
+
+                            case 10:
+                                _context.next = 14;
+                                break;
+
+                            case 12:
+                                _container = document.getElementById('app');
+
+                                if (_container) {
+                                    _container.innerHTML = '<p>Error (404): Page not found</p>';
+                                }
+
+                            case 14:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function findController() {
+                return _ref.apply(this, arguments);
+            }
+
+            return findController;
+        }()
+    }]);
+
+    return Router;
+}();
+
+exports.default = Router;
+
+/***/ }),
+
+/***/ "./modules eager recursive ^\\.\\/.*\\.html$":
+/***/ (function(module, exports, __webpack_require__) {
+
+var map = {
+	"./header/root/templates/header.html": "./modules/header/root/templates/header.html",
+	"./home/root/templates/active_plans.html": "./modules/home/root/templates/active_plans.html",
+	"./home/root/templates/dashboard_nav.html": "./modules/home/root/templates/dashboard_nav.html",
+	"./home/root/templates/home.html": "./modules/home/root/templates/home.html",
+	"./home/root/templates/recent_activities.html": "./modules/home/root/templates/recent_activities.html",
+	"./home/root/templates/student_overview.html": "./modules/home/root/templates/student_overview.html",
+	"./lesson_manager/root/templates/active_plans.html": "./modules/lesson_manager/root/templates/active_plans.html",
+	"./lesson_manager/root/templates/inner_nav.html": "./modules/lesson_manager/root/templates/inner_nav.html",
+	"./nav/main/templates/main_nav.html": "./modules/nav/main/templates/main_nav.html",
+	"./nav/second/templates/second_nav.html": "./modules/nav/second/templates/second_nav.html",
+	"./search/basic/templates/basic.html": "./modules/search/basic/templates/basic.html"
+};
+function webpackAsyncContext(req) {
+	return webpackAsyncContextResolve(req).then(__webpack_require__);
+};
+function webpackAsyncContextResolve(req) {
+	// Here Promise.resolve().then() is used instead of new Promise() to prevent
+	// uncatched exception popping up in devtools
+	return Promise.resolve().then(function() {
+		var id = map[req];
+		if(!(id + 1)) // check for number or string
+			throw new Error("Cannot find module '" + req + "'.");
+		return id;
+	});
+};
+webpackAsyncContext.keys = function webpackAsyncContextKeys() {
+	return Object.keys(map);
+};
+webpackAsyncContext.resolve = webpackAsyncContextResolve;
+webpackAsyncContext.id = "./modules eager recursive ^\\.\\/.*\\.html$";
+module.exports = webpackAsyncContext;
+
+/***/ }),
+
+/***/ "./modules/header/root/index.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _regenerator = __webpack_require__("../node_modules/babel-runtime/regenerator/index.js");
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _component = __webpack_require__("./core/component.js");
+
+var _component2 = _interopRequireDefault(_component);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Header = function (_Component) {
+    _inherits(Header, _Component);
+
+    function Header() {
+        _classCallCheck(this, Header);
+
+        return _possibleConstructorReturn(this, (Header.__proto__ || Object.getPrototypeOf(Header)).apply(this, arguments));
+    }
+
+    _createClass(Header, [{
+        key: 'render',
+        value: function () {
+            var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee() {
+                var teacherImgLink, teacherName;
+                return _regenerator2.default.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                teacherImgLink = 'dist/images/profile.png';
+                                teacherName = 'John Smith';
+                                return _context.abrupt('return', this.preparePage('header/root/templates/header', {
+                                    teacherImgLink: teacherImgLink,
+                                    teacherName: teacherName
+                                }));
+
+                            case 3:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function render() {
+                return _ref.apply(this, arguments);
+            }
+
+            return render;
+        }()
+    }]);
+
+    return Header;
+}(_component2.default);
+
+exports.default = Header;
+
+/***/ }),
+
+/***/ "./modules/header/root/templates/header.html":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function (scope) {
+  return "<header id=main-header><div class=logo><a href=\"./\"><img src=dist/images/logo.png alt=\"Click to go to Home\"></a></div><div class=profile><div class=logout><a>Log Out</a></div><div class=profile-img><img src=" + scope.teacherImgLink + " alt=" + scope.teacherName + " class=profile-blue></div></div></header>";
+};
+
+/***/ }),
+
+/***/ "./modules/home/index.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _router = __webpack_require__("./core/router.js");
+
+var _router2 = _interopRequireDefault(_router);
+
+var _home = __webpack_require__("./modules/home/root/home.js");
+
+var _home2 = _interopRequireDefault(_home);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var router = new _router2.default();
+
+router.setRoutes([{
+    path: '/',
+    controller: new _home2.default()
+}]);
+
+router.start();
+
+/***/ }),
+
+/***/ "./modules/home/root/active_plans.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _regenerator = __webpack_require__("../node_modules/babel-runtime/regenerator/index.js");
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _component = __webpack_require__("./core/component.js");
+
+var _component2 = _interopRequireDefault(_component);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ActivePlans = function (_Component) {
+    _inherits(ActivePlans, _Component);
+
+    function ActivePlans() {
+        _classCallCheck(this, ActivePlans);
+
+        return _possibleConstructorReturn(this, (ActivePlans.__proto__ || Object.getPrototypeOf(ActivePlans)).apply(this, arguments));
+    }
+
+    _createClass(ActivePlans, [{
+        key: 'render',
+        value: function () {
+            var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee() {
+                return _regenerator2.default.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                return _context.abrupt('return', this.preparePage('home/root/templates/active_plans', {}));
+
+                            case 1:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function render() {
+                return _ref.apply(this, arguments);
+            }
+
+            return render;
+        }()
+    }]);
+
+    return ActivePlans;
+}(_component2.default);
+
+exports.default = ActivePlans;
+
+/***/ }),
+
+/***/ "./modules/home/root/dashboard_nav.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _regenerator = __webpack_require__("../node_modules/babel-runtime/regenerator/index.js");
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _component = __webpack_require__("./core/component.js");
+
+var _component2 = _interopRequireDefault(_component);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var DashboardNav = function (_Component) {
+    _inherits(DashboardNav, _Component);
+
+    function DashboardNav() {
+        _classCallCheck(this, DashboardNav);
+
+        return _possibleConstructorReturn(this, (DashboardNav.__proto__ || Object.getPrototypeOf(DashboardNav)).apply(this, arguments));
+    }
+
+    _createClass(DashboardNav, [{
+        key: 'render',
+        value: function () {
+            var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee() {
+                return _regenerator2.default.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                return _context.abrupt('return', this.preparePage('home/root/templates/dashboard_nav', {}));
+
+                            case 1:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function render() {
+                return _ref.apply(this, arguments);
+            }
+
+            return render;
+        }()
+    }]);
+
+    return DashboardNav;
+}(_component2.default);
+
+exports.default = DashboardNav;
+
+/***/ }),
+
+/***/ "./modules/home/root/home.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _regenerator = __webpack_require__("../node_modules/babel-runtime/regenerator/index.js");
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _component = __webpack_require__("./core/component.js");
+
+var _component2 = _interopRequireDefault(_component);
+
+var _root = __webpack_require__("./modules/header/root/index.js");
+
+var _root2 = _interopRequireDefault(_root);
+
+var _main = __webpack_require__("./modules/nav/main/index.js");
+
+var _main2 = _interopRequireDefault(_main);
+
+var _dashboard_nav = __webpack_require__("./modules/home/root/dashboard_nav.js");
+
+var _dashboard_nav2 = _interopRequireDefault(_dashboard_nav);
+
+var _basic = __webpack_require__("./modules/search/basic/index.js");
+
+var _basic2 = _interopRequireDefault(_basic);
+
+var _recent_activities = __webpack_require__("./modules/home/root/recent_activities.js");
+
+var _recent_activities2 = _interopRequireDefault(_recent_activities);
+
+var _active_plans = __webpack_require__("./modules/home/root/active_plans.js");
+
+var _active_plans2 = _interopRequireDefault(_active_plans);
+
+var _student_overview = __webpack_require__("./modules/home/root/student_overview.js");
+
+var _student_overview2 = _interopRequireDefault(_student_overview);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Home = function (_Component) {
+    _inherits(Home, _Component);
+
+    function Home() {
+        _classCallCheck(this, Home);
+
+        return _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).apply(this, arguments));
+    }
+
+    _createClass(Home, [{
+        key: 'render',
+        value: function () {
+            var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee() {
+                var _this2 = this;
+
+                var header, mainNav, dashboardNav, search, recentActivities, activePlans, studentOverview;
+                return _regenerator2.default.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                header = new _root2.default();
+                                mainNav = new _main2.default();
+                                dashboardNav = new _dashboard_nav2.default();
+                                search = new _basic2.default();
+                                recentActivities = new _recent_activities2.default();
+                                activePlans = new _active_plans2.default();
+                                studentOverview = new _student_overview2.default();
+                                return _context.abrupt('return', Promise.all([header.render(), mainNav.render(), dashboardNav.render(), search.render({
+                                    type: 'width-expand'
+                                }), recentActivities.render(), activePlans.render(), studentOverview.render()]).then(function (values) {
+                                    var _values = _slicedToArray(values, 7),
+                                        headerHTML = _values[0],
+                                        mainNavHTML = _values[1],
+                                        dashboardNavHTML = _values[2],
+                                        basicSearchHTML = _values[3],
+                                        recentActivitiesHTML = _values[4],
+                                        activePlansHTML = _values[5],
+                                        studentOverviewHTML = _values[6];
+
+                                    return _this2.preparePage('home/root/templates/home', {
+                                        headerHTML: headerHTML,
+                                        mainNavHTML: mainNavHTML,
+                                        dashboardNavHTML: dashboardNavHTML,
+                                        basicSearchHTML: basicSearchHTML,
+                                        recentActivitiesHTML: recentActivitiesHTML,
+                                        activePlansHTML: activePlansHTML,
+                                        studentOverviewHTML: studentOverviewHTML
+                                    });
+                                }));
+
+                            case 8:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function render() {
+                return _ref.apply(this, arguments);
+            }
+
+            return render;
+        }()
+    }]);
+
+    return Home;
+}(_component2.default);
+
+exports.default = Home;
+
+/***/ }),
+
+/***/ "./modules/home/root/recent_activities.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _regenerator = __webpack_require__("../node_modules/babel-runtime/regenerator/index.js");
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _component = __webpack_require__("./core/component.js");
+
+var _component2 = _interopRequireDefault(_component);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var RecentActivities = function (_Component) {
+    _inherits(RecentActivities, _Component);
+
+    function RecentActivities() {
+        _classCallCheck(this, RecentActivities);
+
+        return _possibleConstructorReturn(this, (RecentActivities.__proto__ || Object.getPrototypeOf(RecentActivities)).apply(this, arguments));
+    }
+
+    _createClass(RecentActivities, [{
+        key: 'render',
+        value: function () {
+            var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee() {
+                return _regenerator2.default.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                return _context.abrupt('return', this.preparePage('home/root/templates/recent_activities', {}));
+
+                            case 1:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function render() {
+                return _ref.apply(this, arguments);
+            }
+
+            return render;
+        }()
+    }]);
+
+    return RecentActivities;
+}(_component2.default);
+
+exports.default = RecentActivities;
+
+/***/ }),
+
+/***/ "./modules/home/root/student_overview.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _regenerator = __webpack_require__("../node_modules/babel-runtime/regenerator/index.js");
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _component = __webpack_require__("./core/component.js");
+
+var _component2 = _interopRequireDefault(_component);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var StudentOverview = function (_Component) {
+    _inherits(StudentOverview, _Component);
+
+    function StudentOverview() {
+        _classCallCheck(this, StudentOverview);
+
+        return _possibleConstructorReturn(this, (StudentOverview.__proto__ || Object.getPrototypeOf(StudentOverview)).apply(this, arguments));
+    }
+
+    _createClass(StudentOverview, [{
+        key: 'render',
+        value: function () {
+            var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee() {
+                return _regenerator2.default.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                return _context.abrupt('return', this.preparePage('home/root/templates/student_overview', {}));
+
+                            case 1:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function render() {
+                return _ref.apply(this, arguments);
+            }
+
+            return render;
+        }()
+    }]);
+
+    return StudentOverview;
+}(_component2.default);
+
+exports.default = StudentOverview;
+
+/***/ }),
+
+/***/ "./modules/home/root/templates/active_plans.html":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function (scope) {
+  return "<div class=\"tile flex-column flex-2\"><div class=title><p>Active Lesson Plans</p><a href=\"./lesson_manager/\"><i class=icon-link-ext-alt title=\"View Active Lesson Plans\" aria-hidden=true></i></a></div><div class=content><div id=active-plan-summary><div class=plan><div class=image><img src=dist/images/quest-image.jpg alt=\"Algebra Beginnings\"></div><div class=info><div class=name><p>Algebra Beginnings</p></div></div></div><div class=plan><div class=image><img src=dist/images/quest-image.jpg alt=\"First steps to Engineering\"></div><div class=info><div class=name><p>First steps to Engineering</p></div></div></div><div class=plan><div class=image><img src=dist/images/quest-image.jpg alt=\"Advanced Masonary\"></div><div class=info><div class=name><p>Advanced Masonary</p></div></div></div></div></div></div>";
+};
+
+/***/ }),
+
+/***/ "./modules/home/root/templates/dashboard_nav.html":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function (scope) {
+  return "<nav class=\"mini spaced flex-justify-end\"><a class=item>Edit Layout</a></nav>";
+};
+
+/***/ }),
+
+/***/ "./modules/home/root/templates/home.html":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function (scope) {
+  return scope.headerHTML + "<div class=\"flex-container expand margin-top-2\">" + scope.mainNavHTML + "<main id=main-content><section class=flex-column>" + scope.dashboardNavHTML + "</section><section class=flex-column>" + scope.basicSearchHTML + "</section><section class=\"flex-spacearound mobile-collapse\">" + scope.recentActivitiesHTML + " " + scope.activePlansHTML + "</section><section class=flex-column>" + scope.studentOverviewHTML + "</section></main></div>";
+};
+
+/***/ }),
+
+/***/ "./modules/home/root/templates/recent_activities.html":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function (scope) {
+  return "<div class=\"tile flex-column flex-2\"><div class=title><p>Your Recent Activities</p></div><div class=content><div id=recent-activity><div class=activity><div class=info><p>Assigned new lesson plan: <a class=link-underline>Algebra Beginnings</a></p></div><div class=time><p>12:54</p></div></div><div class=activity><div class=info><p>Assigned new lesson plan: <a class=link-underline>First steps to Engineering</a></p></div><div class=time><p title=13:50>Tues</p></div></div><div class=activity><div class=info><p>Assigned new lesson plan: <a class=link-underline>Advanced Masonary</a></p></div><div class=time><p title=17:02>03/06</p></div></div></div></div></div>";
+};
+
+/***/ }),
+
+/***/ "./modules/home/root/templates/student_overview.html":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function (scope) {
+  return "<div class=\"tile flex-column\"><div class=title><p>Student Overview</p><a href=\"./classroom/\"><i class=icon-link-ext-alt title=\"View Students\" aria-hidden=true></i></a></div><div class=content><div id=student-overview><div class=sorting><div class=sort-menu>Class: <a class=active>11b</a> <a>13a</a></div><div class=sort-menu>Sort By: <a>This Week</a> <a class=active>This Month</a> <a>This Year</a></div></div><div class=flex-container><div class=student-section><div class=title><h3>Best Performing</h3></div><div class=students><div class=student><div class=\"flex-container tablet-hide\"><div class=student-profile-image><img class=profile-blue src=dist/images/profile.png alt=\"Example Student\"></div></div><div class=\"flex-container flex-column flex-spacearound flex-grow\"><div class=student-name><p>Example Student</p></div><div class=student-percentage><p>Overall Percentage:</p><div class=progress-bar><div class=status-green style=\"width: 96%;\"><span>96%</span></div></div></div></div></div><div class=student><div class=\"flex-container tablet-hide\"><div class=student-profile-image><img class=profile-blue src=dist/images/profile.png alt=\"Example Student\"></div></div><div class=\"flex-container flex-column flex-spacearound flex-grow\"><div class=student-name><p>Example Student</p></div><div class=student-percentage><p>Overall Percentage:</p><div class=progress-bar><div class=status-green style=\"width: 94%;\"><span>94%</span></div></div></div></div></div><div class=student><div class=\"flex-container tablet-hide\"><div class=student-profile-image><img class=profile-blue src=dist/images/profile.png alt=\"Example Student\"></div></div><div class=\"flex-container flex-column flex-spacearound flex-grow\"><div class=student-name><p>Example Student</p></div><div class=student-percentage><p>Overall Percentage:</p><div class=progress-bar><div class=status-green style=\"width: 91%;\"><span>91%</span></div></div></div></div></div></div></div><div class=student-section><div class=title><h3>Needs Attention</h3></div><div class=students><div class=student><div class=\"flex-container tablet-hide\"><div class=student-profile-image><img class=profile-blue src=dist/images/profile.png alt=\"Example Student\"></div></div><div class=\"flex-container flex-column flex-spacearound flex-grow\"><div class=student-name><p>Example Student</p></div><div class=student-percentage><p>Overall Percentage:</p><div class=progress-bar><div class=status-red style=\"width: 30%;\"><span>30%</span></div></div></div></div></div><div class=student><div class=\"flex-container tablet-hide\"><div class=student-profile-image><img class=profile-blue src=dist/images/profile.png alt=\"Example Student\"></div></div><div class=\"flex-container flex-column flex-spacearound flex-grow\"><div class=student-name><p>Example Student</p></div><div class=student-percentage><p>Overall Percentage:</p><div class=progress-bar><div class=status-red style=\"width: 28%;\"><span>28%</span></div></div></div></div></div><div class=student><div class=\"flex-container tablet-hide\"><div class=student-profile-image><img class=profile-blue src=dist/images/profile.png alt=\"Example Student\"></div></div><div class=\"flex-container flex-column flex-spacearound flex-grow\"><div class=student-name><p>Example Student</p></div><div class=student-percentage><p>Overall Percentage:</p><div class=progress-bar><div class=status-red style=\"width: 20%;\"><span>20%</span></div></div></div></div></div></div></div><div class=student-section><div class=title><h3>Most Improvement</h3></div><div class=students><div class=student><div class=\"flex-container tablet-hide\"><div class=student-profile-image><img class=profile-blue src=dist/images/profile.png alt=\"Example Student\"></div></div><div class=\"flex-container flex-column flex-spacearound flex-grow\"><div class=student-name><p>Example Student</p></div><div class=student-percentage><p>Overall Percentage:</p><div class=progress-bar><div class=status-amber style=\"width: 75%;\"><span>75%</span></div></div></div></div></div><div class=student><div class=\"flex-container tablet-hide\"><div class=student-profile-image><img class=profile-blue src=dist/images/profile.png alt=\"Example Student\"></div></div><div class=\"flex-container flex-column flex-spacearound flex-grow\"><div class=student-name><p>Example Student</p></div><div class=student-percentage><p>Overall Percentage:</p><div class=progress-bar><div class=status-amber style=\"width: 70%;\"><span>70%</span></div></div></div></div></div><div class=student><div class=\"flex-container tablet-hide\"><div class=student-profile-image><img class=profile-blue src=dist/images/profile.png alt=\"Example Student\"></div></div><div class=\"flex-container flex-column flex-spacearound flex-grow\"><div class=student-name><p>Example Student</p></div><div class=student-percentage><p>Overall Percentage:</p><div class=progress-bar><div class=status-amber style=\"width: 53%;\"><span>53%</span></div></div></div></div></div></div></div></div></div></div></div>";
+};
+
+/***/ }),
+
+/***/ "./modules/lesson_manager/root/templates/active_plans.html":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function (scope) {
+  return scope.headerHTML + "<div class=\"flex-container expand margin-top-2\">" + scope.mainNavHTML + " " + scope.secondNavHTML + "</div>";
+};
+
+/***/ }),
+
+/***/ "./modules/lesson_manager/root/templates/inner_nav.html":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function (scope) {
+  return '<a href="./lesson_manager/" class="' + (/^lesson_manager\/?$/.test(scope.path) ? 'item active-white' : 'item') + '"><span>Active Lesson Plans</span></a> <a href=./lesson_manager/new_plan class="' + (/^lesson_manager\/new_plan\/?/.test(scope.path) ? 'item active-white' : 'item') + '"><span>Assign New Plan</span></a>';
+};
+
+/***/ }),
+
+/***/ "./modules/nav/main/index.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _regenerator = __webpack_require__("../node_modules/babel-runtime/regenerator/index.js");
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _component = __webpack_require__("./core/component.js");
+
+var _component2 = _interopRequireDefault(_component);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var MainNav = function (_Component) {
+    _inherits(MainNav, _Component);
+
+    function MainNav() {
+        _classCallCheck(this, MainNav);
+
+        return _possibleConstructorReturn(this, (MainNav.__proto__ || Object.getPrototypeOf(MainNav)).apply(this, arguments));
+    }
+
+    _createClass(MainNav, [{
+        key: 'render',
+        value: function () {
+            var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee() {
+                var path;
+                return _regenerator2.default.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                path = window.location.pathname.slice(1);
+                                return _context.abrupt('return', this.preparePage('nav/main/templates/main_nav', {
+                                    path: path
+                                }));
+
+                            case 2:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function render() {
+                return _ref.apply(this, arguments);
+            }
+
+            return render;
+        }()
+    }]);
+
+    return MainNav;
+}(_component2.default);
+
+exports.default = MainNav;
+
+/***/ }),
+
+/***/ "./modules/nav/main/templates/main_nav.html":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function (scope) {
+  return '<nav id=main><div class=nav-group><a href="./" class="' + (scope.path === '' ? 'item active' : 'item') + '"><i class=icon-home></i> <span>Home</span></a> <a href="./classroom/" class="' + (/^classroom/.test(scope.path) ? 'item active-orange' : 'item') + '"><i class=icon-graduation-cap></i> <span>Classroom</span></a> <a href="./lesson_manager/" class="' + (/^lesson_manager/.test(scope.path) ? 'item active-orange' : 'item') + '"><i class=icon-check></i> <span>Lesson Manager</span></a> <a class="' + (/^messages/.test(scope.path) ? 'item active' : 'item') + '"><i class=icon-chat></i> <span>Messages</span></a></div><div class=nav-group><a class="' + (/^search/.test(scope.path) ? 'item active' : 'item') + '"><i class=icon-search></i> <span>Search</span></a> <a class="' + (/^settings/.test(scope.path) ? 'item active' : 'item') + '"><i class=icon-cogs></i> <span>Settings</span></a> <a class=item><i class=icon-key-inv></i> <span>Accessibility</span></a></div></nav>';
+};
+
+/***/ }),
+
+/***/ "./modules/nav/second/templates/second_nav.html":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function (scope) {
+  return "<nav id=subnav><div id=nav-header><h3>" + scope.title + "</h3></div><div class=nav-group>" + scope.innerNavHTML + "</div></nav>";
+};
+
+/***/ }),
+
+/***/ "./modules/search/basic/index.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _regenerator = __webpack_require__("../node_modules/babel-runtime/regenerator/index.js");
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _component = __webpack_require__("./core/component.js");
+
+var _component2 = _interopRequireDefault(_component);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var BasicSearch = function (_Component) {
+    _inherits(BasicSearch, _Component);
+
+    function BasicSearch() {
+        _classCallCheck(this, BasicSearch);
+
+        return _possibleConstructorReturn(this, (BasicSearch.__proto__ || Object.getPrototypeOf(BasicSearch)).apply(this, arguments));
+    }
+
+    _createClass(BasicSearch, [{
+        key: 'render',
+        value: function () {
+            var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee(data) {
+                var type;
+                return _regenerator2.default.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                type = data.type;
+                                return _context.abrupt('return', this.preparePage('search/basic/templates/basic', {
+                                    type: type
+                                }));
+
+                            case 2:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function render(_x) {
+                return _ref.apply(this, arguments);
+            }
+
+            return render;
+        }()
+    }]);
+
+    return BasicSearch;
+}(_component2.default);
+
+exports.default = BasicSearch;
+
+/***/ }),
+
+/***/ "./modules/search/basic/templates/basic.html":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function (scope) {
+  return "<div class=search><i class=icon-search aria-hidden=true></i> <input class=" + scope.type + " type=text></div>";
+};
+
+/***/ })
+
+/******/ });
+//# sourceMappingURL=index.js.map
