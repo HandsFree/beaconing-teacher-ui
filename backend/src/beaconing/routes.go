@@ -18,7 +18,7 @@ func handleRoot(c *gin.Context) {
 			"pageScript": "dist/beaconing/pages/home/index.js",
 		})
 	} else {
-		c.Redirect(http.StatusTemporaryRedirect, authLink)
+		c.Redirect(http.StatusTemporaryRedirect, authLink)		
 	}
 }
 

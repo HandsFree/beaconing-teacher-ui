@@ -26,8 +26,6 @@ func getToken() {
 			return
 		}
 
-		// fmt.Println(string(message[:]))
-
 		response, err := http.Post(tokenLink, "application/json", bytes.NewBuffer(message))
 
 		if err != nil {
