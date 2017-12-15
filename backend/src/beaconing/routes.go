@@ -9,7 +9,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Page functions have similar code, would be nice to have one function for all of them
+// Page functions have similar code, would be nice to 
+// have one function for all of them
 func handleRoot(c *gin.Context) {
 	_, keyDefined := tokenDetails.Get("code")
 	if keyDefined {

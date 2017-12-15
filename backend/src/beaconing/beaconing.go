@@ -7,16 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// temporary
-var tokenDetails = TokenDB{
-	DB: make(map[string]string),
-}
-
 func main() {
-	startGin()
-}
-
-func startGin() {
 	router := gin.Default()
 	router.Use(gzip.Gzip(gzip.BestSpeed))
 

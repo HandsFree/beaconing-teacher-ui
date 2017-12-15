@@ -3,6 +3,7 @@ package main
 import (
 	"net"
 	"log"
+	"github.com/gin-gonic/gin"
 )
 
 // NOTE:
@@ -24,8 +25,16 @@ func getOutboundIP() net.IP {
     return localAddr.IP
 }
 
+func getRedirectBaseLink() string {
+	if gin.IsDebugging() {
+		return getOutboundIP().String()
+	}
+	// is this correct?
+	return "localhost"
+}
+
 // Base link for api redirects
-var redirectBaseLink = "http://" + getOutboundIP().String() + ":8081/intent/token/"
+var redirectBaseLink = "http://" + getRedirectBaseLink() + ":8081/intent/token/"
 
 // Provides an access code to retrieve and access token
 var authLink = "https://core.beaconing.eu/auth/auth?response_type=code&client_id=teacherui&redirect_uri=" + redirectBaseLink

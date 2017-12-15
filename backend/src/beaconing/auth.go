@@ -9,6 +9,10 @@ import (
 	jsoniter "github.com/json-iterator/go"
 )
 
+var tokenDetails = TokenDB{
+	DB: make(map[string]string),
+}
+
 func getToken() {
 	go func() {
 		requestCode, _ := tokenDetails.Get("code")
@@ -42,8 +46,6 @@ func getToken() {
 			return
 		}
 
-		// fmt.Println(string(body[:]))
-
 		var respToken TokenResponse
 
 		err = respToken.FromJSON(body)
@@ -56,8 +58,6 @@ func getToken() {
 		tokenDetails.Set("refresh_token", respToken.RefreshToken)
 		// tokenDetails.Set("expires_in", int(respToken.ExpiresIn))
 		tokenDetails.Set("token_type", respToken.TokenType)
-
-		// fmt.Println(tokenDetails.DB)
 	}()
 }
 
