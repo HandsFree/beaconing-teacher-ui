@@ -14,10 +14,6 @@ import (
 
 /*
 var ROUTES_OLD = map[string]gin.HandlerFunc{
-	"/":                               handleRoot,
-	"/lesson_manager":                 handleLessonManager,
-
-	"/intent/token":                   handleToken,
 	"/intent/students":                handleStudents,
 	"/intent/student/:id/*action":     handleStudent,
 	"/intent/assign/:student/to/:glp": handleAssign,
@@ -38,13 +34,20 @@ func main() {
 	server = serv.NewBeaconingInst(router)
 
 	manager := route.NewRouteManager(server)
-	manager.RegisterRoutes(
+	routes := []route.Route{
+		// simple pages
 		page.NewPage("/", "Home", "dist/beaconing/pages/home/index.js"),
 		page.NewPage("/lesson_manager", "Lesson Manager", "dist/beaconing/pages/lesson_manager/index.js"),
 
-		// for now just so it works til i
-		// design this properly?
-		req.NewRequest("/intent/token"))
+		// api requests
+		req.NewTokenRequest("/intent/token"),
+		req.NewStudentsRequest("/intent/students"),
+		req.NewStudentRequest("/intent/student/:id/*action"),
+		req.NewAssignRequest("/intent/assign/:student/to/:glp"),
+		req.NewGLPSRequest("/intent/glps"),
+		req.NewGLPRequest("/intent/glp/:id"),
+	}
+	manager.RegisterRoutes(routes...)
 
 	if err := router.Run(":8081"); err != nil {
 		log.Fatal(err)
