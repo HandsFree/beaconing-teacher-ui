@@ -6,7 +6,7 @@ import (
 )
 
 type Route interface {
-	Handle(ctx *gin.Context)
+	Handle(ctx *gin.Context, serv *serv.BeaconingServer)
 
 	GetManager() *RouteManager
 	SetManager(m *RouteManager)

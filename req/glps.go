@@ -20,8 +20,8 @@ func NewGLPSRequest(path string) *GLPSRequest {
 	return req
 }
 
-func (a *GLPSRequest) Handle(ctx *gin.Context) {
-	accessToken, keyDefined := a.GetServer().TokenStore.Get("access_token")
+func (a *GLPSRequest) Handle(ctx *gin.Context, s *serv.BeaconingServer) {
+	accessToken, keyDefined := s.TokenStore.Get("access_token")
 	if !keyDefined {
 		ctx.Redirect(http.StatusTemporaryRedirect, serv.AuthLink)
 		return

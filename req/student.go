@@ -54,13 +54,13 @@ func NewStudentRequest(path string) *StudentRequest {
 	return req
 }
 
-func (s *StudentRequest) Handle(ctx *gin.Context) {
+func (r *StudentRequest) Handle(ctx *gin.Context, s *serv.BeaconingServer) {
 	studentID := ctx.Param("id")
 	action := ctx.Param("action")
 
 	fmt.Println(action)
 
-	accessToken, keyDefined := s.GetServer().TokenStore.Get("access_token")
+	accessToken, keyDefined := s.TokenStore.Get("access_token")
 	if !keyDefined {
 		ctx.Redirect(http.StatusTemporaryRedirect, serv.AuthLink)
 		return

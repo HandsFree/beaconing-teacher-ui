@@ -22,12 +22,12 @@ func NewPage(path string, title string, script string) *Page {
 	return page
 }
 
-func (p *Page) Handle(ctx *gin.Context) {
+func (p *Page) Handle(ctx *gin.Context, s *serv.BeaconingServer) {
 	// FIXME:
 	// p.GetManager().ServInst.RouterEngine
 	// this is a bit long winded!
 
-	_, keyDefined := p.GetManager().ServInst.TokenStore.Get("code")
+	_, keyDefined := s.TokenStore.Get("code")
 	if !keyDefined {
 		ctx.Redirect(http.StatusTemporaryRedirect, serv.AuthLink)
 	}

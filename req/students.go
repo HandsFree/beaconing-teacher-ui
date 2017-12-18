@@ -20,8 +20,8 @@ func NewStudentsRequest(path string) *StudentsRequest {
 	return req
 }
 
-func (s *StudentsRequest) Handle(ctx *gin.Context) {
-	accessToken, keyDefined := s.GetServer().TokenStore.Get("access_token")
+func (r *StudentsRequest) Handle(ctx *gin.Context, s *serv.BeaconingServer) {
+	accessToken, keyDefined := s.TokenStore.Get("access_token")
 	if !keyDefined {
 		ctx.Redirect(http.StatusTemporaryRedirect, serv.AuthLink)
 		return

@@ -52,7 +52,7 @@ func (a *AssignData) assignGLP(accessToken string) (string, error) {
 	return strJSON, nil
 }
 
-func (a *AssignRequest) Handle(ctx *gin.Context) {
+func (a *AssignRequest) Handle(ctx *gin.Context, s *serv.BeaconingServer) {
 	studentID := ctx.Param("student")
 	glpID := ctx.Param("glp")
 

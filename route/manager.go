@@ -28,7 +28,7 @@ func (r *RouteManager) RegisterRoute(route Route) {
 	route.SetManager(r)
 	r.routes[route.GetPath()] = route
 	r.ServInst.RouterEngine.GET(route.GetPath(), func(ctx *gin.Context) {
-		route.Handle(ctx)
+		route.Handle(ctx, r.ServInst)
 	})
 }
 

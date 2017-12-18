@@ -20,11 +20,11 @@ func NewGLPRequest(path string) *GLPRequest {
 	return req
 }
 
-func (a *GLPRequest) Handle(ctx *gin.Context) {
+func (a *GLPRequest) Handle(ctx *gin.Context, s *serv.BeaconingServer) {
 	// Needs filtering
 	glpID := ctx.Param("id")
 
-	accessToken, keyDefined := a.GetServer().TokenStore.Get("access_token")
+	accessToken, keyDefined := s.TokenStore.Get("access_token")
 	if !keyDefined {
 		ctx.Redirect(http.StatusTemporaryRedirect, serv.AuthLink)
 		return

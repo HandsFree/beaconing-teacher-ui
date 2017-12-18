@@ -2,6 +2,7 @@ package req
 
 import (
 	"git.juddus.com/HFC/beaconing.git/route"
+	"git.juddus.com/HFC/beaconing.git/serv"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -16,10 +17,13 @@ func NewTokenRequest(path string) *TokenRequest {
 	return req
 }
 
-func (r *TokenRequest) Handle(ctx *gin.Context) {
-	if code := ctx.Query("code"); code != "" {
-		r.GetManager().ServInst.TokenStore.Set("code", code)
-		r.GetManager().ServInst.GetToken()
-		ctx.Redirect(http.StatusTemporaryRedirect, "/")
+func (r *TokenRequest) Handle(ctx *gin.Context, s *serv.BeaconingServer) {
+	code := ctx.Query("code")
+	if code == "" {
+		return
 	}
+
+	s.TokenStore.Set("code", code)
+	s.GetToken()
+	ctx.Redirect(http.StatusTemporaryRedirect, "/")
 }
