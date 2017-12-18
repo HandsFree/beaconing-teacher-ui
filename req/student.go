@@ -43,9 +43,7 @@ func getStudentGLPS(studentID string, accessToken string) (string, error) {
 		return "", err
 	}
 
-	strJSON := string(body)
-
-	return strJSON, nil
+	return string(body), nil
 }
 
 func NewStudentRequest(path string) *StudentRequest {
