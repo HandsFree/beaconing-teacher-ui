@@ -12,16 +12,6 @@ import (
 	"git.juddus.com/HFC/beaconing.git/serv"
 )
 
-/*
-var ROUTES_OLD = map[string]gin.HandlerFunc{
-	"/intent/students":                handleStudents,
-	"/intent/student/:id/*action":     handleStudent,
-	"/intent/assign/:student/to/:glp": handleAssign,
-	"/intent/glps":                    handleGLPs,
-	"/intent/glp/:id":                 handleGLP,
-}
-*/
-
 var server *serv.BeaconingServer
 
 func main() {

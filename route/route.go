@@ -1,6 +1,7 @@
 package route
 
 import (
+	"git.juddus.com/HFC/beaconing.git/serv"
 	"github.com/gin-gonic/gin"
 )
 
@@ -18,6 +19,11 @@ type SimpleManagedRoute struct {
 	Route
 	manager *RouteManager
 	path    string
+}
+
+// fixme: this kind of doesnt make sense
+func (s *SimpleManagedRoute) GetServer() *serv.BeaconingServer {
+	return s.GetManager().ServInst
 }
 
 func (s *SimpleManagedRoute) SetManager(m *RouteManager) {
