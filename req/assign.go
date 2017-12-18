@@ -10,7 +10,7 @@ type AssignRequest struct {
 	route.SimpleManagedRoute
 }
 
-func NewStudentRequest(path string) *AssignRequest {
+func NewAssignRequest(path string) *AssignRequest {
 	req := &AssignRequest{}
 	req.SetPath(path)
 	return req
