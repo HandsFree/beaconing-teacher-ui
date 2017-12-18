@@ -56,7 +56,7 @@ func (a *AssignRequest) Handle(ctx *gin.Context, s *serv.BeaconingServer) {
 	studentID := ctx.Param("student")
 	glpID := ctx.Param("glp")
 
-	accessToken, keyDefined := a.GetServer().TokenStore.Get("access_token")
+	accessToken, keyDefined := s.TokenStore.Get("access_token")
 	if !keyDefined {
 		ctx.Redirect(http.StatusTemporaryRedirect, serv.AuthLink)
 		return

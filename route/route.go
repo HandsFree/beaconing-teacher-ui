@@ -21,11 +21,6 @@ type SimpleManagedRoute struct {
 	path    string
 }
 
-// fixme: this kind of doesnt make sense
-func (s *SimpleManagedRoute) GetServer() *serv.BeaconingServer {
-	return s.GetManager().ServInst
-}
-
 func (s *SimpleManagedRoute) SetManager(m *RouteManager) {
 	s.manager = m
 }
