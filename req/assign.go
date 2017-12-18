@@ -17,18 +17,18 @@ type AssignRequest struct {
 	route.SimpleManagedRoute
 }
 
-type AssignData struct {
-	studentID string
-	glpID     string
-}
-
 func NewAssignRequest(path string) *AssignRequest {
 	req := &AssignRequest{}
 	req.SetPath(path)
 	return req
 }
 
-func (a *AssignData) assignGLP(accessToken string) (string, error) {
+type assignData struct {
+	studentID string
+	glpID     string
+}
+
+func (a *assignData) assignGLP(accessToken string) (string, error) {
 	assignJSON, err := jsoniter.Marshal(a)
 	if err != nil {
 		return "", err
@@ -47,22 +47,20 @@ func (a *AssignData) assignGLP(accessToken string) (string, error) {
 		return "", err
 	}
 
-	strJSON := string(body)
-
-	return strJSON, nil
+	return string(body), nil
 }
 
 func (a *AssignRequest) Handle(ctx *gin.Context, s *serv.BeaconingServer) {
 	studentID := ctx.Param("student")
 	glpID := ctx.Param("glp")
 
-	accessToken, keyDefined := s.TokenStore.Get("access_token")
-	if !keyDefined {
+	accessToken, ok := s.TokenStore.Get("access_token")
+	if !ok {
 		ctx.Redirect(http.StatusTemporaryRedirect, serv.AuthLink)
 		return
 	}
 
-	assignReqData := &AssignData{studentID, glpID}
+	assignReqData := &assignData{studentID, glpID}
 	strJSON, err := assignReqData.assignGLP(accessToken)
 	if err != nil {
 		log.Fatal(err)
