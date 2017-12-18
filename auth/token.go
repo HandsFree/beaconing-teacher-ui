@@ -4,6 +4,8 @@ import (
 	jsoniter "github.com/json-iterator/go"
 )
 
+// TODO fixme! these are weird here.
+
 // TokenRequest is a json type for the
 // response from the tokenLink
 type TokenRequest struct {

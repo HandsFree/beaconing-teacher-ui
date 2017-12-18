@@ -48,6 +48,12 @@ var redirectBaseLink = "http://" + getRedirectBaseLink() + "/intent/token/"
 // Provides an access code to retrieve and access token
 var AuthLink = "https://core.beaconing.eu/auth/auth?response_type=code&client_id=teacherui&redirect_uri=" + redirectBaseLink
 
+// this should technically be some wrapper
+// over gin.Context, we can embed the gin Context
+// struct in this and then pass just this round instead?
+// i feel like the name here is wrong too
+// but this is carrying all of our context information
+// like the router engine, and the token store database
 type BeaconingServer struct {
 	RouterEngine *gin.Engine
 	TokenStore   *auth.TokenDatabase
