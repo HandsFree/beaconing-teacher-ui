@@ -6,10 +6,10 @@ import (
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-gonic/gin"
 
-	"git.juddus.com/HFC/beaconing.git/page"
-	"git.juddus.com/HFC/beaconing.git/req"
-	"git.juddus.com/HFC/beaconing.git/route"
-	"git.juddus.com/HFC/beaconing.git/serv"
+	"git.juddus.com/HFC/beaconing/page"
+	"git.juddus.com/HFC/beaconing/req"
+	"git.juddus.com/HFC/beaconing/route"
+	"git.juddus.com/HFC/beaconing/serv"
 )
 
 var server *serv.BeaconingServer

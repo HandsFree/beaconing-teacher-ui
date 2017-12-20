@@ -22,7 +22,7 @@
   -moz-box-sizing: border-box;
   box-sizing: border-box; }
 
-div, nav, header, main, section, form {
+div, nav, header, main, main#students, section, form {
   display: flex; }
 
 a {
@@ -1391,18 +1391,18 @@ section {
     cursor: pointer;
     color: #e87f62; }
 
-#main-content, main#students {
+main, main#students {
   flex-direction: column;
   flex-grow: 1;
   padding: 1em 10%; }
   @media screen and (max-width: 39.9375em) {
-    #main-content, main#students {
+    main, main#students {
       padding: 1em; } }
   @media screen and (min-width: 40em) and (max-width: 63.9375em) {
-    #main-content, main#students {
+    main, main#students {
       padding: 1em; } }
   @media screen and (min-width: 64em) and (max-width: 104.9375em) {
-    #main-content, main#students {
+    main, main#students {
       padding: 1em 5%; } }
 
 .search {
@@ -1485,6 +1485,19 @@ textarea {
       font-weight: 400; }
   #glp > .content {
     padding: 1em 0; }
+
+.loading {
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  width: 100%; }
+  .loading img {
+    width: 5em; }
+  .loading span {
+    padding: 0.5em;
+    font-weight: 300;
+    font-style: italic; }
 
 #active-plan-summary {
   flex-direction: column;

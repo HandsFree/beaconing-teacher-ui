@@ -4,13 +4,15 @@ package serv
 
 import (
 	"bytes"
-	"git.juddus.com/HFC/beaconing.git/auth"
-	"github.com/gin-gonic/gin"
-	jsoniter "github.com/json-iterator/go"
 	"io/ioutil"
 	"log"
 	"net"
 	"net/http"
+
+	"git.juddus.com/HFC/beaconing/auth"
+	"git.juddus.com/HFC/beaconing/config"
+	"github.com/gin-gonic/gin"
+	jsoniter "github.com/json-iterator/go"
 )
 
 // NOTE:
@@ -76,8 +78,8 @@ func (serv *BeaconingServer) GetToken() {
 	request := auth.TokenRequest{
 		GrantType:    "authorization_code",
 		Code:         requestCode,
-		ClientID:     clientID,
-		ClientSecret: clientSecret,
+		ClientID:     config.ClientID,
+		ClientSecret: config.ClientSecret,
 		RedirectURI:  redirectBaseLink,
 	}
 

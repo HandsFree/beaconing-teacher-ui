@@ -865,72 +865,9 @@ module.exports = function (module) {
 /***/ }),
 
 /***/ "./core/component.js":
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _regenerator = __webpack_require__("../node_modules/babel-runtime/regenerator/index.js");
-
-var _regenerator2 = _interopRequireDefault(_regenerator);
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/* eslint-disable class-methods-use-this */
-
-var Component = function () {
-    function Component() {
-        _classCallCheck(this, Component);
-
-        this.model = {};
-    }
-
-    _createClass(Component, [{
-        key: "preparePage",
-        value: function () {
-            var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee(templatePath, locals) {
-                var template;
-                return _regenerator2.default.wrap(function _callee$(_context) {
-                    while (1) {
-                        switch (_context.prev = _context.next) {
-                            case 0:
-                                _context.next = 2;
-                                return __webpack_require__("./modules eager recursive ^\\.\\/.*\\.html$")("./" + templatePath + ".html");
-
-                            case 2:
-                                template = _context.sent;
-                                return _context.abrupt("return", template(locals));
-
-                            case 4:
-                            case "end":
-                                return _context.stop();
-                        }
-                    }
-                }, _callee, this);
-            }));
-
-            function preparePage(_x, _x2) {
-                return _ref.apply(this, arguments);
-            }
-
-            return preparePage;
-        }()
-    }]);
-
-    return Component;
-}();
-
-exports.default = Component;
+throw new Error("Module build failed: SyntaxError: Unexpected token (8:9)\n\n\u001b[0m \u001b[90m  6 | \u001b[39m    model\u001b[33m:\u001b[39m { [string]\u001b[33m:\u001b[39m any } \u001b[33m=\u001b[39m {}\u001b[33m;\u001b[39m\n \u001b[90m  7 | \u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m  8 | \u001b[39m    async\u001b[33m*\u001b[39m preparePage(templatePath\u001b[33m:\u001b[39m string\u001b[33m,\u001b[39m locals\u001b[33m:\u001b[39m { [string]\u001b[33m:\u001b[39m string} \u001b[33m=\u001b[39m {}\u001b[33m,\u001b[39m furtherStates\u001b[33m:\u001b[39m \u001b[33m?\u001b[39m\u001b[33mArray\u001b[39m\u001b[33m<\u001b[39m\u001b[33mAsyncIterable\u001b[39m\u001b[33m<\u001b[39m\u001b[33mstring\u001b[39m\u001b[33m>>\u001b[39m \u001b[33m=\u001b[39m \u001b[36mnull\u001b[39m)\u001b[33m:\u001b[39m \u001b[33mAsyncIterable\u001b[39m\u001b[33m<\u001b[39m\u001b[33mstring\u001b[39m\u001b[33m>\u001b[39m {\n \u001b[90m    | \u001b[39m         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m  9 | \u001b[39m        \u001b[36mconst\u001b[39m template\u001b[33m:\u001b[39m ({ [string]\u001b[33m:\u001b[39m string }) \u001b[33m=>\u001b[39m string \u001b[33m=\u001b[39m await \u001b[36mimport\u001b[39m(\u001b[90m/* webpackMode: \"eager\" */\u001b[39m \u001b[32m`../modules/${templatePath}.html`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 10 | \u001b[39m\n \u001b[90m 11 | \u001b[39m        \u001b[36myield\u001b[39m template(locals)\u001b[33m;\u001b[39m\u001b[0m\n");
 
 /***/ }),
 
@@ -1068,44 +1005,6 @@ exports.default = Router;
 
 /***/ }),
 
-/***/ "./modules eager recursive ^\\.\\/.*\\.html$":
-/***/ (function(module, exports, __webpack_require__) {
-
-var map = {
-	"./header/root/templates/header.html": "./modules/header/root/templates/header.html",
-	"./home/root/templates/active_plans.html": "./modules/home/root/templates/active_plans.html",
-	"./home/root/templates/dashboard_nav.html": "./modules/home/root/templates/dashboard_nav.html",
-	"./home/root/templates/home.html": "./modules/home/root/templates/home.html",
-	"./home/root/templates/recent_activities.html": "./modules/home/root/templates/recent_activities.html",
-	"./home/root/templates/student_overview.html": "./modules/home/root/templates/student_overview.html",
-	"./lesson_manager/root/templates/active_plans.html": "./modules/lesson_manager/root/templates/active_plans.html",
-	"./lesson_manager/root/templates/inner_nav.html": "./modules/lesson_manager/root/templates/inner_nav.html",
-	"./nav/main/templates/main_nav.html": "./modules/nav/main/templates/main_nav.html",
-	"./nav/second/templates/second_nav.html": "./modules/nav/second/templates/second_nav.html",
-	"./search/basic/templates/basic.html": "./modules/search/basic/templates/basic.html"
-};
-function webpackAsyncContext(req) {
-	return webpackAsyncContextResolve(req).then(__webpack_require__);
-};
-function webpackAsyncContextResolve(req) {
-	// Here Promise.resolve().then() is used instead of new Promise() to prevent
-	// uncatched exception popping up in devtools
-	return Promise.resolve().then(function() {
-		var id = map[req];
-		if(!(id + 1)) // check for number or string
-			throw new Error("Cannot find module '" + req + "'.");
-		return id;
-	});
-};
-webpackAsyncContext.keys = function webpackAsyncContextKeys() {
-	return Object.keys(map);
-};
-webpackAsyncContext.resolve = webpackAsyncContextResolve;
-webpackAsyncContext.id = "./modules eager recursive ^\\.\\/.*\\.html$";
-module.exports = webpackAsyncContext;
-
-/***/ }),
-
 /***/ "./modules/header/root/index.js":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1154,7 +1053,7 @@ var Header = function (_Component) {
                     while (1) {
                         switch (_context.prev = _context.next) {
                             case 0:
-                                teacherImgLink = 'dist/images/profile.png';
+                                teacherImgLink = 'dist/beaconing/images/profile.png';
                                 teacherName = 'John Smith';
                                 return _context.abrupt('return', this.preparePage('header/root/templates/header', {
                                     teacherImgLink: teacherImgLink,
@@ -1181,78 +1080,6 @@ var Header = function (_Component) {
 }(_component2.default);
 
 exports.default = Header;
-
-/***/ }),
-
-/***/ "./modules/header/root/templates/header.html":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function (scope) {
-  return "<header id=main-header><div class=logo><a href=\"./\"><img src=dist/images/logo.png alt=\"Click to go to Home\"></a></div><div class=profile><div class=logout><a>Log Out</a></div><div class=profile-img><img src=" + scope.teacherImgLink + " alt=" + scope.teacherName + " class=profile-blue></div></div></header>";
-};
-
-/***/ }),
-
-/***/ "./modules/home/root/templates/active_plans.html":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function (scope) {
-  return "<div class=\"tile flex-column flex-2\"><div class=title><p>Active Lesson Plans</p><a href=\"./lesson_manager/\"><i class=icon-link-ext-alt title=\"View Active Lesson Plans\" aria-hidden=true></i></a></div><div class=content><div id=active-plan-summary><div class=plan><div class=image><img src=dist/images/quest-image.jpg alt=\"Algebra Beginnings\"></div><div class=info><div class=name><p>Algebra Beginnings</p></div></div></div><div class=plan><div class=image><img src=dist/images/quest-image.jpg alt=\"First steps to Engineering\"></div><div class=info><div class=name><p>First steps to Engineering</p></div></div></div><div class=plan><div class=image><img src=dist/images/quest-image.jpg alt=\"Advanced Masonary\"></div><div class=info><div class=name><p>Advanced Masonary</p></div></div></div></div></div></div>";
-};
-
-/***/ }),
-
-/***/ "./modules/home/root/templates/dashboard_nav.html":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function (scope) {
-  return "<nav class=\"mini spaced flex-justify-end\"><a class=item>Edit Layout</a></nav>";
-};
-
-/***/ }),
-
-/***/ "./modules/home/root/templates/home.html":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function (scope) {
-  return scope.headerHTML + "<div class=\"flex-container expand margin-top-2\">" + scope.mainNavHTML + "<main id=main-content><section class=flex-column>" + scope.dashboardNavHTML + "</section><section class=flex-column>" + scope.basicSearchHTML + "</section><section class=\"flex-spacearound mobile-collapse\">" + scope.recentActivitiesHTML + " " + scope.activePlansHTML + "</section><section class=flex-column>" + scope.studentOverviewHTML + "</section></main></div>";
-};
-
-/***/ }),
-
-/***/ "./modules/home/root/templates/recent_activities.html":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function (scope) {
-  return "<div class=\"tile flex-column flex-2\"><div class=title><p>Your Recent Activities</p></div><div class=content><div id=recent-activity><div class=activity><div class=info><p>Assigned new lesson plan: <a class=link-underline>Algebra Beginnings</a></p></div><div class=time><p>12:54</p></div></div><div class=activity><div class=info><p>Assigned new lesson plan: <a class=link-underline>First steps to Engineering</a></p></div><div class=time><p title=13:50>Tues</p></div></div><div class=activity><div class=info><p>Assigned new lesson plan: <a class=link-underline>Advanced Masonary</a></p></div><div class=time><p title=17:02>03/06</p></div></div></div></div></div>";
-};
-
-/***/ }),
-
-/***/ "./modules/home/root/templates/student_overview.html":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function (scope) {
-  return "<div class=\"tile flex-column\"><div class=title><p>Student Overview</p><a href=\"./classroom/\"><i class=icon-link-ext-alt title=\"View Students\" aria-hidden=true></i></a></div><div class=content><div id=student-overview><div class=sorting><div class=sort-menu>Class: <a class=active>11b</a> <a>13a</a></div><div class=sort-menu>Sort By: <a>This Week</a> <a class=active>This Month</a> <a>This Year</a></div></div><div class=flex-container><div class=student-section><div class=title><h3>Best Performing</h3></div><div class=students><div class=student><div class=\"flex-container tablet-hide\"><div class=student-profile-image><img class=profile-blue src=dist/images/profile.png alt=\"Example Student\"></div></div><div class=\"flex-container flex-column flex-spacearound flex-grow\"><div class=student-name><p>Example Student</p></div><div class=student-percentage><p>Overall Percentage:</p><div class=progress-bar><div class=status-green style=\"width: 96%;\"><span>96%</span></div></div></div></div></div><div class=student><div class=\"flex-container tablet-hide\"><div class=student-profile-image><img class=profile-blue src=dist/images/profile.png alt=\"Example Student\"></div></div><div class=\"flex-container flex-column flex-spacearound flex-grow\"><div class=student-name><p>Example Student</p></div><div class=student-percentage><p>Overall Percentage:</p><div class=progress-bar><div class=status-green style=\"width: 94%;\"><span>94%</span></div></div></div></div></div><div class=student><div class=\"flex-container tablet-hide\"><div class=student-profile-image><img class=profile-blue src=dist/images/profile.png alt=\"Example Student\"></div></div><div class=\"flex-container flex-column flex-spacearound flex-grow\"><div class=student-name><p>Example Student</p></div><div class=student-percentage><p>Overall Percentage:</p><div class=progress-bar><div class=status-green style=\"width: 91%;\"><span>91%</span></div></div></div></div></div></div></div><div class=student-section><div class=title><h3>Needs Attention</h3></div><div class=students><div class=student><div class=\"flex-container tablet-hide\"><div class=student-profile-image><img class=profile-blue src=dist/images/profile.png alt=\"Example Student\"></div></div><div class=\"flex-container flex-column flex-spacearound flex-grow\"><div class=student-name><p>Example Student</p></div><div class=student-percentage><p>Overall Percentage:</p><div class=progress-bar><div class=status-red style=\"width: 30%;\"><span>30%</span></div></div></div></div></div><div class=student><div class=\"flex-container tablet-hide\"><div class=student-profile-image><img class=profile-blue src=dist/images/profile.png alt=\"Example Student\"></div></div><div class=\"flex-container flex-column flex-spacearound flex-grow\"><div class=student-name><p>Example Student</p></div><div class=student-percentage><p>Overall Percentage:</p><div class=progress-bar><div class=status-red style=\"width: 28%;\"><span>28%</span></div></div></div></div></div><div class=student><div class=\"flex-container tablet-hide\"><div class=student-profile-image><img class=profile-blue src=dist/images/profile.png alt=\"Example Student\"></div></div><div class=\"flex-container flex-column flex-spacearound flex-grow\"><div class=student-name><p>Example Student</p></div><div class=student-percentage><p>Overall Percentage:</p><div class=progress-bar><div class=status-red style=\"width: 20%;\"><span>20%</span></div></div></div></div></div></div></div><div class=student-section><div class=title><h3>Most Improvement</h3></div><div class=students><div class=student><div class=\"flex-container tablet-hide\"><div class=student-profile-image><img class=profile-blue src=dist/images/profile.png alt=\"Example Student\"></div></div><div class=\"flex-container flex-column flex-spacearound flex-grow\"><div class=student-name><p>Example Student</p></div><div class=student-percentage><p>Overall Percentage:</p><div class=progress-bar><div class=status-amber style=\"width: 75%;\"><span>75%</span></div></div></div></div></div><div class=student><div class=\"flex-container tablet-hide\"><div class=student-profile-image><img class=profile-blue src=dist/images/profile.png alt=\"Example Student\"></div></div><div class=\"flex-container flex-column flex-spacearound flex-grow\"><div class=student-name><p>Example Student</p></div><div class=student-percentage><p>Overall Percentage:</p><div class=progress-bar><div class=status-amber style=\"width: 70%;\"><span>70%</span></div></div></div></div></div><div class=student><div class=\"flex-container tablet-hide\"><div class=student-profile-image><img class=profile-blue src=dist/images/profile.png alt=\"Example Student\"></div></div><div class=\"flex-container flex-column flex-spacearound flex-grow\"><div class=student-name><p>Example Student</p></div><div class=student-percentage><p>Overall Percentage:</p><div class=progress-bar><div class=status-amber style=\"width: 53%;\"><span>53%</span></div></div></div></div></div></div></div></div></div></div></div>";
-};
 
 /***/ }),
 
@@ -1321,6 +1148,18 @@ var _inner_nav = __webpack_require__("./modules/lesson_manager/root/inner_nav.js
 
 var _inner_nav2 = _interopRequireDefault(_inner_nav);
 
+var _basic = __webpack_require__("./modules/search/basic/index.js");
+
+var _basic2 = _interopRequireDefault(_basic);
+
+var _sort = __webpack_require__("./modules/sort/index.js");
+
+var _sort2 = _interopRequireDefault(_sort);
+
+var _glps = __webpack_require__("./modules/lesson_manager/root/glps.js");
+
+var _glps2 = _interopRequireDefault(_glps);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
@@ -1346,7 +1185,7 @@ var ActivePlans = function (_Component) {
             var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee() {
                 var _this2 = this;
 
-                var header, mainNav, secondNav, innerNav;
+                var header, mainNav, secondNav, innerNav, search, sort, glps;
                 return _regenerator2.default.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
@@ -1355,20 +1194,31 @@ var ActivePlans = function (_Component) {
                                 mainNav = new _main2.default();
                                 secondNav = new _second2.default();
                                 innerNav = new _inner_nav2.default();
-                                return _context.abrupt('return', Promise.all([header.render(), mainNav.render(), secondNav.render('Lesson Manager', innerNav.render())]).then(function (values) {
-                                    var _values = _slicedToArray(values, 3),
+                                search = new _basic2.default();
+                                sort = new _sort2.default();
+                                glps = new _glps2.default();
+                                return _context.abrupt('return', Promise.all([header.render(), mainNav.render(), secondNav.render('Lesson Manager', innerNav.render()), search.render({
+                                    type: 'width-expand'
+                                }), sort.render(), glps.render()]).then(function (values) {
+                                    var _values = _slicedToArray(values, 6),
                                         headerHTML = _values[0],
                                         mainNavHTML = _values[1],
-                                        secondNavHTML = _values[2];
+                                        secondNavHTML = _values[2],
+                                        searchHTML = _values[3],
+                                        sortHTML = _values[4],
+                                        glpsHTML = _values[5];
 
                                     return _this2.preparePage('lesson_manager/root/templates/active_plans', {
                                         headerHTML: headerHTML,
                                         mainNavHTML: mainNavHTML,
-                                        secondNavHTML: secondNavHTML
+                                        secondNavHTML: secondNavHTML,
+                                        searchHTML: searchHTML,
+                                        sortHTML: sortHTML,
+                                        glpsHTML: glpsHTML
                                     });
                                 }));
 
-                            case 5:
+                            case 8:
                             case 'end':
                                 return _context.stop();
                         }
@@ -1388,6 +1238,180 @@ var ActivePlans = function (_Component) {
 }(_component2.default);
 
 exports.default = ActivePlans;
+
+/***/ }),
+
+/***/ "./modules/lesson_manager/root/glp.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _regenerator = __webpack_require__("../node_modules/babel-runtime/regenerator/index.js");
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _component = __webpack_require__("./core/component.js");
+
+var _component2 = _interopRequireDefault(_component);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var GLP = function (_Component) {
+    _inherits(GLP, _Component);
+
+    function GLP() {
+        _classCallCheck(this, GLP);
+
+        return _possibleConstructorReturn(this, (GLP.__proto__ || Object.getPrototypeOf(GLP)).apply(this, arguments));
+    }
+
+    _createClass(GLP, [{
+        key: 'render',
+        value: function () {
+            var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee(data) {
+                var name;
+                return _regenerator2.default.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                name = data.name;
+                                return _context.abrupt('return', this.preparePage('lesson_manager/root/templates/glp', {
+                                    name: name
+                                }));
+
+                            case 2:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function render(_x) {
+                return _ref.apply(this, arguments);
+            }
+
+            return render;
+        }()
+    }]);
+
+    return GLP;
+}(_component2.default);
+
+exports.default = GLP;
+
+/***/ }),
+
+/***/ "./modules/lesson_manager/root/glps.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _regenerator = __webpack_require__("../node_modules/babel-runtime/regenerator/index.js");
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _component = __webpack_require__("./core/component.js");
+
+var _component2 = _interopRequireDefault(_component);
+
+var _loading = __webpack_require__("./modules/loading/index.js");
+
+var _loading2 = _interopRequireDefault(_loading);
+
+var _glp = __webpack_require__("./modules/lesson_manager/root/glp.js");
+
+var _glp2 = _interopRequireDefault(_glp);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var GLPs = function (_Component) {
+    _inherits(GLPs, _Component);
+
+    function GLPs() {
+        _classCallCheck(this, GLPs);
+
+        return _possibleConstructorReturn(this, (GLPs.__proto__ || Object.getPrototypeOf(GLPs)).apply(this, arguments));
+    }
+
+    _createClass(GLPs, [{
+        key: 'loadGLPs',
+        value: function loadGLPs() {
+            var glp = new _glp2.default();
+
+            return glp.render({
+                name: 'test'
+            });
+        }
+    }, {
+        key: 'render',
+        value: function () {
+            var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee() {
+                var loading, loadingHTML;
+                return _regenerator2.default.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                loading = new _loading2.default();
+                                _context.next = 3;
+                                return loading.render();
+
+                            case 3:
+                                loadingHTML = _context.sent;
+                                return _context.abrupt('return', this.preparePage('lesson_manager/root/templates/glps', {
+                                    glpsHTML: loadingHTML
+                                }, [this.loadGLPs()]));
+
+                            case 5:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function render() {
+                return _ref.apply(this, arguments);
+            }
+
+            return render;
+        }()
+    }]);
+
+    return GLPs;
+}(_component2.default);
+
+exports.default = GLPs;
 
 /***/ }),
 
@@ -1467,27 +1491,75 @@ exports.default = InnerNav;
 
 /***/ }),
 
-/***/ "./modules/lesson_manager/root/templates/active_plans.html":
+/***/ "./modules/loading/index.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-module.exports = function (scope) {
-  return scope.headerHTML + "<div class=\"flex-container expand margin-top-2\">" + scope.mainNavHTML + " " + scope.secondNavHTML + "</div>";
-};
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 
-/***/ }),
+var _regenerator = __webpack_require__("../node_modules/babel-runtime/regenerator/index.js");
 
-/***/ "./modules/lesson_manager/root/templates/inner_nav.html":
-/***/ (function(module, exports, __webpack_require__) {
+var _regenerator2 = _interopRequireDefault(_regenerator);
 
-"use strict";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _component = __webpack_require__("./core/component.js");
 
-module.exports = function (scope) {
-  return '<a href="./lesson_manager/" class="' + (/^lesson_manager\/?$/.test(scope.path) ? 'item active-white' : 'item') + '"><span>Active Lesson Plans</span></a> <a href=./lesson_manager/new_plan class="' + (/^lesson_manager\/new_plan\/?/.test(scope.path) ? 'item active-white' : 'item') + '"><span>Assign New Plan</span></a>';
-};
+var _component2 = _interopRequireDefault(_component);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Loading = function (_Component) {
+    _inherits(Loading, _Component);
+
+    function Loading() {
+        _classCallCheck(this, Loading);
+
+        return _possibleConstructorReturn(this, (Loading.__proto__ || Object.getPrototypeOf(Loading)).apply(this, arguments));
+    }
+
+    _createClass(Loading, [{
+        key: 'render',
+        value: function () {
+            var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee() {
+                return _regenerator2.default.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                return _context.abrupt('return', this.preparePage('loading/templates/loading', {}));
+
+                            case 1:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function render() {
+                return _ref.apply(this, arguments);
+            }
+
+            return render;
+        }()
+    }]);
+
+    return Loading;
+}(_component2.default);
+
+exports.default = Loading;
 
 /***/ }),
 
@@ -1564,18 +1636,6 @@ var MainNav = function (_Component) {
 }(_component2.default);
 
 exports.default = MainNav;
-
-/***/ }),
-
-/***/ "./modules/nav/main/templates/main_nav.html":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function (scope) {
-  return '<nav id=main><div class=nav-group><a href="./" class="' + (scope.path === '' ? 'item active' : 'item') + '"><i class=icon-home></i> <span>Home</span></a> <a href="./classroom/" class="' + (/^classroom/.test(scope.path) ? 'item active-orange' : 'item') + '"><i class=icon-graduation-cap></i> <span>Classroom</span></a> <a href="./lesson_manager/" class="' + (/^lesson_manager/.test(scope.path) ? 'item active-orange' : 'item') + '"><i class=icon-check></i> <span>Lesson Manager</span></a> <a class="' + (/^messages/.test(scope.path) ? 'item active' : 'item') + '"><i class=icon-chat></i> <span>Messages</span></a></div><div class=nav-group><a class="' + (/^search/.test(scope.path) ? 'item active' : 'item') + '"><i class=icon-search></i> <span>Search</span></a> <a class="' + (/^settings/.test(scope.path) ? 'item active' : 'item') + '"><i class=icon-cogs></i> <span>Settings</span></a> <a class=item><i class=icon-key-inv></i> <span>Accessibility</span></a></div></nav>';
-};
 
 /***/ }),
 
@@ -1660,27 +1720,152 @@ exports.default = SecondNav;
 
 /***/ }),
 
-/***/ "./modules/nav/second/templates/second_nav.html":
+/***/ "./modules/search/basic/index.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-module.exports = function (scope) {
-  return "<nav id=subnav><div id=nav-header><h3>" + scope.title + "</h3></div><div class=nav-group>" + scope.innerNavHTML + "</div></nav>";
-};
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _regenerator = __webpack_require__("../node_modules/babel-runtime/regenerator/index.js");
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _component = __webpack_require__("./core/component.js");
+
+var _component2 = _interopRequireDefault(_component);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var BasicSearch = function (_Component) {
+    _inherits(BasicSearch, _Component);
+
+    function BasicSearch() {
+        _classCallCheck(this, BasicSearch);
+
+        return _possibleConstructorReturn(this, (BasicSearch.__proto__ || Object.getPrototypeOf(BasicSearch)).apply(this, arguments));
+    }
+
+    _createClass(BasicSearch, [{
+        key: 'render',
+        value: function () {
+            var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee(data) {
+                var type;
+                return _regenerator2.default.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                type = data.type;
+                                return _context.abrupt('return', this.preparePage('search/basic/templates/basic', {
+                                    type: type
+                                }));
+
+                            case 2:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function render(_x) {
+                return _ref.apply(this, arguments);
+            }
+
+            return render;
+        }()
+    }]);
+
+    return BasicSearch;
+}(_component2.default);
+
+exports.default = BasicSearch;
 
 /***/ }),
 
-/***/ "./modules/search/basic/templates/basic.html":
+/***/ "./modules/sort/index.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-module.exports = function (scope) {
-  return "<div class=search><i class=icon-search aria-hidden=true></i> <input class=" + scope.type + " type=text></div>";
-};
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _regenerator = __webpack_require__("../node_modules/babel-runtime/regenerator/index.js");
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _component = __webpack_require__("./core/component.js");
+
+var _component2 = _interopRequireDefault(_component);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Sort = function (_Component) {
+    _inherits(Sort, _Component);
+
+    function Sort() {
+        _classCallCheck(this, Sort);
+
+        return _possibleConstructorReturn(this, (Sort.__proto__ || Object.getPrototypeOf(Sort)).apply(this, arguments));
+    }
+
+    _createClass(Sort, [{
+        key: 'render',
+        value: function () {
+            var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee() {
+                var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+                return _regenerator2.default.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                return _context.abrupt('return', this.preparePage('sort/templates/sort', {}));
+
+                            case 1:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function render() {
+                return _ref.apply(this, arguments);
+            }
+
+            return render;
+        }()
+    }]);
+
+    return Sort;
+}(_component2.default);
+
+exports.default = Sort;
 
 /***/ })
 

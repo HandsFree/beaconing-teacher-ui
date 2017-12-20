@@ -1,9 +1,10 @@
 package route
 
 import (
-	"git.juddus.com/HFC/beaconing.git/serv"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"git.juddus.com/HFC/beaconing/serv"
+	"github.com/gin-gonic/gin"
 )
 
 type RouteManager struct {
