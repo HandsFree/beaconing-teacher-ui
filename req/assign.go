@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"git.juddus.com/HFC/beaconing.git/route"
 	"git.juddus.com/HFC/beaconing.git/serv"
-	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -50,13 +49,13 @@ func (a *assignData) assignGLP(accessToken string) (string, error) {
 	return string(body), nil
 }
 
-func (a *AssignRequest) Handle(ctx *gin.Context, s *serv.BeaconingServer) {
-	studentID := ctx.Param("student")
-	glpID := ctx.Param("glp")
+func (a *AssignRequest) Handle(s *serv.SessionContext) {
+	studentID := s.Param("student")
+	glpID := s.Param("glp")
 
 	accessToken, ok := s.TokenStore.Get("access_token")
 	if !ok {
-		ctx.Redirect(http.StatusTemporaryRedirect, serv.AuthLink)
+		s.Redirect(http.StatusTemporaryRedirect, serv.AuthLink)
 		return
 	}
 
@@ -67,6 +66,6 @@ func (a *AssignRequest) Handle(ctx *gin.Context, s *serv.BeaconingServer) {
 		return
 	}
 
-	ctx.Header("Content-Type", "application/json")
-	ctx.String(http.StatusOK, strJSON)
+	s.Header("Content-Type", "application/json")
+	s.String(http.StatusOK, strJSON)
 }

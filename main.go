@@ -12,8 +12,6 @@ import (
 	"git.juddus.com/HFC/beaconing.git/serv"
 )
 
-var server *serv.BeaconingServer
-
 func main() {
 	router := gin.Default()
 	router.Use(gzip.Gzip(gzip.BestSpeed))
@@ -21,9 +19,9 @@ func main() {
 	router.LoadHTMLFiles("frontend/public/index.html")
 	router.Static("/dist", "./frontend/public/dist")
 
-	server = serv.NewBeaconingInst(router)
+	mainCtx := serv.NewSessionContext(router)
 
-	manager := route.NewRouteManager(server)
+	manager := route.NewRouteManager(mainCtx)
 	routes := []route.Route{
 		// simple pages
 		page.NewPage("/", "Home", "dist/beaconing/pages/home/index.js"),
