@@ -100,7 +100,7 @@ func (serv *SessionContext) GetToken() {
 	}
 
 	var respToken auth.TokenResponse
-	err = jsoniter.Unmarshal(body, respToken)
+	err = jsoniter.Unmarshal(body, &respToken)
 	if err != nil {
 		log.Fatal(err)
 		return
