@@ -48,19 +48,14 @@ var redirectBaseLink = "http://" + getRedirectBaseLink() + "/intent/token/"
 // Provides an access code to retrieve and access token
 var AuthLink = "https://core.beaconing.eu/auth/auth?response_type=code&client_id=teacherui&redirect_uri=" + redirectBaseLink
 
-// this should technically be some wrapper
-// over gin.Context, we can embed the gin Context
-// struct in this and then pass just this round instead?
-// i feel like the name here is wrong too
-// but this is carrying all of our context information
-// like the router engine, and the token store database
-type BeaconingServer struct {
+type SessionContext struct {
+	*gin.Context
 	RouterEngine *gin.Engine
 	TokenStore   *auth.TokenDatabase
 }
 
-func NewBeaconingInst(router *gin.Engine) *BeaconingServer {
-	return &BeaconingServer{
+func NewSessionContext(router *gin.Engine) *SessionContext {
+	return &SessionContext{
 		RouterEngine: router,
 		TokenStore: &auth.TokenDatabase{
 			DB: make(map[string]string),
@@ -71,7 +66,7 @@ func NewBeaconingInst(router *gin.Engine) *BeaconingServer {
 // move this into a TokenDatabase
 // thingy rather than modifying a global
 // database thing?
-func (serv *BeaconingServer) GetToken() {
+func (serv *SessionContext) GetToken() {
 	requestCode, _ := serv.TokenStore.Get("code")
 	request := auth.TokenRequest{
 		GrantType:    "authorization_code",
@@ -105,7 +100,7 @@ func (serv *BeaconingServer) GetToken() {
 	}
 
 	var respToken auth.TokenResponse
-	err = jsoniter.Unmarshal(body, respToken)
+	err = jsoniter.Unmarshal(body, &respToken)
 	if err != nil {
 		log.Fatal(err)
 		return

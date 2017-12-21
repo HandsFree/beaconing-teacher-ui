@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"git.juddus.com/HFC/beaconing.git/route"
 	"git.juddus.com/HFC/beaconing.git/serv"
-	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 	"io/ioutil"
 	"log"
@@ -32,14 +31,14 @@ func NewGLPRequest(path string) *GLPRequest {
 	return req
 }
 
-func (a *GLPRequest) Handle(ctx *gin.Context, s *serv.BeaconingServer) {
-	// what does this mean elliot!!
-	// Needs filtering
-	glpID := ctx.Param("id")
+// TODO: filter the useless stuff out of
+// the glp json
+func (a *GLPRequest) Handle(s *serv.SessionContext) {
+	glpID := s.Param("id")
 
 	accessToken, keyDefined := s.TokenStore.Get("access_token")
 	if !keyDefined {
-		ctx.Redirect(http.StatusTemporaryRedirect, serv.AuthLink)
+		s.Redirect(http.StatusTemporaryRedirect, serv.AuthLink)
 		return
 	}
 
@@ -62,6 +61,6 @@ func (a *GLPRequest) Handle(ctx *gin.Context, s *serv.BeaconingServer) {
 	}
 
 	strJSON := string(body)
-	ctx.Header("Content-Type", "application/json")
-	ctx.String(http.StatusOK, strJSON)
+	s.Header("Content-Type", "application/json")
+	s.String(http.StatusOK, strJSON)
 }

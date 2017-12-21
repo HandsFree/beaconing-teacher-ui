@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"git.juddus.com/HFC/beaconing.git/route"
 	"git.juddus.com/HFC/beaconing.git/serv"
-	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -20,10 +19,10 @@ func NewStudentsRequest(path string) *StudentsRequest {
 	return req
 }
 
-func (r *StudentsRequest) Handle(ctx *gin.Context, s *serv.BeaconingServer) {
+func (r *StudentsRequest) Handle(s *serv.SessionContext) {
 	accessToken, keyDefined := s.TokenStore.Get("access_token")
 	if !keyDefined {
-		ctx.Redirect(http.StatusTemporaryRedirect, serv.AuthLink)
+		s.Redirect(http.StatusTemporaryRedirect, serv.AuthLink)
 		return
 	}
 
@@ -42,7 +41,7 @@ func (r *StudentsRequest) Handle(ctx *gin.Context, s *serv.BeaconingServer) {
 
 	strJSON := string(body)
 
-	ctx.Header("Content-Type", "application/json")
-	ctx.String(http.StatusOK, strJSON)
+	s.Header("Content-Type", "application/json")
+	s.String(http.StatusOK, strJSON)
 
 }

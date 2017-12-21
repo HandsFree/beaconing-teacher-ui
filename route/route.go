@@ -2,11 +2,10 @@ package route
 
 import (
 	"git.juddus.com/HFC/beaconing.git/serv"
-	"github.com/gin-gonic/gin"
 )
 
 type Route interface {
-	Handle(ctx *gin.Context, serv *serv.BeaconingServer)
+	Handle(ctx *serv.SessionContext)
 
 	GetManager() *RouteManager
 	SetManager(m *RouteManager)
