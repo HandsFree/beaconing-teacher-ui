@@ -63,11 +63,8 @@ func NewSessionContext(router *gin.Engine) *SessionContext {
 	}
 }
 
-// move this into a TokenDatabase
-// thingy rather than modifying a global
-// database thing?
-func (serv *SessionContext) GetToken() {
-	requestCode, _ := serv.TokenStore.Get("code")
+func (s *SessionContext) GetToken() {
+	requestCode, _ := s.TokenStore.Get("code")
 	request := auth.TokenRequest{
 		GrantType:    "authorization_code",
 		Code:         requestCode,
@@ -100,13 +97,12 @@ func (serv *SessionContext) GetToken() {
 	}
 
 	var respToken auth.TokenResponse
-	err = jsoniter.Unmarshal(body, &respToken)
-	if err != nil {
+	if err := jsoniter.Unmarshal(body, &respToken); err != nil {
 		log.Fatal(err)
 		return
 	}
 
-	serv.TokenStore.Set("access_token", respToken.AccessToken)
-	serv.TokenStore.Set("refresh_token", respToken.RefreshToken)
-	serv.TokenStore.Set("token_type", respToken.TokenType)
+	s.TokenStore.Set("access_token", respToken.AccessToken)
+	s.TokenStore.Set("refresh_token", respToken.RefreshToken)
+	s.TokenStore.Set("token_type", respToken.TokenType)
 }
