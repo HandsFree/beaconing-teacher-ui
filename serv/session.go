@@ -63,46 +63,44 @@ func NewSessionContext(router *gin.Engine) *SessionContext {
 	}
 }
 
-func (s *SessionContext) GetToken() {
+// use an err instead of a bool here
+func (s *SessionContext) GetAuthToken() bool {
 	requestCode, _ := s.TokenStore.Get("code")
-	request := auth.TokenRequest{
+
+	message, err := jsoniter.Marshal(auth.TokenRequest{
 		GrantType:    "authorization_code",
 		Code:         requestCode,
 		ClientID:     clientID,
 		ClientSecret: clientSecret,
 		RedirectURI:  redirectBaseLink,
-	}
-
-	message, err := jsoniter.Marshal(request)
+	})
 	if err != nil {
 		log.Fatal(err)
-		return
+		return false
 	}
 
-	// Obtains token from access code
 	const tokenLink = "https://core.beaconing.eu/auth/token"
 	response, err := http.Post(tokenLink, "application/json", bytes.NewBuffer(message))
 	if err != nil {
 		log.Fatal(err)
-		return
+		return false
 	}
-
 	defer response.Body.Close()
 
 	body, err := ioutil.ReadAll(response.Body)
-
 	if err != nil {
 		log.Fatal(err)
-		return
+		return false
 	}
 
 	var respToken auth.TokenResponse
 	if err := jsoniter.Unmarshal(body, &respToken); err != nil {
 		log.Fatal(err)
-		return
+		return false
 	}
 
 	s.TokenStore.Set("access_token", respToken.AccessToken)
 	s.TokenStore.Set("refresh_token", respToken.RefreshToken)
 	s.TokenStore.Set("token_type", respToken.TokenType)
+	return true
 }

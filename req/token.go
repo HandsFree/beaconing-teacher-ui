@@ -19,10 +19,15 @@ func NewTokenRequest(path string) *TokenRequest {
 func (r *TokenRequest) Handle(s *serv.SessionContext) {
 	code := s.Query("code")
 	if code == "" {
+		// do something here!
 		return
 	}
 
 	s.TokenStore.Set("code", code)
-	s.GetToken()
+	if !s.GetAuthToken() {
+		// some kind of failure here
+		// 505 redirect?
+		return
+	}
 	s.Redirect(http.StatusTemporaryRedirect, "/")
 }
