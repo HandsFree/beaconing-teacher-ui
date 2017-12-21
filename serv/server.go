@@ -105,8 +105,7 @@ func (serv *BeaconingServer) GetToken() {
 	}
 
 	var respToken auth.TokenResponse
-
-	err = respToken.FromJSON(body)
+	err = jsoniter.Unmarshal(body, respToken)
 	if err != nil {
 		log.Fatal(err)
 		return

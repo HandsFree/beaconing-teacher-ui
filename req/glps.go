@@ -41,7 +41,6 @@ func (a *GLPSRequest) Handle(ctx *gin.Context, s *serv.BeaconingServer) {
 	}
 
 	strJSON := string(body)
-
 	ctx.Header("Content-Type", "application/json")
 	ctx.String(http.StatusOK, strJSON)
 }

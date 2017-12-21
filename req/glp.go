@@ -5,6 +5,7 @@ import (
 	"git.juddus.com/HFC/beaconing.git/route"
 	"git.juddus.com/HFC/beaconing.git/serv"
 	"github.com/gin-gonic/gin"
+	jsoniter "github.com/json-iterator/go"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -14,6 +15,17 @@ type GLPRequest struct {
 	route.SimpleManagedRoute
 }
 
+type glpData struct {
+	id           int
+	name         string
+	desc         string
+	author       string
+	category     string
+	content      string
+	gamePlotId   int
+	externConfig string
+}
+
 func NewGLPRequest(path string) *GLPRequest {
 	req := &GLPRequest{}
 	req.SetPath(path)
@@ -21,6 +33,7 @@ func NewGLPRequest(path string) *GLPRequest {
 }
 
 func (a *GLPRequest) Handle(ctx *gin.Context, s *serv.BeaconingServer) {
+	// what does this mean elliot!!
 	// Needs filtering
 	glpID := ctx.Param("id")
 
@@ -43,9 +56,12 @@ func (a *GLPRequest) Handle(ctx *gin.Context, s *serv.BeaconingServer) {
 		return
 	}
 
-	strJSON := string(body)
+	data := glpData{}
+	if err := jsoniter.Unmarshal(body, &data); err != nil {
+		panic(err)
+	}
 
+	strJSON := string(body)
 	ctx.Header("Content-Type", "application/json")
 	ctx.String(http.StatusOK, strJSON)
-
 }
