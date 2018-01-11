@@ -27,6 +27,7 @@ func (r *RouteManager) RegisterRoutes(routes ...Route) {
 func (r *RouteManager) RegisterRoute(route Route) {
 	route.SetManager(r)
 	r.routes[route.GetPath()] = route
+
 	r.SessionContext.RouterEngine.GET(route.GetPath(), func(ctx *gin.Context) {
 		// set the context to pass thru
 		r.SessionContext.Context = ctx

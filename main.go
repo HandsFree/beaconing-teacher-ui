@@ -16,6 +16,10 @@ func main() {
 	router := gin.Default()
 	router.Use(gzip.Gzip(gzip.BestSpeed))
 
+	router.NoRoute(func(c *gin.Context) {
+		c.JSON(404, gin.H{"code": "404", "message": "Page not found"})
+	})
+
 	router.LoadHTMLFiles("frontend/public/index.html")
 	router.Static("/dist", "./frontend/public/dist")
 
