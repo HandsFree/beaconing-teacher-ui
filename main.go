@@ -30,8 +30,12 @@ func main() {
 		// simple pages
 		page.NewPage("/", "Home", "dist/beaconing/pages/home/index.js"),
 		page.NewPage("/lesson_manager", "Lesson Manager", "dist/beaconing/pages/lesson_manager/index.js"),
+		page.NewPage("/classroom", "Classroom", "dist/beaconing/pages/classroom/index.js"),
 
-		// api requests
+		// our api requests, these are
+		// per component for a modular thing
+
+		// api wrapper requests
 		req.NewTokenRequest("/intent/token"),
 		req.NewStudentsRequest("/intent/students"),
 		req.NewStudentRequest("/intent/student/:id/*action"),
