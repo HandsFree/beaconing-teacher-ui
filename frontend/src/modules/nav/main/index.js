@@ -6,9 +6,14 @@ class MainNav extends Component {
     async render(): Promise<string> {
         const path = window.location.pathname.slice(1);
 
-        return this.preparePage('nav/main/templates/main_nav', {
-            path,
-        });
+        const renderData = {
+            path: 'nav/main/templates/main_nav',
+            locals: {
+                path,
+            },
+        };
+
+        this.prepareRenderState(this.preparePage(renderData));
     }
 }
 

@@ -10,7 +10,7 @@ import Sort from '../../sort';
 import GLPs from './glps';
 
 class ActivePlans extends Component {
-    async render(): Promise<string> {
+    async render() {
         const header = new Header();
         const mainNav = new MainNav();
         const secondNav = new SecondNav();
@@ -19,7 +19,7 @@ class ActivePlans extends Component {
         const sort = new Sort();
         const glps = new GLPs();
 
-        return Promise.all([
+        this.prepareRenderState(Promise.all([
             header.render(),
             mainNav.render(),
             secondNav.render('Lesson Manager', innerNav.render()),
@@ -38,15 +38,20 @@ class ActivePlans extends Component {
                 glpsHTML,
             ] = values;
 
-            return this.preparePage('lesson_manager/root/templates/active_plans', {
-                headerHTML,
-                mainNavHTML,
-                secondNavHTML,
-                searchHTML,
-                sortHTML,
-                glpsHTML,
-            });
-        });
+            const renderData = {
+                path: 'lesson_manager/root/templates/active_plans',
+                locals: {
+                    headerHTML,
+                    mainNavHTML,
+                    secondNavHTML,
+                    searchHTML,
+                    sortHTML,
+                    glpsHTML,
+                },
+            };
+
+            return this.preparePage(renderData);
+        }));
     }
 }
 

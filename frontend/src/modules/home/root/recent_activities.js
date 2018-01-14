@@ -4,7 +4,11 @@ import Component from '../../../core/component';
 
 class RecentActivities extends Component {
     async render(): Promise<string> {
-        return this.preparePage('home/root/templates/recent_activities', {});
+        const renderData = {
+            path: 'home/root/templates/recent_activities',
+        };
+
+        this.prepareRenderState(this.preparePage(renderData));
     }
 }
 

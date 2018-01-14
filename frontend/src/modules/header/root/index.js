@@ -3,14 +3,19 @@
 import Component from '../../../core/component';
 
 class Header extends Component {
-    async render(): Promise<string> {
-        const teacherImgLink = 'dist/beaconing/images/profile.png';
-        const teacherName = 'John Smith';
+    async render() {
+        this.model.teacherName = 'John Smith';
+        this.model.teacherImgLink = 'dist/beaconing/images/profile.png';
 
-        return this.preparePage('header/root/templates/header', {
-            teacherImgLink,
-            teacherName,
-        });
+        const renderData = {
+            path: 'header/root/templates/header',
+            locals: {
+                teacherImgLink: this.model.teacherName,
+                teacherName: this.model.teacherImgLink,
+            },
+        };
+
+        this.prepareRenderState(this.preparePage(renderData));
     }
 }
 

@@ -10,7 +10,7 @@ import ActivePlans from './active_plans';
 import StudentOverview from './student_overview';
 
 class Home extends Component {
-    async render(): Promise<string> {
+    async render() {
         const header = new Header();
         const mainNav = new MainNav();
         const dashboardNav = new DashboardNav();
@@ -19,7 +19,7 @@ class Home extends Component {
         const activePlans = new ActivePlans();
         const studentOverview = new StudentOverview();
 
-        return Promise.all([
+        this.prepareRenderState(Promise.all([
             header.render(),
             mainNav.render(),
             dashboardNav.render(),
@@ -40,16 +40,21 @@ class Home extends Component {
                 studentOverviewHTML,
             ] = values;
 
-            return this.preparePage('home/root/templates/home', {
-                headerHTML,
-                mainNavHTML,
-                dashboardNavHTML,
-                searchHTML,
-                recentActivitiesHTML,
-                activePlansHTML,
-                studentOverviewHTML,
-            });
-        });
+            const renderData = {
+                path: 'home/root/templates/home',
+                locals: {
+                    headerHTML,
+                    mainNavHTML,
+                    dashboardNavHTML,
+                    searchHTML,
+                    recentActivitiesHTML,
+                    activePlansHTML,
+                    studentOverviewHTML,
+                },
+            };
+
+            return this.preparePage(renderData);
+        }));
     }
 }
 

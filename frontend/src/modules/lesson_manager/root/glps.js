@@ -5,7 +5,7 @@ import Loading from '../../loading';
 import GLP from './glp';
 
 class GLPs extends Component {
-    loadGLPs(): AsyncIterable<string> {
+    loadGLPs() {
         const glp = new GLP();
 
         return glp.render({
@@ -13,16 +13,20 @@ class GLPs extends Component {
         });
     }
 
-    async render(): AsyncIterable<string> {
+    async render() {
         const loading = new Loading();
 
         const loadingHTML = await loading.render();
 
-        return this.preparePage('lesson_manager/root/templates/glps', {
-            glpsHTML: loadingHTML,
-        }, [
-            this.loadGLPs(),
-        ]);
+        const renderData = {
+            path: 'lesson_manager/root/templates/glps',
+            locals: {
+                glpsHTML: loadingHTML,
+            },
+        };
+
+        this.prepareRenderState(this.preparePage(renderData));
+        this.prepareRenderState(this.loadGLPs());
     }
 }
 

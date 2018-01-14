@@ -42,10 +42,9 @@ class Router {
 
         if (this.routes.has(path)) {
             const controller = this.routes.get(path);
-            const container = document.getElementById('app');
 
-            if (container && controller) {
-                container.innerHTML = await controller.render();
+            if (controller) {
+                controller.start();
             }
         } else {
             const container = document.getElementById('app');

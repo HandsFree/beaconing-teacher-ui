@@ -865,9 +865,61 @@ module.exports = function (module) {
 /***/ }),
 
 /***/ "./core/component.js":
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-throw new Error("Module build failed: SyntaxError: Unexpected token (8:9)\n\n\u001b[0m \u001b[90m  6 | \u001b[39m    model\u001b[33m:\u001b[39m { [string]\u001b[33m:\u001b[39m any } \u001b[33m=\u001b[39m {}\u001b[33m;\u001b[39m\n \u001b[90m  7 | \u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m  8 | \u001b[39m    async\u001b[33m*\u001b[39m preparePage(templatePath\u001b[33m:\u001b[39m string\u001b[33m,\u001b[39m locals\u001b[33m:\u001b[39m { [string]\u001b[33m:\u001b[39m string} \u001b[33m=\u001b[39m {}\u001b[33m,\u001b[39m furtherStates\u001b[33m:\u001b[39m \u001b[33m?\u001b[39m\u001b[33mArray\u001b[39m\u001b[33m<\u001b[39m\u001b[33mAsyncIterable\u001b[39m\u001b[33m<\u001b[39m\u001b[33mstring\u001b[39m\u001b[33m>>\u001b[39m \u001b[33m=\u001b[39m \u001b[36mnull\u001b[39m)\u001b[33m:\u001b[39m \u001b[33mAsyncIterable\u001b[39m\u001b[33m<\u001b[39m\u001b[33mstring\u001b[39m\u001b[33m>\u001b[39m {\n \u001b[90m    | \u001b[39m         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m  9 | \u001b[39m        \u001b[36mconst\u001b[39m template\u001b[33m:\u001b[39m ({ [string]\u001b[33m:\u001b[39m string }) \u001b[33m=>\u001b[39m string \u001b[33m=\u001b[39m await \u001b[36mimport\u001b[39m(\u001b[90m/* webpackMode: \"eager\" */\u001b[39m \u001b[32m`../modules/${templatePath}.html`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 10 | \u001b[39m\n \u001b[90m 11 | \u001b[39m        \u001b[36myield\u001b[39m template(locals)\u001b[33m;\u001b[39m\u001b[0m\n");
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/* eslint-disable class-methods-use-this, no-restricted-syntax */
+
+var Component = function () {
+    function Component() {
+        _classCallCheck(this, Component);
+
+        this.model = {};
+    }
+
+    _createClass(Component, [{
+        key: "preparePage",
+
+
+        // TODO: Sort types
+        value: function preparePage(_ref) {
+            var path = _ref.path,
+                _ref$locals = _ref.locals,
+                locals = _ref$locals === undefined ? {} : _ref$locals;
+            var nextRenders = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+            var render = new Promise(function (resolve) {
+                __webpack_require__("./modules eager recursive ^\\.\\/.*\\.html$")("./" + path + ".html").then(function (template) {
+                    resolve(template(locals));
+                });
+            });
+
+            if (!nextRenders) {
+                return render;
+            }
+
+            var allRenders = nextRenders;
+
+            allRenders.unshift(render);
+
+            return allRenders;
+        }
+    }]);
+
+    return Component;
+}();
+
+exports.default = Component;
 
 /***/ }),
 
@@ -888,6 +940,8 @@ var _regenerator2 = _interopRequireDefault(_regenerator);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncIterator(iterable) { if (typeof Symbol === "function") { if (Symbol.asyncIterator) { var method = iterable[Symbol.asyncIterator]; if (method != null) return method.call(iterable); } if (Symbol.iterator) { return iterable[Symbol.iterator](); } } throw new TypeError("Object is not async iterable"); }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
@@ -936,7 +990,7 @@ var Router = function () {
         key: 'findController',
         value: function () {
             var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee() {
-                var hash, path, controller, container, _container;
+                var hash, path, controller, container, render, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, _value, state, _container;
 
                 return _regenerator2.default.wrap(function _callee$(_context) {
                     while (1) {
@@ -953,7 +1007,7 @@ var Router = function () {
                                 // console.log(path);
 
                                 if (!this.routes.has(path)) {
-                                    _context.next = 12;
+                                    _context.next = 50;
                                     break;
                                 }
 
@@ -961,7 +1015,7 @@ var Router = function () {
                                 container = document.getElementById('app');
 
                                 if (!(container && controller)) {
-                                    _context.next = 10;
+                                    _context.next = 48;
                                     break;
                                 }
 
@@ -969,25 +1023,108 @@ var Router = function () {
                                 return controller.render();
 
                             case 9:
-                                container.innerHTML = _context.sent;
+                                render = _context.sent;
 
-                            case 10:
-                                _context.next = 14;
+                                if (!Array.isArray(render)) {
+                                    _context.next = 47;
+                                    break;
+                                }
+
+                                _iteratorNormalCompletion = true;
+                                _didIteratorError = false;
+                                _iteratorError = undefined;
+                                _context.prev = 14;
+                                _iterator = _asyncIterator(render);
+
+                            case 16:
+                                _context.next = 18;
+                                return _iterator.next();
+
+                            case 18:
+                                _step = _context.sent;
+                                _iteratorNormalCompletion = _step.done;
+                                _context.next = 22;
+                                return _step.value;
+
+                            case 22:
+                                _value = _context.sent;
+
+                                if (_iteratorNormalCompletion) {
+                                    _context.next = 29;
+                                    break;
+                                }
+
+                                state = _value;
+
+                                container.innerHTML = state;
+
+                            case 26:
+                                _iteratorNormalCompletion = true;
+                                _context.next = 16;
                                 break;
 
-                            case 12:
+                            case 29:
+                                _context.next = 35;
+                                break;
+
+                            case 31:
+                                _context.prev = 31;
+                                _context.t0 = _context['catch'](14);
+                                _didIteratorError = true;
+                                _iteratorError = _context.t0;
+
+                            case 35:
+                                _context.prev = 35;
+                                _context.prev = 36;
+
+                                if (!(!_iteratorNormalCompletion && _iterator.return)) {
+                                    _context.next = 40;
+                                    break;
+                                }
+
+                                _context.next = 40;
+                                return _iterator.return();
+
+                            case 40:
+                                _context.prev = 40;
+
+                                if (!_didIteratorError) {
+                                    _context.next = 43;
+                                    break;
+                                }
+
+                                throw _iteratorError;
+
+                            case 43:
+                                return _context.finish(40);
+
+                            case 44:
+                                return _context.finish(35);
+
+                            case 45:
+                                _context.next = 48;
+                                break;
+
+                            case 47:
+                                container.innerHTML = render;
+
+                            case 48:
+                                _context.next = 52;
+                                break;
+
+                            case 50:
                                 _container = document.getElementById('app');
 
                                 if (_container) {
                                     _container.innerHTML = '<p>Error (404): Page not found</p>';
                                 }
 
-                            case 14:
+                            case 52:
                             case 'end':
                                 return _context.stop();
                         }
                     }
-                }, _callee, this);
+                }, _callee, this, [[14, 31, 35, 45], [36,, 40, 44]]);
             }));
 
             function findController() {
@@ -1002,6 +1139,48 @@ var Router = function () {
 }();
 
 exports.default = Router;
+
+/***/ }),
+
+/***/ "./modules eager recursive ^\\.\\/.*\\.html$":
+/***/ (function(module, exports, __webpack_require__) {
+
+var map = {
+	"./header/root/templates/header.html": "./modules/header/root/templates/header.html",
+	"./home/root/templates/active_plans.html": "./modules/home/root/templates/active_plans.html",
+	"./home/root/templates/dashboard_nav.html": "./modules/home/root/templates/dashboard_nav.html",
+	"./home/root/templates/home.html": "./modules/home/root/templates/home.html",
+	"./home/root/templates/recent_activities.html": "./modules/home/root/templates/recent_activities.html",
+	"./home/root/templates/student_overview.html": "./modules/home/root/templates/student_overview.html",
+	"./lesson_manager/root/templates/active_plans.html": "./modules/lesson_manager/root/templates/active_plans.html",
+	"./lesson_manager/root/templates/glp.html": "./modules/lesson_manager/root/templates/glp.html",
+	"./lesson_manager/root/templates/glps.html": "./modules/lesson_manager/root/templates/glps.html",
+	"./lesson_manager/root/templates/inner_nav.html": "./modules/lesson_manager/root/templates/inner_nav.html",
+	"./loading/templates/loading.html": "./modules/loading/templates/loading.html",
+	"./nav/main/templates/main_nav.html": "./modules/nav/main/templates/main_nav.html",
+	"./nav/second/templates/second_nav.html": "./modules/nav/second/templates/second_nav.html",
+	"./search/basic/templates/basic.html": "./modules/search/basic/templates/basic.html",
+	"./sort/templates/sort.html": "./modules/sort/templates/sort.html"
+};
+function webpackAsyncContext(req) {
+	return webpackAsyncContextResolve(req).then(__webpack_require__);
+};
+function webpackAsyncContextResolve(req) {
+	// Here Promise.resolve().then() is used instead of new Promise() to prevent
+	// uncatched exception popping up in devtools
+	return Promise.resolve().then(function() {
+		var id = map[req];
+		if(!(id + 1)) // check for number or string
+			throw new Error("Cannot find module '" + req + "'.");
+		return id;
+	});
+};
+webpackAsyncContext.keys = function webpackAsyncContextKeys() {
+	return Object.keys(map);
+};
+webpackAsyncContext.resolve = webpackAsyncContextResolve;
+webpackAsyncContext.id = "./modules eager recursive ^\\.\\/.*\\.html$";
+module.exports = webpackAsyncContext;
 
 /***/ }),
 
@@ -1048,19 +1227,23 @@ var Header = function (_Component) {
         key: 'render',
         value: function () {
             var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee() {
-                var teacherImgLink, teacherName;
+                var teacherImgLink, teacherName, renderData;
                 return _regenerator2.default.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
                             case 0:
                                 teacherImgLink = 'dist/beaconing/images/profile.png';
                                 teacherName = 'John Smith';
-                                return _context.abrupt('return', this.preparePage('header/root/templates/header', {
-                                    teacherImgLink: teacherImgLink,
-                                    teacherName: teacherName
-                                }));
+                                renderData = {
+                                    path: 'header/root/templates/header',
+                                    locals: {
+                                        teacherImgLink: teacherImgLink,
+                                        teacherName: teacherName
+                                    }
+                                };
+                                return _context.abrupt('return', this.preparePage(renderData));
 
-                            case 3:
+                            case 4:
                             case 'end':
                                 return _context.stop();
                         }
@@ -1080,6 +1263,78 @@ var Header = function (_Component) {
 }(_component2.default);
 
 exports.default = Header;
+
+/***/ }),
+
+/***/ "./modules/header/root/templates/header.html":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function (scope) {
+  return "<header id=main-header><div class=logo><a href=\"./\"><img src=dist/beaconing/images/logo.png alt=\"Click to go to Home\"></a></div><div class=profile><div class=logout><a>Log Out</a></div><div class=profile-img><img src=" + scope.teacherImgLink + " alt=" + scope.teacherName + " class=profile-blue></div></div></header>";
+};
+
+/***/ }),
+
+/***/ "./modules/home/root/templates/active_plans.html":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function (scope) {
+  return "<div class=\"tile flex-column flex-2\"><div class=title><p>Active Lesson Plans</p><a href=\"./lesson_manager/\"><i class=icon-link-ext-alt title=\"View Active Lesson Plans\" aria-hidden=true></i></a></div><div class=content><div id=active-plan-summary><div class=plan><div class=image><img src=dist/beaconing/images/quest-image.jpg alt=\"Algebra Beginnings\"></div><div class=info><div class=name><p>Algebra Beginnings</p></div></div></div><div class=plan><div class=image><img src=dist/beaconing/images/quest-image.jpg alt=\"First steps to Engineering\"></div><div class=info><div class=name><p>First steps to Engineering</p></div></div></div><div class=plan><div class=image><img src=dist/beaconing/images/quest-image.jpg alt=\"Advanced Masonary\"></div><div class=info><div class=name><p>Advanced Masonary</p></div></div></div></div></div></div>";
+};
+
+/***/ }),
+
+/***/ "./modules/home/root/templates/dashboard_nav.html":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function (scope) {
+  return "<nav class=\"mini spaced flex-justify-end\"><a class=item>Edit Layout</a></nav>";
+};
+
+/***/ }),
+
+/***/ "./modules/home/root/templates/home.html":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function (scope) {
+  return scope.headerHTML + "<div class=\"flex-container expand margin-top-2\">" + scope.mainNavHTML + "<main><section class=flex-column>" + scope.dashboardNavHTML + "</section><section class=flex-column>" + scope.searchHTML + "</section><section class=\"flex-spacearound mobile-collapse\">" + scope.recentActivitiesHTML + " " + scope.activePlansHTML + "</section><section class=flex-column>" + scope.studentOverviewHTML + "</section></main></div>";
+};
+
+/***/ }),
+
+/***/ "./modules/home/root/templates/recent_activities.html":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function (scope) {
+  return "<div class=\"tile flex-column flex-2\"><div class=title><p>Your Recent Activities</p></div><div class=content><div id=recent-activity><div class=activity><div class=info><p>Assigned new lesson plan: <a class=link-underline>Algebra Beginnings</a></p></div><div class=time><p>12:54</p></div></div><div class=activity><div class=info><p>Assigned new lesson plan: <a class=link-underline>First steps to Engineering</a></p></div><div class=time><p title=13:50>Tues</p></div></div><div class=activity><div class=info><p>Assigned new lesson plan: <a class=link-underline>Advanced Masonary</a></p></div><div class=time><p title=17:02>03/06</p></div></div></div></div></div>";
+};
+
+/***/ }),
+
+/***/ "./modules/home/root/templates/student_overview.html":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function (scope) {
+  return "<div class=\"tile flex-column\"><div class=title><p>Student Overview</p><a href=\"./classroom/\"><i class=icon-link-ext-alt title=\"View Students\" aria-hidden=true></i></a></div><div class=content><div id=student-overview><div class=sorting><div class=sort-menu>Class: <a class=active>11b</a> <a>13a</a></div><div class=sort-menu>Sort By: <a>This Week</a> <a class=active>This Month</a> <a>This Year</a></div></div><div class=flex-container><div class=student-section><div class=title><h3>Best Performing</h3></div><div class=students><div class=student><div class=\"flex-container tablet-hide\"><div class=student-profile-image><img class=profile-blue src=dist/beaconing/images/profile.png alt=\"Example Student\"></div></div><div class=\"flex-container flex-column flex-spacearound flex-grow\"><div class=student-name><p>Example Student</p></div><div class=student-percentage><p>Overall Percentage:</p><div class=progress-bar><div class=status-green style=\"width: 96%;\"><span>96%</span></div></div></div></div></div><div class=student><div class=\"flex-container tablet-hide\"><div class=student-profile-image><img class=profile-blue src=dist/beaconing/images/profile.png alt=\"Example Student\"></div></div><div class=\"flex-container flex-column flex-spacearound flex-grow\"><div class=student-name><p>Example Student</p></div><div class=student-percentage><p>Overall Percentage:</p><div class=progress-bar><div class=status-green style=\"width: 94%;\"><span>94%</span></div></div></div></div></div><div class=student><div class=\"flex-container tablet-hide\"><div class=student-profile-image><img class=profile-blue src=dist/beaconing/images/profile.png alt=\"Example Student\"></div></div><div class=\"flex-container flex-column flex-spacearound flex-grow\"><div class=student-name><p>Example Student</p></div><div class=student-percentage><p>Overall Percentage:</p><div class=progress-bar><div class=status-green style=\"width: 91%;\"><span>91%</span></div></div></div></div></div></div></div><div class=student-section><div class=title><h3>Needs Attention</h3></div><div class=students><div class=student><div class=\"flex-container tablet-hide\"><div class=student-profile-image><img class=profile-blue src=dist/beaconing/images/profile.png alt=\"Example Student\"></div></div><div class=\"flex-container flex-column flex-spacearound flex-grow\"><div class=student-name><p>Example Student</p></div><div class=student-percentage><p>Overall Percentage:</p><div class=progress-bar><div class=status-red style=\"width: 30%;\"><span>30%</span></div></div></div></div></div><div class=student><div class=\"flex-container tablet-hide\"><div class=student-profile-image><img class=profile-blue src=dist/beaconing/images/profile.png alt=\"Example Student\"></div></div><div class=\"flex-container flex-column flex-spacearound flex-grow\"><div class=student-name><p>Example Student</p></div><div class=student-percentage><p>Overall Percentage:</p><div class=progress-bar><div class=status-red style=\"width: 28%;\"><span>28%</span></div></div></div></div></div><div class=student><div class=\"flex-container tablet-hide\"><div class=student-profile-image><img class=profile-blue src=dist/beaconing/images/profile.png alt=\"Example Student\"></div></div><div class=\"flex-container flex-column flex-spacearound flex-grow\"><div class=student-name><p>Example Student</p></div><div class=student-percentage><p>Overall Percentage:</p><div class=progress-bar><div class=status-red style=\"width: 20%;\"><span>20%</span></div></div></div></div></div></div></div><div class=student-section><div class=title><h3>Most Improvement</h3></div><div class=students><div class=student><div class=\"flex-container tablet-hide\"><div class=student-profile-image><img class=profile-blue src=dist/beaconing/images/profile.png alt=\"Example Student\"></div></div><div class=\"flex-container flex-column flex-spacearound flex-grow\"><div class=student-name><p>Example Student</p></div><div class=student-percentage><p>Overall Percentage:</p><div class=progress-bar><div class=status-amber style=\"width: 75%;\"><span>75%</span></div></div></div></div></div><div class=student><div class=\"flex-container tablet-hide\"><div class=student-profile-image><img class=profile-blue src=dist/beaconing/images/profile.png alt=\"Example Student\"></div></div><div class=\"flex-container flex-column flex-spacearound flex-grow\"><div class=student-name><p>Example Student</p></div><div class=student-percentage><p>Overall Percentage:</p><div class=progress-bar><div class=status-amber style=\"width: 70%;\"><span>70%</span></div></div></div></div></div><div class=student><div class=\"flex-container tablet-hide\"><div class=student-profile-image><img class=profile-blue src=dist/beaconing/images/profile.png alt=\"Example Student\"></div></div><div class=\"flex-container flex-column flex-spacearound flex-grow\"><div class=student-name><p>Example Student</p></div><div class=student-percentage><p>Overall Percentage:</p><div class=progress-bar><div class=status-amber style=\"width: 53%;\"><span>53%</span></div></div></div></div></div></div></div></div></div></div></div>";
+};
 
 /***/ }),
 
@@ -1208,14 +1463,19 @@ var ActivePlans = function (_Component) {
                                         sortHTML = _values[4],
                                         glpsHTML = _values[5];
 
-                                    return _this2.preparePage('lesson_manager/root/templates/active_plans', {
-                                        headerHTML: headerHTML,
-                                        mainNavHTML: mainNavHTML,
-                                        secondNavHTML: secondNavHTML,
-                                        searchHTML: searchHTML,
-                                        sortHTML: sortHTML,
-                                        glpsHTML: glpsHTML
-                                    });
+                                    var renderData = {
+                                        path: 'lesson_manager/root/templates/active_plans',
+                                        locals: {
+                                            headerHTML: headerHTML,
+                                            mainNavHTML: mainNavHTML,
+                                            secondNavHTML: secondNavHTML,
+                                            searchHTML: searchHTML,
+                                            sortHTML: sortHTML,
+                                            glpsHTML: glpsHTML
+                                        }
+                                    };
+
+                                    return _this2.preparePage(renderData);
                                 }));
 
                             case 8:
@@ -1284,17 +1544,21 @@ var GLP = function (_Component) {
         key: 'render',
         value: function () {
             var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee(data) {
-                var name;
+                var name, renderData;
                 return _regenerator2.default.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
                             case 0:
                                 name = data.name;
-                                return _context.abrupt('return', this.preparePage('lesson_manager/root/templates/glp', {
-                                    name: name
-                                }));
+                                renderData = {
+                                    path: 'lesson_manager/root/templates/glp',
+                                    locals: {
+                                        name: name
+                                    }
+                                };
+                                return _context.abrupt('return', this.preparePage(renderData));
 
-                            case 2:
+                            case 3:
                             case 'end':
                                 return _context.stop();
                         }
@@ -1377,7 +1641,7 @@ var GLPs = function (_Component) {
         key: 'render',
         value: function () {
             var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee() {
-                var loading, loadingHTML;
+                var loading, loadingHTML, renderData;
                 return _regenerator2.default.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
@@ -1388,11 +1652,15 @@ var GLPs = function (_Component) {
 
                             case 3:
                                 loadingHTML = _context.sent;
-                                return _context.abrupt('return', this.preparePage('lesson_manager/root/templates/glps', {
-                                    glpsHTML: loadingHTML
-                                }, [this.loadGLPs()]));
+                                renderData = {
+                                    path: 'lesson_manager/root/templates/glps',
+                                    locals: {
+                                        glpsHTML: loadingHTML
+                                    }
+                                };
+                                return _context.abrupt('return', this.preparePage(renderData, [this.loadGLPs()]));
 
-                            case 5:
+                            case 6:
                             case 'end':
                                 return _context.stop();
                         }
@@ -1458,17 +1726,21 @@ var InnerNav = function (_Component) {
         key: 'render',
         value: function () {
             var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee() {
-                var path;
+                var path, renderData;
                 return _regenerator2.default.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
                             case 0:
                                 path = window.location.pathname.slice(1);
-                                return _context.abrupt('return', this.preparePage('lesson_manager/root/templates/inner_nav', {
-                                    path: path
-                                }));
+                                renderData = {
+                                    path: 'lesson_manager/root/templates/inner_nav',
+                                    locals: {
+                                        path: path
+                                    }
+                                };
+                                return _context.abrupt('return', this.preparePage(renderData));
 
-                            case 2:
+                            case 3:
                             case 'end':
                                 return _context.stop();
                         }
@@ -1488,6 +1760,54 @@ var InnerNav = function (_Component) {
 }(_component2.default);
 
 exports.default = InnerNav;
+
+/***/ }),
+
+/***/ "./modules/lesson_manager/root/templates/active_plans.html":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function (scope) {
+  return scope.headerHTML + "<div class=\"flex-container expand margin-top-2\">" + scope.mainNavHTML + " " + scope.secondNavHTML + "<main><section class=flex-column>" + scope.searchHTML + "</section><section class=flex-spacebetween><div class=\"flex-wrap flex-grow margin-20\">" + scope.glpsHTML + "</div><aside class=sort>" + scope.sortHTML + "</aside></section></main></div>";
+};
+
+/***/ }),
+
+/***/ "./modules/lesson_manager/root/templates/glp.html":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function (scope) {
+  return "<p>" + scope.name + "</p>";
+};
+
+/***/ }),
+
+/***/ "./modules/lesson_manager/root/templates/glps.html":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function (scope) {
+  return "" + scope.glpsHTML;
+};
+
+/***/ }),
+
+/***/ "./modules/lesson_manager/root/templates/inner_nav.html":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function (scope) {
+  return '<a href="./lesson_manager/" class="' + (/^lesson_manager\/?$/.test(scope.path) ? 'item active-white' : 'item') + '"><span>Active Lesson Plans</span></a> <a href=./lesson_manager/new_plan class="' + (/^lesson_manager\/new_plan\/?/.test(scope.path) ? 'item active-white' : 'item') + '"><span>Assign New Plan</span></a>';
+};
 
 /***/ }),
 
@@ -1534,13 +1854,17 @@ var Loading = function (_Component) {
         key: 'render',
         value: function () {
             var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee() {
+                var renderData;
                 return _regenerator2.default.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
                             case 0:
-                                return _context.abrupt('return', this.preparePage('loading/templates/loading', {}));
+                                renderData = {
+                                    path: 'loading/templates/loading'
+                                };
+                                return _context.abrupt('return', this.preparePage(renderData));
 
-                            case 1:
+                            case 2:
                             case 'end':
                                 return _context.stop();
                         }
@@ -1560,6 +1884,18 @@ var Loading = function (_Component) {
 }(_component2.default);
 
 exports.default = Loading;
+
+/***/ }),
+
+/***/ "./modules/loading/templates/loading.html":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function (scope) {
+  return "<div class=loading><img src=dist/beaconing/images/loading.gif alt=Loading...> <span>Loading...</span></div>";
+};
 
 /***/ }),
 
@@ -1606,17 +1942,21 @@ var MainNav = function (_Component) {
         key: 'render',
         value: function () {
             var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee() {
-                var path;
+                var path, renderData;
                 return _regenerator2.default.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
                             case 0:
                                 path = window.location.pathname.slice(1);
-                                return _context.abrupt('return', this.preparePage('nav/main/templates/main_nav', {
-                                    path: path
-                                }));
+                                renderData = {
+                                    path: 'nav/main/templates/main_nav',
+                                    locals: {
+                                        path: path
+                                    }
+                                };
+                                return _context.abrupt('return', this.preparePage(renderData));
 
-                            case 2:
+                            case 3:
                             case 'end':
                                 return _context.stop();
                         }
@@ -1636,6 +1976,18 @@ var MainNav = function (_Component) {
 }(_component2.default);
 
 exports.default = MainNav;
+
+/***/ }),
+
+/***/ "./modules/nav/main/templates/main_nav.html":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function (scope) {
+  return '<nav id=main><div class=nav-group><a href="./" class="' + (scope.path === '' ? 'item active' : 'item') + '"><i class=icon-home></i> <span>Home</span></a> <a href="./classroom/" class="' + (/^classroom/.test(scope.path) ? 'item active-orange' : 'item') + '"><i class=icon-graduation-cap></i> <span>Classroom</span></a> <a href="./lesson_manager/" class="' + (/^lesson_manager/.test(scope.path) ? 'item active-orange' : 'item') + '"><i class=icon-check></i> <span>Lesson Manager</span></a> <a class="' + (/^messages/.test(scope.path) ? 'item active' : 'item') + '"><i class=icon-chat></i> <span>Messages</span></a></div><div class=nav-group><a class="' + (/^search/.test(scope.path) ? 'item active' : 'item') + '"><i class=icon-search></i> <span>Search</span></a> <a class="' + (/^settings/.test(scope.path) ? 'item active' : 'item') + '"><i class=icon-cogs></i> <span>Settings</span></a> <a class=item><i class=icon-key-inv></i> <span>Accessibility</span></a></div></nav>';
+};
 
 /***/ }),
 
@@ -1682,7 +2034,7 @@ var SecondNav = function (_Component) {
         key: 'render',
         value: function () {
             var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee(title, innerNav) {
-                var innerNavHTML;
+                var innerNavHTML, renderData;
                 return _regenerator2.default.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
@@ -1692,12 +2044,16 @@ var SecondNav = function (_Component) {
 
                             case 2:
                                 innerNavHTML = _context.sent;
-                                return _context.abrupt('return', this.preparePage('nav/second/templates/second_nav', {
-                                    title: title,
-                                    innerNavHTML: innerNavHTML
-                                }));
+                                renderData = {
+                                    path: 'nav/second/templates/second_nav',
+                                    locals: {
+                                        title: title,
+                                        innerNavHTML: innerNavHTML
+                                    }
+                                };
+                                return _context.abrupt('return', this.preparePage(renderData));
 
-                            case 4:
+                            case 5:
                             case 'end':
                                 return _context.stop();
                         }
@@ -1717,6 +2073,18 @@ var SecondNav = function (_Component) {
 }(_component2.default);
 
 exports.default = SecondNav;
+
+/***/ }),
+
+/***/ "./modules/nav/second/templates/second_nav.html":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function (scope) {
+  return "<nav id=subnav><div id=nav-header><h3>" + scope.title + "</h3></div><div class=nav-group>" + scope.innerNavHTML + "</div></nav>";
+};
 
 /***/ }),
 
@@ -1763,17 +2131,21 @@ var BasicSearch = function (_Component) {
         key: 'render',
         value: function () {
             var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee(data) {
-                var type;
+                var type, renderData;
                 return _regenerator2.default.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
                             case 0:
                                 type = data.type;
-                                return _context.abrupt('return', this.preparePage('search/basic/templates/basic', {
-                                    type: type
-                                }));
+                                renderData = {
+                                    path: 'search/basic/templates/basic',
+                                    locals: {
+                                        type: type
+                                    }
+                                };
+                                return _context.abrupt('return', this.preparePage(renderData));
 
-                            case 2:
+                            case 3:
                             case 'end':
                                 return _context.stop();
                         }
@@ -1793,6 +2165,18 @@ var BasicSearch = function (_Component) {
 }(_component2.default);
 
 exports.default = BasicSearch;
+
+/***/ }),
+
+/***/ "./modules/search/basic/templates/basic.html":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function (scope) {
+  return "<div class=search><i class=icon-search aria-hidden=true></i> <input class=" + scope.type + " type=text></div>";
+};
 
 /***/ }),
 
@@ -1840,13 +2224,17 @@ var Sort = function (_Component) {
         value: function () {
             var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee() {
                 var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+                var renderData;
                 return _regenerator2.default.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
                             case 0:
-                                return _context.abrupt('return', this.preparePage('sort/templates/sort', {}));
+                                renderData = {
+                                    path: 'sort/templates/sort'
+                                };
+                                return _context.abrupt('return', this.preparePage(renderData));
 
-                            case 1:
+                            case 2:
                             case 'end':
                                 return _context.stop();
                         }
@@ -1866,6 +2254,18 @@ var Sort = function (_Component) {
 }(_component2.default);
 
 exports.default = Sort;
+
+/***/ }),
+
+/***/ "./modules/sort/templates/sort.html":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function (scope) {
+  return "<p>TEST</p>";
+};
 
 /***/ })
 

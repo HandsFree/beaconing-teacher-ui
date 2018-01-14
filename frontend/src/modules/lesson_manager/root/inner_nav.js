@@ -6,9 +6,14 @@ class InnerNav extends Component {
     async render(): Promise<string> {
         const path = window.location.pathname.slice(1);
 
-        return this.preparePage('lesson_manager/root/templates/inner_nav', {
-            path,
-        });
+        const renderData = {
+            path: 'lesson_manager/root/templates/inner_nav',
+            locals: {
+                path,
+            },
+        };
+
+        this.prepareRenderState(this.preparePage(renderData));
     }
 }
 
