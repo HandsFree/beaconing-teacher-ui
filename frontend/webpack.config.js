@@ -40,14 +40,6 @@ const config = {
                 ],
             },
             {
-                test: /\.html$/,
-                use: [
-                    'babel-loader',
-                    'template-string-loader',
-                    'html-minify-loader',
-                ],
-            },
-            {
                 test: /\.(css|scss)$/,
                 use: ExtractTextPlugin.extract({
                     use: [
