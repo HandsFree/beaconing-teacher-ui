@@ -29,16 +29,17 @@
     "minimatch": "^3.0.4",
     "node-sass": "^4.7.2",
     "optimize-css-assets-webpack-plugin": "^2.0.0",
+    "parallel-webpack": "^2.2.0",
     "sass-loader": "^6.0.6",
     "webpack": "^3.5.5",
     "webpack-dev-server": "^2.7.1"
   },
   "scripts": {
-    "build": "export NODE_ENV=development && ./node_modules/.bin/webpack --config webpack.config.js",
-    "b": "export NODE_ENV=development && ./node_modules/.bin/webpack --config webpack.config.js",
+    "build": "export NODE_ENV=development && ./node_modules/.bin/parallel-webpack",
+    "b": "export NODE_ENV=development && ./node_modules/.bin/parallel-webpack",
     "server": "export NODE_ENV=development && ./node_modules/.bin/webpack-dev-server",
-    "build-production": "export NODE_ENV=production && ./node_modules/.bin/webpack --config webpack.config.js",
-    "bp": "export NODE_ENV=production && ./node_modules/.bin/webpack --config webpack.config.js",
+    "build-production": "export NODE_ENV=production && ./node_modules/.bin/parallel-webpack",
+    "bp": "export NODE_ENV=production && ./node_modules/.bin/parallel-webpack",
     "flow": "./node_modules/.bin/flow"
   },
   "dependencies": {

@@ -18,15 +18,8 @@ Beaconing Teacher UI
 Authors:
 Elliott Judd <elliott.judd@hands-free.co.uk>`;
 
-const entries = {
-    core: './core/index.js',
-    'pages/home/index': './modules/home/index.js',
-    'pages/lesson_manager/index': './modules/lesson_manager/index.js',
-};
-
-const config = {
+const mainSettings = {
     context: resolve(__dirname, 'src'),
-    entry: entries,
     output: {
         path: resolve(__dirname, 'public', 'dist', 'beaconing'),
         filename: '[name].js',
@@ -51,6 +44,7 @@ const config = {
         ],
     },
     plugins: dev ? [
+        new webpack.optimize.OccurrenceOrderPlugin(),
         new ExtractTextPlugin('app.css'),
         // new webpack.HotModuleReplacementPlugin(),
         new webpack.NamedModulesPlugin(),
@@ -61,8 +55,12 @@ const config = {
         new webpack.optimize.UglifyJsPlugin({
             parallel: true,
             sourceMap: false,
-            ecma: 8,
+            uglifyOptions: {
+                ie8: false,
+                ecma: 8,
+            },
         }),
+        new webpack.optimize.OccurrenceOrderPlugin(),
         new ExtractTextPlugin('app.css'),
         new OptimizeCssAssetsPlugin(),
         new CompressionPlugin(),
@@ -79,5 +77,26 @@ const config = {
     },
     devtool: dev ? 'source-map' : false,
 };
+
+const config = [
+    {
+        entry: {
+            core: './core/index.js',
+        },
+        ...mainSettings,
+    },
+    {
+        entry: {
+            'pages/home/index': './modules/home/index.js',
+        },
+        ...mainSettings,
+    },
+    {
+        entry: {
+            'pages/lesson_manager/index': './modules/lesson_manager/index.js',
+        },
+        ...mainSettings,
+    },
+];
 
 module.exports = config;
