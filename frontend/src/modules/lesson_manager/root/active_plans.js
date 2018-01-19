@@ -1,15 +1,16 @@
 // @flow
+import { div, main, section, aside } from '../../../core/html';
 
-import Component from '../../../core/component';
+import { RootComponent } from '../../../core/component';
 import Header from '../../header/root';
 import MainNav from '../../nav/main';
 import SecondNav from '../../nav/second';
 import InnerNav from './inner_nav';
 import BasicSearch from '../../search/basic';
 import Sort from '../../sort';
-import GLPs from './glps';
+import ActiveGLPs from './active_glps';
 
-class ActivePlans extends Component {
+class ActivePlans extends RootComponent {
     async render() {
         const header = new Header();
         const mainNav = new MainNav();
@@ -17,41 +18,48 @@ class ActivePlans extends Component {
         const innerNav = new InnerNav();
         const search = new BasicSearch();
         const sort = new Sort();
-        const glps = new GLPs();
+        const activeGLPs = new ActiveGLPs();
 
-        this.prepareRenderState(Promise.all([
-            header.render(),
-            mainNav.render(),
-            secondNav.render('Lesson Manager', innerNav.render()),
-            search.render({
-                type: 'width-expand',
+        return Promise.all([
+            header.attach(),
+            mainNav.attach(),
+            secondNav.attach({
+                title: 'Lesson Manager',
+                innerNav: innerNav.attach(),
             }),
-            sort.render(),
-            glps.render(),
+            search.attach({
+                searchType: 'width-expand',
+            }),
+            sort.attach(),
+            activeGLPs.attach(),
         ]).then((values) => {
             const [
-                headerHTML,
-                mainNavHTML,
-                secondNavHTML,
-                searchHTML,
-                sortHTML,
-                glpsHTML,
+                headerEl,
+                mainNavEl,
+                secondNavEl,
+                searchEl,
+                sortEl,
+                activeGLPsEl,
             ] = values;
 
-            const renderData = {
-                path: 'lesson_manager/root/templates/active_plans',
-                locals: {
-                    headerHTML,
-                    mainNavHTML,
-                    secondNavHTML,
-                    searchHTML,
-                    sortHTML,
-                    glpsHTML,
-                },
-            };
-
-            return this.preparePage(renderData);
-        }));
+            return div(
+                '#app',
+                headerEl,
+                div(
+                    '.flex-container.expand.margin-top-2',
+                    mainNavEl,
+                    secondNavEl,
+                    main(
+                        section('.flex-column', searchEl),
+                        section(
+                            '.flex-spacebetween',
+                            div('#active-plans.flex-wrap.flex-grow.margin-20', activeGLPsEl),
+                            aside('.sort', sortEl),
+                        ),
+                    ),
+                ),
+            );
+        });
     }
 }
 

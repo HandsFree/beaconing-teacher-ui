@@ -5,7 +5,6 @@ import (
 
 	"git.juddus.com/HFC/beaconing/route"
 	"git.juddus.com/HFC/beaconing/serv"
-	"github.com/gin-gonic/gin"
 )
 
 type TokenRequest struct {
@@ -18,13 +17,18 @@ func NewTokenRequest(path string) *TokenRequest {
 	return req
 }
 
-func (r *TokenRequest) Handle(ctx *gin.Context, s *serv.BeaconingServer) {
-	code := ctx.Query("code")
+func (r *TokenRequest) Handle(s *serv.SessionContext) {
+	code := s.Query("code")
 	if code == "" {
+		// do something here!
 		return
 	}
 
 	s.TokenStore.Set("code", code)
-	s.GetToken()
-	ctx.Redirect(http.StatusTemporaryRedirect, "/")
+	if !s.GetAuthToken() {
+		// some kind of failure here
+		// 505 redirect?
+		return
+	}
+	s.Redirect(http.StatusTemporaryRedirect, "/")
 }

@@ -1,9 +1,5 @@
 package auth
 
-import (
-	jsoniter "github.com/json-iterator/go"
-)
-
 // TODO fixme! these are weird here.
 
 // TokenRequest is a json type for the
@@ -23,12 +19,6 @@ type TokenResponse struct {
 	RefreshToken string `json:"refresh_token"`
 	ExpiresIn    int    `json:"expires_in"`
 	TokenType    string `json:"token_type"`
-}
-
-// FromJSON turns byte array containing JSON
-// to a TokenResponse
-func (tc *TokenResponse) FromJSON(respJSON []byte) error {
-	return jsoniter.Unmarshal(respJSON, tc)
 }
 
 // AssignRequest is the structure of json

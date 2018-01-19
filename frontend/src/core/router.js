@@ -1,13 +1,13 @@
 // @flow
 
-import type { Controller, Route } from './types';
+import type { Component, Route } from './types';
 
 /* eslint-disable no-restricted-syntax */
 
 class Router {
-    routes: Map<string, Controller> = new Map();
+    routes: Map<string, Component> = new Map();
 
-    initRoute(path: string, controller: Controller) {
+    initRoute(path: string, controller: Component) {
         this.routes.set(path, controller);
     }
 

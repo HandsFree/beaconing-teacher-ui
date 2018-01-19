@@ -6,13 +6,25 @@ import (
 	"log"
 	"net/http"
 
+	jsoniter "github.com/json-iterator/go"
+
 	"git.juddus.com/HFC/beaconing/route"
 	"git.juddus.com/HFC/beaconing/serv"
-	"github.com/gin-gonic/gin"
 )
 
 type GLPRequest struct {
 	route.SimpleManagedRoute
+}
+
+type glpData struct {
+	id           int
+	name         string
+	desc         string
+	author       string
+	category     string
+	content      string
+	gamePlotId   int
+	externConfig string
 }
 
 func NewGLPRequest(path string) *GLPRequest {
@@ -21,13 +33,14 @@ func NewGLPRequest(path string) *GLPRequest {
 	return req
 }
 
-func (a *GLPRequest) Handle(ctx *gin.Context, s *serv.BeaconingServer) {
-	// Needs filtering
-	glpID := ctx.Param("id")
+// TODO: filter the useless stuff out of
+// the glp json
+func (a *GLPRequest) Handle(s *serv.SessionContext) {
+	glpID := s.Param("id")
 
 	accessToken, keyDefined := s.TokenStore.Get("access_token")
 	if !keyDefined {
-		ctx.Redirect(http.StatusTemporaryRedirect, serv.AuthLink)
+		s.Redirect(http.StatusTemporaryRedirect, serv.AuthLink)
 		return
 	}
 
@@ -44,9 +57,12 @@ func (a *GLPRequest) Handle(ctx *gin.Context, s *serv.BeaconingServer) {
 		return
 	}
 
+	data := glpData{}
+	if err := jsoniter.Unmarshal(body, &data); err != nil {
+		panic(err)
+	}
+
 	strJSON := string(body)
-
-	ctx.Header("Content-Type", "application/json")
-	ctx.String(http.StatusOK, strJSON)
-
+	s.Header("Content-Type", "application/json")
+	s.String(http.StatusOK, strJSON)
 }

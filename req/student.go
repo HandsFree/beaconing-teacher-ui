@@ -8,7 +8,6 @@ import (
 
 	"git.juddus.com/HFC/beaconing/route"
 	"git.juddus.com/HFC/beaconing/serv"
-	"github.com/gin-gonic/gin"
 )
 
 type StudentRequest struct {
@@ -53,15 +52,15 @@ func NewStudentRequest(path string) *StudentRequest {
 	return req
 }
 
-func (r *StudentRequest) Handle(ctx *gin.Context, s *serv.BeaconingServer) {
-	studentID := ctx.Param("id")
-	action := ctx.Param("action")
+func (r *StudentRequest) Handle(s *serv.SessionContext) {
+	studentID := s.Param("id")
+	action := s.Param("action")
 
 	fmt.Println(action)
 
 	accessToken, keyDefined := s.TokenStore.Get("access_token")
 	if !keyDefined {
-		ctx.Redirect(http.StatusTemporaryRedirect, serv.AuthLink)
+		s.Redirect(http.StatusTemporaryRedirect, serv.AuthLink)
 		return
 	}
 
@@ -84,6 +83,6 @@ func (r *StudentRequest) Handle(ctx *gin.Context, s *serv.BeaconingServer) {
 		strJSON = response
 	}
 
-	ctx.Header("Content-Type", "application/json")
-	ctx.String(http.StatusOK, strJSON)
+	s.Header("Content-Type", "application/json")
+	s.String(http.StatusOK, strJSON)
 }

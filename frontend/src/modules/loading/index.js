@@ -1,12 +1,18 @@
 // @flow
-import Component from '../../core/component';
+import { div, img, span } from '../../core/html';
+
+import { Component } from '../../core/component';
 
 class Loading extends Component {
-    async render(): Promise<string> {
-        const renderData = {
-            path: 'loading/templates/loading',
-        };
-        this.prepareRenderState(this.preparePage(renderData));
+    async render() {
+        return div(
+            '.loading',
+            img({
+                src: 'dist/beaconing/images/loading.gif',
+                alt: 'Loading',
+            }),
+            span('Loading...'),
+        );
     }
 }
 

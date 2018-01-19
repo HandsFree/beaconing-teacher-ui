@@ -1,6 +1,7 @@
 // @flow
+import { div, main, section } from '../../../core/html';
 
-import Component from '../../../core/component';
+import { RootComponent } from '../../../core/component';
 import Header from '../../header/root';
 import MainNav from '../../nav/main';
 import DashboardNav from './dashboard_nav';
@@ -9,7 +10,7 @@ import RecentActivities from './recent_activities';
 import ActivePlans from './active_plans';
 import StudentOverview from './student_overview';
 
-class Home extends Component {
+class Home extends RootComponent {
     async render() {
         const header = new Header();
         const mainNav = new MainNav();
@@ -19,43 +20,51 @@ class Home extends Component {
         const activePlans = new ActivePlans();
         const studentOverview = new StudentOverview();
 
-        this.prepareRenderState(Promise.all([
-            header.render(),
-            mainNav.render(),
-            dashboardNav.render(),
-            search.render({
-                type: 'width-expand',
+        return Promise.all([
+            header.attach(),
+            mainNav.attach(),
+            dashboardNav.attach(),
+            search.attach({
+                searchType: 'width-expand',
             }),
-            recentActivities.render(),
-            activePlans.render(),
-            studentOverview.render(),
+            recentActivities.attach(),
+            activePlans.attach(),
+            studentOverview.attach(),
         ]).then((values) => {
             const [
-                headerHTML,
-                mainNavHTML,
-                dashboardNavHTML,
-                searchHTML,
-                recentActivitiesHTML,
-                activePlansHTML,
-                studentOverviewHTML,
+                headerEl,
+                mainNavEl,
+                dashboardNavEl,
+                searchEl,
+                recentActivitiesEl,
+                activePlansEl,
+                studentOverviewEl,
             ] = values;
 
-            const renderData = {
-                path: 'home/root/templates/home',
-                locals: {
-                    headerHTML,
-                    mainNavHTML,
-                    dashboardNavHTML,
-                    searchHTML,
-                    recentActivitiesHTML,
-                    activePlansHTML,
-                    studentOverviewHTML,
-                },
-            };
-
-            return this.preparePage(renderData);
-        }));
+            return div(
+                '#app',
+                headerEl,
+                div(
+                    '.flex-container.expand.margin-top-2',
+                    mainNavEl,
+                    main(
+                        section('.flex-column', dashboardNavEl),
+                        section('.flex-column', searchEl),
+                        section(
+                            '.flex-spacearound.mobile-collapse',
+                            recentActivitiesEl,
+                            activePlansEl,
+                        ),
+                        section('.flex-column', studentOverviewEl),
+                    ),
+                ),
+            );
+        });
     }
+
+    // async afterMount() {
+        
+    // }
 }
 
 export default Home;
