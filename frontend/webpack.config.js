@@ -2,7 +2,6 @@ const webpack = require('webpack');
 const { resolve } = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const CompressionPlugin = require('compression-webpack-plugin');
 
 const dev = process.env.NODE_ENV === 'development';
 
@@ -63,7 +62,6 @@ const mainSettings = {
         new webpack.optimize.OccurrenceOrderPlugin(),
         new ExtractTextPlugin('app.css'),
         new OptimizeCssAssetsPlugin(),
-        new CompressionPlugin(),
         new webpack.BannerPlugin({
             banner: prodBanner,
         }),
