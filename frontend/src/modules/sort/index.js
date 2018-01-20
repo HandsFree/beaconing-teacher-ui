@@ -1,11 +1,14 @@
 // @flow
-import { p } from '../../core/html';
+import { aside, p } from '../../core/html';
 
 import { Component } from '../../core/component';
 
 class Sort extends Component {
     async render(data: { [string]: any } = {}) {
-        return p('SORT');
+        return aside(
+            '.sort',
+            p('SORT'),
+        );
     }
 }
 

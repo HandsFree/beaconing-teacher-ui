@@ -1,5 +1,5 @@
 // @flow
-import { div, main, section, aside } from '../../../core/html';
+import { div, main, section } from '../../../core/html';
 
 import { RootComponent } from '../../../core/component';
 import Header from '../../header/root';
@@ -53,8 +53,8 @@ class ActivePlans extends RootComponent {
                         section('.flex-column', searchEl),
                         section(
                             '.flex-spacebetween',
-                            div('#active-plans.flex-wrap.flex-grow.margin-20', activeGLPsEl),
-                            aside('.sort', sortEl),
+                            activeGLPsEl,
+                            sortEl,
                         ),
                     ),
                 ),

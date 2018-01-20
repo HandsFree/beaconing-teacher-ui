@@ -25,6 +25,7 @@
     "eslint-plugin-flowtype": "^2.39.1",
     "eslint-plugin-import": "^2.7.0",
     "extract-text-webpack-plugin": "^3.0.0",
+    "json5-loader": "^1.0.1",
     "minimatch": "^3.0.4",
     "node-sass": "^4.7.2",
     "optimize-css-assets-webpack-plugin": "^2.0.0",
@@ -48,6 +49,6 @@
     "hyperscript-helpers": "^3.0.3",
     "identicon.js": "^2.3.1",
     "list.js": "^1.5.0",
-    "rollbar": "^2.1.0"
+    "rollbar": "^2.3.7"
   }
 }

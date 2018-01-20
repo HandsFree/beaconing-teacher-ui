@@ -9,16 +9,6 @@ class RootComponent {
     view: HTMLElement;
     state: { [string]: any } = {};
 
-    // preparePage({ path, locals = {} }: { path: string, locals: ?any }) {
-    //     const render: Promise<string> = new Promise((resolve) => {
-    //         import(/* webpackMode: "eager" */ `../modules/${path}.html`).then((template) => {
-    //             resolve(template(locals));
-    //         });
-    //     });
-
-    //     return render;
-    // }
-
     updateView(view: HTMLElement) {
         if (document.body) {
             this.view = view;
@@ -48,15 +38,23 @@ class Component {
     state: { [string]: any } = {};
     view: HTMLElement;
 
-    // preparePage({ path, locals = {} }: { path: string, locals: ?any }) {
-    //     const render: Promise<string> = new Promise((resolve) => {
-    //         import(/* webpackMode: "eager" */ `../modules/${path}.html`).then((template) => {
-    //             resolve(template(locals));
-    //         });
-    //     });
+    updateView(view: HTMLElement) {
+        if (document.readyState !== 'complete') {
+            document.body.onload = () => {
+                if (this.view.parentElement) {
+                    this.view.parentElement.replaceChild(view, this.view);
+                    this.view = view;
+                }
+            };
+        } else if (this.view.parentElement) {
+            this.view.parentElement.replaceChild(view, this.view);
+            this.view = view;
+        }
+    }
 
-    //     return render;
-    // }
+    appendView(view: HTMLElement) {
+        this.view.appendChild(view);
+    }
 
     // calls start function, binds updates, handles functions after mount, follow state
     async attach(data: { [string]: any } = {}) {

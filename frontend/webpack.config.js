@@ -40,6 +40,12 @@ const mainSettings = {
                     ],
                 }),
             },
+            {
+                test: /\.json5$/,
+                use: [
+                    'json5-loader',
+                ],
+            },
         ],
     },
     plugins: dev ? [

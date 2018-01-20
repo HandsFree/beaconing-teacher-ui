@@ -17,15 +17,15 @@ func main() {
 	router.Use(gzip.Gzip(gzip.BestSpeed))
 
 	router.NoRoute(func(c *gin.Context) {
-		c.JSON(404, gin.H{"code": "404", "message": "Page not found"})
+		c.String(404, "Error: 404 Page Not Found!")
 	})
 
 	router.LoadHTMLFiles("frontend/public/index.html")
 	router.Static("/dist", "./frontend/public/dist")
 
 	mainCtx := serv.NewSessionContext(router)
-
 	manager := route.NewRouteManager(mainCtx)
+
 	routes := []route.Route{
 		// simple pages
 		page.NewPage("/", "Home", "dist/beaconing/pages/home/index.js"),
@@ -43,7 +43,11 @@ func main() {
 		req.NewAssignRequest("/intent/assign/:student/to/:glp"),
 		req.NewGLPSRequest("/intent/glps"),
 		req.NewGLPRequest("/intent/glp/:id"),
+
+		// auth requests
+		req.NewCheckAuthRequest("/auth/check"),
 	}
+
 	manager.RegisterRoutes(routes...)
 
 	if err := router.Run(":8081"); err != nil {
