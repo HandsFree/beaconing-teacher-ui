@@ -4,7 +4,10 @@ import (
 	"git.juddus.com/HFC/beaconing.git/route"
 	"git.juddus.com/HFC/beaconing.git/serv"
 	"net/http"
+	"math/rand"
 	"strconv"
+	"log"
+	jsoniter "github.com/json-iterator/go"
 )
 
 type StudentOverview struct {
@@ -48,6 +51,44 @@ func NewStudentOverview(path string) *StudentOverview {
 
 */
 
+type StudentOverviewData struct {
+	Name string `json:"name"`
+	OverallPercentage int `json:"overall_percentage"`
+}
+
+// DELETE ME!
+var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+func randStrSeq(n int) string {
+    b := make([]rune, n)
+    for i := range b {
+        b[i] = letters[rand.Intn(len(letters))]
+    }
+    return string(b)
+}
+
+func newDummyStudent() *StudentOverviewData {
+	student := &StudentOverviewData{
+		Name: randStrSeq(8),
+		OverallPercentage: rand.Intn(100),
+	}
+	log.Println("made a student:", student)
+	return student
+}
+
+type StudentOverviewJSON struct {
+	BestPerforming []*StudentOverviewData	`json:"best_performing"`
+	NeedsAttention []*StudentOverviewData	`json:"needs_attention"`
+	MostImprovement []*StudentOverviewData	`json:"most_improvement"`
+}
+
+func genDummyStudentData(count int) []*StudentOverviewData {
+	result := []*StudentOverviewData{}
+	for i := 0; i < count; i++ {
+		result = append(result, newDummyStudent())
+	}
+	return result
+}
+
 func (r *StudentOverview) Handle(s *serv.SessionContext) {
 	countParam := s.DefaultQuery("count", "3")
 
@@ -66,8 +107,20 @@ func (r *StudentOverview) Handle(s *serv.SessionContext) {
 
 	// TODO: request students, make sure they are sorted
 	// best to worst (or worst to best depending on ctx)
+	req := StudentOverviewJSON{
+		BestPerforming: genDummyStudentData(fetchCount),
+		NeedsAttention: genDummyStudentData(fetchCount),
+		MostImprovement: genDummyStudentData(fetchCount),
+	}
+
+	json, err := jsoniter.Marshal(&req)
+    if err != nil {
+    	// TODO proper error handling
+    	log.Fatal(err)
+        return
+    }
 
 	// send a response, for now just a number
 	s.Header("Content-Type", "application/json")
-	s.String(http.StatusOK, "foo"+strconv.Itoa(fetchCount))
+	s.String(http.StatusOK, string(json))
 }
