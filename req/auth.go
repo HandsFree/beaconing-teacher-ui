@@ -4,7 +4,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/json-iterator/go"
+	"github.com/gin-contrib/sessions"
+
+	jsoniter "github.com/json-iterator/go"
 
 	"git.juddus.com/HFC/beaconing/route"
 	"git.juddus.com/HFC/beaconing/serv"
@@ -32,8 +34,11 @@ func (r *CheckAuthRequest) Handle(s *serv.SessionContext) {
 	authJSON := &CheckAuthJSON{
 		Status: true,
 	}
-	_, keyDefined := s.TokenStore.Get("access_token")
-	if !keyDefined {
+
+	session := sessions.Default(s.Context)
+
+	accessToken := session.Get("access_token")
+	if accessToken == nil {
 		authJSON.Status = false
 	}
 

@@ -1,6 +1,7 @@
 package req
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/gin-contrib/sessions"
@@ -33,6 +34,11 @@ func (r *TokenRequest) Handle(s *serv.SessionContext) {
 		// 505 redirect?
 		return
 	}
-	session.Save()
+	err := session.Save()
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+
 	s.Redirect(http.StatusTemporaryRedirect, "/")
 }
