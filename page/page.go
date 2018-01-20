@@ -4,6 +4,7 @@ import (
 	"git.juddus.com/HFC/beaconing.git/route"
 	"git.juddus.com/HFC/beaconing.git/serv"
 	"github.com/gin-gonic/gin"
+	"github.com/gin-contrib/sessions"	
 	"net/http"
 )
 
@@ -23,8 +24,9 @@ func NewPage(path string, title string, script string) *Page {
 }
 
 func (p *Page) Handle(s *serv.SessionContext) {
-	_, keyDefined := s.TokenStore.Get("code")
-	if !keyDefined {
+	session := sessions.Default(s.Context)
+	code := session.Get("code")
+	if code == nil {
 		s.Redirect(http.StatusTemporaryRedirect, serv.AuthLink)
 	}
 	s.HTML(http.StatusOK, "index.html", &gin.H{

@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/gin-contrib/gzip"
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 
 	"git.juddus.com/HFC/beaconing.git/page"
@@ -14,6 +15,12 @@ import (
 
 func main() {
 	router := gin.Default()
+
+	// ELLIOTT!
+	// what should this be?
+	store := sessions.NewCookieStore([]byte("mysupertopsecret"))
+	router.Use(sessions.Sessions("mysession", store))
+
 	router.Use(gzip.Gzip(gzip.BestSpeed))
 
 	router.NoRoute(func(c *gin.Context) {

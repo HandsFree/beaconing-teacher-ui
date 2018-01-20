@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"git.juddus.com/HFC/beaconing.git/route"
 	"git.juddus.com/HFC/beaconing.git/serv"
+	"github.com/gin-contrib/sessions"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -57,8 +58,9 @@ func (r *StudentRequest) Handle(s *serv.SessionContext) {
 
 	fmt.Println(action)
 
-	accessToken, keyDefined := s.TokenStore.Get("access_token")
-	if !keyDefined {
+	session := sessions.Default(s.Context)
+	accessToken := session.Get("access_token")
+	if accessToken == nil {
 		s.Redirect(http.StatusTemporaryRedirect, serv.AuthLink)
 		return
 	}
@@ -67,14 +69,14 @@ func (r *StudentRequest) Handle(s *serv.SessionContext) {
 
 	switch action {
 	case "/glps", "/glps/":
-		response, err := getStudentGLPS(studentID, accessToken)
+		response, err := getStudentGLPS(studentID, accessToken.(string))
 		if err != nil {
 			log.Fatal(err)
 			return
 		}
 		strJSON = response
 	default:
-		response, err := getStudent(studentID, accessToken)
+		response, err := getStudent(studentID, accessToken.(string))
 		if err != nil {
 			log.Fatal(err)
 			return

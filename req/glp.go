@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"git.juddus.com/HFC/beaconing.git/route"
 	"git.juddus.com/HFC/beaconing.git/serv"
+	"github.com/gin-contrib/sessions"
 	jsoniter "github.com/json-iterator/go"
 	"io/ioutil"
 	"log"
@@ -36,13 +37,15 @@ func NewGLPRequest(path string) *GLPRequest {
 func (a *GLPRequest) Handle(s *serv.SessionContext) {
 	glpID := s.Param("id")
 
-	accessToken, keyDefined := s.TokenStore.Get("access_token")
-	if !keyDefined {
+	session := sessions.Default(s.Context)
+
+	accessToken := session.Get("access_token")
+	if accessToken == nil {
 		s.Redirect(http.StatusTemporaryRedirect, serv.AuthLink)
 		return
 	}
 
-	response, err := http.Get(fmt.Sprintf("https://core.beaconing.eu/api/gamifiedlessonpaths/%s?access_token=%s", glpID, accessToken))
+	response, err := http.Get(fmt.Sprintf("https://core.beaconing.eu/api/gamifiedlessonpaths/%s?access_token=%s", glpID, accessToken.(string)))
 	if err != nil {
 		log.Fatal(err)
 		return
