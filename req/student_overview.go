@@ -3,7 +3,6 @@ package req
 import (
 	"git.juddus.com/HFC/beaconing.git/route"
 	"git.juddus.com/HFC/beaconing.git/serv"
-	"log"
 	"net/http"
 	"strconv"
 )

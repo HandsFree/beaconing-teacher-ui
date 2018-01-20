@@ -1,8 +1,8 @@
 #!/bin/bash
 
 run() {
-	if ! test -e "route/secrets.go"; then
-		echo "No route/secrets.go file!"
+	if ! test -e "auth/secrets.go"; then
+		echo "No auth/secrets.go file!"
 		exit -1
 	fi
 	go run *.go

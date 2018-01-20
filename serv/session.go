@@ -70,8 +70,8 @@ func (s *SessionContext) GetAuthToken() bool {
 	message, err := jsoniter.Marshal(auth.TokenRequest{
 		GrantType:    "authorization_code",
 		Code:         requestCode,
-		ClientID:     clientID,
-		ClientSecret: clientSecret,
+		ClientID:     auth.ClientID,
+		ClientSecret: auth.ClientSecret,
 		RedirectURI:  redirectBaseLink,
 	})
 	if err != nil {
