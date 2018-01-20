@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/gin-contrib/gzip"
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 
 	"git.juddus.com/HFC/beaconing/page"
@@ -14,6 +15,12 @@ import (
 
 func main() {
 	router := gin.Default()
+
+	// ELLIOTT!
+	// what should this be?
+	store := sessions.NewCookieStore([]byte("mysupertopsecret"))
+	router.Use(sessions.Sessions("mysession", store))
+
 	router.Use(gzip.Gzip(gzip.BestSpeed))
 
 	router.NoRoute(func(c *gin.Context) {
@@ -24,8 +31,8 @@ func main() {
 	router.Static("/dist", "./frontend/public/dist")
 
 	mainCtx := serv.NewSessionContext(router)
-	manager := route.NewRouteManager(mainCtx)
 
+	manager := route.NewRouteManager(mainCtx)
 	routes := []route.Route{
 		// simple pages
 		page.NewPage("/", "Home", "dist/beaconing/pages/home/index.js"),
@@ -35,6 +42,8 @@ func main() {
 		// our api requests, these are
 		// per component for a modular thing
 		req.NewStudentOverview("/widget/student_overview"),
+		req.NewRecentActivities("/widget/recent_activities"),
+		req.NewActiveLessonPlans("/widget/active_lesson_plans"),
 
 		// api wrapper requests
 		req.NewTokenRequest("/intent/token"),

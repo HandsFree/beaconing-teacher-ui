@@ -9,6 +9,8 @@ import (
 	"net"
 	"net/http"
 
+	"github.com/gin-contrib/sessions"
+
 	"git.juddus.com/HFC/beaconing/auth"
 	"git.juddus.com/HFC/beaconing/config"
 	"github.com/gin-gonic/gin"
@@ -53,21 +55,19 @@ var AuthLink = "https://core.beaconing.eu/auth/auth?response_type=code&client_id
 type SessionContext struct {
 	*gin.Context
 	RouterEngine *gin.Engine
-	TokenStore   *auth.TokenDatabase
 }
 
 func NewSessionContext(router *gin.Engine) *SessionContext {
 	return &SessionContext{
 		RouterEngine: router,
-		TokenStore: &auth.TokenDatabase{
-			DB: make(map[string]string),
-		},
 	}
 }
 
 // use an err instead of a bool here
 func (s *SessionContext) GetAuthToken() bool {
-	requestCode, _ := s.TokenStore.Get("code")
+	session := sessions.Default(s.Context)
+
+	requestCode := session.Get("code").(string)
 
 	message, err := jsoniter.Marshal(auth.TokenRequest{
 		GrantType:    "authorization_code",
@@ -101,8 +101,9 @@ func (s *SessionContext) GetAuthToken() bool {
 		return false
 	}
 
-	s.TokenStore.Set("access_token", respToken.AccessToken)
-	s.TokenStore.Set("refresh_token", respToken.RefreshToken)
-	s.TokenStore.Set("token_type", respToken.TokenType)
+	session.Set("access_token", respToken.AccessToken)
+	session.Set("refresh_token", respToken.RefreshToken)
+	session.Set("token_type", respToken.TokenType)
+	session.Save()
 	return true
 }

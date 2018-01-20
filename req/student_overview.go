@@ -4,8 +4,12 @@ import (
 	"net/http"
 	"strconv"
 
+	"log"
+	"math/rand"
+
 	"git.juddus.com/HFC/beaconing/route"
 	"git.juddus.com/HFC/beaconing/serv"
+	jsoniter "github.com/json-iterator/go"
 )
 
 type StudentOverview struct {
@@ -49,6 +53,57 @@ func NewStudentOverview(path string) *StudentOverview {
 
 */
 
+type StudentData struct {
+	Name              string `json:"name"`
+	OverallPercentage int    `json:"overall_percentage"`
+}
+
+// DELETE ME!
+var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
+func randStrSeq(n int) string {
+	b := make([]rune, n)
+	for i := range b {
+		b[i] = letters[rand.Intn(len(letters))]
+	}
+	return string(b)
+}
+
+func newDummyStudent() *StudentData {
+	student := &StudentData{
+		Name:              randStrSeq(8),
+		OverallPercentage: rand.Intn(100),
+	}
+	return student
+}
+
+type StudentOverviewJSON struct {
+	BestPerforming  []*StudentData `json:"best_performing"`
+	NeedsAttention  []*StudentData `json:"needs_attention"`
+	MostImprovement []*StudentData `json:"most_improvement"`
+}
+
+// _for now_ will load ALL of the students in the API
+// but this should only load students that the teacher
+// teaches.
+// ..
+// ..
+// load ALL students in the API, sorts by best performing
+// needs attention, most improvement, picks top (?count=) N students
+func fetchStudentOverview(count int) []StudentData {
+	students := []StudentData{}
+
+	return students
+}
+
+func genDummyStudentData(count int) []*StudentData {
+	result := []*StudentData{}
+	for i := 0; i < count; i++ {
+		result = append(result, newDummyStudent())
+	}
+	return result
+}
+
 func (r *StudentOverview) Handle(s *serv.SessionContext) {
 	countParam := s.DefaultQuery("count", "3")
 
@@ -67,8 +122,20 @@ func (r *StudentOverview) Handle(s *serv.SessionContext) {
 
 	// TODO: request students, make sure they are sorted
 	// best to worst (or worst to best depending on ctx)
+	req := StudentOverviewJSON{
+		BestPerforming:  genDummyStudentData(fetchCount),
+		NeedsAttention:  genDummyStudentData(fetchCount),
+		MostImprovement: genDummyStudentData(fetchCount),
+	}
+
+	json, err := jsoniter.Marshal(&req)
+	if err != nil {
+		// TODO proper error handling
+		log.Fatal(err)
+		return
+	}
 
 	// send a response, for now just a number
 	s.Header("Content-Type", "application/json")
-	s.String(http.StatusOK, "foo"+strconv.Itoa(fetchCount))
+	s.String(http.StatusOK, string(json))
 }

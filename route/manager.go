@@ -3,6 +3,8 @@ package route
 import (
 	"net/http"
 
+	"github.com/gin-contrib/sessions"
+
 	"git.juddus.com/HFC/beaconing/serv"
 	"github.com/gin-gonic/gin"
 )
@@ -37,8 +39,9 @@ func (r *RouteManager) RegisterRoute(route Route) {
 }
 
 func (r *RouteManager) HandlePage(c *gin.Context, obj interface{}) {
-	_, keyDefined := r.SessionContext.TokenStore.Get("code")
-	if !keyDefined {
+	session := sessions.Default(c)
+	key := session.Get("code")
+	if key == nil {
 		c.Redirect(http.StatusTemporaryRedirect, serv.AuthLink)
 	}
 	c.HTML(http.StatusOK, "index.html", obj)

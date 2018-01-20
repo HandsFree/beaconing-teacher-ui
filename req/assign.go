@@ -7,6 +7,8 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/gin-contrib/sessions"
+
 	"git.juddus.com/HFC/beaconing/route"
 	"git.juddus.com/HFC/beaconing/serv"
 
@@ -54,14 +56,15 @@ func (a *AssignRequest) Handle(s *serv.SessionContext) {
 	studentID := s.Param("student")
 	glpID := s.Param("glp")
 
-	accessToken, ok := s.TokenStore.Get("access_token")
-	if !ok {
+	session := sessions.Default(s.Context)
+	accessToken := session.Get("access_token")
+	if accessToken == nil {
 		s.Redirect(http.StatusTemporaryRedirect, serv.AuthLink)
 		return
 	}
 
 	assignReqData := &assignData{studentID, glpID}
-	strJSON, err := assignReqData.assignGLP(accessToken)
+	strJSON, err := assignReqData.assignGLP(accessToken.(string))
 	if err != nil {
 		log.Fatal(err)
 		return
