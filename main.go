@@ -35,6 +35,8 @@ func main() {
 		// our api requests, these are
 		// per component for a modular thing
 		req.NewStudentOverview("/widget/student_overview"),
+		req.NewRecentActivities("/widget/recent_activities"),
+		req.NewActiveLessonPlans("/widget/active_lesson_plans"),
 
 		// api wrapper requests
 		req.NewTokenRequest("/intent/token"),
