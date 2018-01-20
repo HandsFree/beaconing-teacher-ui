@@ -51,7 +51,7 @@ func NewStudentOverview(path string) *StudentOverview {
 
 */
 
-type StudentOverviewData struct {
+type StudentData struct {
 	Name string `json:"name"`
 	OverallPercentage int `json:"overall_percentage"`
 }
@@ -66,23 +66,35 @@ func randStrSeq(n int) string {
     return string(b)
 }
 
-func newDummyStudent() *StudentOverviewData {
-	student := &StudentOverviewData{
+func newDummyStudent() *StudentData {
+	student := &StudentData{
 		Name: randStrSeq(8),
 		OverallPercentage: rand.Intn(100),
 	}
-	log.Println("made a student:", student)
 	return student
 }
 
 type StudentOverviewJSON struct {
-	BestPerforming []*StudentOverviewData	`json:"best_performing"`
-	NeedsAttention []*StudentOverviewData	`json:"needs_attention"`
-	MostImprovement []*StudentOverviewData	`json:"most_improvement"`
+	BestPerforming []*StudentData	`json:"best_performing"`
+	NeedsAttention []*StudentData	`json:"needs_attention"`
+	MostImprovement []*StudentData	`json:"most_improvement"`
 }
 
-func genDummyStudentData(count int) []*StudentOverviewData {
-	result := []*StudentOverviewData{}
+// _for now_ will load ALL of the students in the API
+// but this should only load students that the teacher
+// teaches.
+// ..
+// ..
+// load ALL students in the API, sorts by best performing
+// needs attention, most improvement, picks top (?count=) N students
+func fetchStudentOverview(count int) []StudentData {
+	students := []StudentData{}
+
+	return students
+}
+
+func genDummyStudentData(count int) []*StudentData {
+	result := []*StudentData{}
 	for i := 0; i < count; i++ {
 		result = append(result, newDummyStudent())
 	}

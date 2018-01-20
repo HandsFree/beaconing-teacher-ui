@@ -43,5 +43,4 @@ func (r *StudentsRequest) Handle(s *serv.SessionContext) {
 
 	s.Header("Content-Type", "application/json")
 	s.String(http.StatusOK, strJSON)
-
 }
