@@ -3,9 +3,9 @@
 Readme for configs
 
 ### Secret file
-Secret file (api.go) is git ignored, make sure to add it.
+Secret file (client.go) is git ignored, make sure to add it.
 
-api.go
+client.go
 ```go
 package config
 

@@ -1,8 +1,8 @@
 #!/bin/bash
 
 run() {
-	if ! test -e "config/api.go"; then
-		echo "No config/api.go file!"
+	if ! test -e "config/client.go"; then
+		echo "No config/client.go file!"
 		exit -1
 	fi
 	go run *.go
@@ -29,9 +29,9 @@ setup() {
 	go get -u github.com/kardianos/govendor
 	govendor sync
 
-	if ! test -e "config/api.go"; then
-		touch config/api.go
-		echo "Secret file created at config/secret.go"
+	if ! test -e "config/client.go"; then
+		touch config/client.go
+		echo "Secret file created at config/client.go"
 		echo "Read config/README.md for more details"
 	fi
 }
