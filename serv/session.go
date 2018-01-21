@@ -63,6 +63,22 @@ func NewSessionContext(router *gin.Engine) *SessionContext {
 	}
 }
 
+func (s *SessionContext) Json(code string) {
+	s.Header("Content-Type", "application/json")
+	s.String(http.StatusOK, code)
+}
+
+func (s *SessionContext) Jsonify(things interface{}) {
+	json, err := jsoniter.Marshal(things)
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+
+	s.Header("Content-Type", "application/json")
+	s.String(http.StatusOK, string(json))
+}
+
 // use an err instead of a bool here
 func (s *SessionContext) GetAuthToken() bool {
 	session := sessions.Default(s.Context)

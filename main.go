@@ -44,6 +44,9 @@ func main() {
 		req.NewRecentActivities("/widget/recent_activities"),
 		req.NewActiveLessonPlans("/widget/active_lesson_plans"),
 
+		// not sure if we should do per-page? feel like the API
+		// is quite abstract righ tnow
+
 		// api wrapper requests
 		req.NewTokenRequest("/intent/token"),
 		req.NewStudentsRequest("/intent/students"),

@@ -1,12 +1,7 @@
 package req
 
 import (
-	"log"
-	"net/http"
-
 	"github.com/gin-contrib/sessions"
-
-	jsoniter "github.com/json-iterator/go"
 
 	"git.juddus.com/HFC/beaconing/route"
 	"git.juddus.com/HFC/beaconing/serv"
@@ -42,12 +37,5 @@ func (r *CheckAuthRequest) Handle(s *serv.SessionContext) {
 		authJSON.Status = false
 	}
 
-	marshalJSON, err := jsoniter.Marshal(authJSON)
-	if err != nil {
-		log.Fatal(err)
-		return
-	}
-
-	s.Header("Content-Type", "application/json")
-	s.String(http.StatusOK, string(marshalJSON))
+	s.Jsonify(authJSON)
 }
