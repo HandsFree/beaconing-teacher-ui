@@ -7,7 +7,7 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 
-	"git.juddus.com/HFC/beaconing/config"
+	"git.juddus.com/HFC/beaconing/auth"
 	"git.juddus.com/HFC/beaconing/page"
 	"git.juddus.com/HFC/beaconing/req"
 	"git.juddus.com/HFC/beaconing/route"
@@ -17,7 +17,7 @@ import (
 func main() {
 	router := gin.Default()
 
-	store := sessions.NewCookieStore(config.CreateSessionSecret(64), config.CreateSessionSecret(16))
+	store := sessions.NewCookieStore(auth.CreateSessionSecret(64), auth.CreateSessionSecret(16))
 	router.Use(sessions.Sessions("mysession", store))
 
 	router.Use(gzip.Gzip(gzip.BestSpeed))
