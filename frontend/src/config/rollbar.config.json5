@@ -1,0 +1,8 @@
+{
+    accessToken: '30610dbc868f435284da9636a7977e06',
+    captureUncaught: true,
+    captureUnhandledRejections: true,
+    payload: {
+        environment: 'beaconing-dev',
+    },
+}

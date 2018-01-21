@@ -1,10 +1,11 @@
 package req
 
 import (
-	"git.juddus.com/HFC/beaconing.git/route"
-	"git.juddus.com/HFC/beaconing.git/serv"
-	"net/http"
 	log "log"
+	"net/http"
+
+	"git.juddus.com/HFC/beaconing/route"
+	"git.juddus.com/HFC/beaconing/serv"
 	jsoniter "github.com/json-iterator/go"
 )
 
@@ -15,7 +16,7 @@ import (
 
 // this is very much a hacked together structure
 // for now. i feel like this would benefit with some
-// kind of event listening system thingy 
+// kind of event listening system thingy
 // but i guess we're going to have to scrape these
 // actions from an API somewhere?
 type Activity interface {
@@ -33,6 +34,7 @@ type SimpleActivity struct {
 	Message string `json:"message"`
 	// TODO: time!
 }
+
 func NewSimpleActivity(message string) SimpleActivity {
 	return SimpleActivity{
 		Message: message,
@@ -53,9 +55,9 @@ func (a *LPAssignedActivity) String() string {
 }
 
 func NewLPAssignedActivity(planName string) LPAssignedActivity {
-	return LPAssignedActivity {
+	return LPAssignedActivity{
 		SimpleActivity: NewSimpleActivity("Assigned lesson plan"),
-		Plan: LessonPlan {
+		Plan: LessonPlan{
 			Name: planName,
 
 			// would this be in the database or
@@ -82,11 +84,11 @@ func (r *RecentActivities) Handle(s *serv.SessionContext) {
 	}
 
 	json, err := jsoniter.Marshal(activities)
-    if err != nil {
-    	// TODO proper error handling
-    	log.Fatal(err)
-        return
-    }
+	if err != nil {
+		// TODO proper error handling
+		log.Fatal(err)
+		return
+	}
 
 	s.Header("Content-Type", "application/json")
 	s.String(http.StatusOK, string(json))

@@ -2,12 +2,14 @@ package req
 
 import (
 	"fmt"
-	"git.juddus.com/HFC/beaconing.git/route"
-	"git.juddus.com/HFC/beaconing.git/serv"
-	"github.com/gin-contrib/sessions"
 	"io/ioutil"
 	"log"
 	"net/http"
+
+	"github.com/gin-contrib/sessions"
+
+	"git.juddus.com/HFC/beaconing/route"
+	"git.juddus.com/HFC/beaconing/serv"
 )
 
 type GLPSRequest struct {

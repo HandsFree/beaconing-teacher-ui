@@ -1,10 +1,13 @@
 // @flow
 
-export interface Controller {
-    render(): Promise<string>;
+export interface Component {
+    render(): HTMLElement;
+    startLifecycle(): void;
+    start(): void;
+    updateView(view: HTMLElement): void;
 }
 
 export type Route = {
     path: string,
-    controller: Controller,
+    controller: Component,
 };

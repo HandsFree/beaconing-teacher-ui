@@ -2,13 +2,16 @@ package req
 
 import (
 	"fmt"
-	"git.juddus.com/HFC/beaconing.git/route"
-	"git.juddus.com/HFC/beaconing.git/serv"
-	"github.com/gin-contrib/sessions"
-	jsoniter "github.com/json-iterator/go"
 	"io/ioutil"
 	"log"
 	"net/http"
+
+	"github.com/gin-contrib/sessions"
+
+	jsoniter "github.com/json-iterator/go"
+
+	"git.juddus.com/HFC/beaconing/route"
+	"git.juddus.com/HFC/beaconing/serv"
 )
 
 type GLPRequest struct {

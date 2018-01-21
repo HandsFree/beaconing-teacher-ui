@@ -6,8 +6,8 @@ nav#main {
 	min-width: 14.25em;
 	box-shadow: $primary_element_box_shadow;
 
-	@media screen and (max-width: 39.9375em) {
-		min-width: initial;
+	@media screen and (max-width: 78.125em) {
+		min-width: auto;
 	}
 
 	.nav-group {
@@ -35,7 +35,7 @@ nav#main {
 			color: $bcn_light_orange;
 			margin: 0 0.25em;
 
-			@media screen and (max-width: 39.9375em) {
+			@media screen and (max-width: 78.125em) {
 				color: white;
 			}
 		}
@@ -43,7 +43,7 @@ nav#main {
 		span {
 			margin: 0 1em;
 
-			@media screen and (max-width: 39.9375em) {
+			@media screen and (max-width: 78.125em) {
 				display: none;
 			}
 		}
@@ -68,7 +68,7 @@ nav#main {
 	    border-width: 12px;
 	    margin-top: -12px;
 
-	    @media screen and (max-width: 39.9375em) {
+	    @media screen and (max-width: 78.125em) {
 			border-width: 8px;
 	    	margin-top: -8px;
 		}
@@ -93,7 +93,7 @@ nav#main {
 	    border-width: 12px;
 	    margin-top: -12px;
 
-	    @media screen and (max-width: 39.9375em) {
+	    @media screen and (max-width: 78.125em) {
 			border-width: 8px;
 	    	margin-top: -8px;
 		}

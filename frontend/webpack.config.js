@@ -2,7 +2,6 @@ const webpack = require('webpack');
 const { resolve } = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const CompressionPlugin = require('compression-webpack-plugin');
 
 const dev = process.env.NODE_ENV === 'development';
 
@@ -18,15 +17,8 @@ Beaconing Teacher UI
 Authors:
 Elliott Judd <elliott.judd@hands-free.co.uk>`;
 
-const entries = {
-    core: './core/index.js',
-    'pages/home/index': './modules/home/index.js',
-    'pages/lesson_manager/index': './modules/lesson_manager/index.js',
-};
-
-const config = {
+const mainSettings = {
     context: resolve(__dirname, 'src'),
-    entry: entries,
     output: {
         path: resolve(__dirname, 'public', 'dist', 'beaconing'),
         filename: '[name].js',
@@ -40,14 +32,6 @@ const config = {
                 ],
             },
             {
-                test: /\.html$/,
-                use: [
-                    'babel-loader',
-                    'template-string-loader',
-                    'html-minify-loader',
-                ],
-            },
-            {
                 test: /\.(css|scss)$/,
                 use: ExtractTextPlugin.extract({
                     use: [
@@ -56,9 +40,16 @@ const config = {
                     ],
                 }),
             },
+            {
+                test: /\.json5$/,
+                use: [
+                    'json5-loader',
+                ],
+            },
         ],
     },
     plugins: dev ? [
+        new webpack.optimize.OccurrenceOrderPlugin(),
         new ExtractTextPlugin('app.css'),
         // new webpack.HotModuleReplacementPlugin(),
         new webpack.NamedModulesPlugin(),
@@ -69,11 +60,14 @@ const config = {
         new webpack.optimize.UglifyJsPlugin({
             parallel: true,
             sourceMap: false,
-            ecma: 8,
+            uglifyOptions: {
+                ie8: false,
+                ecma: 8,
+            },
         }),
+        new webpack.optimize.OccurrenceOrderPlugin(),
         new ExtractTextPlugin('app.css'),
         new OptimizeCssAssetsPlugin(),
-        new CompressionPlugin(),
         new webpack.BannerPlugin({
             banner: prodBanner,
         }),
@@ -87,5 +81,26 @@ const config = {
     },
     devtool: dev ? 'source-map' : false,
 };
+
+const config = [
+    {
+        entry: {
+            core: './core/index.js',
+        },
+        ...mainSettings,
+    },
+    {
+        entry: {
+            'pages/home/index': './modules/home/index.js',
+        },
+        ...mainSettings,
+    },
+    {
+        entry: {
+            'pages/lesson_manager/index': './modules/lesson_manager/index.js',
+        },
+        ...mainSettings,
+    },
+];
 
 module.exports = config;

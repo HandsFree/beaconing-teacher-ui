@@ -1,14 +1,17 @@
 // @flow
+import { div, i, input } from '../../../core/html';
 
-import Component from '../../../core/component';
+import { Component } from '../../../core/component';
 
 class BasicSearch extends Component {
     async render(data: { [string]: any }): Promise<string> {
-        const { type } = data;
+        const { searchType } = data;
 
-        return this.preparePage('search/basic/templates/basic', {
-            type,
-        });
+        return div(
+            '.search',
+            i('.icon-search', { 'aria-hidden': true }),
+            input(`.${searchType}`, { type: 'text' }),
+        );
     }
 }
 

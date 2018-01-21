@@ -2,17 +2,18 @@
 
 // Rollbar - only use when needed
 // import Rollbar from 'rollbar';
-// import rollbarConfig from '../config/rollbar.config.json';
+// import rollbarConfig from '../config/rollbar.config.json5';
 
 // scss
 import '../scss';
 
 // Beaconing
-import BeaconingCore from './beaconing';
+import APICore from './api';
 
-// const rollbar = new Rollbar(rollbarConfig);
-const beaconing = new BeaconingCore();
+// const rb = new Rollbar(rollbarConfig);
+const apiCore = new APICore();
 const accessabar = new window.Accessabar();
 
-window.beaconingCore = beaconing;
+window.beaconingAPI = apiCore;
 window.abarRuntime = accessabar; // temporary
+// window.rollbar = rb;

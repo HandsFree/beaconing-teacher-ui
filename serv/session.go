@@ -4,14 +4,17 @@ package serv
 
 import (
 	"bytes"
-	"git.juddus.com/HFC/beaconing.git/auth"
-	"github.com/gin-contrib/sessions"
-	"github.com/gin-gonic/gin"
-	jsoniter "github.com/json-iterator/go"
 	"io/ioutil"
 	"log"
 	"net"
 	"net/http"
+
+	"github.com/gin-contrib/sessions"
+
+	"git.juddus.com/HFC/beaconing/auth"
+	"git.juddus.com/HFC/beaconing/config"
+	"github.com/gin-gonic/gin"
+	jsoniter "github.com/json-iterator/go"
 )
 
 // NOTE:
@@ -69,8 +72,8 @@ func (s *SessionContext) GetAuthToken() bool {
 	message, err := jsoniter.Marshal(auth.TokenRequest{
 		GrantType:    "authorization_code",
 		Code:         requestCode,
-		ClientID:     auth.ClientID,
-		ClientSecret: auth.ClientSecret,
+		ClientID:     config.ClientID,
+		ClientSecret: config.ClientSecret,
 		RedirectURI:  redirectBaseLink,
 	})
 	if err != nil {

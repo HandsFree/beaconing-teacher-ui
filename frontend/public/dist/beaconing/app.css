@@ -22,7 +22,7 @@
   -moz-box-sizing: border-box;
   box-sizing: border-box; }
 
-div, nav, header, main, section, form {
+div, nav, header, main, main#students, section, form {
   display: flex; }
 
 a {
@@ -798,6 +798,9 @@ a {
 .flex-align-self-center {
   align-self: center; }
 
+.flex-4 {
+  flex: 25%; }
+
 .flex-3 {
   flex: 33%; }
 
@@ -873,9 +876,9 @@ nav#main {
   background: #2c353e;
   min-width: 14.25em;
   box-shadow: 0 0 1px rgba(255, 255, 255, 0.1) inset; }
-  @media screen and (max-width: 39.9375em) {
+  @media screen and (max-width: 78.125em) {
     nav#main {
-      min-width: initial; } }
+      min-width: auto; } }
   nav#main .nav-group {
     flex-direction: column;
     margin: 2em 0; }
@@ -893,12 +896,12 @@ nav#main {
     nav#main a.item i {
       color: #e87f62;
       margin: 0 0.25em; }
-      @media screen and (max-width: 39.9375em) {
+      @media screen and (max-width: 78.125em) {
         nav#main a.item i {
           color: white; } }
     nav#main a.item span {
       margin: 0 1em; }
-      @media screen and (max-width: 39.9375em) {
+      @media screen and (max-width: 78.125em) {
         nav#main a.item span {
           display: none; } }
   nav#main a.active {
@@ -916,7 +919,7 @@ nav#main {
     border-right-color: white;
     border-width: 12px;
     margin-top: -12px; }
-    @media screen and (max-width: 39.9375em) {
+    @media screen and (max-width: 78.125em) {
       nav#main a.active:after {
         border-width: 8px;
         margin-top: -8px; } }
@@ -935,7 +938,7 @@ nav#main {
     border-right-color: #e87f62;
     border-width: 12px;
     margin-top: -12px; }
-    @media screen and (max-width: 39.9375em) {
+    @media screen and (max-width: 78.125em) {
       nav#main a.active-orange:after {
         border-width: 8px;
         margin-top: -8px; } }
@@ -948,6 +951,9 @@ nav#main {
   min-width: 13.5em;
   box-shadow: 0 0 1px rgba(255, 255, 255, 0.1) inset;
   border-left: 2px solid #e87f62; }
+  @media screen and (max-width: 78.125em) {
+    #subnav {
+      min-width: auto; } }
   #subnav #nav-header {
     background: #334250;
     padding: 1em;
@@ -967,6 +973,10 @@ nav#main {
     color: white;
     box-shadow: 0 0 1px rgba(255, 255, 255, 0.1) inset;
     flex-direction: column; }
+    @media screen and (max-width: 78.125em) {
+      #subnav .item {
+        padding: 1em;
+        text-align: center; } }
     #subnav .item:hover:not(.mission-group) {
       cursor: pointer;
       background: #51697f; }
@@ -980,6 +990,9 @@ nav#main {
 			}*/ }
     #subnav .item span {
       margin: 0.05em 1em; }
+      @media screen and (max-width: 78.125em) {
+        #subnav .item span {
+          margin: 0; } }
     #subnav .item .mission-name {
       color: #afb7bb; }
   #subnav .active-quest {
@@ -997,7 +1010,7 @@ nav#main {
     border-right-color: white;
     border-width: 10px;
     margin-top: -10px; }
-    @media screen and (max-width: 39.9375em) {
+    @media screen and (max-width: 78.125em) {
       #subnav .active-quest:after {
         border-width: 8px;
         margin-top: -8px; } }
@@ -1016,7 +1029,7 @@ nav#main {
     border-right-color: white;
     border-width: 12px;
     margin-top: -12px; }
-    @media screen and (max-width: 39.9375em) {
+    @media screen and (max-width: 78.125em) {
       #subnav .active-white:after {
         border-width: 8px;
         margin-top: -8px; } }
@@ -1242,11 +1255,11 @@ section {
   .box > .title {
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 0.75em;
     border-bottom: 1px solid rgba(44, 53, 62, 0.4); }
     .box > .title h3 {
       font-weight: 400;
-      font-size: 1.25em; }
+      font-size: 1.25em;
+      margin: 0.5em 0; }
     .box > .title h4 {
       font-weight: 400;
       font-size: 1.15em;
@@ -1391,18 +1404,18 @@ section {
     cursor: pointer;
     color: #e87f62; }
 
-#main-content, main#students {
+main, main#students {
   flex-direction: column;
   flex-grow: 1;
   padding: 1em 10%; }
   @media screen and (max-width: 39.9375em) {
-    #main-content, main#students {
+    main, main#students {
       padding: 1em; } }
   @media screen and (min-width: 40em) and (max-width: 63.9375em) {
-    #main-content, main#students {
+    main, main#students {
       padding: 1em; } }
   @media screen and (min-width: 64em) and (max-width: 104.9375em) {
-    #main-content, main#students {
+    main, main#students {
       padding: 1em 5%; } }
 
 .search {
@@ -1485,6 +1498,29 @@ textarea {
       font-weight: 400; }
   #glp > .content {
     padding: 1em 0; }
+
+.loading-container {
+  width: 100%;
+  height: 0;
+  position: relative;
+  justify-content: center; }
+  .loading-container .loading {
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    position: absolute;
+    background: rgba(255, 255, 255, 0.75);
+    border: 1px solid rgba(232, 127, 98, 0.7);
+    box-shadow: 0 1px 1px rgba(44, 53, 62, 0.5);
+    padding: 1em 2em;
+    top: 2em; }
+    .loading-container .loading img {
+      width: 5em; }
+    .loading-container .loading span {
+      padding: 0.5em;
+      font-weight: 300;
+      font-style: italic; }
 
 #active-plan-summary {
   flex-direction: column;

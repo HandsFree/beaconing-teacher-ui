@@ -1,19 +1,19 @@
 #!/bin/bash
 
 run() {
-	if ! test -e "auth/secrets.go"; then
-		echo "No auth/secrets.go file!"
+	if ! test -e "config/secret.go"; then
+		echo "No config/secret.go file!"
 		exit -1
 	fi
 	go run *.go
 }
 
 run_fmt() {
-	go fmt git.juddus.com/HFC/beaconing.git/page
-	go fmt git.juddus.com/HFC/beaconing.git/serv
-	go fmt git.juddus.com/HFC/beaconing.git/req
-	go fmt git.juddus.com/HFC/beaconing.git/route
-	go fmt git.juddus.com/HFC/beaconing.git/auth
+	go fmt git.juddus.com/HFC/beaconing/page
+	go fmt git.juddus.com/HFC/beaconing/serv
+	go fmt git.juddus.com/HFC/beaconing/req
+	go fmt git.juddus.com/HFC/beaconing/route
+	go fmt git.juddus.com/HFC/beaconing/auth
 	go fmt *.go
 }
 
@@ -23,6 +23,17 @@ show_help() {
 	echo "r -> compile and run the code-base"
 	echo "h -> show this help message"
 	echo "f -> run go fmt on everything"
+}
+
+setup() {
+	go get -u github.com/kardianos/govendor
+	govendor sync
+
+	if ! test -e "config/secret.go"; then
+		touch config/secret.go
+		echo "Secret file created at config/secret.go"
+		echo "Read config/README.md for more details"
+	fi
 }
 
 case "$1" in

@@ -1,18 +1,19 @@
 package req
 
 import (
-	"git.juddus.com/HFC/beaconing.git/route"
-	"git.juddus.com/HFC/beaconing.git/serv"
-	"net/http"
 	log "log"
+	"net/http"
+
+	"git.juddus.com/HFC/beaconing/route"
+	"git.juddus.com/HFC/beaconing/serv"
 	jsoniter "github.com/json-iterator/go"
 )
 
 func NewLessonPlan(name string) LessonPlan {
-	return LessonPlan {
-		Name: name,
+	return LessonPlan{
+		Name:  name,
 		Image: "https://via.placeholder.com/512x512&text=" + name,
-		Link: "https://google.com/q?=what+is+" + name,
+		Link:  "https://google.com/q?=what+is+" + name,
 	}
 }
 
@@ -28,7 +29,7 @@ func NewActiveLessonPlans(path string) *ActiveLessonPlans {
 
 func (r *ActiveLessonPlans) Handle(s *serv.SessionContext) {
 	// todo query option for top
-	// ?top=5 
+	// ?top=5
 	// e.g. returning only the top 5 plans?
 	// otherwise this widget will return all N active lesson plans
 	// sorted in alphabetic order.
@@ -41,11 +42,11 @@ func (r *ActiveLessonPlans) Handle(s *serv.SessionContext) {
 	}
 
 	json, err := jsoniter.Marshal(lps)
-    if err != nil {
-    	// TODO proper error handling
-    	log.Fatal(err)
-        return
-    }
+	if err != nil {
+		// TODO proper error handling
+		log.Fatal(err)
+		return
+	}
 
 	s.Header("Content-Type", "application/json")
 	s.String(http.StatusOK, string(json))

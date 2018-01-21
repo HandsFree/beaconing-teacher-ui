@@ -1,15 +1,3 @@
 {
-    "alias": "bcn-dev.ejudd.uk",
-    "files": [
-        "public",
-        "vendor",
-        "beaconing.go",
-        "auth.go",
-        "consts.go",
-        "routes.go",
-        "secrets.go",
-        "types.go",
-        "glp.go",
-        "student.go"
-    ]
+    "alias": "bcn-dev.ejudd.uk"
 }

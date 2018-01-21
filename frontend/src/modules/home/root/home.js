@@ -1,6 +1,7 @@
 // @flow
+import { div, main, section } from '../../../core/html';
 
-import Component from '../../../core/component';
+import { RootComponent } from '../../../core/component';
 import Header from '../../header/root';
 import MainNav from '../../nav/main';
 import DashboardNav from './dashboard_nav';
@@ -9,8 +10,8 @@ import RecentActivities from './recent_activities';
 import ActivePlans from './active_plans';
 import StudentOverview from './student_overview';
 
-class Home extends Component {
-    async render(): Promise<string> {
+class Home extends RootComponent {
+    async render() {
         const header = new Header();
         const mainNav = new MainNav();
         const dashboardNav = new DashboardNav();
@@ -20,37 +21,50 @@ class Home extends Component {
         const studentOverview = new StudentOverview();
 
         return Promise.all([
-            header.render(),
-            mainNav.render(),
-            dashboardNav.render(),
-            search.render({
-                type: 'width-expand',
+            header.attach(),
+            mainNav.attach(),
+            dashboardNav.attach(),
+            search.attach({
+                searchType: 'width-expand',
             }),
-            recentActivities.render(),
-            activePlans.render(),
-            studentOverview.render(),
+            recentActivities.attach(),
+            activePlans.attach(),
+            studentOverview.attach(),
         ]).then((values) => {
             const [
-                headerHTML,
-                mainNavHTML,
-                dashboardNavHTML,
-                searchHTML,
-                recentActivitiesHTML,
-                activePlansHTML,
-                studentOverviewHTML,
+                headerEl,
+                mainNavEl,
+                dashboardNavEl,
+                searchEl,
+                recentActivitiesEl,
+                activePlansEl,
+                studentOverviewEl,
             ] = values;
 
-            return this.preparePage('home/root/templates/home', {
-                headerHTML,
-                mainNavHTML,
-                dashboardNavHTML,
-                searchHTML,
-                recentActivitiesHTML,
-                activePlansHTML,
-                studentOverviewHTML,
-            });
+            return div(
+                '#app',
+                headerEl,
+                div(
+                    '.flex-container.expand.margin-top-2',
+                    mainNavEl,
+                    main(
+                        section('.flex-column', dashboardNavEl),
+                        section('.flex-column', searchEl),
+                        section(
+                            '.flex-spacearound.mobile-collapse',
+                            recentActivitiesEl,
+                            activePlansEl,
+                        ),
+                        section('.flex-column', studentOverviewEl),
+                    ),
+                ),
+            );
         });
     }
+
+    // async afterMount() {
+        
+    // }
 }
 
 export default Home;

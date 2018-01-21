@@ -1,10 +1,13 @@
 package req
 
 import (
-	"github.com/gin-contrib/sessions"
-	"git.juddus.com/HFC/beaconing.git/route"
-	"git.juddus.com/HFC/beaconing.git/serv"
+	"log"
 	"net/http"
+
+	"github.com/gin-contrib/sessions"
+
+	"git.juddus.com/HFC/beaconing/route"
+	"git.juddus.com/HFC/beaconing/serv"
 )
 
 type TokenRequest struct {
@@ -31,6 +34,11 @@ func (r *TokenRequest) Handle(s *serv.SessionContext) {
 		// 505 redirect?
 		return
 	}
-	session.Save()
+	err := session.Save()
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+
 	s.Redirect(http.StatusTemporaryRedirect, "/")
 }

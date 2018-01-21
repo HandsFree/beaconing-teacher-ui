@@ -1,16 +1,46 @@
 // @flow
 
-import Component from '../../../core/component';
+// import Identicon from 'identicon.js';
+import { div, header, a, img } from '../../../core/html';
+
+import { Component } from '../../../core/component';
 
 class Header extends Component {
-    async render(): Promise<string> {
-        const teacherImgLink = 'dist/images/profile.png';
-        const teacherName = 'John Smith';
+    state = {
+        teacherName: 'John Smith',
+        teacherIMG: 'dist/beaconing/images/profile.png',
+    };
 
-        return this.preparePage('header/root/templates/header', {
-            teacherImgLink,
-            teacherName,
-        });
+    async render() {
+        return header(
+            '#main-header',
+            div(
+                '.logo',
+                a(
+                    {
+                        href: './',
+                    },
+                    img({
+                        src: 'dist/beaconing/images/logo.png',
+                        alt: 'Click to go to Home',
+                    }),
+                ),
+            ),
+            div(
+                '.profile',
+                div('.logout', a('Log Out')),
+                div(
+                    '.profile-img',
+                    img(
+                        '.profile-blue',
+                        {
+                            src: this.state.teacherIMG,
+                            alt: this.state.teacherName,
+                        },
+                    ),
+                ),
+            ),
+        );
     }
 }
 

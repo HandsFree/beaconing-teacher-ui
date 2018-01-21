@@ -7,6 +7,10 @@
 	box-shadow: $primary_element_box_shadow;
 	border-left: 2px solid $bcn_light_orange;
 
+	@media screen and (max-width: 78.125em) {
+		min-width: auto;
+	}
+
 	#nav-header {
 		background: #334250;
 		padding: 1em;
@@ -33,6 +37,11 @@
 		box-shadow: $primary_element_box_shadow;
 		flex-direction: column;
 
+		@media screen and (max-width: 78.125em) {
+			padding: 1em;
+			text-align: center;
+		}
+
 		&:hover:not(.mission-group) {
             cursor: pointer;
             background: #51697f;
@@ -53,6 +62,10 @@
 
 		span {
 			margin: 0.05em 1em;
+
+			@media screen and (max-width: 78.125em) {
+				margin: 0;
+			}
 		}
 
 		.mission-name {
@@ -79,7 +92,7 @@
 	    border-width: 10px;
 	    margin-top: -10px;
 
-	    @media screen and (max-width: 39.9375em) {
+	    @media screen and (max-width: 78.125em) {
 			border-width: 8px;
 	    	margin-top: -8px;
 		}
@@ -104,7 +117,7 @@
 	    border-width: 12px;
 	    margin-top: -12px;
 
-	    @media screen and (max-width: 39.9375em) {
+	    @media screen and (max-width: 78.125em) {
 			border-width: 8px;
 	    	margin-top: -8px;
 		}

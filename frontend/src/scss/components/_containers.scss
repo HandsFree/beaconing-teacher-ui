@@ -29,12 +29,13 @@
 	> .title {
 		justify-content: space-between;
 		align-items: center;
-		padding-bottom: 0.75em;
+		// padding-bottom: 0.75em;
 		border-bottom: 1px solid rgba($primary_element_background, 0.4);
 
 		h3 {
 			font-weight: 400;
 			font-size: 1.25em;
+			margin: 0.5em 0;
 		}
 
 		h4 {

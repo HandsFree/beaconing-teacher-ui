@@ -83,6 +83,454 @@ module.exports = __webpack_require__("../node_modules/regenerator-runtime/runtim
 
 /***/ }),
 
+/***/ "../node_modules/browser-split/index.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/*!
+ * Cross-Browser Split 1.1.1
+ * Copyright 2007-2012 Steven Levithan <stevenlevithan.com>
+ * Available under the MIT License
+ * ECMAScript compliant, uniform cross-browser split method
+ */
+
+/**
+ * Splits a string into an array of strings using a regex or string separator. Matches of the
+ * separator are not included in the result array. However, if `separator` is a regex that contains
+ * capturing groups, backreferences are spliced into the result each time `separator` is matched.
+ * Fixes browser bugs compared to the native `String.prototype.split` and can be used reliably
+ * cross-browser.
+ * @param {String} str String to split.
+ * @param {RegExp|String} separator Regex or string to use for separating the string.
+ * @param {Number} [limit] Maximum number of items to include in the result array.
+ * @returns {Array} Array of substrings.
+ * @example
+ *
+ * // Basic use
+ * split('a b c d', ' ');
+ * // -> ['a', 'b', 'c', 'd']
+ *
+ * // With limit
+ * split('a b c d', ' ', 2);
+ * // -> ['a', 'b']
+ *
+ * // Backreferences in result array
+ * split('..word1 word2..', /([a-z]+)(\d+)/i);
+ * // -> ['..', 'word', '1', ' ', 'word', '2', '..']
+ */
+module.exports = function split(undef) {
+
+  var nativeSplit = String.prototype.split,
+      compliantExecNpcg = /()??/.exec("")[1] === undef,
+
+  // NPCG: nonparticipating capturing group
+  self;
+
+  self = function self(str, separator, limit) {
+    // If `separator` is not a regex, use `nativeSplit`
+    if (Object.prototype.toString.call(separator) !== "[object RegExp]") {
+      return nativeSplit.call(str, separator, limit);
+    }
+    var output = [],
+        flags = (separator.ignoreCase ? "i" : "") + (separator.multiline ? "m" : "") + (separator.extended ? "x" : "") + ( // Proposed for ES6
+    separator.sticky ? "y" : ""),
+
+    // Firefox 3+
+    lastLastIndex = 0,
+
+    // Make `global` and avoid `lastIndex` issues by working with a copy
+    separator = new RegExp(separator.source, flags + "g"),
+        separator2,
+        match,
+        lastIndex,
+        lastLength;
+    str += ""; // Type-convert
+    if (!compliantExecNpcg) {
+      // Doesn't need flags gy, but they don't hurt
+      separator2 = new RegExp("^" + separator.source + "$(?!\\s)", flags);
+    }
+    /* Values for `limit`, per the spec:
+     * If undefined: 4294967295 // Math.pow(2, 32) - 1
+     * If 0, Infinity, or NaN: 0
+     * If positive number: limit = Math.floor(limit); if (limit > 4294967295) limit -= 4294967296;
+     * If negative number: 4294967296 - Math.floor(Math.abs(limit))
+     * If other: Type-convert, then use the above rules
+     */
+    limit = limit === undef ? -1 >>> 0 : // Math.pow(2, 32) - 1
+    limit >>> 0; // ToUint32(limit)
+    while (match = separator.exec(str)) {
+      // `separator.lastIndex` is not reliable cross-browser
+      lastIndex = match.index + match[0].length;
+      if (lastIndex > lastLastIndex) {
+        output.push(str.slice(lastLastIndex, match.index));
+        // Fix browsers whose `exec` methods don't consistently return `undefined` for
+        // nonparticipating capturing groups
+        if (!compliantExecNpcg && match.length > 1) {
+          match[0].replace(separator2, function () {
+            for (var i = 1; i < arguments.length - 2; i++) {
+              if (arguments[i] === undef) {
+                match[i] = undef;
+              }
+            }
+          });
+        }
+        if (match.length > 1 && match.index < str.length) {
+          Array.prototype.push.apply(output, match.slice(1));
+        }
+        lastLength = match[0].length;
+        lastLastIndex = lastIndex;
+        if (output.length >= limit) {
+          break;
+        }
+      }
+      if (separator.lastIndex === match.index) {
+        separator.lastIndex++; // Avoid an infinite loop
+      }
+    }
+    if (lastLastIndex === str.length) {
+      if (lastLength || !separator.test("")) {
+        output.push("");
+      }
+    } else {
+      output.push(str.slice(lastLastIndex));
+    }
+    return output.length > limit ? output.slice(0, limit) : output;
+  };
+
+  return self;
+}();
+
+/***/ }),
+
+/***/ "../node_modules/class-list/index.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+// contains, add, remove, toggle
+var indexof = __webpack_require__("../node_modules/indexof/index.js");
+
+module.exports = ClassList;
+
+function ClassList(elem) {
+    var cl = elem.classList;
+
+    if (cl) {
+        return cl;
+    }
+
+    var classList = {
+        add: add,
+        remove: remove,
+        contains: contains,
+        toggle: toggle,
+        toString: $toString,
+        length: 0,
+        item: item
+    };
+
+    return classList;
+
+    function add(token) {
+        var list = getTokens();
+        if (indexof(list, token) > -1) {
+            return;
+        }
+        list.push(token);
+        setTokens(list);
+    }
+
+    function remove(token) {
+        var list = getTokens(),
+            index = indexof(list, token);
+
+        if (index === -1) {
+            return;
+        }
+
+        list.splice(index, 1);
+        setTokens(list);
+    }
+
+    function contains(token) {
+        return indexof(getTokens(), token) > -1;
+    }
+
+    function toggle(token) {
+        if (contains(token)) {
+            remove(token);
+            return false;
+        } else {
+            add(token);
+            return true;
+        }
+    }
+
+    function $toString() {
+        return elem.className;
+    }
+
+    function item(index) {
+        var tokens = getTokens();
+        return tokens[index] || null;
+    }
+
+    function getTokens() {
+        var className = elem.className;
+
+        return filter(className.split(" "), isTruthy);
+    }
+
+    function setTokens(list) {
+        var length = list.length;
+
+        elem.className = list.join(" ");
+        classList.length = length;
+
+        for (var i = 0; i < list.length; i++) {
+            classList[i] = list[i];
+        }
+
+        delete list[length];
+    }
+}
+
+function filter(arr, fn) {
+    var ret = [];
+    for (var i = 0; i < arr.length; i++) {
+        if (fn(arr[i])) ret.push(arr[i]);
+    }
+    return ret;
+}
+
+function isTruthy(value) {
+    return !!value;
+}
+
+/***/ }),
+
+/***/ "../node_modules/hyperscript-helpers/dist/index.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+var isValidString = function isValidString(param) {
+  return typeof param === 'string' && param.length > 0;
+};
+
+var startsWith = function startsWith(string, start) {
+  return string[0] === start;
+};
+
+var isSelector = function isSelector(param) {
+  return isValidString(param) && (startsWith(param, '.') || startsWith(param, '#'));
+};
+
+var node = function node(h) {
+  return function (tagName) {
+    return function (first) {
+      for (var _len = arguments.length, rest = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+        rest[_key - 1] = arguments[_key];
+      }
+
+      if (isSelector(first)) {
+        return h.apply(undefined, [tagName + first].concat(rest));
+      } else if (typeof first === 'undefined') {
+        return h(tagName);
+      } else {
+        return h.apply(undefined, [tagName, first].concat(rest));
+      }
+    };
+  };
+};
+
+var TAG_NAMES = ['a', 'abbr', 'acronym', 'address', 'applet', 'area', 'article', 'aside', 'audio', 'b', 'base', 'basefont', 'bdi', 'bdo', 'bgsound', 'big', 'blink', 'blockquote', 'body', 'br', 'button', 'canvas', 'caption', 'center', 'cite', 'code', 'col', 'colgroup', 'command', 'content', 'data', 'datalist', 'dd', 'del', 'details', 'dfn', 'dialog', 'dir', 'div', 'dl', 'dt', 'element', 'em', 'embed', 'fieldset', 'figcaption', 'figure', 'font', 'footer', 'form', 'frame', 'frameset', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'head', 'header', 'hgroup', 'hr', 'html', 'i', 'iframe', 'image', 'img', 'input', 'ins', 'isindex', 'kbd', 'keygen', 'label', 'legend', 'li', 'link', 'listing', 'main', 'map', 'mark', 'marquee', 'math', 'menu', 'menuitem', 'meta', 'meter', 'multicol', 'nav', 'nextid', 'nobr', 'noembed', 'noframes', 'noscript', 'object', 'ol', 'optgroup', 'option', 'output', 'p', 'param', 'picture', 'plaintext', 'pre', 'progress', 'q', 'rb', 'rbc', 'rp', 'rt', 'rtc', 'ruby', 's', 'samp', 'script', 'section', 'select', 'shadow', 'slot', 'small', 'source', 'spacer', 'span', 'strike', 'strong', 'style', 'sub', 'summary', 'sup', 'svg', 'table', 'tbody', 'td', 'template', 'textarea', 'tfoot', 'th', 'thead', 'time', 'title', 'tr', 'track', 'tt', 'u', 'ul', 'var', 'video', 'wbr', 'xmp'];
+
+exports['default'] = function (h) {
+  var createTag = node(h);
+  var exported = { TAG_NAMES: TAG_NAMES, isSelector: isSelector, createTag: createTag };
+  TAG_NAMES.forEach(function (n) {
+    exported[n] = createTag(n);
+  });
+  return exported;
+};
+
+module.exports = exports['default'];
+
+/***/ }),
+
+/***/ "../node_modules/hyperscript/index.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var split = __webpack_require__("../node_modules/browser-split/index.js");
+var ClassList = __webpack_require__("../node_modules/class-list/index.js");
+
+var w = typeof window === 'undefined' ? __webpack_require__(0) : window;
+var document = w.document;
+var Text = w.Text;
+
+function context() {
+
+  var cleanupFuncs = [];
+
+  function h() {
+    var args = [].slice.call(arguments),
+        e = null;
+    function item(l) {
+      var r;
+      function parseClass(string) {
+        // Our minimal parser doesn’t understand escaping CSS special
+        // characters like `#`. Don’t use them. More reading:
+        // https://mathiasbynens.be/notes/css-escapes .
+
+        var m = split(string, /([\.#]?[^\s#.]+)/);
+        if (/^\.|#/.test(m[1])) e = document.createElement('div');
+        forEach(m, function (v) {
+          var s = v.substring(1, v.length);
+          if (!v) return;
+          if (!e) e = document.createElement(v);else if (v[0] === '.') ClassList(e).add(s);else if (v[0] === '#') e.setAttribute('id', s);
+        });
+      }
+
+      if (l == null) ;else if ('string' === typeof l) {
+        if (!e) parseClass(l);else e.appendChild(r = document.createTextNode(l));
+      } else if ('number' === typeof l || 'boolean' === typeof l || l instanceof Date || l instanceof RegExp) {
+        e.appendChild(r = document.createTextNode(l.toString()));
+      }
+      //there might be a better way to handle this...
+      else if (isArray(l)) forEach(l, item);else if (isNode(l)) e.appendChild(r = l);else if (l instanceof Text) e.appendChild(r = l);else if ('object' === (typeof l === 'undefined' ? 'undefined' : _typeof(l))) {
+          for (var k in l) {
+            if ('function' === typeof l[k]) {
+              if (/^on\w+/.test(k)) {
+                (function (k, l) {
+                  // capture k, l in the closure
+                  if (e.addEventListener) {
+                    e.addEventListener(k.substring(2), l[k], false);
+                    cleanupFuncs.push(function () {
+                      e.removeEventListener(k.substring(2), l[k], false);
+                    });
+                  } else {
+                    e.attachEvent(k, l[k]);
+                    cleanupFuncs.push(function () {
+                      e.detachEvent(k, l[k]);
+                    });
+                  }
+                })(k, l);
+              } else {
+                // observable
+                e[k] = l[k]();
+                cleanupFuncs.push(l[k](function (v) {
+                  e[k] = v;
+                }));
+              }
+            } else if (k === 'style') {
+              if ('string' === typeof l[k]) {
+                e.style.cssText = l[k];
+              } else {
+                for (var s in l[k]) {
+                  (function (s, v) {
+                    if ('function' === typeof v) {
+                      // observable
+                      e.style.setProperty(s, v());
+                      cleanupFuncs.push(v(function (val) {
+                        e.style.setProperty(s, val);
+                      }));
+                    } else var match = l[k][s].match(/(.*)\W+!important\W*$/);
+                    if (match) {
+                      e.style.setProperty(s, match[1], 'important');
+                    } else {
+                      e.style.setProperty(s, l[k][s]);
+                    }
+                  })(s, l[k][s]);
+                }
+              }
+            } else if (k === 'attrs') {
+              for (var v in l[k]) {
+                e.setAttribute(v, l[k][v]);
+              }
+            } else if (k.substr(0, 5) === "data-") {
+              e.setAttribute(k, l[k]);
+            } else {
+              e[k] = l[k];
+            }
+          }
+        } else if ('function' === typeof l) {
+          //assume it's an observable!
+          var v = l();
+          e.appendChild(r = isNode(v) ? v : document.createTextNode(v));
+
+          cleanupFuncs.push(l(function (v) {
+            if (isNode(v) && r.parentElement) r.parentElement.replaceChild(v, r), r = v;else r.textContent = v;
+          }));
+        }
+
+      return r;
+    }
+    while (args.length) {
+      item(args.shift());
+    }return e;
+  }
+
+  h.cleanup = function () {
+    for (var i = 0; i < cleanupFuncs.length; i++) {
+      cleanupFuncs[i]();
+    }
+    cleanupFuncs.length = 0;
+  };
+
+  return h;
+}
+
+var h = module.exports = context();
+h.context = context;
+
+function isNode(el) {
+  return el && el.nodeName && el.nodeType;
+}
+
+function forEach(arr, fn) {
+  if (arr.forEach) return arr.forEach(fn);
+  for (var i = 0; i < arr.length; i++) {
+    fn(arr[i], i);
+  }
+}
+
+function isArray(arr) {
+  return Object.prototype.toString.call(arr) == '[object Array]';
+}
+
+/***/ }),
+
+/***/ "../node_modules/indexof/index.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var indexOf = [].indexOf;
+
+module.exports = function (arr, obj) {
+  if (indexOf) return arr.indexOf(obj);
+  for (var i = 0; i < arr.length; ++i) {
+    if (arr[i] === obj) return i;
+  }
+  return -1;
+};
+
+/***/ }),
+
 /***/ "../node_modules/regenerator-runtime/runtime-module.js":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -873,6 +1321,7 @@ module.exports = function (module) {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.RootComponent = exports.Component = undefined;
 
 var _regenerator = __webpack_require__("../node_modules/babel-runtime/regenerator/index.js");
 
@@ -886,51 +1335,337 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/* eslint-disable class-methods-use-this */
+/* eslint-disable class-methods-use-this, no-restricted-syntax */
 
-var Component = function () {
-    function Component() {
-        _classCallCheck(this, Component);
+// use hyperscript to make elements, link components to elements
 
-        this.model = {};
+var RootComponent = function () {
+    function RootComponent() {
+        _classCallCheck(this, RootComponent);
+
+        this.containerID = 'app';
+        this.state = {};
     }
 
-    _createClass(Component, [{
-        key: "preparePage",
+    _createClass(RootComponent, [{
+        key: 'updateView',
+        value: function updateView(view) {
+            if (document.body) {
+                this.view = view;
+                document.body.insertAdjacentElement('afterbegin', this.view);
+            } else {
+                throw new Error('[Beaconing] Document Body not found');
+            }
+        }
+    }, {
+        key: 'startLifecycle',
         value: function () {
-            var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee(templatePath, locals) {
-                var template;
+            var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee() {
+                var element;
                 return _regenerator2.default.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
                             case 0:
                                 _context.next = 2;
-                                return __webpack_require__("./modules eager recursive ^\\.\\/.*\\.html$")("./" + templatePath + ".html");
+                                return this.render();
 
                             case 2:
-                                template = _context.sent;
-                                return _context.abrupt("return", template(locals));
+                                element = _context.sent;
 
-                            case 4:
-                            case "end":
+
+                                this.updateView(element);
+
+                                if (this.afterMount) {
+                                    this.afterMount();
+                                }
+
+                            case 5:
+                            case 'end':
                                 return _context.stop();
                         }
                     }
                 }, _callee, this);
             }));
 
-            function preparePage(_x, _x2) {
+            function startLifecycle() {
                 return _ref.apply(this, arguments);
             }
 
-            return preparePage;
+            return startLifecycle;
+        }()
+    }, {
+        key: 'start',
+        value: function () {
+            var _ref2 = _asyncToGenerator(_regenerator2.default.mark(function _callee2() {
+                return _regenerator2.default.wrap(function _callee2$(_context2) {
+                    while (1) {
+                        switch (_context2.prev = _context2.next) {
+                            case 0:
+                                this.startLifecycle();
+                                console.log('[Beaconing] Root Component Started!');
+
+                            case 2:
+                            case 'end':
+                                return _context2.stop();
+                        }
+                    }
+                }, _callee2, this);
+            }));
+
+            function start() {
+                return _ref2.apply(this, arguments);
+            }
+
+            return start;
+        }()
+    }]);
+
+    return RootComponent;
+}();
+
+var Component = function () {
+    function Component() {
+        _classCallCheck(this, Component);
+
+        this.state = {};
+    }
+
+    _createClass(Component, [{
+        key: 'updateView',
+        value: function updateView(view) {
+            var _this = this;
+
+            if (document.readyState !== 'complete') {
+                document.body.onload = function () {
+                    if (_this.view.parentElement) {
+                        _this.view.parentElement.replaceChild(view, _this.view);
+                        _this.view = view;
+                    }
+                };
+            } else if (this.view.parentElement) {
+                this.view.parentElement.replaceChild(view, this.view);
+                this.view = view;
+            }
+        }
+    }, {
+        key: 'appendView',
+        value: function appendView(view) {
+            this.view.appendChild(view);
+        }
+
+        // calls start function, binds updates, handles functions after mount, follow state
+
+    }, {
+        key: 'attach',
+        value: function () {
+            var _ref3 = _asyncToGenerator(_regenerator2.default.mark(function _callee3() {
+                var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+                var element;
+                return _regenerator2.default.wrap(function _callee3$(_context3) {
+                    while (1) {
+                        switch (_context3.prev = _context3.next) {
+                            case 0:
+                                this.start();
+
+                                _context3.next = 3;
+                                return this.render(data);
+
+                            case 3:
+                                element = _context3.sent;
+
+
+                                this.view = element;
+
+                                return _context3.abrupt('return', this.view);
+
+                            case 6:
+                            case 'end':
+                                return _context3.stop();
+                        }
+                    }
+                }, _callee3, this);
+            }));
+
+            function attach() {
+                return _ref3.apply(this, arguments);
+            }
+
+            return attach;
+        }()
+    }, {
+        key: 'startLifecycle',
+        value: function () {
+            var _ref4 = _asyncToGenerator(_regenerator2.default.mark(function _callee4() {
+                return _regenerator2.default.wrap(function _callee4$(_context4) {
+                    while (1) {
+                        switch (_context4.prev = _context4.next) {
+                            case 0:
+                                if (this.afterMount) {
+                                    this.afterMount();
+                                }
+
+                            case 1:
+                            case 'end':
+                                return _context4.stop();
+                        }
+                    }
+                }, _callee4, this);
+            }));
+
+            function startLifecycle() {
+                return _ref4.apply(this, arguments);
+            }
+
+            return startLifecycle;
+        }()
+    }, {
+        key: 'start',
+        value: function () {
+            var _ref5 = _asyncToGenerator(_regenerator2.default.mark(function _callee5() {
+                return _regenerator2.default.wrap(function _callee5$(_context5) {
+                    while (1) {
+                        switch (_context5.prev = _context5.next) {
+                            case 0:
+                                this.startLifecycle();
+                                console.log('[Beaconing] Started Component ' + this.constructor.name);
+
+                            case 2:
+                            case 'end':
+                                return _context5.stop();
+                        }
+                    }
+                }, _callee5, this);
+            }));
+
+            function start() {
+                return _ref5.apply(this, arguments);
+            }
+
+            return start;
         }()
     }]);
 
     return Component;
 }();
 
-exports.default = Component;
+exports.default = {
+    Component: Component,
+    RootComponent: RootComponent
+};
+exports.Component = Component;
+exports.RootComponent = RootComponent;
+
+/***/ }),
+
+/***/ "./core/html.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.ul = exports.u = exports.textarea = exports.summary = exports.strong = exports.span = exports.small = exports.select = exports.section = exports.script = exports.p = exports.option = exports.nav = exports.meter = exports.meta = exports.main = exports.link = exports.li = exports.legend = exports.label = exports.input = exports.img = exports.iframe = exports.i = exports.hr = exports.header = exports.h6 = exports.h5 = exports.h4 = exports.h3 = exports.h2 = exports.h1 = exports.form = exports.footer = exports.figure = exports.figcaption = exports.div = exports.command = exports.caption = exports.canvas = exports.button = exports.br = exports.aside = exports.article = exports.a = undefined;
+
+var _hyperscript = __webpack_require__("../node_modules/hyperscript/index.js");
+
+var _hyperscript2 = _interopRequireDefault(_hyperscript);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _require = __webpack_require__("../node_modules/hyperscript-helpers/dist/index.js")(_hyperscript2.default),
+    a = _require.a,
+    article = _require.article,
+    aside = _require.aside,
+    br = _require.br,
+    button = _require.button,
+    canvas = _require.canvas,
+    caption = _require.caption,
+    command = _require.command,
+    div = _require.div,
+    figcaption = _require.figcaption,
+    figure = _require.figure,
+    footer = _require.footer,
+    form = _require.form,
+    h1 = _require.h1,
+    h2 = _require.h2,
+    h3 = _require.h3,
+    h4 = _require.h4,
+    h5 = _require.h5,
+    h6 = _require.h6,
+    header = _require.header,
+    hr = _require.hr,
+    i = _require.i,
+    iframe = _require.iframe,
+    img = _require.img,
+    input = _require.input,
+    label = _require.label,
+    legend = _require.legend,
+    li = _require.li,
+    link = _require.link,
+    main = _require.main,
+    meta = _require.meta,
+    meter = _require.meter,
+    nav = _require.nav,
+    option = _require.option,
+    p = _require.p,
+    script = _require.script,
+    section = _require.section,
+    select = _require.select,
+    small = _require.small,
+    span = _require.span,
+    strong = _require.strong,
+    summary = _require.summary,
+    textarea = _require.textarea,
+    u = _require.u,
+    ul = _require.ul;
+
+exports.a = a;
+exports.article = article;
+exports.aside = aside;
+exports.br = br;
+exports.button = button;
+exports.canvas = canvas;
+exports.caption = caption;
+exports.command = command;
+exports.div = div;
+exports.figcaption = figcaption;
+exports.figure = figure;
+exports.footer = footer;
+exports.form = form;
+exports.h1 = h1;
+exports.h2 = h2;
+exports.h3 = h3;
+exports.h4 = h4;
+exports.h5 = h5;
+exports.h6 = h6;
+exports.header = header;
+exports.hr = hr;
+exports.i = i;
+exports.iframe = iframe;
+exports.img = img;
+exports.input = input;
+exports.label = label;
+exports.legend = legend;
+exports.li = li;
+exports.link = link;
+exports.main = main;
+exports.meta = meta;
+exports.meter = meter;
+exports.nav = nav;
+exports.option = option;
+exports.p = p;
+exports.script = script;
+exports.section = section;
+exports.select = select;
+exports.small = small;
+exports.span = span;
+exports.strong = strong;
+exports.summary = summary;
+exports.textarea = textarea;
+exports.u = u;
+exports.ul = ul;
 
 /***/ }),
 
@@ -999,8 +1734,7 @@ var Router = function () {
         key: 'findController',
         value: function () {
             var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee() {
-                var hash, path, controller, container, _container;
-
+                var hash, path, controller, container;
                 return _regenerator2.default.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
@@ -1015,37 +1749,22 @@ var Router = function () {
 
                                 // console.log(path);
 
-                                if (!this.routes.has(path)) {
-                                    _context.next = 12;
-                                    break;
+                                if (this.routes.has(path)) {
+                                    controller = this.routes.get(path);
+
+
+                                    if (controller) {
+                                        controller.start();
+                                    }
+                                } else {
+                                    container = document.getElementById('app');
+
+                                    if (container) {
+                                        container.innerHTML = '<p>Error (404): Page not found</p>';
+                                    }
                                 }
 
-                                controller = this.routes.get(path);
-                                container = document.getElementById('app');
-
-                                if (!(container && controller)) {
-                                    _context.next = 10;
-                                    break;
-                                }
-
-                                _context.next = 9;
-                                return controller.render();
-
-                            case 9:
-                                container.innerHTML = _context.sent;
-
-                            case 10:
-                                _context.next = 14;
-                                break;
-
-                            case 12:
-                                _container = document.getElementById('app');
-
-                                if (_container) {
-                                    _container.innerHTML = '<p>Error (404): Page not found</p>';
-                                }
-
-                            case 14:
+                            case 4:
                             case 'end':
                                 return _context.stop();
                         }
@@ -1068,44 +1787,6 @@ exports.default = Router;
 
 /***/ }),
 
-/***/ "./modules eager recursive ^\\.\\/.*\\.html$":
-/***/ (function(module, exports, __webpack_require__) {
-
-var map = {
-	"./header/root/templates/header.html": "./modules/header/root/templates/header.html",
-	"./home/root/templates/active_plans.html": "./modules/home/root/templates/active_plans.html",
-	"./home/root/templates/dashboard_nav.html": "./modules/home/root/templates/dashboard_nav.html",
-	"./home/root/templates/home.html": "./modules/home/root/templates/home.html",
-	"./home/root/templates/recent_activities.html": "./modules/home/root/templates/recent_activities.html",
-	"./home/root/templates/student_overview.html": "./modules/home/root/templates/student_overview.html",
-	"./lesson_manager/root/templates/active_plans.html": "./modules/lesson_manager/root/templates/active_plans.html",
-	"./lesson_manager/root/templates/inner_nav.html": "./modules/lesson_manager/root/templates/inner_nav.html",
-	"./nav/main/templates/main_nav.html": "./modules/nav/main/templates/main_nav.html",
-	"./nav/second/templates/second_nav.html": "./modules/nav/second/templates/second_nav.html",
-	"./search/basic/templates/basic.html": "./modules/search/basic/templates/basic.html"
-};
-function webpackAsyncContext(req) {
-	return webpackAsyncContextResolve(req).then(__webpack_require__);
-};
-function webpackAsyncContextResolve(req) {
-	// Here Promise.resolve().then() is used instead of new Promise() to prevent
-	// uncatched exception popping up in devtools
-	return Promise.resolve().then(function() {
-		var id = map[req];
-		if(!(id + 1)) // check for number or string
-			throw new Error("Cannot find module '" + req + "'.");
-		return id;
-	});
-};
-webpackAsyncContext.keys = function webpackAsyncContextKeys() {
-	return Object.keys(map);
-};
-webpackAsyncContext.resolve = webpackAsyncContextResolve;
-webpackAsyncContext.id = "./modules eager recursive ^\\.\\/.*\\.html$";
-module.exports = webpackAsyncContext;
-
-/***/ }),
-
 /***/ "./modules/header/root/index.js":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1122,9 +1803,9 @@ var _regenerator2 = _interopRequireDefault(_regenerator);
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _component = __webpack_require__("./core/component.js");
+var _html = __webpack_require__("./core/html.js");
 
-var _component2 = _interopRequireDefault(_component);
+var _component = __webpack_require__("./core/component.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1136,32 +1817,48 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+// import Identicon from 'identicon.js';
+
+
 var Header = function (_Component) {
     _inherits(Header, _Component);
 
     function Header() {
+        var _ref;
+
+        var _temp, _this, _ret;
+
         _classCallCheck(this, Header);
 
-        return _possibleConstructorReturn(this, (Header.__proto__ || Object.getPrototypeOf(Header)).apply(this, arguments));
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Header.__proto__ || Object.getPrototypeOf(Header)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+            teacherName: 'John Smith',
+            teacherIMG: 'dist/beaconing/images/profile.png'
+        }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
     _createClass(Header, [{
         key: 'render',
         value: function () {
-            var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee() {
-                var teacherImgLink, teacherName;
+            var _ref2 = _asyncToGenerator(_regenerator2.default.mark(function _callee() {
                 return _regenerator2.default.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
                             case 0:
-                                teacherImgLink = 'dist/images/profile.png';
-                                teacherName = 'John Smith';
-                                return _context.abrupt('return', this.preparePage('header/root/templates/header', {
-                                    teacherImgLink: teacherImgLink,
-                                    teacherName: teacherName
-                                }));
+                                return _context.abrupt('return', (0, _html.header)('#main-header', (0, _html.div)('.logo', (0, _html.a)({
+                                    href: './'
+                                }, (0, _html.img)({
+                                    src: 'dist/beaconing/images/logo.png',
+                                    alt: 'Click to go to Home'
+                                }))), (0, _html.div)('.profile', (0, _html.div)('.logout', (0, _html.a)('Log Out')), (0, _html.div)('.profile-img', (0, _html.img)('.profile-blue', {
+                                    src: this.state.teacherIMG,
+                                    alt: this.state.teacherName
+                                })))));
 
-                            case 3:
+                            case 1:
                             case 'end':
                                 return _context.stop();
                         }
@@ -1170,7 +1867,7 @@ var Header = function (_Component) {
             }));
 
             function render() {
-                return _ref.apply(this, arguments);
+                return _ref2.apply(this, arguments);
             }
 
             return render;
@@ -1178,21 +1875,9 @@ var Header = function (_Component) {
     }]);
 
     return Header;
-}(_component2.default);
+}(_component.Component);
 
 exports.default = Header;
-
-/***/ }),
-
-/***/ "./modules/header/root/templates/header.html":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function (scope) {
-  return "<header id=main-header><div class=logo><a href=\"./\"><img src=dist/images/logo.png alt=\"Click to go to Home\"></a></div><div class=profile><div class=logout><a>Log Out</a></div><div class=profile-img><img src=" + scope.teacherImgLink + " alt=" + scope.teacherName + " class=profile-blue></div></div></header>";
-};
 
 /***/ }),
 
@@ -1239,9 +1924,9 @@ var _regenerator2 = _interopRequireDefault(_regenerator);
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _component = __webpack_require__("./core/component.js");
+var _html = __webpack_require__("./core/html.js");
 
-var _component2 = _interopRequireDefault(_component);
+var _component = __webpack_require__("./core/component.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1270,7 +1955,21 @@ var ActivePlans = function (_Component) {
                     while (1) {
                         switch (_context.prev = _context.next) {
                             case 0:
-                                return _context.abrupt('return', this.preparePage('home/root/templates/active_plans', {}));
+                                return _context.abrupt('return', (0, _html.div)('.tile.flex-column.flex-2', (0, _html.div)('.title', (0, _html.p)('Active Lesson Plans'), (0, _html.a)({
+                                    href: './lesson_manager/'
+                                }, (0, _html.i)('.icon-link-ext-alt', {
+                                    title: 'View Active Lesson Plans',
+                                    'aria-hidden': true
+                                }))), (0, _html.div)('.content', (0, _html.div)('#active-plan-summary', (0, _html.div)('.plan', (0, _html.div)('.image', (0, _html.img)({
+                                    src: 'dist/beaconing/images/quest-image.jpg',
+                                    alt: 'Algebra Beginnings'
+                                })), (0, _html.div)('.info', (0, _html.div)('.name', (0, _html.p)('Algebra Beginnings')))), (0, _html.div)('.plan', (0, _html.div)('.image', (0, _html.img)({
+                                    src: 'dist/beaconing/images/quest-image.jpg',
+                                    alt: 'First steps to Engineering'
+                                })), (0, _html.div)('.info', (0, _html.div)('.name', (0, _html.p)('First steps to Engineering')))), (0, _html.div)('.plan', (0, _html.div)('.image', (0, _html.img)({
+                                    src: 'dist/beaconing/images/quest-image.jpg',
+                                    alt: 'Advanced Masonary'
+                                })), (0, _html.div)('.info', (0, _html.div)('.name', (0, _html.p)('Advanced Masonary'))))))));
 
                             case 1:
                             case 'end':
@@ -1289,7 +1988,7 @@ var ActivePlans = function (_Component) {
     }]);
 
     return ActivePlans;
-}(_component2.default);
+}(_component.Component);
 
 exports.default = ActivePlans;
 
@@ -1311,9 +2010,9 @@ var _regenerator2 = _interopRequireDefault(_regenerator);
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _component = __webpack_require__("./core/component.js");
+var _html = __webpack_require__("./core/html.js");
 
-var _component2 = _interopRequireDefault(_component);
+var _component = __webpack_require__("./core/component.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1342,7 +2041,7 @@ var DashboardNav = function (_Component) {
                     while (1) {
                         switch (_context.prev = _context.next) {
                             case 0:
-                                return _context.abrupt('return', this.preparePage('home/root/templates/dashboard_nav', {}));
+                                return _context.abrupt('return', (0, _html.nav)('.mini.spaced.flex-justify-end', (0, _html.a)('.item', 'Edit Layout')));
 
                             case 1:
                             case 'end':
@@ -1361,7 +2060,7 @@ var DashboardNav = function (_Component) {
     }]);
 
     return DashboardNav;
-}(_component2.default);
+}(_component.Component);
 
 exports.default = DashboardNav;
 
@@ -1385,9 +2084,9 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _component = __webpack_require__("./core/component.js");
+var _html = __webpack_require__("./core/html.js");
 
-var _component2 = _interopRequireDefault(_component);
+var _component = __webpack_require__("./core/component.js");
 
 var _root = __webpack_require__("./modules/header/root/index.js");
 
@@ -1427,8 +2126,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Home = function (_Component) {
-    _inherits(Home, _Component);
+var Home = function (_RootComponent) {
+    _inherits(Home, _RootComponent);
 
     function Home() {
         _classCallCheck(this, Home);
@@ -1440,8 +2139,6 @@ var Home = function (_Component) {
         key: 'render',
         value: function () {
             var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee() {
-                var _this2 = this;
-
                 var header, mainNav, dashboardNav, search, recentActivities, activePlans, studentOverview;
                 return _regenerator2.default.wrap(function _callee$(_context) {
                     while (1) {
@@ -1454,27 +2151,19 @@ var Home = function (_Component) {
                                 recentActivities = new _recent_activities2.default();
                                 activePlans = new _active_plans2.default();
                                 studentOverview = new _student_overview2.default();
-                                return _context.abrupt('return', Promise.all([header.render(), mainNav.render(), dashboardNav.render(), search.render({
-                                    type: 'width-expand'
-                                }), recentActivities.render(), activePlans.render(), studentOverview.render()]).then(function (values) {
+                                return _context.abrupt('return', Promise.all([header.attach(), mainNav.attach(), dashboardNav.attach(), search.attach({
+                                    searchType: 'width-expand'
+                                }), recentActivities.attach(), activePlans.attach(), studentOverview.attach()]).then(function (values) {
                                     var _values = _slicedToArray(values, 7),
-                                        headerHTML = _values[0],
-                                        mainNavHTML = _values[1],
-                                        dashboardNavHTML = _values[2],
-                                        basicSearchHTML = _values[3],
-                                        recentActivitiesHTML = _values[4],
-                                        activePlansHTML = _values[5],
-                                        studentOverviewHTML = _values[6];
+                                        headerEl = _values[0],
+                                        mainNavEl = _values[1],
+                                        dashboardNavEl = _values[2],
+                                        searchEl = _values[3],
+                                        recentActivitiesEl = _values[4],
+                                        activePlansEl = _values[5],
+                                        studentOverviewEl = _values[6];
 
-                                    return _this2.preparePage('home/root/templates/home', {
-                                        headerHTML: headerHTML,
-                                        mainNavHTML: mainNavHTML,
-                                        dashboardNavHTML: dashboardNavHTML,
-                                        basicSearchHTML: basicSearchHTML,
-                                        recentActivitiesHTML: recentActivitiesHTML,
-                                        activePlansHTML: activePlansHTML,
-                                        studentOverviewHTML: studentOverviewHTML
-                                    });
+                                    return (0, _html.div)('#app', headerEl, (0, _html.div)('.flex-container.expand.margin-top-2', mainNavEl, (0, _html.main)((0, _html.section)('.flex-column', dashboardNavEl), (0, _html.section)('.flex-column', searchEl), (0, _html.section)('.flex-spacearound.mobile-collapse', recentActivitiesEl, activePlansEl), (0, _html.section)('.flex-column', studentOverviewEl))));
                                 }));
 
                             case 8:
@@ -1491,10 +2180,15 @@ var Home = function (_Component) {
 
             return render;
         }()
+
+        // async afterMount() {
+
+        // }
+
     }]);
 
     return Home;
-}(_component2.default);
+}(_component.RootComponent);
 
 exports.default = Home;
 
@@ -1516,9 +2210,9 @@ var _regenerator2 = _interopRequireDefault(_regenerator);
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _component = __webpack_require__("./core/component.js");
+var _html = __webpack_require__("./core/html.js");
 
-var _component2 = _interopRequireDefault(_component);
+var _component = __webpack_require__("./core/component.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1547,7 +2241,7 @@ var RecentActivities = function (_Component) {
                     while (1) {
                         switch (_context.prev = _context.next) {
                             case 0:
-                                return _context.abrupt('return', this.preparePage('home/root/templates/recent_activities', {}));
+                                return _context.abrupt('return', (0, _html.div)('.tile.flex-column.flex-2', (0, _html.div)('.title', (0, _html.p)('Your Recent Activities')), (0, _html.div)('.content', (0, _html.div)('#recent-activity', (0, _html.div)('.activity', (0, _html.div)('.info', (0, _html.p)('Assigned new lesson plan: ', (0, _html.a)('.link-underline', 'Algebra Beginnings'))), (0, _html.div)('.time', (0, _html.p)('12:54'))), (0, _html.div)('.activity', (0, _html.div)('.info', (0, _html.p)('Assigned new lesson plan: ', (0, _html.a)('.link-underline', 'First Steps to Engineering'))), (0, _html.div)('.time', (0, _html.p)({ title: '13:50' }, '12:54'))), (0, _html.div)('.activity', (0, _html.div)('.info', (0, _html.p)('Assigned new lesson plan: ', (0, _html.a)('.link-underline', 'Advanced Masonary'))), (0, _html.div)('.time', (0, _html.p)({ title: '17:02 03/06/2017' }, '03/06')))))));
 
                             case 1:
                             case 'end':
@@ -1566,7 +2260,7 @@ var RecentActivities = function (_Component) {
     }]);
 
     return RecentActivities;
-}(_component2.default);
+}(_component.Component);
 
 exports.default = RecentActivities;
 
@@ -1588,9 +2282,9 @@ var _regenerator2 = _interopRequireDefault(_regenerator);
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _component = __webpack_require__("./core/component.js");
+var _html = __webpack_require__("./core/html.js");
 
-var _component2 = _interopRequireDefault(_component);
+var _component = __webpack_require__("./core/component.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1619,7 +2313,75 @@ var StudentOverview = function (_Component) {
                     while (1) {
                         switch (_context.prev = _context.next) {
                             case 0:
-                                return _context.abrupt('return', this.preparePage('home/root/templates/student_overview', {}));
+                                return _context.abrupt('return', (0, _html.div)('.tile.flex-column', (0, _html.div)('.title', (0, _html.p)('Student Overview'), (0, _html.a)({
+                                    href: './classroom/'
+                                }, (0, _html.i)('.icon-link-ext-alt', {
+                                    title: 'View Students',
+                                    'aria-hidden': true
+                                }))), (0, _html.div)('.content', (0, _html.div)('#student-overview', (0, _html.div)('.sorting', (0, _html.div)('.sort-menu', (0, _html.span)('Class: '), (0, _html.a)('.active', '11b'), (0, _html.a)('13a')), (0, _html.div)('.sort-menu', (0, _html.span)('Sort By: '), (0, _html.a)('This Week'), (0, _html.a)('.active', 'This Month'), (0, _html.a)('This Year'))), (0, _html.div)('.flex-container', (0, _html.div)('.student-section', (0, _html.div)('.title', (0, _html.h3)('Best Performing')), (0, _html.div)('.students', (0, _html.div)('.student', (0, _html.div)('.flex-container.tablet-hide', (0, _html.div)('.student-profile-image', (0, _html.img)('.profile-blue', {
+                                    src: 'dist/beaconing/images/profile.png',
+                                    alt: 'Example Student'
+                                }))), (0, _html.div)('.flex-container.flex-column.flex-spacearound.flex-grow', (0, _html.div)('.student-name', (0, _html.p)('Example Student')), (0, _html.div)('.student-percentage', (0, _html.p)('Overall Percentage:'), (0, _html.div)('.progress-bar', (0, _html.div)('.status-green', {
+                                    style: {
+                                        width: '96%'
+                                    }
+                                }, (0, _html.span)('96%')))))), (0, _html.div)('.student', (0, _html.div)('.flex-container.tablet-hide', (0, _html.div)('.student-profile-image', (0, _html.img)('.profile-blue', {
+                                    src: 'dist/beaconing/images/profile.png',
+                                    alt: 'Example Student'
+                                }))), (0, _html.div)('.flex-container.flex-column.flex-spacearound.flex-grow', (0, _html.div)('.student-name', (0, _html.p)('Example Student')), (0, _html.div)('.student-percentage', (0, _html.p)('Overall Percentage:'), (0, _html.div)('.progress-bar', (0, _html.div)('.status-green', {
+                                    style: {
+                                        width: '94%'
+                                    }
+                                }, (0, _html.span)('94%')))))), (0, _html.div)('.student', (0, _html.div)('.flex-container.tablet-hide', (0, _html.div)('.student-profile-image', (0, _html.img)('.profile-blue', {
+                                    src: 'dist/beaconing/images/profile.png',
+                                    alt: 'Example Student'
+                                }))), (0, _html.div)('.flex-container.flex-column.flex-spacearound.flex-grow', (0, _html.div)('.student-name', (0, _html.p)('Example Student')), (0, _html.div)('.student-percentage', (0, _html.p)('Overall Percentage:'), (0, _html.div)('.progress-bar', (0, _html.div)('.status-green', {
+                                    style: {
+                                        width: '91%'
+                                    }
+                                }, (0, _html.span)('91%')))))))), (0, _html.div)('.student-section', (0, _html.div)('.title', (0, _html.h3)('Needs Attention')), (0, _html.div)('.students', (0, _html.div)('.student', (0, _html.div)('.flex-container.tablet-hide', (0, _html.div)('.student-profile-image', (0, _html.img)('.profile-blue', {
+                                    src: 'dist/beaconing/images/profile.png',
+                                    alt: 'Example Student'
+                                }))), (0, _html.div)('.flex-container.flex-column.flex-spacearound.flex-grow', (0, _html.div)('.student-name', (0, _html.p)('Example Student')), (0, _html.div)('.student-percentage', (0, _html.p)('Overall Percentage:'), (0, _html.div)('.progress-bar', (0, _html.div)('.status-red', {
+                                    style: {
+                                        width: '30%'
+                                    }
+                                }, (0, _html.span)('30%')))))), (0, _html.div)('.student', (0, _html.div)('.flex-container.tablet-hide', (0, _html.div)('.student-profile-image', (0, _html.img)('.profile-blue', {
+                                    src: 'dist/beaconing/images/profile.png',
+                                    alt: 'Example Student'
+                                }))), (0, _html.div)('.flex-container.flex-column.flex-spacearound.flex-grow', (0, _html.div)('.student-name', (0, _html.p)('Example Student')), (0, _html.div)('.student-percentage', (0, _html.p)('Overall Percentage:'), (0, _html.div)('.progress-bar', (0, _html.div)('.status-red', {
+                                    style: {
+                                        width: '28%'
+                                    }
+                                }, (0, _html.span)('28%')))))), (0, _html.div)('.student', (0, _html.div)('.flex-container.tablet-hide', (0, _html.div)('.student-profile-image', (0, _html.img)('.profile-blue', {
+                                    src: 'dist/beaconing/images/profile.png',
+                                    alt: 'Example Student'
+                                }))), (0, _html.div)('.flex-container.flex-column.flex-spacearound.flex-grow', (0, _html.div)('.student-name', (0, _html.p)('Example Student')), (0, _html.div)('.student-percentage', (0, _html.p)('Overall Percentage:'), (0, _html.div)('.progress-bar', (0, _html.div)('.status-red', {
+                                    style: {
+                                        width: '25%'
+                                    }
+                                }, (0, _html.span)('25%')))))))), (0, _html.div)('.student-section', (0, _html.div)('.title', (0, _html.h3)('Most Improvement')), (0, _html.div)('.students', (0, _html.div)('.student', (0, _html.div)('.flex-container.tablet-hide', (0, _html.div)('.student-profile-image', (0, _html.img)('.profile-blue', {
+                                    src: 'dist/beaconing/images/profile.png',
+                                    alt: 'Example Student'
+                                }))), (0, _html.div)('.flex-container.flex-column.flex-spacearound.flex-grow', (0, _html.div)('.student-name', (0, _html.p)('Example Student')), (0, _html.div)('.student-percentage', (0, _html.p)('Overall Percentage:'), (0, _html.div)('.progress-bar', (0, _html.div)('.status-amber', {
+                                    style: {
+                                        width: '70%'
+                                    }
+                                }, (0, _html.span)('70%')))))), (0, _html.div)('.student', (0, _html.div)('.flex-container.tablet-hide', (0, _html.div)('.student-profile-image', (0, _html.img)('.profile-blue', {
+                                    src: 'dist/beaconing/images/profile.png',
+                                    alt: 'Example Student'
+                                }))), (0, _html.div)('.flex-container.flex-column.flex-spacearound.flex-grow', (0, _html.div)('.student-name', (0, _html.p)('Example Student')), (0, _html.div)('.student-percentage', (0, _html.p)('Overall Percentage:'), (0, _html.div)('.progress-bar', (0, _html.div)('.status-amber', {
+                                    style: {
+                                        width: '68%'
+                                    }
+                                }, (0, _html.span)('68%')))))), (0, _html.div)('.student', (0, _html.div)('.flex-container.tablet-hide', (0, _html.div)('.student-profile-image', (0, _html.img)('.profile-blue', {
+                                    src: 'dist/beaconing/images/profile.png',
+                                    alt: 'Example Student'
+                                }))), (0, _html.div)('.flex-container.flex-column.flex-spacearound.flex-grow', (0, _html.div)('.student-name', (0, _html.p)('Example Student')), (0, _html.div)('.student-percentage', (0, _html.p)('Overall Percentage:'), (0, _html.div)('.progress-bar', (0, _html.div)('.status-amber', {
+                                    style: {
+                                        width: '59%'
+                                    }
+                                }, (0, _html.span)('59%')))))))))))));
 
                             case 1:
                             case 'end':
@@ -1638,93 +2400,9 @@ var StudentOverview = function (_Component) {
     }]);
 
     return StudentOverview;
-}(_component2.default);
+}(_component.Component);
 
 exports.default = StudentOverview;
-
-/***/ }),
-
-/***/ "./modules/home/root/templates/active_plans.html":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function (scope) {
-  return "<div class=\"tile flex-column flex-2\"><div class=title><p>Active Lesson Plans</p><a href=\"./lesson_manager/\"><i class=icon-link-ext-alt title=\"View Active Lesson Plans\" aria-hidden=true></i></a></div><div class=content><div id=active-plan-summary><div class=plan><div class=image><img src=dist/images/quest-image.jpg alt=\"Algebra Beginnings\"></div><div class=info><div class=name><p>Algebra Beginnings</p></div></div></div><div class=plan><div class=image><img src=dist/images/quest-image.jpg alt=\"First steps to Engineering\"></div><div class=info><div class=name><p>First steps to Engineering</p></div></div></div><div class=plan><div class=image><img src=dist/images/quest-image.jpg alt=\"Advanced Masonary\"></div><div class=info><div class=name><p>Advanced Masonary</p></div></div></div></div></div></div>";
-};
-
-/***/ }),
-
-/***/ "./modules/home/root/templates/dashboard_nav.html":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function (scope) {
-  return "<nav class=\"mini spaced flex-justify-end\"><a class=item>Edit Layout</a></nav>";
-};
-
-/***/ }),
-
-/***/ "./modules/home/root/templates/home.html":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function (scope) {
-  return scope.headerHTML + "<div class=\"flex-container expand margin-top-2\">" + scope.mainNavHTML + "<main id=main-content><section class=flex-column>" + scope.dashboardNavHTML + "</section><section class=flex-column>" + scope.basicSearchHTML + "</section><section class=\"flex-spacearound mobile-collapse\">" + scope.recentActivitiesHTML + " " + scope.activePlansHTML + "</section><section class=flex-column>" + scope.studentOverviewHTML + "</section></main></div>";
-};
-
-/***/ }),
-
-/***/ "./modules/home/root/templates/recent_activities.html":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function (scope) {
-  return "<div class=\"tile flex-column flex-2\"><div class=title><p>Your Recent Activities</p></div><div class=content><div id=recent-activity><div class=activity><div class=info><p>Assigned new lesson plan: <a class=link-underline>Algebra Beginnings</a></p></div><div class=time><p>12:54</p></div></div><div class=activity><div class=info><p>Assigned new lesson plan: <a class=link-underline>First steps to Engineering</a></p></div><div class=time><p title=13:50>Tues</p></div></div><div class=activity><div class=info><p>Assigned new lesson plan: <a class=link-underline>Advanced Masonary</a></p></div><div class=time><p title=17:02>03/06</p></div></div></div></div></div>";
-};
-
-/***/ }),
-
-/***/ "./modules/home/root/templates/student_overview.html":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function (scope) {
-  return "<div class=\"tile flex-column\"><div class=title><p>Student Overview</p><a href=\"./classroom/\"><i class=icon-link-ext-alt title=\"View Students\" aria-hidden=true></i></a></div><div class=content><div id=student-overview><div class=sorting><div class=sort-menu>Class: <a class=active>11b</a> <a>13a</a></div><div class=sort-menu>Sort By: <a>This Week</a> <a class=active>This Month</a> <a>This Year</a></div></div><div class=flex-container><div class=student-section><div class=title><h3>Best Performing</h3></div><div class=students><div class=student><div class=\"flex-container tablet-hide\"><div class=student-profile-image><img class=profile-blue src=dist/images/profile.png alt=\"Example Student\"></div></div><div class=\"flex-container flex-column flex-spacearound flex-grow\"><div class=student-name><p>Example Student</p></div><div class=student-percentage><p>Overall Percentage:</p><div class=progress-bar><div class=status-green style=\"width: 96%;\"><span>96%</span></div></div></div></div></div><div class=student><div class=\"flex-container tablet-hide\"><div class=student-profile-image><img class=profile-blue src=dist/images/profile.png alt=\"Example Student\"></div></div><div class=\"flex-container flex-column flex-spacearound flex-grow\"><div class=student-name><p>Example Student</p></div><div class=student-percentage><p>Overall Percentage:</p><div class=progress-bar><div class=status-green style=\"width: 94%;\"><span>94%</span></div></div></div></div></div><div class=student><div class=\"flex-container tablet-hide\"><div class=student-profile-image><img class=profile-blue src=dist/images/profile.png alt=\"Example Student\"></div></div><div class=\"flex-container flex-column flex-spacearound flex-grow\"><div class=student-name><p>Example Student</p></div><div class=student-percentage><p>Overall Percentage:</p><div class=progress-bar><div class=status-green style=\"width: 91%;\"><span>91%</span></div></div></div></div></div></div></div><div class=student-section><div class=title><h3>Needs Attention</h3></div><div class=students><div class=student><div class=\"flex-container tablet-hide\"><div class=student-profile-image><img class=profile-blue src=dist/images/profile.png alt=\"Example Student\"></div></div><div class=\"flex-container flex-column flex-spacearound flex-grow\"><div class=student-name><p>Example Student</p></div><div class=student-percentage><p>Overall Percentage:</p><div class=progress-bar><div class=status-red style=\"width: 30%;\"><span>30%</span></div></div></div></div></div><div class=student><div class=\"flex-container tablet-hide\"><div class=student-profile-image><img class=profile-blue src=dist/images/profile.png alt=\"Example Student\"></div></div><div class=\"flex-container flex-column flex-spacearound flex-grow\"><div class=student-name><p>Example Student</p></div><div class=student-percentage><p>Overall Percentage:</p><div class=progress-bar><div class=status-red style=\"width: 28%;\"><span>28%</span></div></div></div></div></div><div class=student><div class=\"flex-container tablet-hide\"><div class=student-profile-image><img class=profile-blue src=dist/images/profile.png alt=\"Example Student\"></div></div><div class=\"flex-container flex-column flex-spacearound flex-grow\"><div class=student-name><p>Example Student</p></div><div class=student-percentage><p>Overall Percentage:</p><div class=progress-bar><div class=status-red style=\"width: 20%;\"><span>20%</span></div></div></div></div></div></div></div><div class=student-section><div class=title><h3>Most Improvement</h3></div><div class=students><div class=student><div class=\"flex-container tablet-hide\"><div class=student-profile-image><img class=profile-blue src=dist/images/profile.png alt=\"Example Student\"></div></div><div class=\"flex-container flex-column flex-spacearound flex-grow\"><div class=student-name><p>Example Student</p></div><div class=student-percentage><p>Overall Percentage:</p><div class=progress-bar><div class=status-amber style=\"width: 75%;\"><span>75%</span></div></div></div></div></div><div class=student><div class=\"flex-container tablet-hide\"><div class=student-profile-image><img class=profile-blue src=dist/images/profile.png alt=\"Example Student\"></div></div><div class=\"flex-container flex-column flex-spacearound flex-grow\"><div class=student-name><p>Example Student</p></div><div class=student-percentage><p>Overall Percentage:</p><div class=progress-bar><div class=status-amber style=\"width: 70%;\"><span>70%</span></div></div></div></div></div><div class=student><div class=\"flex-container tablet-hide\"><div class=student-profile-image><img class=profile-blue src=dist/images/profile.png alt=\"Example Student\"></div></div><div class=\"flex-container flex-column flex-spacearound flex-grow\"><div class=student-name><p>Example Student</p></div><div class=student-percentage><p>Overall Percentage:</p><div class=progress-bar><div class=status-amber style=\"width: 53%;\"><span>53%</span></div></div></div></div></div></div></div></div></div></div></div>";
-};
-
-/***/ }),
-
-/***/ "./modules/lesson_manager/root/templates/active_plans.html":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function (scope) {
-  return scope.headerHTML + "<div class=\"flex-container expand margin-top-2\">" + scope.mainNavHTML + " " + scope.secondNavHTML + "</div>";
-};
-
-/***/ }),
-
-/***/ "./modules/lesson_manager/root/templates/inner_nav.html":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function (scope) {
-  return '<a href="./lesson_manager/" class="' + (/^lesson_manager\/?$/.test(scope.path) ? 'item active-white' : 'item') + '"><span>Active Lesson Plans</span></a> <a href=./lesson_manager/new_plan class="' + (/^lesson_manager\/new_plan\/?/.test(scope.path) ? 'item active-white' : 'item') + '"><span>Assign New Plan</span></a>';
-};
 
 /***/ }),
 
@@ -1744,9 +2422,9 @@ var _regenerator2 = _interopRequireDefault(_regenerator);
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _component = __webpack_require__("./core/component.js");
+var _html = __webpack_require__("./core/html.js");
 
-var _component2 = _interopRequireDefault(_component);
+var _component = __webpack_require__("./core/component.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1762,24 +2440,46 @@ var MainNav = function (_Component) {
     _inherits(MainNav, _Component);
 
     function MainNav() {
+        var _ref;
+
+        var _temp, _this, _ret;
+
         _classCallCheck(this, MainNav);
 
-        return _possibleConstructorReturn(this, (MainNav.__proto__ || Object.getPrototypeOf(MainNav)).apply(this, arguments));
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = MainNav.__proto__ || Object.getPrototypeOf(MainNav)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+            path: window.location.pathname.slice(1)
+        }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
     _createClass(MainNav, [{
         key: 'render',
         value: function () {
-            var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee() {
+            var _ref2 = _asyncToGenerator(_regenerator2.default.mark(function _callee() {
                 var path;
                 return _regenerator2.default.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
                             case 0:
-                                path = window.location.pathname.slice(1);
-                                return _context.abrupt('return', this.preparePage('nav/main/templates/main_nav', {
-                                    path: path
-                                }));
+                                path = this.state.path;
+                                return _context.abrupt('return', (0, _html.nav)('#main', (0, _html.div)('.nav-group', (0, _html.a)(path === '' ? '.item.active' : '.item', {
+                                    href: './'
+                                }, (0, _html.i)('.icon-home'), (0, _html.span)('Home')), (0, _html.a)(/^classroom/.test(path) ? '.item.active-orange' : '.item', {
+                                    href: './classroom/'
+                                }, (0, _html.i)('.icon-graduation-cap'), (0, _html.span)('Classroom')), (0, _html.a)(/^lesson_manager/.test(path) ? '.item.active-orange' : '.item', {
+                                    href: './lesson_manager/'
+                                }, (0, _html.i)('.icon-authoring'), (0, _html.span)('Lesson Manager')), (0, _html.a)(/^calendar/.test(path) ? '.item.active' : '.item', {
+                                    href: './calendar/'
+                                }, (0, _html.i)('.icon-calendar'), (0, _html.span)('Calendar')), (0, _html.a)(/^messages/.test(path) ? '.item.active-orange' : '.item', {
+                                    href: './messages/'
+                                }, (0, _html.i)('.icon-chat'), (0, _html.span)('Messages'))), (0, _html.div)('.nav-group', (0, _html.a)(/^search/.test(path) ? '.item.active' : '.item', {
+                                    href: './search/'
+                                }, (0, _html.i)('.icon-search'), (0, _html.span)('Search')), (0, _html.a)(/^settings/.test(path) ? '.item.active' : '.item', {
+                                    href: './settings/'
+                                }, (0, _html.i)('.icon-cogs'), (0, _html.span)('Classroom')), (0, _html.a)('.item', (0, _html.i)('.icon-key-inv'), (0, _html.span)('Accessibility')))));
 
                             case 2:
                             case 'end':
@@ -1790,7 +2490,7 @@ var MainNav = function (_Component) {
             }));
 
             function render() {
-                return _ref.apply(this, arguments);
+                return _ref2.apply(this, arguments);
             }
 
             return render;
@@ -1798,33 +2498,9 @@ var MainNav = function (_Component) {
     }]);
 
     return MainNav;
-}(_component2.default);
+}(_component.Component);
 
 exports.default = MainNav;
-
-/***/ }),
-
-/***/ "./modules/nav/main/templates/main_nav.html":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function (scope) {
-  return '<nav id=main><div class=nav-group><a href="./" class="' + (scope.path === '' ? 'item active' : 'item') + '"><i class=icon-home></i> <span>Home</span></a> <a href="./classroom/" class="' + (/^classroom/.test(scope.path) ? 'item active-orange' : 'item') + '"><i class=icon-graduation-cap></i> <span>Classroom</span></a> <a href="./lesson_manager/" class="' + (/^lesson_manager/.test(scope.path) ? 'item active-orange' : 'item') + '"><i class=icon-check></i> <span>Lesson Manager</span></a> <a class="' + (/^messages/.test(scope.path) ? 'item active' : 'item') + '"><i class=icon-chat></i> <span>Messages</span></a></div><div class=nav-group><a class="' + (/^search/.test(scope.path) ? 'item active' : 'item') + '"><i class=icon-search></i> <span>Search</span></a> <a class="' + (/^settings/.test(scope.path) ? 'item active' : 'item') + '"><i class=icon-cogs></i> <span>Settings</span></a> <a class=item><i class=icon-key-inv></i> <span>Accessibility</span></a></div></nav>';
-};
-
-/***/ }),
-
-/***/ "./modules/nav/second/templates/second_nav.html":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function (scope) {
-  return "<nav id=subnav><div id=nav-header><h3>" + scope.title + "</h3></div><div class=nav-group>" + scope.innerNavHTML + "</div></nav>";
-};
 
 /***/ }),
 
@@ -1844,9 +2520,9 @@ var _regenerator2 = _interopRequireDefault(_regenerator);
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _component = __webpack_require__("./core/component.js");
+var _html = __webpack_require__("./core/html.js");
 
-var _component2 = _interopRequireDefault(_component);
+var _component = __webpack_require__("./core/component.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1871,15 +2547,13 @@ var BasicSearch = function (_Component) {
         key: 'render',
         value: function () {
             var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee(data) {
-                var type;
+                var searchType;
                 return _regenerator2.default.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
                             case 0:
-                                type = data.type;
-                                return _context.abrupt('return', this.preparePage('search/basic/templates/basic', {
-                                    type: type
-                                }));
+                                searchType = data.searchType;
+                                return _context.abrupt('return', (0, _html.div)('.search', (0, _html.i)('.icon-search', { 'aria-hidden': true }), (0, _html.input)('.' + searchType, { type: 'text' })));
 
                             case 2:
                             case 'end':
@@ -1898,21 +2572,16 @@ var BasicSearch = function (_Component) {
     }]);
 
     return BasicSearch;
-}(_component2.default);
+}(_component.Component);
 
 exports.default = BasicSearch;
 
 /***/ }),
 
-/***/ "./modules/search/basic/templates/basic.html":
-/***/ (function(module, exports, __webpack_require__) {
+/***/ 0:
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-module.exports = function (scope) {
-  return "<div class=search><i class=icon-search aria-hidden=true></i> <input class=" + scope.type + " type=text></div>";
-};
+/* (ignored) */
 
 /***/ })
 

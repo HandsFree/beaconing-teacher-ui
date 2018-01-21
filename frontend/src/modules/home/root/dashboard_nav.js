@@ -1,10 +1,14 @@
 // @flow
+import { nav, a } from '../../../core/html';
 
-import Component from '../../../core/component';
+import { Component } from '../../../core/component';
 
 class DashboardNav extends Component {
-    async render(): Promise<string> {
-        return this.preparePage('home/root/templates/dashboard_nav', {});
+    async render() {
+        return nav(
+            '.mini.spaced.flex-justify-end',
+            a('.item', 'Edit Layout'),
+        );
     }
 }
 

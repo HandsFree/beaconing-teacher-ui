@@ -1,15 +1,20 @@
 // @flow
+import { nav, div, h3 } from '../../../core/html';
 
-import Component from '../../../core/component';
+import { Component } from '../../../core/component';
 
 class SecondNav extends Component {
-    async render(title: string, innerNav: Promise<string>): Promise<string> {
-        const innerNavHTML: string = await innerNav;
+    async render({ title, innerNav }: { title: string, innerNav: Promise<string> }) {
+        const innerNavEL = await innerNav;
 
-        return this.preparePage('nav/second/templates/second_nav', {
-            title,
-            innerNavHTML,
-        });
+        return nav(
+            '#subnav',
+            div(
+                '#nav-header',
+                h3(title),
+            ),
+            innerNavEL,
+        );
     }
 }
 

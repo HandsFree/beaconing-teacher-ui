@@ -3,12 +3,14 @@ package req
 import (
 	"bytes"
 	"fmt"
-	"git.juddus.com/HFC/beaconing.git/route"
-	"git.juddus.com/HFC/beaconing.git/serv"
-	"github.com/gin-contrib/sessions"
 	"io/ioutil"
 	"log"
 	"net/http"
+
+	"github.com/gin-contrib/sessions"
+
+	"git.juddus.com/HFC/beaconing/route"
+	"git.juddus.com/HFC/beaconing/serv"
 
 	jsoniter "github.com/json-iterator/go"
 )

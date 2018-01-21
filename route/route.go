@@ -1,7 +1,7 @@
 package route
 
 import (
-	"git.juddus.com/HFC/beaconing.git/serv"
+	"git.juddus.com/HFC/beaconing/serv"
 )
 
 type Route interface {
