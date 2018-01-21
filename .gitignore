@@ -87,7 +87,7 @@ vendor/*/
 !vendor.json
 
 # Omit secret file
-secret.go
+config/api.go
 
 # .git file
 beaconing.git
