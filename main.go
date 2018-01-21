@@ -17,7 +17,7 @@ import (
 func main() {
 	router := gin.Default()
 
-	store := sessions.NewCookieStore(auth.CreateSessionSecret(64), auth.CreateSessionSecret(16))
+	store := sessions.NewCookieStore(auth.CreateSessionSecret(32), auth.CreateSessionSecret(16))
 	router.Use(sessions.Sessions("mysession", store))
 
 	router.Use(gzip.Gzip(gzip.BestSpeed))
