@@ -1,12 +1,8 @@
 package req
 
 import (
-	log "log"
-	"net/http"
-
 	"git.juddus.com/HFC/beaconing/route"
 	"git.juddus.com/HFC/beaconing/serv"
-	jsoniter "github.com/json-iterator/go"
 )
 
 func NewLessonPlan(name string) LessonPlan {

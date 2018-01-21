@@ -28,6 +28,6 @@ func (r *CheckAuthRequest) Handle(s *serv.SessionContext) {
 	session := sessions.Default(s.Context)
 	accessToken := session.Get("access_token")
 	s.Jsonify(&CheckAuthJSON{
-		Status: accessToken != nil
+		Status: accessToken != nil,
 	})
 }
