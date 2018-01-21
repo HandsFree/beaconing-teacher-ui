@@ -22,6 +22,8 @@ func main() {
 
 	router.Use(gzip.Gzip(gzip.BestSpeed))
 
+	// TODO figure out how to make this work with
+	// the current routing system
 	router.NoRoute(func(c *gin.Context) {
 		c.String(404, "Error: 404 Page Not Found!")
 	})

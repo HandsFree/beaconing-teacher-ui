@@ -40,14 +40,5 @@ func (r *ActiveLessonPlans) Handle(s *serv.SessionContext) {
 		NewLessonPlan("Advanced Masonary"),
 		NewLessonPlan("Underwater Basket Weaving"),
 	}
-
-	json, err := jsoniter.Marshal(lps)
-	if err != nil {
-		// TODO proper error handling
-		log.Fatal(err)
-		return
-	}
-
-	s.Header("Content-Type", "application/json")
-	s.String(http.StatusOK, string(json))
+	s.Jsonify(lps)
 }
