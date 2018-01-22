@@ -6,8 +6,9 @@
 
 class RootComponent {
     containerID: string = 'app';
-    view: HTMLElement;
+    view: HTMLElement | Array<HTMLElement>;
     state: { [string]: any } = {};
+    params: { [string]: string } = {};
 
     updateView(view: HTMLElement) {
         if (document.body) {
@@ -18,17 +19,40 @@ class RootComponent {
         }
     }
 
+    appendView(view: HTMLElement) {
+        if (!this.view) {
+            this.view = [];
+        }
+
+        if (document.body) {
+            this.view.push(view);
+            document.body.appendChild(view);
+        } else {
+            throw new Error('[Beaconing] Document Body not found');
+        }
+    }
+
     async startLifecycle() {
         const element = await this.render();
 
-        this.updateView(element);
+        if (Array.isArray(element)) {
+            for (const view of element) {
+                this.appendView(view);
+            }
+        } else {
+            this.updateView(element);
+        }
 
         if (this.afterMount) {
             this.afterMount();
         }
     }
 
-    async start() {
+    async start(params: { [string]: string }) {
+        if (params) {
+            this.params = params;
+        }
+
         this.startLifecycle();
         console.log('[Beaconing] Root Component Started!');
     }

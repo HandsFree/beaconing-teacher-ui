@@ -28,7 +28,7 @@ const mainSettings = {
             {
                 test: /\.js$/,
                 use: [
-                    'babel-loader',
+                    'babel-loader?cacheDirectory=true',
                 ],
             },
             {
@@ -60,6 +60,7 @@ const mainSettings = {
         new webpack.optimize.UglifyJsPlugin({
             parallel: true,
             sourceMap: false,
+            cache: true,
             uglifyOptions: {
                 ie8: false,
                 ecma: 8,
@@ -98,6 +99,12 @@ const config = [
     {
         entry: {
             'pages/lesson_manager/index': './modules/lesson_manager/index.js',
+        },
+        ...mainSettings,
+    },
+    {
+        entry: {
+            'pages/authoring_tool/index': './modules/authoring_tool/index.js',
         },
         ...mainSettings,
     },

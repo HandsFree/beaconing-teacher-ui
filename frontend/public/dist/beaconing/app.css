@@ -1436,45 +1436,33 @@ main, main#students {
     font-size: 1.25em;
     padding: 1em; }
 
-#sort {
-  font-size: 1.1em;
-  color: #52595e;
-  align-items: center; }
-  #sort > .title {
-    flex: none;
-    padding: 0.5em; }
-  #sort .options {
-    flex-wrap: wrap;
-    align-items: center; }
-    #sort .options a {
-      display: inherit;
-      align-items: center;
-      padding: 0.5em; }
-      #sort .options a:hover {
-        text-decoration: underline;
-        cursor: pointer; }
-    #sort .options label {
-      flex: none;
-      display: inherit;
-      align-items: center;
-      padding: 0.5em;
-      margin: 0 0.25em; }
-    #sort .options input, #sort .options select {
-      margin: 0 0.5em;
-      padding: 0.25em;
-      background: none; }
-    #sort .options input {
-      outline: none;
-      border: none;
-      border-bottom: 1px solid #e87f62; }
-      #sort .options input:focus {
-        border-bottom: 2px solid #e87f62; }
-    #sort .options select {
-      outline: none;
-      border: none;
-      border-bottom: 1px solid #e87f62; }
-      #sort .options select:focus {
-        border-bottom: 2px solid #e87f62; }
+.sort {
+  padding-left: 1em; }
+  .sort .header span {
+    font-size: 1.2em; }
+  .sort .sort-group {
+    margin: 1em 0;
+    flex-direction: column; }
+    .sort .sort-group > .title {
+      margin-bottom: 0.4em;
+      padding-bottom: 0.2em; }
+      .sort .sort-group > .title span {
+        font-weight: 400; }
+    .sort .sort-group > .content {
+      flex-direction: column;
+      padding: 0 0.1em; }
+      .sort .sort-group > .content .sort-option {
+        padding: 0.25em 0.4em;
+        margin: 0.1em 0;
+        border-bottom: 1.5px dashed #e87f62; }
+        .sort .sort-group > .content .sort-option.active {
+          border-bottom: 1.5px solid #e87f62;
+          font-weight: 400; }
+          .sort .sort-group > .content .sort-option.active:hover {
+            border-bottom: 1.5px dashed #e87f62; }
+        .sort .sort-group > .content .sort-option:hover {
+          border-bottom: 1.5px solid #e87f62;
+          cursor: pointer; }
 
 textarea {
   flex-grow: 1;

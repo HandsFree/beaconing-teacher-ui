@@ -10,6 +10,7 @@ class GLPBox extends Component {
             domain,
             topic,
             description,
+            id,
         } = data;
 
         return div(
@@ -18,7 +19,13 @@ class GLPBox extends Component {
                 '.toolbar',
                 a('.item', 'View'),
                 a('.item', 'Options'),
-                a('.item', 'Edit'),
+                a(
+                    '.item',
+                    {
+                        href: `./authoring_tool?id=${encodeURIComponent(id)}&name=${encodeURIComponent(name)}&prev=lesson_manager`,
+                    },
+                    'Edit',
+                ),
             ),
             div(
                 '.title',

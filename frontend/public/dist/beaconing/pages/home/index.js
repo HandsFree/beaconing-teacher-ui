@@ -1345,6 +1345,7 @@ var RootComponent = function () {
 
         this.containerID = 'app';
         this.state = {};
+        this.params = {};
     }
 
     _createClass(RootComponent, [{
@@ -1358,10 +1359,25 @@ var RootComponent = function () {
             }
         }
     }, {
+        key: 'appendView',
+        value: function appendView(view) {
+            if (!this.view) {
+                this.view = [];
+            }
+
+            if (document.body) {
+                this.view.push(view);
+                document.body.appendChild(view);
+            } else {
+                throw new Error('[Beaconing] Document Body not found');
+            }
+        }
+    }, {
         key: 'startLifecycle',
         value: function () {
             var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee() {
-                var element;
+                var element, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, view;
+
                 return _regenerator2.default.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
@@ -1372,19 +1388,73 @@ var RootComponent = function () {
                             case 2:
                                 element = _context.sent;
 
+                                if (!Array.isArray(element)) {
+                                    _context.next = 25;
+                                    break;
+                                }
 
+                                _iteratorNormalCompletion = true;
+                                _didIteratorError = false;
+                                _iteratorError = undefined;
+                                _context.prev = 7;
+
+                                for (_iterator = element[Symbol.iterator](); !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                                    view = _step.value;
+
+                                    this.appendView(view);
+                                }
+                                _context.next = 15;
+                                break;
+
+                            case 11:
+                                _context.prev = 11;
+                                _context.t0 = _context['catch'](7);
+                                _didIteratorError = true;
+                                _iteratorError = _context.t0;
+
+                            case 15:
+                                _context.prev = 15;
+                                _context.prev = 16;
+
+                                if (!_iteratorNormalCompletion && _iterator.return) {
+                                    _iterator.return();
+                                }
+
+                            case 18:
+                                _context.prev = 18;
+
+                                if (!_didIteratorError) {
+                                    _context.next = 21;
+                                    break;
+                                }
+
+                                throw _iteratorError;
+
+                            case 21:
+                                return _context.finish(18);
+
+                            case 22:
+                                return _context.finish(15);
+
+                            case 23:
+                                _context.next = 26;
+                                break;
+
+                            case 25:
                                 this.updateView(element);
+
+                            case 26:
 
                                 if (this.afterMount) {
                                     this.afterMount();
                                 }
 
-                            case 5:
+                            case 27:
                             case 'end':
                                 return _context.stop();
                         }
                     }
-                }, _callee, this);
+                }, _callee, this, [[7, 11, 15, 23], [16,, 18, 22]]);
             }));
 
             function startLifecycle() {
@@ -1396,15 +1466,19 @@ var RootComponent = function () {
     }, {
         key: 'start',
         value: function () {
-            var _ref2 = _asyncToGenerator(_regenerator2.default.mark(function _callee2() {
+            var _ref2 = _asyncToGenerator(_regenerator2.default.mark(function _callee2(params) {
                 return _regenerator2.default.wrap(function _callee2$(_context2) {
                     while (1) {
                         switch (_context2.prev = _context2.next) {
                             case 0:
+                                if (params) {
+                                    this.params = params;
+                                }
+
                                 this.startLifecycle();
                                 console.log('[Beaconing] Root Component Started!');
 
-                            case 2:
+                            case 3:
                             case 'end':
                                 return _context2.stop();
                         }
@@ -1412,7 +1486,7 @@ var RootComponent = function () {
                 }, _callee2, this);
             }));
 
-            function start() {
+            function start(_x) {
                 return _ref2.apply(this, arguments);
             }
 
@@ -1683,6 +1757,8 @@ var _regenerator = __webpack_require__("../node_modules/babel-runtime/regenerato
 
 var _regenerator2 = _interopRequireDefault(_regenerator);
 
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -1698,6 +1774,7 @@ var Router = function () {
         _classCallCheck(this, Router);
 
         this.routes = new Map();
+        this.params = {};
     }
 
     _createClass(Router, [{
@@ -1715,8 +1792,34 @@ var Router = function () {
             });
         }
     }, {
+        key: 'getParams',
+        value: function getParams() {
+            var path = window.location.href;
+
+            if (/\?/g.test(path)) {
+                var index = path.search(/\?/g);
+                var query = path.substr(index + 1);
+                var vars = query.split('&');
+                var params = {};
+
+                vars.forEach(function (value) {
+                    var _value$split$filter = value.split('=').filter(function (v) {
+                        return v !== '=';
+                    }),
+                        _value$split$filter2 = _slicedToArray(_value$split$filter, 2),
+                        first = _value$split$filter2[0],
+                        second = _value$split$filter2[1];
+
+                    params[first] = second;
+                });
+
+                this.params = params;
+            }
+        }
+    }, {
         key: 'start',
         value: function start() {
+            this.getParams();
             this.initEvents();
             this.findController();
         }
@@ -1754,7 +1857,7 @@ var Router = function () {
 
 
                                     if (controller) {
-                                        controller.start();
+                                        controller.start(this.params);
                                     }
                                 } else {
                                     container = document.getElementById('app');
@@ -2553,7 +2656,7 @@ var BasicSearch = function (_Component) {
                         switch (_context.prev = _context.next) {
                             case 0:
                                 searchType = data.searchType;
-                                return _context.abrupt('return', (0, _html.div)('.search', (0, _html.i)('.icon-search', { 'aria-hidden': true }), (0, _html.input)('.' + searchType, { type: 'text' })));
+                                return _context.abrupt('return', (0, _html.div)('.search', (0, _html.i)('.icon-search', { 'aria-hidden': true }), (0, _html.input)('.' + searchType + '.search-input', { type: 'text' })));
 
                             case 2:
                             case 'end':

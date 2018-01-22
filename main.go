@@ -36,6 +36,7 @@ func main() {
 		// simple pages
 		page.NewPage("/", "Home", "dist/beaconing/pages/home/index.js"),
 		page.NewPage("/lesson_manager", "Lesson Manager", "dist/beaconing/pages/lesson_manager/index.js"),
+		page.NewPage("/authoring_tool", "Authoring Tool", "dist/beaconing/pages/authoring_tool/index.js"),
 		// page.NewPage("/classroom", "Classroom", "dist/beaconing/pages/classroom/index.js"),
 
 		// our api requests, these are

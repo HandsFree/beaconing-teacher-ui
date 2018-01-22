@@ -7,7 +7,7 @@ import MainNav from '../../nav/main';
 import SecondNav from '../../nav/second';
 import InnerNav from './inner_nav';
 import BasicSearch from '../../search/basic';
-import Sort from '../../sort';
+import Sort from './sort';
 import ActiveGLPs from './active_glps';
 
 class ActivePlans extends RootComponent {
@@ -50,6 +50,7 @@ class ActivePlans extends RootComponent {
                     mainNavEl,
                     secondNavEl,
                     main(
+                        '#active-glps',
                         section('.flex-column', searchEl),
                         section(
                             '.flex-spacebetween',

@@ -6,6 +6,7 @@ import type { Component, Route } from './types';
 
 class Router {
     routes: Map<string, Component> = new Map();
+    params: { [string]: string } = {};
 
     initRoute(path: string, controller: Component) {
         this.routes.set(path, controller);
@@ -17,7 +18,27 @@ class Router {
         });
     }
 
+    getParams() {
+        const path = window.location.href;
+
+        if (/\?/g.test(path)) {
+            const index: number = path.search(/\?/g);
+            const query: string = path.substr(index + 1);
+            const vars: string[] = query.split('&');
+            const params: { [string]: string } = {};
+
+            vars.forEach((value) => {
+                const [first, second] = value.split('=').filter(v => v !== '=');
+
+                params[first] = second;
+            });
+
+            this.params = params;
+        }
+    }
+
     start() {
+        this.getParams();
         this.initEvents();
         this.findController();
     }
@@ -44,7 +65,7 @@ class Router {
             const controller = this.routes.get(path);
 
             if (controller) {
-                controller.start();
+                controller.start(this.params);
             }
         } else {
             const container = document.getElementById('app');

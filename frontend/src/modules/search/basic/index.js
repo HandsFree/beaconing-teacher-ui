@@ -10,7 +10,7 @@ class BasicSearch extends Component {
         return div(
             '.search',
             i('.icon-search', { 'aria-hidden': true }),
-            input(`.${searchType}`, { type: 'text' }),
+            input(`.${searchType}.search-input`, { type: 'text' }),
         );
     }
 }
