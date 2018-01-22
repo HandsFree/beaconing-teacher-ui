@@ -1317,7 +1317,8 @@ section {
     font-size: 1.2em;
     letter-spacing: 1px;
     display: flex;
-    justify-content: space-between; }
+    justify-content: space-between;
+    flex-shrink: 1; }
     .tile > .title p {
       margin: 0; }
     .tile > .title i {
@@ -1328,7 +1329,7 @@ section {
     padding: 0.5em;
     background: #3b4f61;
     color: white;
-    height: 100%; }
+    flex-grow: 1; }
     .tile .content .content-title {
       padding: 1.5em 0.25em; }
       .tile .content .content-title h3 {
