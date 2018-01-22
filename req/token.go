@@ -27,9 +27,15 @@ func (r *TokenRequest) Handle(s *serv.SessionContext) {
 		return
 	}
 
+	redirectLocation := s.Query("redirect")
+	log.Println("token request is being handled with a redirect to", redirectLocation)
+
+	// TODO sanitise me or whatever
+	// this should be a path in theory!
+
 	session := sessions.Default(s.Context)
 	session.Set("code", code)
-	if !s.GetAuthToken() {
+	if !serv.GetAuthToken(s) {
 		// some kind of failure here
 		// 505 redirect?
 		return
@@ -39,6 +45,5 @@ func (r *TokenRequest) Handle(s *serv.SessionContext) {
 		log.Fatal(err)
 		return
 	}
-
-	s.Redirect(http.StatusTemporaryRedirect, "/")
+	s.Redirect(http.StatusTemporaryRedirect, redirectLocation)
 }
