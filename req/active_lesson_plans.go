@@ -1,12 +1,8 @@
 package req
 
 import (
-	log "log"
-	"net/http"
-
 	"git.juddus.com/HFC/beaconing/route"
 	"git.juddus.com/HFC/beaconing/serv"
-	jsoniter "github.com/json-iterator/go"
 )
 
 func NewLessonPlan(name string) LessonPlan {
@@ -40,14 +36,5 @@ func (r *ActiveLessonPlans) Handle(s *serv.SessionContext) {
 		NewLessonPlan("Advanced Masonary"),
 		NewLessonPlan("Underwater Basket Weaving"),
 	}
-
-	json, err := jsoniter.Marshal(lps)
-	if err != nil {
-		// TODO proper error handling
-		log.Fatal(err)
-		return
-	}
-
-	s.Header("Content-Type", "application/json")
-	s.String(http.StatusOK, string(json))
+	s.Jsonify(lps)
 }

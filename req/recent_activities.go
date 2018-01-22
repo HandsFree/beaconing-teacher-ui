@@ -1,12 +1,8 @@
 package req
 
 import (
-	log "log"
-	"net/http"
-
 	"git.juddus.com/HFC/beaconing/route"
 	"git.juddus.com/HFC/beaconing/serv"
-	jsoniter "github.com/json-iterator/go"
 )
 
 // TODO: move ALL of these structures from the widgets into
@@ -82,14 +78,5 @@ func (r *RecentActivities) Handle(s *serv.SessionContext) {
 	activities := []Activity{
 		NewLPAssignedActivity("algebra"),
 	}
-
-	json, err := jsoniter.Marshal(activities)
-	if err != nil {
-		// TODO proper error handling
-		log.Fatal(err)
-		return
-	}
-
-	s.Header("Content-Type", "application/json")
-	s.String(http.StatusOK, string(json))
+	s.Jsonify(activities)
 }

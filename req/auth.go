@@ -1,12 +1,7 @@
 package req
 
 import (
-	"log"
-	"net/http"
-
 	"github.com/gin-contrib/sessions"
-
-	jsoniter "github.com/json-iterator/go"
 
 	"git.juddus.com/HFC/beaconing/route"
 	"git.juddus.com/HFC/beaconing/serv"
@@ -29,25 +24,10 @@ func NewCheckAuthRequest(path string) *CheckAuthRequest {
 	return req
 }
 
-// Handle handles incoming requests
 func (r *CheckAuthRequest) Handle(s *serv.SessionContext) {
-	authJSON := &CheckAuthJSON{
-		Status: true,
-	}
-
 	session := sessions.Default(s.Context)
-
 	accessToken := session.Get("access_token")
-	if accessToken == nil {
-		authJSON.Status = false
-	}
-
-	marshalJSON, err := jsoniter.Marshal(authJSON)
-	if err != nil {
-		log.Fatal(err)
-		return
-	}
-
-	s.Header("Content-Type", "application/json")
-	s.String(http.StatusOK, string(marshalJSON))
+	s.Jsonify(&CheckAuthJSON{
+		Status: accessToken != nil,
+	})
 }

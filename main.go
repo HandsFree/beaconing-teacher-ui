@@ -17,11 +17,13 @@ import (
 func main() {
 	router := gin.Default()
 
-	store := sessions.NewCookieStore(auth.CreateSessionSecret(64), auth.CreateSessionSecret(16))
+	store := sessions.NewCookieStore(auth.CreateSessionSecret(32), auth.CreateSessionSecret(16))
 	router.Use(sessions.Sessions("mysession", store))
 
 	router.Use(gzip.Gzip(gzip.BestSpeed))
 
+	// TODO figure out how to make this work with
+	// the current routing system
 	router.NoRoute(func(c *gin.Context) {
 		c.String(404, "Error: 404 Page Not Found!")
 	})
@@ -44,6 +46,9 @@ func main() {
 		req.NewStudentOverview("/widget/student_overview"),
 		req.NewRecentActivities("/widget/recent_activities"),
 		req.NewActiveLessonPlans("/widget/active_lesson_plans"),
+
+		// not sure if we should do per-page? feel like the API
+		// is quite abstract righ tnow
 
 		// api wrapper requests
 		req.NewTokenRequest("/intent/token"),

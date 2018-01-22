@@ -1,15 +1,10 @@
 package req
 
 import (
-	"net/http"
 	"strconv"
-
-	"log"
 	"math/rand"
-
 	"git.juddus.com/HFC/beaconing/route"
 	"git.juddus.com/HFC/beaconing/serv"
-	jsoniter "github.com/json-iterator/go"
 )
 
 type StudentOverview struct {
@@ -127,15 +122,5 @@ func (r *StudentOverview) Handle(s *serv.SessionContext) {
 		NeedsAttention:  genDummyStudentData(fetchCount),
 		MostImprovement: genDummyStudentData(fetchCount),
 	}
-
-	json, err := jsoniter.Marshal(&req)
-	if err != nil {
-		// TODO proper error handling
-		log.Fatal(err)
-		return
-	}
-
-	// send a response, for now just a number
-	s.Header("Content-Type", "application/json")
-	s.String(http.StatusOK, string(json))
+	s.Jsonify(req)
 }

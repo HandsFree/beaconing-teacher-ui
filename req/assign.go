@@ -64,12 +64,11 @@ func (a *AssignRequest) Handle(s *serv.SessionContext) {
 	}
 
 	assignReqData := &assignData{studentID, glpID}
-	strJSON, err := assignReqData.assignGLP(accessToken.(string))
+	assignReq, err := assignReqData.assignGLP(accessToken.(string))
 	if err != nil {
 		log.Fatal(err)
 		return
 	}
 
-	s.Header("Content-Type", "application/json")
-	s.String(http.StatusOK, strJSON)
+	s.Json(assignReq)
 }
