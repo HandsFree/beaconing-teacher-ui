@@ -64,7 +64,7 @@ class StudentOverview extends Component {
                                             img(
                                                 '.profile-blue',
                                                 {
-                                                    src: 'dist/beaconing/images/profile.png',
+                                                    src: `//${window.location.host}/dist/beaconing/images/profile.png`,
                                                     alt: 'Example Student',
                                                 },
                                             ),
@@ -103,7 +103,7 @@ class StudentOverview extends Component {
                                             img(
                                                 '.profile-blue',
                                                 {
-                                                    src: 'dist/beaconing/images/profile.png',
+                                                    src: `//${window.location.host}/dist/beaconing/images/profile.png`,
                                                     alt: 'Example Student',
                                                 },
                                             ),
@@ -142,7 +142,7 @@ class StudentOverview extends Component {
                                             img(
                                                 '.profile-blue',
                                                 {
-                                                    src: 'dist/beaconing/images/profile.png',
+                                                    src: `//${window.location.host}/dist/beaconing/images/profile.png`,
                                                     alt: 'Example Student',
                                                 },
                                             ),
@@ -191,7 +191,7 @@ class StudentOverview extends Component {
                                             img(
                                                 '.profile-blue',
                                                 {
-                                                    src: 'dist/beaconing/images/profile.png',
+                                                    src: `//${window.location.host}/dist/beaconing/images/profile.png`,
                                                     alt: 'Example Student',
                                                 },
                                             ),
@@ -230,7 +230,7 @@ class StudentOverview extends Component {
                                             img(
                                                 '.profile-blue',
                                                 {
-                                                    src: 'dist/beaconing/images/profile.png',
+                                                    src: `//${window.location.host}/dist/beaconing/images/profile.png`,
                                                     alt: 'Example Student',
                                                 },
                                             ),
@@ -269,7 +269,7 @@ class StudentOverview extends Component {
                                             img(
                                                 '.profile-blue',
                                                 {
-                                                    src: 'dist/beaconing/images/profile.png',
+                                                    src: `//${window.location.host}/dist/beaconing/images/profile.png`,
                                                     alt: 'Example Student',
                                                 },
                                             ),
@@ -318,7 +318,7 @@ class StudentOverview extends Component {
                                             img(
                                                 '.profile-blue',
                                                 {
-                                                    src: 'dist/beaconing/images/profile.png',
+                                                    src: `//${window.location.host}/dist/beaconing/images/profile.png`,
                                                     alt: 'Example Student',
                                                 },
                                             ),
@@ -357,7 +357,7 @@ class StudentOverview extends Component {
                                             img(
                                                 '.profile-blue',
                                                 {
-                                                    src: 'dist/beaconing/images/profile.png',
+                                                    src: `//${window.location.host}/dist/beaconing/images/profile.png`,
                                                     alt: 'Example Student',
                                                 },
                                             ),
@@ -396,7 +396,7 @@ class StudentOverview extends Component {
                                             img(
                                                 '.profile-blue',
                                                 {
-                                                    src: 'dist/beaconing/images/profile.png',
+                                                    src: `//${window.location.host}/dist/beaconing/images/profile.png`,
                                                     alt: 'Example Student',
                                                 },
                                             ),

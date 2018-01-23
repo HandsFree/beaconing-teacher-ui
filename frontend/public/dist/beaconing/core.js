@@ -1017,6 +1017,50 @@ var APICore = function () {
 
             return getGLPs;
         }()
+    }, {
+        key: 'getStudents',
+        value: function () {
+            var _ref5 = _asyncToGenerator(_regenerator2.default.mark(function _callee4() {
+                var auth, students;
+                return _regenerator2.default.wrap(function _callee4$(_context4) {
+                    while (1) {
+                        switch (_context4.prev = _context4.next) {
+                            case 0:
+                                _context4.next = 2;
+                                return this.checkAuth();
+
+                            case 2:
+                                auth = _context4.sent;
+
+                                if (!auth) {
+                                    _context4.next = 8;
+                                    break;
+                                }
+
+                                _context4.next = 6;
+                                return this.get('./intent/students');
+
+                            case 6:
+                                students = _context4.sent;
+                                return _context4.abrupt('return', students);
+
+                            case 8:
+                                return _context4.abrupt('return', false);
+
+                            case 9:
+                            case 'end':
+                                return _context4.stop();
+                        }
+                    }
+                }, _callee4, this);
+            }));
+
+            function getStudents() {
+                return _ref5.apply(this, arguments);
+            }
+
+            return getStudents;
+        }()
     }]);
 
     return APICore;

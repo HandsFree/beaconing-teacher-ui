@@ -39,7 +39,7 @@ func main() {
 		page.NewPage("/", "Home", "dist/beaconing/pages/home/index.js"),
 		page.NewPage("/lesson_manager", "Lesson Manager | Active Plans", "dist/beaconing/pages/lesson_manager/index.js"),
 		page.NewPage("/authoring_tool", "Authoring Tool", "dist/beaconing/pages/authoring_tool/index.js"),
-		// page.NewPage("/classroom", "Classroom", "dist/beaconing/pages/classroom/index.js"),
+		page.NewPage("/classroom", "Classroom", "dist/beaconing/pages/classroom/index.js"),
 
 		// our api requests, these are
 		// per component for a modular thing

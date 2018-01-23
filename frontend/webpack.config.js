@@ -108,6 +108,12 @@ const config = [
         },
         ...mainSettings,
     },
+    {
+        entry: {
+            'pages/classroom/index': './modules/classroom/index.js',
+        },
+        ...mainSettings,
+    },
 ];
 
 module.exports = config;

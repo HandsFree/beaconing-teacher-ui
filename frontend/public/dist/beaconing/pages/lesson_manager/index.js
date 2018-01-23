@@ -1337,8 +1337,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /* eslint-disable class-methods-use-this, no-restricted-syntax */
 
-// use hyperscript to make elements, link components to elements
-
 var RootComponent = function () {
     function RootComponent() {
         _classCallCheck(this, RootComponent);
@@ -1526,9 +1524,6 @@ var Component = function () {
         value: function appendView(view) {
             this.view.appendChild(view);
         }
-
-        // calls start function, binds updates, handles functions after mount, follow state
-
     }, {
         key: 'attach',
         value: function () {
@@ -1939,7 +1934,7 @@ var Header = function (_Component) {
 
         return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Header.__proto__ || Object.getPrototypeOf(Header)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
             teacherName: 'John Smith',
-            teacherIMG: 'dist/beaconing/images/profile.png'
+            teacherIMG: '//' + window.location.host + '/dist/beaconing/images/profile.png'
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
@@ -1954,7 +1949,7 @@ var Header = function (_Component) {
                                 return _context.abrupt('return', (0, _html.header)('#main-header', (0, _html.div)('.logo', (0, _html.a)({
                                     href: './'
                                 }, (0, _html.img)({
-                                    src: 'dist/beaconing/images/logo.png',
+                                    src: '//' + window.location.host + '/dist/beaconing/images/logo.png',
                                     alt: 'Click to go to Home'
                                 }))), (0, _html.div)('.profile', (0, _html.div)('.logout', (0, _html.a)('Log Out')), (0, _html.div)('.profile-img', (0, _html.img)('.profile-blue', {
                                     src: this.state.teacherIMG,
@@ -2431,9 +2426,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /* eslint-disable no-restricted-syntax */
 
 var listConfig = {
-    listClass: 'plans-container',
     valueNames: ['name', 'domain', 'topic', 'description'],
-    searchClass: 'search-input',
     indexAsync: true
 };
 
@@ -2448,13 +2441,16 @@ var LoadGLPs = function (_Component) {
 
     _createClass(LoadGLPs, [{
         key: 'render',
+
+        // list: List;
+
         value: function () {
             var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee() {
                 return _regenerator2.default.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
                             case 0:
-                                return _context.abrupt('return', (0, _html.div)('.plans-container.flex-wrap'));
+                                return _context.abrupt('return', (0, _html.div)('.plans-container.list.flex-wrap'));
 
                             case 1:
                             case 'end':
@@ -2753,7 +2749,7 @@ var Loading = function (_Component) {
                         switch (_context.prev = _context.next) {
                             case 0:
                                 return _context.abrupt('return', (0, _html.div)('.loading-container', (0, _html.div)('.loading', (0, _html.img)({
-                                    src: 'dist/beaconing/images/loading.gif',
+                                    src: '//' + window.location.host + '/dist/beaconing/images/loading.gif',
                                     alt: 'Loading'
                                 }), (0, _html.span)('Loading...'))));
 
@@ -2853,7 +2849,11 @@ var MainNav = function (_Component) {
                                     href: './search/'
                                 }, (0, _html.i)('.icon-search'), (0, _html.span)('Search')), (0, _html.a)(/^settings/.test(path) ? '.item.active' : '.item', {
                                     href: './settings/'
-                                }, (0, _html.i)('.icon-cogs'), (0, _html.span)('Classroom')), (0, _html.a)('.item', (0, _html.i)('.icon-key-inv'), (0, _html.span)('Accessibility')))));
+                                }, (0, _html.i)('.icon-cogs'), (0, _html.span)('Settings')), (0, _html.a)('.item', {
+                                    onclick: function onclick() {
+                                        window.abarRuntime.open();
+                                    }
+                                }, (0, _html.i)('.icon-key-inv'), (0, _html.span)('Accessibility')))));
 
                             case 2:
                             case 'end':
@@ -3007,7 +3007,7 @@ var BasicSearch = function (_Component) {
                         switch (_context.prev = _context.next) {
                             case 0:
                                 searchType = data.searchType;
-                                return _context.abrupt('return', (0, _html.div)('.search', (0, _html.i)('.icon-search', { 'aria-hidden': true }), (0, _html.input)('.' + searchType + '.search-input', { type: 'text' })));
+                                return _context.abrupt('return', (0, _html.div)('.search.fuzzy-search', (0, _html.i)('.icon-search', { 'aria-hidden': true }), (0, _html.input)('.' + searchType, { type: 'text' })));
 
                             case 2:
                             case 'end':

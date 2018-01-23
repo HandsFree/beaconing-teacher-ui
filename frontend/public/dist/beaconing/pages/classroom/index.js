@@ -68,7 +68,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./modules/authoring_tool/index.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./modules/classroom/index.js");
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -1885,7 +1885,7 @@ exports.default = Router;
 
 /***/ }),
 
-/***/ "./modules/authoring_tool/index.js":
+/***/ "./modules/classroom/index.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1895,9 +1895,9 @@ var _router = __webpack_require__("./core/router.js");
 
 var _router2 = _interopRequireDefault(_router);
 
-var _authoring_tool = __webpack_require__("./modules/authoring_tool/root/authoring_tool.js");
+var _students = __webpack_require__("./modules/classroom/root/students.js");
 
-var _authoring_tool2 = _interopRequireDefault(_authoring_tool);
+var _students2 = _interopRequireDefault(_students);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1905,14 +1905,414 @@ var router = new _router2.default();
 
 router.setRoutes([{
     path: '/',
-    controller: new _authoring_tool2.default()
+    controller: new _students2.default()
 }]);
 
 router.start();
 
 /***/ }),
 
-/***/ "./modules/authoring_tool/root/authoring_tool.js":
+/***/ "./modules/classroom/root/inner_nav.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _regenerator = __webpack_require__("../node_modules/babel-runtime/regenerator/index.js");
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _html = __webpack_require__("./core/html.js");
+
+var _component = __webpack_require__("./core/component.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var InnerNav = function (_Component) {
+    _inherits(InnerNav, _Component);
+
+    function InnerNav() {
+        var _ref;
+
+        var _temp, _this, _ret;
+
+        _classCallCheck(this, InnerNav);
+
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = InnerNav.__proto__ || Object.getPrototypeOf(InnerNav)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+            path: window.location.pathname.slice(1)
+        }, _temp), _possibleConstructorReturn(_this, _ret);
+    }
+
+    _createClass(InnerNav, [{
+        key: 'render',
+        value: function () {
+            var _ref2 = _asyncToGenerator(_regenerator2.default.mark(function _callee() {
+                var path;
+                return _regenerator2.default.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                path = this.state.path;
+                                return _context.abrupt('return', (0, _html.div)('.nav-group', (0, _html.a)(/^classroom\/?$/.test(path) ? '.item.active-white' : '.item', {
+                                    href: './classroom/'
+                                }, (0, _html.span)('Students'))));
+
+                            case 2:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function render() {
+                return _ref2.apply(this, arguments);
+            }
+
+            return render;
+        }()
+    }]);
+
+    return InnerNav;
+}(_component.Component);
+
+exports.default = InnerNav;
+
+/***/ }),
+
+/***/ "./modules/classroom/root/load_students.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _regenerator = __webpack_require__("../node_modules/babel-runtime/regenerator/index.js");
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _html = __webpack_require__("./core/html.js");
+
+var _component = __webpack_require__("./core/component.js");
+
+var _student_box = __webpack_require__("./modules/classroom/root/student_box.js");
+
+var _student_box2 = _interopRequireDefault(_student_box);
+
+var _loading = __webpack_require__("./modules/loading/index.js");
+
+var _loading2 = _interopRequireDefault(_loading);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/* eslint-disable no-restricted-syntax */
+
+var LoadStudents = function (_Component) {
+    _inherits(LoadStudents, _Component);
+
+    function LoadStudents() {
+        _classCallCheck(this, LoadStudents);
+
+        return _possibleConstructorReturn(this, (LoadStudents.__proto__ || Object.getPrototypeOf(LoadStudents)).apply(this, arguments));
+    }
+
+    _createClass(LoadStudents, [{
+        key: 'render',
+        value: function () {
+            var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee() {
+                var loading, loadingEl;
+                return _regenerator2.default.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                loading = new _loading2.default();
+                                _context.next = 3;
+                                return loading.attach();
+
+                            case 3:
+                                loadingEl = _context.sent;
+                                return _context.abrupt('return', (0, _html.section)('.flex-container.flex-wrap.margin-20.list', loadingEl));
+
+                            case 5:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function render() {
+                return _ref.apply(this, arguments);
+            }
+
+            return render;
+        }()
+    }, {
+        key: 'load',
+        value: function () {
+            var _ref2 = _asyncToGenerator(_regenerator2.default.mark(function _callee2() {
+                var _this2 = this;
+
+                var students, promArr, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, student, id, username, studentBox, studentBoxProm;
+
+                return _regenerator2.default.wrap(function _callee2$(_context2) {
+                    while (1) {
+                        switch (_context2.prev = _context2.next) {
+                            case 0:
+                                _context2.next = 2;
+                                return window.beaconingAPI.getStudents();
+
+                            case 2:
+                                this.state.students = _context2.sent;
+                                students = Object.values(this.state.students);
+                                promArr = [];
+                                _iteratorNormalCompletion = true;
+                                _didIteratorError = false;
+                                _iteratorError = undefined;
+                                _context2.prev = 8;
+
+
+                                for (_iterator = students[Symbol.iterator](); !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                                    student = _step.value;
+                                    id = student.id, username = student.username;
+                                    studentBox = new _student_box2.default();
+                                    studentBoxProm = studentBox.attach({
+                                        id: id,
+                                        username: username
+                                    });
+
+
+                                    promArr.push(studentBoxProm);
+                                }
+
+                                _context2.next = 16;
+                                break;
+
+                            case 12:
+                                _context2.prev = 12;
+                                _context2.t0 = _context2['catch'](8);
+                                _didIteratorError = true;
+                                _iteratorError = _context2.t0;
+
+                            case 16:
+                                _context2.prev = 16;
+                                _context2.prev = 17;
+
+                                if (!_iteratorNormalCompletion && _iterator.return) {
+                                    _iterator.return();
+                                }
+
+                            case 19:
+                                _context2.prev = 19;
+
+                                if (!_didIteratorError) {
+                                    _context2.next = 22;
+                                    break;
+                                }
+
+                                throw _iteratorError;
+
+                            case 22:
+                                return _context2.finish(19);
+
+                            case 23:
+                                return _context2.finish(16);
+
+                            case 24:
+                                Promise.all(promArr).then(function (elements) {
+                                    var _iteratorNormalCompletion2 = true;
+                                    var _didIteratorError2 = false;
+                                    var _iteratorError2 = undefined;
+
+                                    try {
+                                        for (var _iterator2 = elements[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                                            var el = _step2.value;
+
+                                            _this2.appendView(el);
+                                        }
+                                    } catch (err) {
+                                        _didIteratorError2 = true;
+                                        _iteratorError2 = err;
+                                    } finally {
+                                        try {
+                                            if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                                                _iterator2.return();
+                                            }
+                                        } finally {
+                                            if (_didIteratorError2) {
+                                                throw _iteratorError2;
+                                            }
+                                        }
+                                    }
+                                });
+
+                            case 25:
+                            case 'end':
+                                return _context2.stop();
+                        }
+                    }
+                }, _callee2, this, [[8, 12, 16, 24], [17,, 19, 23]]);
+            }));
+
+            function load() {
+                return _ref2.apply(this, arguments);
+            }
+
+            return load;
+        }()
+    }, {
+        key: 'afterMount',
+        value: function () {
+            var _ref3 = _asyncToGenerator(_regenerator2.default.mark(function _callee3() {
+                var loading;
+                return _regenerator2.default.wrap(function _callee3$(_context3) {
+                    while (1) {
+                        switch (_context3.prev = _context3.next) {
+                            case 0:
+                                _context3.next = 2;
+                                return this.load();
+
+                            case 2:
+
+                                // temporary solution
+                                loading = this.view.getElementsByClassName('loading-container')[0];
+
+
+                                this.view.removeChild(loading);
+
+                            case 4:
+                            case 'end':
+                                return _context3.stop();
+                        }
+                    }
+                }, _callee3, this);
+            }));
+
+            function afterMount() {
+                return _ref3.apply(this, arguments);
+            }
+
+            return afterMount;
+        }()
+    }]);
+
+    return LoadStudents;
+}(_component.Component);
+
+exports.default = LoadStudents;
+
+/***/ }),
+
+/***/ "./modules/classroom/root/student_box.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _regenerator = __webpack_require__("../node_modules/babel-runtime/regenerator/index.js");
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _html = __webpack_require__("./core/html.js");
+
+var _component = __webpack_require__("./core/component.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var StudentBox = function (_Component) {
+    _inherits(StudentBox, _Component);
+
+    function StudentBox() {
+        _classCallCheck(this, StudentBox);
+
+        return _possibleConstructorReturn(this, (StudentBox.__proto__ || Object.getPrototypeOf(StudentBox)).apply(this, arguments));
+    }
+
+    _createClass(StudentBox, [{
+        key: 'render',
+        value: function () {
+            var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee(data) {
+                var id, username;
+                return _regenerator2.default.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                id = data.id, username = data.username;
+                                return _context.abrupt('return', (0, _html.div)('.student-box', (0, _html.figure)((0, _html.img)({
+                                    src: '//' + window.location.host + '/dist/beaconing/images/student.jpg'
+                                })), (0, _html.div)('.info.flex-column', (0, _html.div)('.title', (0, _html.h4)(username)), (0, _html.a)({
+                                    href: './classroom/student?id=' + id
+                                }, 'View Student'))));
+
+                            case 2:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function render(_x) {
+                return _ref.apply(this, arguments);
+            }
+
+            return render;
+        }()
+    }]);
+
+    return StudentBox;
+}(_component.Component);
+
+exports.default = StudentBox;
+
+/***/ }),
+
+/***/ "./modules/classroom/root/students.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1934,13 +2334,29 @@ var _html = __webpack_require__("./core/html.js");
 
 var _component = __webpack_require__("./core/component.js");
 
-var _prompt = __webpack_require__("./modules/authoring_tool/root/prompt.js");
+var _root = __webpack_require__("./modules/header/root/index.js");
 
-var _prompt2 = _interopRequireDefault(_prompt);
+var _root2 = _interopRequireDefault(_root);
 
-var _iframe = __webpack_require__("./modules/authoring_tool/root/iframe.js");
+var _main = __webpack_require__("./modules/nav/main/index.js");
 
-var _iframe2 = _interopRequireDefault(_iframe);
+var _main2 = _interopRequireDefault(_main);
+
+var _second = __webpack_require__("./modules/nav/second/index.js");
+
+var _second2 = _interopRequireDefault(_second);
+
+var _inner_nav = __webpack_require__("./modules/classroom/root/inner_nav.js");
+
+var _inner_nav2 = _interopRequireDefault(_inner_nav);
+
+var _basic = __webpack_require__("./modules/search/basic/index.js");
+
+var _basic2 = _interopRequireDefault(_basic);
+
+var _load_students = __webpack_require__("./modules/classroom/root/load_students.js");
+
+var _load_students2 = _interopRequireDefault(_load_students);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1952,43 +2368,141 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var AuthoringTool = function (_RootComponent) {
-    _inherits(AuthoringTool, _RootComponent);
+var Students = function (_RootComponent) {
+    _inherits(Students, _RootComponent);
 
-    function AuthoringTool() {
+    function Students() {
+        _classCallCheck(this, Students);
+
+        return _possibleConstructorReturn(this, (Students.__proto__ || Object.getPrototypeOf(Students)).apply(this, arguments));
+    }
+
+    _createClass(Students, [{
+        key: 'render',
+        value: function () {
+            var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee() {
+                var header, mainNav, secondNav, innerNav, search, loadStudents;
+                return _regenerator2.default.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                header = new _root2.default();
+                                mainNav = new _main2.default();
+                                secondNav = new _second2.default();
+                                innerNav = new _inner_nav2.default();
+                                search = new _basic2.default();
+                                loadStudents = new _load_students2.default();
+                                return _context.abrupt('return', Promise.all([header.attach(), mainNav.attach(), secondNav.attach({
+                                    title: 'Classroom',
+                                    innerNav: innerNav.attach()
+                                }), search.attach({
+                                    searchType: 'width-expand'
+                                }), loadStudents.attach()]).then(function (values) {
+                                    var _values = _slicedToArray(values, 5),
+                                        headerEl = _values[0],
+                                        mainNavEl = _values[1],
+                                        secondNavEl = _values[2],
+                                        searchEl = _values[3],
+                                        studentsEL = _values[4];
+
+                                    return (0, _html.div)('#app', headerEl, (0, _html.div)('.flex-container.expand.margin-top-2', mainNavEl, secondNavEl, (0, _html.main)('#students', (0, _html.section)('.flex-column', searchEl), studentsEL)));
+                                }));
+
+                            case 7:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function render() {
+                return _ref.apply(this, arguments);
+            }
+
+            return render;
+        }()
+    }]);
+
+    return Students;
+}(_component.RootComponent);
+
+exports.default = Students;
+
+/***/ }),
+
+/***/ "./modules/header/root/index.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _regenerator = __webpack_require__("../node_modules/babel-runtime/regenerator/index.js");
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _html = __webpack_require__("./core/html.js");
+
+var _component = __webpack_require__("./core/component.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+// import Identicon from 'identicon.js';
+
+
+var Header = function (_Component) {
+    _inherits(Header, _Component);
+
+    function Header() {
         var _ref;
 
         var _temp, _this, _ret;
 
-        _classCallCheck(this, AuthoringTool);
+        _classCallCheck(this, Header);
 
         for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
             args[_key] = arguments[_key];
         }
 
-        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = AuthoringTool.__proto__ || Object.getPrototypeOf(AuthoringTool)).call.apply(_ref, [this].concat(args))), _this), _this.params = {}, _temp), _possibleConstructorReturn(_this, _ret);
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Header.__proto__ || Object.getPrototypeOf(Header)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+            teacherName: 'John Smith',
+            teacherIMG: '//' + window.location.host + '/dist/beaconing/images/profile.png'
+        }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
-    _createClass(AuthoringTool, [{
+    _createClass(Header, [{
         key: 'render',
         value: function () {
             var _ref2 = _asyncToGenerator(_regenerator2.default.mark(function _callee() {
-                var prompt, iframe;
                 return _regenerator2.default.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
                             case 0:
-                                prompt = new _prompt2.default();
-                                iframe = new _iframe2.default();
-                                return _context.abrupt('return', Promise.all([prompt.attach(this.params), iframe.attach(this.params)]).then(function (values) {
-                                    var _values = _slicedToArray(values, 2),
-                                        promptEl = _values[0],
-                                        iframeEl = _values[1];
+                                return _context.abrupt('return', (0, _html.header)('#main-header', (0, _html.div)('.logo', (0, _html.a)({
+                                    href: './'
+                                }, (0, _html.img)({
+                                    src: '//' + window.location.host + '/dist/beaconing/images/logo.png',
+                                    alt: 'Click to go to Home'
+                                }))), (0, _html.div)('.profile', (0, _html.div)('.logout', (0, _html.a)('Log Out')), (0, _html.div)('.profile-img', (0, _html.img)('.profile-blue', {
+                                    src: this.state.teacherIMG,
+                                    alt: this.state.teacherName
+                                })))));
 
-                                    return (0, _html.div)('.flex-column', promptEl, iframeEl);
-                                }));
-
-                            case 3:
+                            case 1:
                             case 'end':
                                 return _context.stop();
                         }
@@ -2004,14 +2518,14 @@ var AuthoringTool = function (_RootComponent) {
         }()
     }]);
 
-    return AuthoringTool;
-}(_component.RootComponent);
+    return Header;
+}(_component.Component);
 
-exports.default = AuthoringTool;
+exports.default = Header;
 
 /***/ }),
 
-/***/ "./modules/authoring_tool/root/iframe.js":
+/***/ "./modules/loading/index.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2041,26 +2555,27 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var IFrame = function (_Component) {
-    _inherits(IFrame, _Component);
+var Loading = function (_Component) {
+    _inherits(Loading, _Component);
 
-    function IFrame() {
-        _classCallCheck(this, IFrame);
+    function Loading() {
+        _classCallCheck(this, Loading);
 
-        return _possibleConstructorReturn(this, (IFrame.__proto__ || Object.getPrototypeOf(IFrame)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (Loading.__proto__ || Object.getPrototypeOf(Loading)).apply(this, arguments));
     }
 
-    _createClass(IFrame, [{
+    _createClass(Loading, [{
         key: 'render',
         value: function () {
-            var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee(params) {
+            var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee() {
                 return _regenerator2.default.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
                             case 0:
-                                return _context.abrupt('return', (0, _html.iframe)('#authoring-tool', {
-                                    src: 'https://authoring.beaconing.eu/glp/' + decodeURIComponent(params.id)
-                                }));
+                                return _context.abrupt('return', (0, _html.div)('.loading-container', (0, _html.div)('.loading', (0, _html.img)({
+                                    src: '//' + window.location.host + '/dist/beaconing/images/loading.gif',
+                                    alt: 'Loading'
+                                }), (0, _html.span)('Loading...'))));
 
                             case 1:
                             case 'end':
@@ -2070,7 +2585,7 @@ var IFrame = function (_Component) {
                 }, _callee, this);
             }));
 
-            function render(_x) {
+            function render() {
                 return _ref.apply(this, arguments);
             }
 
@@ -2078,14 +2593,14 @@ var IFrame = function (_Component) {
         }()
     }]);
 
-    return IFrame;
+    return Loading;
 }(_component.Component);
 
-exports.default = IFrame;
+exports.default = Loading;
 
 /***/ }),
 
-/***/ "./modules/authoring_tool/root/prompt.js":
+/***/ "./modules/nav/main/index.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2115,30 +2630,210 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Prompt = function (_Component) {
-    _inherits(Prompt, _Component);
+var MainNav = function (_Component) {
+    _inherits(MainNav, _Component);
 
-    function Prompt() {
-        _classCallCheck(this, Prompt);
+    function MainNav() {
+        var _ref;
 
-        return _possibleConstructorReturn(this, (Prompt.__proto__ || Object.getPrototypeOf(Prompt)).apply(this, arguments));
+        var _temp, _this, _ret;
+
+        _classCallCheck(this, MainNav);
+
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = MainNav.__proto__ || Object.getPrototypeOf(MainNav)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+            path: window.location.pathname.slice(1)
+        }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
-    _createClass(Prompt, [{
+    _createClass(MainNav, [{
         key: 'render',
         value: function () {
-            var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee(params) {
+            var _ref2 = _asyncToGenerator(_regenerator2.default.mark(function _callee() {
+                var path;
                 return _regenerator2.default.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
                             case 0:
-                                return _context.abrupt('return', (0, _html.div)('#prompt', (0, _html.div)('.title', (0, _html.span)('Editing GLP:'), (0, _html.span)('.name', decodeURIComponent(params.name))), (0, _html.nav)('.mini', (0, _html.a)({
-                                    href: './' + decodeURIComponent(params.prev)
-                                }, (0, _html.i)('.icon-angle-left', {
-                                    'aria-hidden': true
-                                }), 'Go Back'))));
+                                path = this.state.path;
+                                return _context.abrupt('return', (0, _html.nav)('#main', (0, _html.div)('.nav-group', (0, _html.a)(path === '' ? '.item.active' : '.item', {
+                                    href: './'
+                                }, (0, _html.i)('.icon-home'), (0, _html.span)('Home')), (0, _html.a)(/^classroom/.test(path) ? '.item.active-orange' : '.item', {
+                                    href: './classroom/'
+                                }, (0, _html.i)('.icon-graduation-cap'), (0, _html.span)('Classroom')), (0, _html.a)(/^lesson_manager/.test(path) ? '.item.active-orange' : '.item', {
+                                    href: './lesson_manager/'
+                                }, (0, _html.i)('.icon-authoring'), (0, _html.span)('Lesson Manager')), (0, _html.a)(/^calendar/.test(path) ? '.item.active' : '.item', {
+                                    href: './calendar/'
+                                }, (0, _html.i)('.icon-calendar'), (0, _html.span)('Calendar')), (0, _html.a)(/^messages/.test(path) ? '.item.active-orange' : '.item', {
+                                    href: './messages/'
+                                }, (0, _html.i)('.icon-chat'), (0, _html.span)('Messages'))), (0, _html.div)('.nav-group', (0, _html.a)(/^search/.test(path) ? '.item.active' : '.item', {
+                                    href: './search/'
+                                }, (0, _html.i)('.icon-search'), (0, _html.span)('Search')), (0, _html.a)(/^settings/.test(path) ? '.item.active' : '.item', {
+                                    href: './settings/'
+                                }, (0, _html.i)('.icon-cogs'), (0, _html.span)('Settings')), (0, _html.a)('.item', {
+                                    onclick: function onclick() {
+                                        window.abarRuntime.open();
+                                    }
+                                }, (0, _html.i)('.icon-key-inv'), (0, _html.span)('Accessibility')))));
 
-                            case 1:
+                            case 2:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function render() {
+                return _ref2.apply(this, arguments);
+            }
+
+            return render;
+        }()
+    }]);
+
+    return MainNav;
+}(_component.Component);
+
+exports.default = MainNav;
+
+/***/ }),
+
+/***/ "./modules/nav/second/index.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _regenerator = __webpack_require__("../node_modules/babel-runtime/regenerator/index.js");
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _html = __webpack_require__("./core/html.js");
+
+var _component = __webpack_require__("./core/component.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var SecondNav = function (_Component) {
+    _inherits(SecondNav, _Component);
+
+    function SecondNav() {
+        _classCallCheck(this, SecondNav);
+
+        return _possibleConstructorReturn(this, (SecondNav.__proto__ || Object.getPrototypeOf(SecondNav)).apply(this, arguments));
+    }
+
+    _createClass(SecondNav, [{
+        key: 'render',
+        value: function () {
+            var _ref2 = _asyncToGenerator(_regenerator2.default.mark(function _callee(_ref) {
+                var title = _ref.title,
+                    innerNav = _ref.innerNav;
+                var innerNavEL;
+                return _regenerator2.default.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                _context.next = 2;
+                                return innerNav;
+
+                            case 2:
+                                innerNavEL = _context.sent;
+                                return _context.abrupt('return', (0, _html.nav)('#subnav', (0, _html.div)('#nav-header', (0, _html.h3)(title)), innerNavEL));
+
+                            case 4:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function render(_x) {
+                return _ref2.apply(this, arguments);
+            }
+
+            return render;
+        }()
+    }]);
+
+    return SecondNav;
+}(_component.Component);
+
+exports.default = SecondNav;
+
+/***/ }),
+
+/***/ "./modules/search/basic/index.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _regenerator = __webpack_require__("../node_modules/babel-runtime/regenerator/index.js");
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _html = __webpack_require__("./core/html.js");
+
+var _component = __webpack_require__("./core/component.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var BasicSearch = function (_Component) {
+    _inherits(BasicSearch, _Component);
+
+    function BasicSearch() {
+        _classCallCheck(this, BasicSearch);
+
+        return _possibleConstructorReturn(this, (BasicSearch.__proto__ || Object.getPrototypeOf(BasicSearch)).apply(this, arguments));
+    }
+
+    _createClass(BasicSearch, [{
+        key: 'render',
+        value: function () {
+            var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee(data) {
+                var searchType;
+                return _regenerator2.default.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                searchType = data.searchType;
+                                return _context.abrupt('return', (0, _html.div)('.search.fuzzy-search', (0, _html.i)('.icon-search', { 'aria-hidden': true }), (0, _html.input)('.' + searchType, { type: 'text' })));
+
+                            case 2:
                             case 'end':
                                 return _context.stop();
                         }
@@ -2154,10 +2849,10 @@ var Prompt = function (_Component) {
         }()
     }]);
 
-    return Prompt;
+    return BasicSearch;
 }(_component.Component);
 
-exports.default = Prompt;
+exports.default = BasicSearch;
 
 /***/ }),
 

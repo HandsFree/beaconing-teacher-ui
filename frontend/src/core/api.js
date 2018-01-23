@@ -47,6 +47,17 @@ class APICore {
 
         return false;
     }
+
+    async getStudents() {
+        const auth = await this.checkAuth();
+
+        if (auth) {
+            const students = await this.get('./intent/students');
+            return students;
+        }
+
+        return false;
+    }
 }
 
 export default APICore;

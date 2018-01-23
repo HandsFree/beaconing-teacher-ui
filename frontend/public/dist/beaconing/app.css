@@ -1229,7 +1229,7 @@ section {
     cursor: pointer;
     background: #e87f62; }
 
-.link-underline:hover, #main-header .profile .logout a:hover, .box .toolbar a.item:hover, .overview .option .toolbar a.item:hover, .plan-summary .toolbar a.item:hover {
+.link-underline:hover, #main-header .profile .logout a:hover, .box .toolbar a.item:hover, .overview .option .toolbar a.item:hover, .plan-summary .toolbar a.item:hover, .student-box .info a:hover {
   text-decoration: underline;
   cursor: pointer; }
 
@@ -1269,7 +1269,7 @@ section {
     justify-content: space-between; }
     .box > .content .description {
       flex-direction: column; }
-    .box > .content .link-underline, .box > .content #main-header .profile .logout a, #main-header .profile .logout .box > .content a, .box > .content .toolbar a.item, .overview .option .toolbar .box > .content a.item, .plan-summary .toolbar .box > .content a.item {
+    .box > .content .link-underline, .box > .content #main-header .profile .logout a, #main-header .profile .logout .box > .content a, .box > .content .toolbar a.item, .overview .option .toolbar .box > .content a.item, .plan-summary .toolbar .box > .content a.item, .box > .content .student-box .info a, .student-box .info .box > .content a {
       margin-left: 0.25em; }
     .box > .content strong {
       font-weight: 400; }
@@ -1924,6 +1924,29 @@ textarea {
 .student-profile figure img {
   max-width: 15em;
   border: 1px solid #e87f62; }
+
+.student-box {
+  border: 1px solid #e87f62;
+  padding: 1em;
+  flex: 25%;
+  margin: 1em; }
+  .student-box figure {
+    padding: 1em;
+    margin: 0 0.25em 0 0; }
+    .student-box figure img {
+      width: 8em;
+      height: auto; }
+  .student-box .info {
+    justify-content: space-around; }
+    .student-box .info .title {
+      padding: 1em; }
+      .student-box .info .title h4 {
+        margin: 0;
+        font-weight: 300;
+        font-size: 1.2em; }
+    .student-box .info a {
+      padding: 1em;
+      font-weight: 400; }
 
 #prompt {
   position: fixed;

@@ -1337,8 +1337,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /* eslint-disable class-methods-use-this, no-restricted-syntax */
 
-// use hyperscript to make elements, link components to elements
-
 var RootComponent = function () {
     function RootComponent() {
         _classCallCheck(this, RootComponent);
@@ -1526,9 +1524,6 @@ var Component = function () {
         value: function appendView(view) {
             this.view.appendChild(view);
         }
-
-        // calls start function, binds updates, handles functions after mount, follow state
-
     }, {
         key: 'attach',
         value: function () {
@@ -1939,7 +1934,7 @@ var Header = function (_Component) {
 
         return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Header.__proto__ || Object.getPrototypeOf(Header)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
             teacherName: 'John Smith',
-            teacherIMG: 'dist/beaconing/images/profile.png'
+            teacherIMG: '//' + window.location.host + '/dist/beaconing/images/profile.png'
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
@@ -1954,7 +1949,7 @@ var Header = function (_Component) {
                                 return _context.abrupt('return', (0, _html.header)('#main-header', (0, _html.div)('.logo', (0, _html.a)({
                                     href: './'
                                 }, (0, _html.img)({
-                                    src: 'dist/beaconing/images/logo.png',
+                                    src: '//' + window.location.host + '/dist/beaconing/images/logo.png',
                                     alt: 'Click to go to Home'
                                 }))), (0, _html.div)('.profile', (0, _html.div)('.logout', (0, _html.a)('Log Out')), (0, _html.div)('.profile-img', (0, _html.img)('.profile-blue', {
                                     src: this.state.teacherIMG,
@@ -2064,13 +2059,13 @@ var ActivePlans = function (_Component) {
                                     title: 'View Active Lesson Plans',
                                     'aria-hidden': true
                                 }))), (0, _html.div)('.content', (0, _html.div)('#active-plan-summary', (0, _html.div)('.plan', (0, _html.div)('.image', (0, _html.img)({
-                                    src: 'dist/beaconing/images/quest-image.jpg',
+                                    src: '//' + window.location.host + '/dist/beaconing/images/quest-image.jpg',
                                     alt: 'Algebra Beginnings'
                                 })), (0, _html.div)('.info', (0, _html.div)('.name', (0, _html.p)('Algebra Beginnings')))), (0, _html.div)('.plan', (0, _html.div)('.image', (0, _html.img)({
-                                    src: 'dist/beaconing/images/quest-image.jpg',
+                                    src: '//' + window.location.host + '/dist/beaconing/images/quest-image.jpg',
                                     alt: 'First steps to Engineering'
                                 })), (0, _html.div)('.info', (0, _html.div)('.name', (0, _html.p)('First steps to Engineering')))), (0, _html.div)('.plan', (0, _html.div)('.image', (0, _html.img)({
-                                    src: 'dist/beaconing/images/quest-image.jpg',
+                                    src: '//' + window.location.host + '/dist/beaconing/images/quest-image.jpg',
                                     alt: 'Advanced Masonary'
                                 })), (0, _html.div)('.info', (0, _html.div)('.name', (0, _html.p)('Advanced Masonary'))))))));
 
@@ -2422,63 +2417,63 @@ var StudentOverview = function (_Component) {
                                     title: 'View Students',
                                     'aria-hidden': true
                                 }))), (0, _html.div)('.content', (0, _html.div)('#student-overview', (0, _html.div)('.sorting', (0, _html.div)('.sort-menu', (0, _html.span)('Class: '), (0, _html.a)('.active', '11b'), (0, _html.a)('13a')), (0, _html.div)('.sort-menu', (0, _html.span)('Sort By: '), (0, _html.a)('This Week'), (0, _html.a)('.active', 'This Month'), (0, _html.a)('This Year'))), (0, _html.div)('.flex-container', (0, _html.div)('.student-section', (0, _html.div)('.title', (0, _html.h3)('Best Performing')), (0, _html.div)('.students', (0, _html.div)('.student', (0, _html.div)('.flex-container.tablet-hide', (0, _html.div)('.student-profile-image', (0, _html.img)('.profile-blue', {
-                                    src: 'dist/beaconing/images/profile.png',
+                                    src: '//' + window.location.host + '/dist/beaconing/images/profile.png',
                                     alt: 'Example Student'
                                 }))), (0, _html.div)('.flex-container.flex-column.flex-spacearound.flex-grow', (0, _html.div)('.student-name', (0, _html.p)('Example Student')), (0, _html.div)('.student-percentage', (0, _html.p)('Overall Percentage:'), (0, _html.div)('.progress-bar', (0, _html.div)('.status-green', {
                                     style: {
                                         width: '96%'
                                     }
                                 }, (0, _html.span)('96%')))))), (0, _html.div)('.student', (0, _html.div)('.flex-container.tablet-hide', (0, _html.div)('.student-profile-image', (0, _html.img)('.profile-blue', {
-                                    src: 'dist/beaconing/images/profile.png',
+                                    src: '//' + window.location.host + '/dist/beaconing/images/profile.png',
                                     alt: 'Example Student'
                                 }))), (0, _html.div)('.flex-container.flex-column.flex-spacearound.flex-grow', (0, _html.div)('.student-name', (0, _html.p)('Example Student')), (0, _html.div)('.student-percentage', (0, _html.p)('Overall Percentage:'), (0, _html.div)('.progress-bar', (0, _html.div)('.status-green', {
                                     style: {
                                         width: '94%'
                                     }
                                 }, (0, _html.span)('94%')))))), (0, _html.div)('.student', (0, _html.div)('.flex-container.tablet-hide', (0, _html.div)('.student-profile-image', (0, _html.img)('.profile-blue', {
-                                    src: 'dist/beaconing/images/profile.png',
+                                    src: '//' + window.location.host + '/dist/beaconing/images/profile.png',
                                     alt: 'Example Student'
                                 }))), (0, _html.div)('.flex-container.flex-column.flex-spacearound.flex-grow', (0, _html.div)('.student-name', (0, _html.p)('Example Student')), (0, _html.div)('.student-percentage', (0, _html.p)('Overall Percentage:'), (0, _html.div)('.progress-bar', (0, _html.div)('.status-green', {
                                     style: {
                                         width: '91%'
                                     }
                                 }, (0, _html.span)('91%')))))))), (0, _html.div)('.student-section', (0, _html.div)('.title', (0, _html.h3)('Needs Attention')), (0, _html.div)('.students', (0, _html.div)('.student', (0, _html.div)('.flex-container.tablet-hide', (0, _html.div)('.student-profile-image', (0, _html.img)('.profile-blue', {
-                                    src: 'dist/beaconing/images/profile.png',
+                                    src: '//' + window.location.host + '/dist/beaconing/images/profile.png',
                                     alt: 'Example Student'
                                 }))), (0, _html.div)('.flex-container.flex-column.flex-spacearound.flex-grow', (0, _html.div)('.student-name', (0, _html.p)('Example Student')), (0, _html.div)('.student-percentage', (0, _html.p)('Overall Percentage:'), (0, _html.div)('.progress-bar', (0, _html.div)('.status-red', {
                                     style: {
                                         width: '30%'
                                     }
                                 }, (0, _html.span)('30%')))))), (0, _html.div)('.student', (0, _html.div)('.flex-container.tablet-hide', (0, _html.div)('.student-profile-image', (0, _html.img)('.profile-blue', {
-                                    src: 'dist/beaconing/images/profile.png',
+                                    src: '//' + window.location.host + '/dist/beaconing/images/profile.png',
                                     alt: 'Example Student'
                                 }))), (0, _html.div)('.flex-container.flex-column.flex-spacearound.flex-grow', (0, _html.div)('.student-name', (0, _html.p)('Example Student')), (0, _html.div)('.student-percentage', (0, _html.p)('Overall Percentage:'), (0, _html.div)('.progress-bar', (0, _html.div)('.status-red', {
                                     style: {
                                         width: '28%'
                                     }
                                 }, (0, _html.span)('28%')))))), (0, _html.div)('.student', (0, _html.div)('.flex-container.tablet-hide', (0, _html.div)('.student-profile-image', (0, _html.img)('.profile-blue', {
-                                    src: 'dist/beaconing/images/profile.png',
+                                    src: '//' + window.location.host + '/dist/beaconing/images/profile.png',
                                     alt: 'Example Student'
                                 }))), (0, _html.div)('.flex-container.flex-column.flex-spacearound.flex-grow', (0, _html.div)('.student-name', (0, _html.p)('Example Student')), (0, _html.div)('.student-percentage', (0, _html.p)('Overall Percentage:'), (0, _html.div)('.progress-bar', (0, _html.div)('.status-red', {
                                     style: {
                                         width: '25%'
                                     }
                                 }, (0, _html.span)('25%')))))))), (0, _html.div)('.student-section', (0, _html.div)('.title', (0, _html.h3)('Most Improvement')), (0, _html.div)('.students', (0, _html.div)('.student', (0, _html.div)('.flex-container.tablet-hide', (0, _html.div)('.student-profile-image', (0, _html.img)('.profile-blue', {
-                                    src: 'dist/beaconing/images/profile.png',
+                                    src: '//' + window.location.host + '/dist/beaconing/images/profile.png',
                                     alt: 'Example Student'
                                 }))), (0, _html.div)('.flex-container.flex-column.flex-spacearound.flex-grow', (0, _html.div)('.student-name', (0, _html.p)('Example Student')), (0, _html.div)('.student-percentage', (0, _html.p)('Overall Percentage:'), (0, _html.div)('.progress-bar', (0, _html.div)('.status-amber', {
                                     style: {
                                         width: '70%'
                                     }
                                 }, (0, _html.span)('70%')))))), (0, _html.div)('.student', (0, _html.div)('.flex-container.tablet-hide', (0, _html.div)('.student-profile-image', (0, _html.img)('.profile-blue', {
-                                    src: 'dist/beaconing/images/profile.png',
+                                    src: '//' + window.location.host + '/dist/beaconing/images/profile.png',
                                     alt: 'Example Student'
                                 }))), (0, _html.div)('.flex-container.flex-column.flex-spacearound.flex-grow', (0, _html.div)('.student-name', (0, _html.p)('Example Student')), (0, _html.div)('.student-percentage', (0, _html.p)('Overall Percentage:'), (0, _html.div)('.progress-bar', (0, _html.div)('.status-amber', {
                                     style: {
                                         width: '68%'
                                     }
                                 }, (0, _html.span)('68%')))))), (0, _html.div)('.student', (0, _html.div)('.flex-container.tablet-hide', (0, _html.div)('.student-profile-image', (0, _html.img)('.profile-blue', {
-                                    src: 'dist/beaconing/images/profile.png',
+                                    src: '//' + window.location.host + '/dist/beaconing/images/profile.png',
                                     alt: 'Example Student'
                                 }))), (0, _html.div)('.flex-container.flex-column.flex-spacearound.flex-grow', (0, _html.div)('.student-name', (0, _html.p)('Example Student')), (0, _html.div)('.student-percentage', (0, _html.p)('Overall Percentage:'), (0, _html.div)('.progress-bar', (0, _html.div)('.status-amber', {
                                     style: {
@@ -2582,7 +2577,11 @@ var MainNav = function (_Component) {
                                     href: './search/'
                                 }, (0, _html.i)('.icon-search'), (0, _html.span)('Search')), (0, _html.a)(/^settings/.test(path) ? '.item.active' : '.item', {
                                     href: './settings/'
-                                }, (0, _html.i)('.icon-cogs'), (0, _html.span)('Classroom')), (0, _html.a)('.item', (0, _html.i)('.icon-key-inv'), (0, _html.span)('Accessibility')))));
+                                }, (0, _html.i)('.icon-cogs'), (0, _html.span)('Settings')), (0, _html.a)('.item', {
+                                    onclick: function onclick() {
+                                        window.abarRuntime.open();
+                                    }
+                                }, (0, _html.i)('.icon-key-inv'), (0, _html.span)('Accessibility')))));
 
                             case 2:
                             case 'end':
@@ -2656,7 +2655,7 @@ var BasicSearch = function (_Component) {
                         switch (_context.prev = _context.next) {
                             case 0:
                                 searchType = data.searchType;
-                                return _context.abrupt('return', (0, _html.div)('.search', (0, _html.i)('.icon-search', { 'aria-hidden': true }), (0, _html.input)('.' + searchType + '.search-input', { type: 'text' })));
+                                return _context.abrupt('return', (0, _html.div)('.search.fuzzy-search', (0, _html.i)('.icon-search', { 'aria-hidden': true }), (0, _html.input)('.' + searchType, { type: 'text' })));
 
                             case 2:
                             case 'end':
