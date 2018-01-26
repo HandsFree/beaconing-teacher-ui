@@ -1,8 +1,6 @@
 package req
 
 import (
-	"github.com/gin-contrib/sessions"
-
 	"git.juddus.com/HFC/beaconing/route"
 	"git.juddus.com/HFC/beaconing/serv"
 )
@@ -25,8 +23,7 @@ func NewCheckAuthRequest(path string) *CheckAuthRequest {
 }
 
 func (r *CheckAuthRequest) Handle(s *serv.SessionContext) {
-	session := sessions.Default(s.Context)
-	accessToken := session.Get("access_token")
+	accessToken := s.TryAuth(a.GetPath())
 	s.Jsonify(&CheckAuthJSON{
 		Status: accessToken != nil,
 	})
