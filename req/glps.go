@@ -6,8 +6,6 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/gin-contrib/sessions"
-
 	"git.juddus.com/HFC/beaconing/route"
 	"git.juddus.com/HFC/beaconing/serv"
 )
@@ -23,14 +21,9 @@ func NewGLPSRequest(path string) *GLPSRequest {
 }
 
 func (a *GLPSRequest) Handle(s *serv.SessionContext) {
-	session := sessions.Default(s.Context)
-	accessToken := session.Get("access_token")
-	if accessToken == nil {
-		s.Redirect(http.StatusTemporaryRedirect, serv.AuthLink)
-		return
-	}
+	accessToken := s.TryAuth(a.GetPath())
 
-	response, err := http.Get(fmt.Sprintf("https://core.beaconing.eu/api/gamifiedlessonpaths?access_token=%s", accessToken.(string)))
+	response, err := http.Get(fmt.Sprintf("https://core.beaconing.eu/api/gamifiedlessonpaths?access_token=%s", accessToken))
 	if err != nil {
 		log.Fatal(err)
 		return
