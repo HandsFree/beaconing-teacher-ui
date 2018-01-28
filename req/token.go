@@ -14,12 +14,6 @@ type TokenRequest struct {
 	route.SimpleManagedRoute
 }
 
-func NewTokenRequest(path string) *TokenRequest {
-	req := &TokenRequest{}
-	req.SetPath(path)
-	return req
-}
-
 func (r *TokenRequest) Handle(s *serv.SessionContext) {
 	code := s.Query("code")
 	if code == "" {
@@ -46,4 +40,12 @@ func (r *TokenRequest) Handle(s *serv.SessionContext) {
 		return
 	}
 	s.Redirect(http.StatusTemporaryRedirect, redirectLocation)
+}
+
+// ────────────────────────────────────────────────────────────────────────────────
+
+func NewTokenRequest(path string) *TokenRequest {
+	req := &TokenRequest{}
+	req.SetPath(path)
+	return req
 }

@@ -14,12 +14,6 @@ type GLPSRequest struct {
 	route.SimpleManagedRoute
 }
 
-func NewGLPSRequest(path string) *GLPSRequest {
-	req := &GLPSRequest{}
-	req.SetPath(path)
-	return req
-}
-
 func (a *GLPSRequest) Handle(s *serv.SessionContext) {
 	accessToken := s.TryAuth(a.GetPath())
 
@@ -39,4 +33,12 @@ func (a *GLPSRequest) Handle(s *serv.SessionContext) {
 	strJSON := string(body)
 	s.Header("Content-Type", "application/json")
 	s.String(http.StatusOK, strJSON)
+}
+
+// ────────────────────────────────────────────────────────────────────────────────
+
+func NewGLPSRequest(path string) *GLPSRequest {
+	req := &GLPSRequest{}
+	req.SetPath(path)
+	return req
 }

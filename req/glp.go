@@ -16,23 +16,6 @@ type GLPRequest struct {
 	route.SimpleManagedRoute
 }
 
-type glpData struct {
-	id           int
-	name         string
-	desc         string
-	author       string
-	category     string
-	content      string
-	gamePlotId   int
-	externConfig string
-}
-
-func NewGLPRequest(path string) *GLPRequest {
-	req := &GLPRequest{}
-	req.SetPath(path)
-	return req
-}
-
 // TODO: filter the useless stuff out of
 // the glp json
 func (a *GLPRequest) Handle(s *serv.SessionContext) {
@@ -61,4 +44,23 @@ func (a *GLPRequest) Handle(s *serv.SessionContext) {
 	strJSON := string(body)
 	s.Header("Content-Type", "application/json")
 	s.String(http.StatusOK, strJSON)
+}
+
+type glpData struct {
+	id           int
+	name         string
+	desc         string
+	author       string
+	category     string
+	content      string
+	gamePlotId   int
+	externConfig string
+}
+
+// ────────────────────────────────────────────────────────────────────────────────
+
+func NewGLPRequest(path string) *GLPRequest {
+	req := &GLPRequest{}
+	req.SetPath(path)
+	return req
 }

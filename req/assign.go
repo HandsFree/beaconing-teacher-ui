@@ -13,16 +13,6 @@ import (
 	jsoniter "github.com/json-iterator/go"
 )
 
-type AssignRequest struct {
-	route.SimpleManagedRoute
-}
-
-func NewAssignRequest(path string) *AssignRequest {
-	req := &AssignRequest{}
-	req.SetPath(path)
-	return req
-}
-
 type assignData struct {
 	studentID string
 	glpID     string
@@ -50,6 +40,10 @@ func (a *assignData) assignGLP(accessToken string) (string, error) {
 	return string(body), nil
 }
 
+type AssignRequest struct {
+	route.SimpleManagedRoute
+}
+
 func (a *AssignRequest) Handle(s *serv.SessionContext) {
 	studentID := s.Param("student")
 	glpID := s.Param("glp")
@@ -64,4 +58,12 @@ func (a *AssignRequest) Handle(s *serv.SessionContext) {
 	}
 
 	s.Json(assignReq)
+}
+
+// ────────────────────────────────────────────────────────────────────────────────
+
+func NewAssignRequest(path string) *AssignRequest {
+	req := &AssignRequest{}
+	req.SetPath(path)
+	return req
 }

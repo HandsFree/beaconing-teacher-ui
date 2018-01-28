@@ -14,6 +14,49 @@ type StudentRequest struct {
 	route.SimpleManagedRoute
 }
 
+func (r *StudentRequest) Handle(s *serv.SessionContext) {
+	studentID := s.Param("id")
+	action := s.Param("action")
+
+	fmt.Println(action)
+
+	accessToken := s.TryAuth(r.GetPath())
+
+	var strJSON string
+
+	switch action {
+	case "/glps", "/glps/":
+		response, err := getStudentGLPS(studentID, accessToken)
+		if err != nil {
+			log.Fatal(err)
+			return
+		}
+		strJSON = response
+	default:
+		response, err := getStudent(studentID, accessToken)
+		if err != nil {
+			log.Fatal(err)
+			return
+		}
+		strJSON = response
+	}
+
+	s.Header("Content-Type", "application/json")
+	s.String(http.StatusOK, strJSON)
+}
+
+// ────────────────────────────────────────────────────────────────────────────────
+
+func NewStudentRequest(path string) *StudentRequest {
+	req := &StudentRequest{}
+	req.SetPath(path)
+	return req
+}
+
+//
+// ─── UTILITY ────────────────────────────────────────────────────────────────────
+//
+
 func getStudent(studentID string, accessToken string) (string, error) {
 	response, err := http.Get(fmt.Sprintf("https://core.beaconing.eu/api/students/%s?access_token=%s", studentID, accessToken))
 	if err != nil {
@@ -44,41 +87,4 @@ func getStudentGLPS(studentID string, accessToken string) (string, error) {
 	}
 
 	return string(body), nil
-}
-
-func NewStudentRequest(path string) *StudentRequest {
-	req := &StudentRequest{}
-	req.SetPath(path)
-	return req
-}
-
-func (r *StudentRequest) Handle(s *serv.SessionContext) {
-	studentID := s.Param("id")
-	action := s.Param("action")
-
-	fmt.Println(action)
-
-	accessToken := s.TryAuth(r.GetPath())
-
-	var strJSON string
-
-	switch action {
-	case "/glps", "/glps/":
-		response, err := getStudentGLPS(studentID, accessToken)
-		if err != nil {
-			log.Fatal(err)
-			return
-		}
-		strJSON = response
-	default:
-		response, err := getStudent(studentID, accessToken)
-		if err != nil {
-			log.Fatal(err)
-			return
-		}
-		strJSON = response
-	}
-
-	s.Header("Content-Type", "application/json")
-	s.String(http.StatusOK, strJSON)
 }

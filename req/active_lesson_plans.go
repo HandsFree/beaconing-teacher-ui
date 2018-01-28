@@ -5,22 +5,8 @@ import (
 	"git.juddus.com/HFC/beaconing/serv"
 )
 
-func NewLessonPlan(name string) LessonPlan {
-	return LessonPlan{
-		Name:  name,
-		Image: "https://via.placeholder.com/512x512&text=" + name,
-		Link:  "https://google.com/q?=what+is+" + name,
-	}
-}
-
 type ActiveLessonPlans struct {
 	route.SimpleManagedRoute
-}
-
-func NewActiveLessonPlans(path string) *ActiveLessonPlans {
-	req := &ActiveLessonPlans{}
-	req.SetPath(path)
-	return req
 }
 
 func (r *ActiveLessonPlans) Handle(s *serv.SessionContext) {
@@ -37,4 +23,22 @@ func (r *ActiveLessonPlans) Handle(s *serv.SessionContext) {
 		NewLessonPlan("Underwater Basket Weaving"),
 	}
 	s.Jsonify(lps)
+}
+
+// ────────────────────────────────────────────────────────────────────────────────
+
+func NewActiveLessonPlans(path string) *ActiveLessonPlans {
+	req := &ActiveLessonPlans{}
+	req.SetPath(path)
+	return req
+}
+
+// ────────────────────────────────────────────────────────────────────────────────
+
+func NewLessonPlan(name string) LessonPlan {
+	return LessonPlan{
+		Name:  name,
+		Image: "https://via.placeholder.com/512x512&text=" + name,
+		Link:  "https://google.com/q?=what+is+" + name,
+	}
 }

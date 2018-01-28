@@ -4,11 +4,10 @@ import (
 	"bytes"
 	"io/ioutil"
 	"log"
-	"net"
 	"net/http"
 
-	"git.juddus.com/HFC/beaconing/auth"
 	"git.juddus.com/HFC/beaconing/config"
+	"git.juddus.com/HFC/beaconing/json"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
@@ -22,18 +21,6 @@ type SessionContext struct {
 	*gin.Context
 	RouterEngine *gin.Engine
 }
-
-//
-// ─── VARS ───────────────────────────────────────────────────────────────────────
-//
-
-var BaseLink = getBaseLink()
-
-// Base link for api redirects
-var RedirectBaseLink = getRedirectBaseLink()
-
-// Provides an access code to retrieve and access token
-var AuthLink = "https://core.beaconing.eu/auth/auth?response_type=code&client_id=teacherui&redirect_uri=" + RedirectBaseLink
 
 // ────────────────────────────────────────────────────────────────────────────────
 
@@ -53,7 +40,7 @@ func GetAuthToken(s *SessionContext) bool {
 
 	requestCode := session.Get("code").(string)
 
-	message, err := jsoniter.Marshal(auth.TokenRequest{
+	message, err := jsoniter.Marshal(json.TokenRequest{
 		GrantType:    "authorization_code",
 		Code:         requestCode,
 		ClientID:     config.ClientID,
@@ -79,7 +66,7 @@ func GetAuthToken(s *SessionContext) bool {
 		return false
 	}
 
-	var respToken auth.TokenResponse
+	var respToken json.TokenResponse
 	if err := jsoniter.Unmarshal(body, &respToken); err != nil {
 		log.Fatal(err)
 		return false
@@ -133,36 +120,4 @@ func (s *SessionContext) Jsonify(things interface{}) {
 
 	s.Header("Content-Type", "application/json")
 	s.String(http.StatusOK, string(json))
-}
-
-//
-// ─── UTILITY ────────────────────────────────────────────────────────────────────
-//
-
-func getOutboundIP() net.IP {
-	conn, err := net.Dial("udp", "8.8.8.8:80")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer conn.Close()
-
-	localAddr := conn.LocalAddr().(*net.UDPAddr)
-
-	return localAddr.IP
-}
-
-func getBaseLink() string {
-	if gin.IsDebugging() {
-		// we have to slap the port on there
-		return getOutboundIP().String() + ":8081"
-	}
-	return "bcn-dev.ejudd.uk"
-}
-
-func getRedirectBaseLink() string {
-	if gin.IsDebugging() {
-		// we have to slap the port on there
-		return "http://" + BaseLink + "/intent/token/"
-	}
-	return "https://" + BaseLink + "/intent/token/"
 }

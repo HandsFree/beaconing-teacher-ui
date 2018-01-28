@@ -1,8 +1,9 @@
 package req
 
 import (
-	"strconv"
 	"math/rand"
+	"strconv"
+
 	"git.juddus.com/HFC/beaconing/route"
 	"git.juddus.com/HFC/beaconing/serv"
 )
@@ -11,10 +12,35 @@ type StudentOverview struct {
 	route.SimpleManagedRoute
 }
 
-func NewStudentOverview(path string) *StudentOverview {
-	req := &StudentOverview{}
-	req.SetPath(path)
-	return req
+func (r *StudentOverview) Handle(s *serv.SessionContext) {
+	countParam := s.DefaultQuery("count", "3")
+
+	fetchCount, err := strconv.Atoi(countParam)
+	if err != nil {
+		// it's not a number, set it to 3.
+		fetchCount = 3
+
+		// TODO better log message!
+	}
+
+	// no cheeky negatives, must fetch at least 1 student.
+	if fetchCount <= 0 {
+		fetchCount = 3
+	}
+
+	// TODO: request students, make sure they are sorted
+	// best to worst (or worst to best depending on ctx)
+	req := StudentOverviewJSON{
+		BestPerforming:  genDummyStudentData(fetchCount),
+		NeedsAttention:  genDummyStudentData(fetchCount),
+		MostImprovement: genDummyStudentData(fetchCount),
+	}
+	s.Jsonify(req)
+}
+
+type StudentData struct {
+	Name              string `json:"name"`
+	OverallPercentage int    `json:"overall_percentage"`
 }
 
 /*
@@ -48,21 +74,26 @@ func NewStudentOverview(path string) *StudentOverview {
 
 */
 
-type StudentData struct {
-	Name              string `json:"name"`
-	OverallPercentage int    `json:"overall_percentage"`
+type StudentOverviewJSON struct {
+	BestPerforming  []*StudentData `json:"best_performing"`
+	NeedsAttention  []*StudentData `json:"needs_attention"`
+	MostImprovement []*StudentData `json:"most_improvement"`
 }
+
+// ────────────────────────────────────────────────────────────────────────────────
 
 // DELETE ME!
 var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
-func randStrSeq(n int) string {
-	b := make([]rune, n)
-	for i := range b {
-		b[i] = letters[rand.Intn(len(letters))]
-	}
-	return string(b)
+// ────────────────────────────────────────────────────────────────────────────────
+
+func NewStudentOverview(path string) *StudentOverview {
+	req := &StudentOverview{}
+	req.SetPath(path)
+	return req
 }
+
+// ────────────────────────────────────────────────────────────────────────────────
 
 func newDummyStudent() *StudentData {
 	student := &StudentData{
@@ -70,12 +101,6 @@ func newDummyStudent() *StudentData {
 		OverallPercentage: rand.Intn(100),
 	}
 	return student
-}
-
-type StudentOverviewJSON struct {
-	BestPerforming  []*StudentData `json:"best_performing"`
-	NeedsAttention  []*StudentData `json:"needs_attention"`
-	MostImprovement []*StudentData `json:"most_improvement"`
 }
 
 // _for now_ will load ALL of the students in the API
@@ -99,28 +124,10 @@ func genDummyStudentData(count int) []*StudentData {
 	return result
 }
 
-func (r *StudentOverview) Handle(s *serv.SessionContext) {
-	countParam := s.DefaultQuery("count", "3")
-
-	fetchCount, err := strconv.Atoi(countParam)
-	if err != nil {
-		// it's not a number, set it to 3.
-		fetchCount = 3
-
-		// TODO better log message!
+func randStrSeq(n int) string {
+	b := make([]rune, n)
+	for i := range b {
+		b[i] = letters[rand.Intn(len(letters))]
 	}
-
-	// no cheeky negatives, must fetch at least 1 student.
-	if fetchCount <= 0 {
-		fetchCount = 3
-	}
-
-	// TODO: request students, make sure they are sorted
-	// best to worst (or worst to best depending on ctx)
-	req := StudentOverviewJSON{
-		BestPerforming:  genDummyStudentData(fetchCount),
-		NeedsAttention:  genDummyStudentData(fetchCount),
-		MostImprovement: genDummyStudentData(fetchCount),
-	}
-	s.Jsonify(req)
+	return string(b)
 }

@@ -15,33 +15,6 @@ type Page struct {
 	host   string
 }
 
-func NewPage(path string, title string, script string) *Page {
-	// rg := regexp.MustCompile("/")
-	// matches := rg.FindAllStringIndex(path, -1)
-
-	// very hacky and messy solution for now
-	// scriptLink := script
-	// relativeDir := "./"
-
-	// if len(matches) == 2 {
-	// 	relativeDir = "../"
-	// 	scriptLink = relativeDir + script
-	// }
-
-	// if len(matches) > 2 {
-	// 	relativeDir = strings.Repeat("../", len(matches))
-	// 	scriptLink = relativeDir + script
-	// }
-
-	page := &Page{
-		title:  title,
-		script: script,
-		host:   "//" + serv.BaseLink + "/",
-	}
-	page.SetPath(path)
-	return page
-}
-
 func (p *Page) Handle(s *serv.SessionContext) {
 	s.TryAuth(p.GetPath())
 	s.HTML(http.StatusOK, "index.html", &gin.H{
@@ -49,4 +22,14 @@ func (p *Page) Handle(s *serv.SessionContext) {
 		"pageScript": p.script,
 		"host":       p.host,
 	})
+}
+
+func NewPage(path string, title string, script string) *Page {
+	page := &Page{
+		title:  title,
+		script: script,
+		host:   serv.Protocol + serv.BaseLink + "/",
+	}
+	page.SetPath(path)
+	return page
 }

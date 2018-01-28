@@ -14,12 +14,6 @@ type StudentsRequest struct {
 	route.SimpleManagedRoute
 }
 
-func NewStudentsRequest(path string) *StudentsRequest {
-	req := &StudentsRequest{}
-	req.SetPath(path)
-	return req
-}
-
 func (r *StudentsRequest) Handle(s *serv.SessionContext) {
 	accessToken := s.TryAuth(r.GetPath())
 
@@ -40,4 +34,12 @@ func (r *StudentsRequest) Handle(s *serv.SessionContext) {
 
 	s.Header("Content-Type", "application/json")
 	s.String(http.StatusOK, strJSON)
+}
+
+// ────────────────────────────────────────────────────────────────────────────────
+
+func NewStudentsRequest(path string) *StudentsRequest {
+	req := &StudentsRequest{}
+	req.SetPath(path)
+	return req
 }

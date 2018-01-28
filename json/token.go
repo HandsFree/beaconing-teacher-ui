@@ -1,6 +1,9 @@
-package auth
+package json
 
-// TODO fixme! these are weird here.
+/**
+ * Not sure if these should stay here, better for now though.
+ * Package name of json might not be the best thing
+ */
 
 // TokenRequest is a json type for the
 // response from the tokenLink
@@ -19,11 +22,4 @@ type TokenResponse struct {
 	RefreshToken string `json:"refresh_token"`
 	ExpiresIn    int    `json:"expires_in"`
 	TokenType    string `json:"token_type"`
-}
-
-// AssignRequest is the structure of json
-// to update a glp
-type AssignRequest struct {
-	StudentID string `json:"studentId"`
-	GLP       string `json:"gamifiedLessonPathId"`
 }

@@ -15,42 +15,60 @@ import (
 )
 
 func main() {
+	// Create the main router
 	router := gin.Default()
 
+	// Create the cookie store
 	store := sessions.NewCookieStore(auth.CreateSessionSecret(32), auth.CreateSessionSecret(16))
-	router.Use(sessions.Sessions("mysession", store))
 
+	// Config the router to use sessions with cookie store
+	router.Use(sessions.Sessions("beaconing", store))
+
+	// Resources will be gzipped
 	router.Use(gzip.Gzip(gzip.BestSpeed))
 
-	// TODO figure out how to make this work with
-	// the current routing system
+	/**
+	 * TODO:
+	 * Figure out how to make this work with the current routing system
+	 */
+
 	router.NoRoute(func(c *gin.Context) {
 		c.String(404, "Error: 404 Page Not Found!")
 	})
 
+	// Load the main template file
 	router.LoadHTMLFiles("frontend/public/index.html")
+
+	// Serve all static files
 	router.Static("/dist", "./frontend/public/dist")
 
+	// Create Gin wrappers
 	mainCtx := serv.NewSessionContext(router)
-
 	manager := route.NewRouteManager(mainCtx)
+
+	// Route config
 	routes := []route.Route{
-		// simple pages
+		//
+		// ─── PAGES ───────────────────────────────────────────────────────
+		//
+
 		page.NewPage("/", "Home", "dist/beaconing/pages/home/index.js"),
 		page.NewPage("/lesson_manager", "Lesson Manager | Active Plans", "dist/beaconing/pages/lesson_manager/index.js"),
 		page.NewPage("/authoring_tool", "Authoring Tool", "dist/beaconing/pages/authoring_tool/index.js"),
 		page.NewPage("/classroom", "Classroom", "dist/beaconing/pages/classroom/index.js"),
 
-		// our api requests, these are
-		// per component for a modular thing
+		//
+		// ─── WIDGETS ─────────────────────────────────────────────────────
+		//
+
 		req.NewStudentOverview("/widget/student_overview"),
 		req.NewRecentActivities("/widget/recent_activities"),
 		req.NewActiveLessonPlans("/widget/active_lesson_plans"),
 
-		// not sure if we should do per-page? feel like the API
-		// is quite abstract righ tnow
+		//
+		// ─── API ─────────────────────────────────────────────────────────
+		//
 
-		// api wrapper requests
 		req.NewTokenRequest("/intent/token"),
 		req.NewStudentsRequest("/intent/students"),
 		req.NewStudentRequest("/intent/student/:id/*action"),
@@ -58,12 +76,17 @@ func main() {
 		req.NewGLPSRequest("/intent/glps"),
 		req.NewGLPRequest("/intent/glp/:id"),
 
-		// auth requests
+		//
+		// ─── AUTH ────────────────────────────────────────────────────────
+		//
+
 		req.NewCheckAuthRequest("/auth/check"),
 	}
 
+	// Enable the routes
 	manager.RegisterRoutes(routes...)
 
+	// Start Gin
 	if err := router.Run(":8081"); err != nil {
 		log.Fatal(err)
 	}
