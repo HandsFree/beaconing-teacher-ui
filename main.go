@@ -46,45 +46,38 @@ func main() {
 	mainCtx := serv.NewSessionContext(router)
 	manager := route.NewRouteManager(mainCtx)
 
-	// Route config
-	routes := []route.Route{
-		//
-		// ─── PAGES ───────────────────────────────────────────────────────
-		//
-
+	// Route configs
+	pages := []route.Route{
 		page.NewPage("/", "Home", "dist/beaconing/pages/home/index.js"),
 		page.NewPage("/lesson_manager", "Lesson Manager | Active Plans", "dist/beaconing/pages/lesson_manager/index.js"),
 		page.NewPage("/authoring_tool", "Authoring Tool", "dist/beaconing/pages/authoring_tool/index.js"),
 		page.NewPage("/classroom", "Classroom", "dist/beaconing/pages/classroom/index.js"),
+	}
 
-		//
-		// ─── WIDGETS ─────────────────────────────────────────────────────
-		//
-
+	widgets := []route.Route{
 		req.NewStudentOverview("/widget/student_overview"),
 		req.NewRecentActivities("/widget/recent_activities"),
 		req.NewActiveLessonPlans("/widget/active_lesson_plans"),
+	}
 
-		//
-		// ─── API ─────────────────────────────────────────────────────────
-		//
-
+	api := []route.Route{
 		req.NewTokenRequest("/intent/token"),
 		req.NewStudentsRequest("/intent/students"),
 		req.NewStudentRequest("/intent/student/:id/*action"),
 		req.NewAssignRequest("/intent/assign/:student/to/:glp"),
 		req.NewGLPSRequest("/intent/glps"),
 		req.NewGLPRequest("/intent/glp/:id"),
+	}
 
-		//
-		// ─── AUTH ────────────────────────────────────────────────────────
-		//
-
+	auth := []route.Route{
 		req.NewCheckAuthRequest("/auth/check"),
 	}
 
 	// Enable the routes
-	manager.RegisterRoutes(routes...)
+	manager.RegisterRoutes(pages...)
+	manager.RegisterRoutes(widgets...)
+	manager.RegisterRoutes(api...)
+	manager.RegisterRoutes(auth...)
 
 	// Start Gin
 	if err := router.Run(":8081"); err != nil {
