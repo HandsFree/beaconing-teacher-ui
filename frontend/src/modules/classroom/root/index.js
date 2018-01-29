@@ -1,7 +1,7 @@
 // @flow
 
-import Router from '../../core/router';
-import Students from './root/students';
+import Router from '../../../core/router';
+import Students from './students';
 
 const router = new Router();
 

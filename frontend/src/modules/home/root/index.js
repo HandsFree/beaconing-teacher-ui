@@ -1,7 +1,7 @@
 // @flow
 
-import Router from '../../core/router';
-import Home from './root/home';
+import Router from '../../../core/router';
+import Home from './home';
 
 const router = new Router();
 

@@ -1,7 +1,7 @@
 // @flow
 
-import Router from '../../core/router';
-import ActivePlans from './root/active_plans';
+import Router from '../../../core/router';
+import ActivePlans from './active_plans';
 
 const router = new Router();
 

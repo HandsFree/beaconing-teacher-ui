@@ -1,7 +1,7 @@
 // @flow
 
-import Router from '../../core/router';
-import AuthoringTool from './root/authoring_tool';
+import Router from '../../../core/router';
+import AuthoringTool from './authoring_tool';
 
 const router = new Router();
 
