@@ -45,8 +45,9 @@ func GetAuthToken(s *SessionContext) bool {
 		Code:         requestCode,
 		ClientID:     config.ClientID,
 		ClientSecret: config.ClientSecret,
-		RedirectURI:  RedirectBaseLink + "/",
+		RedirectURI:  RedirectBaseLink,
 	})
+
 	if err != nil {
 		log.Fatal(err)
 		return false
@@ -58,6 +59,7 @@ func GetAuthToken(s *SessionContext) bool {
 		log.Fatal(err)
 		return false
 	}
+
 	defer response.Body.Close()
 
 	body, err := ioutil.ReadAll(response.Body)
