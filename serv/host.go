@@ -20,9 +20,6 @@ var BaseLink = getBaseLink()
 // RedirectBaseLink contains the link core services redirects back to
 var RedirectBaseLink = getRedirectBaseLink()
 
-// AuthLink contains the link to get an access token
-var AuthLink = "https://core.beaconing.eu/auth/auth?response_type=code&client_id=teacherui&redirect_uri=" + RedirectBaseLink
-
 // ────────────────────────────────────────────────────────────────────────────────
 
 func getOutboundIP() net.IP {

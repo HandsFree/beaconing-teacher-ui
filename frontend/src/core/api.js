@@ -32,16 +32,23 @@ class APICore {
     }
 
     async checkAuth() {
-        const { status } = await this.get('./auth/check');
+        const { token } = await this.get('./auth/check');
 
-        return status;
+        // needs more verification
+        if (token) {
+            return true;
+        }
+
+        console.log('[API Core] User not authenticated!');
+
+        return false;
     }
 
     async getGLPs() {
         const auth = await this.checkAuth();
 
         if (auth) {
-            const glps = await this.get('./intent/glps');
+            const glps = await this.get(`//${window.location.host}/intent/glps`);
             return glps;
         }
 
@@ -52,7 +59,7 @@ class APICore {
         const auth = await this.checkAuth();
 
         if (auth) {
-            const students = await this.get('./intent/students');
+            const students = await this.get(`//${window.location.host}/intent/students`);
             return students;
         }
 
