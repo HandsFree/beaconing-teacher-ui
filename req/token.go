@@ -46,8 +46,6 @@ func (r *TokenRequest) Handle(s *serv.SessionContext) {
 	s.Redirect(http.StatusTemporaryRedirect, redirectPath.(string))
 }
 
-// ────────────────────────────────────────────────────────────────────────────────
-
 func NewTokenRequest(path string) *TokenRequest {
 	req := &TokenRequest{}
 	req.SetPath(path)

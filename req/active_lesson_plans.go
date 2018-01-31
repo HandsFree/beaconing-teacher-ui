@@ -25,15 +25,11 @@ func (r *ActiveLessonPlans) Handle(s *serv.SessionContext) {
 	s.Jsonify(lps)
 }
 
-// ────────────────────────────────────────────────────────────────────────────────
-
 func NewActiveLessonPlans(path string) *ActiveLessonPlans {
 	req := &ActiveLessonPlans{}
 	req.SetPath(path)
 	return req
 }
-
-// ────────────────────────────────────────────────────────────────────────────────
 
 func NewLessonPlan(name string) LessonPlan {
 	return LessonPlan{

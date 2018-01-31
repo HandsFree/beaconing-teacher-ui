@@ -17,7 +17,6 @@ func GetAuthToken(s *SessionContext) {
 	authLink := fmt.Sprintf("https://core.beaconing.eu/auth/auth?response_type=code%s%s%s%s",
 		"&client_id=", cfg.Beaconing.Auth.ID,
 		"&redirect_uri=", RedirectBaseLink)
-
 	s.Redirect(http.StatusTemporaryRedirect, authLink)
 }
 
@@ -73,11 +72,12 @@ func (s *SessionContext) TryAuth(redirectPath string) string {
 
 	if redirectPath != "" {
 		session.Set("last_path", redirectPath) // Temporary workaround
+		session.Save()
 	}
 
 	if accessToken == nil {
 		GetAuthToken(s)
-		return ""
+		return s.TryAuth(redirectPath)
 	}
 
 	return accessToken.(string)

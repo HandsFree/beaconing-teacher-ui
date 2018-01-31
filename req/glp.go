@@ -57,8 +57,6 @@ type glpData struct {
 	externConfig string
 }
 
-// ────────────────────────────────────────────────────────────────────────────────
-
 func NewGLPRequest(path string) *GLPRequest {
 	req := &GLPRequest{}
 	req.SetPath(path)
