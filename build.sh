@@ -30,12 +30,6 @@ show_help() {
 setup() {
 	go get -u github.com/kardianos/govendor
 	govendor sync
-
-	if ! test -e "config/api.go"; then
-		touch config/api.go
-		echo "Secret file created at config/api.go"
-		echo "Read config/README.md for more details"
-	fi
 }
 
 case "$1" in
