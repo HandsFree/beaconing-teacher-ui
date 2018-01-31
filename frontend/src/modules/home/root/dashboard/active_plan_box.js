@@ -1,13 +1,13 @@
 // @flow
-import { div, img, p, a, h3, h4, strong } from '../../../core/html';
+import { div, img, p, a } from '../../../../core/html';
 
-import { Component } from '../../../core/component';
+import { Component } from '../../../../core/component';
 
 class ActivePlanBox extends Component {
     async render(data: { [string]: any }) {
         const {
             name,
-            image,
+            src,
             link,
         } = data;
 
@@ -16,15 +16,20 @@ class ActivePlanBox extends Component {
             div(
                 '.image',
                 img({
-                    src: `${image}`,
-                    alt: `${name}`,
+                    src,
+                    alt: name,
                 }),
             ),
             div(
                 '.info',
                 div(
                     '.name',
-                    p(`${name}`),
+                    a(
+                        {
+                            href: link,
+                        },
+                        name,
+                    ),
                 ),
             ),
         );

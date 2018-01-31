@@ -1,7 +1,7 @@
 // @flow
-import { div, p, a, h3, h4, strong } from '../../../core/html';
+import { div, p, a, h3, h4, strong } from '../../../../core/html';
 
-import { Component } from '../../../core/component';
+import { Component } from '../../../../core/component';
 
 class GLPBox extends Component {
     async render(data: { [string]: any }) {

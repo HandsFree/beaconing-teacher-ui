@@ -1,7 +1,7 @@
 // @flow
-import { div, figure, img, h4, a } from '../../../core/html';
+import { div, figure, img, h4, a } from '../../../../core/html';
 
-import { Component } from '../../../core/component';
+import { Component } from '../../../../core/component';
 
 class StudentBox extends Component {
     async render(data: { [string]: any }) {

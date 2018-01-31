@@ -1,6 +1,7 @@
 package req
 
 import (
+	"git.juddus.com/HFC/beaconing/json"
 	"git.juddus.com/HFC/beaconing/route"
 	"git.juddus.com/HFC/beaconing/serv"
 )
@@ -16,7 +17,7 @@ func (r *ActiveLessonPlans) Handle(s *serv.SessionContext) {
 	// otherwise this widget will return all N active lesson plans
 	// sorted in alphabetic order.
 
-	lps := []LessonPlan{
+	lps := []json.LessonPlan{
 		NewLessonPlan("Algebra"),
 		NewLessonPlan("First steps to Engineering"),
 		NewLessonPlan("Advanced Masonary"),
@@ -31,10 +32,10 @@ func NewActiveLessonPlans(path string) *ActiveLessonPlans {
 	return req
 }
 
-func NewLessonPlan(name string) LessonPlan {
-	return LessonPlan{
-		Name:  name,
-		Image: "https://via.placeholder.com/512x512&text=" + name,
-		Link:  "https://google.com/q?=what+is+" + name,
+func NewLessonPlan(name string) json.LessonPlan {
+	return json.LessonPlan{
+		Name: name,
+		Src:  "https://via.placeholder.com/512x512&text=" + name,
+		Link: "#",
 	}
 }

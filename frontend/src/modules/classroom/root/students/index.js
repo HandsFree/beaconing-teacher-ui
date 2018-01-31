@@ -1,12 +1,12 @@
 // @flow
-import { div, main, section } from '../../../core/html';
+import { div, main, section } from '../../../../core/html';
 
-import { RootComponent } from '../../../core/component';
-import Header from '../../header/root';
-import MainNav from '../../nav/main';
-import SecondNav from '../../nav/second';
+import { RootComponent } from '../../../../core/component';
+import Header from '../../../header/root';
+import MainNav from '../../../nav/main';
+import SecondNav from '../../../nav/second';
 import InnerNav from './inner_nav';
-import BasicSearch from '../../search/basic';
+import BasicSearch from '../../../search/basic';
 import LoadStudents from './load_students';
 
 class Students extends RootComponent {

@@ -1,7 +1,7 @@
 // @flow
-import { div, p, a } from '../../../core/html';
+import { div, p, a } from '../../../../core/html';
 
-import { Component } from '../../../core/component';
+import { Component } from '../../../../core/component';
 
 class RecentActivities extends Component {
     async render() {

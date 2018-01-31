@@ -1,7 +1,7 @@
 // @flow
-import { div } from '../../../core/html';
+import { div } from '../../../../core/html';
 
-import { RootComponent } from '../../../core/component';
+import { RootComponent } from '../../../../core/component';
 import Prompt from './prompt';
 import IFrame from './iframe';
 

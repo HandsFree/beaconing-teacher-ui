@@ -1,7 +1,7 @@
 // @flow
-import { iframe } from '../../../core/html';
+import { iframe } from '../../../../core/html';
 
-import { Component } from '../../../core/component';
+import { Component } from '../../../../core/component';
 
 class IFrame extends Component {
     async render(params: { [string]: string }) {

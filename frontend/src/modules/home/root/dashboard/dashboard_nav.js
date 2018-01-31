@@ -1,7 +1,7 @@
 // @flow
-import { nav, a } from '../../../core/html';
+import { nav, a } from '../../../../core/html';
 
-import { Component } from '../../../core/component';
+import { Component } from '../../../../core/component';
 
 class DashboardNav extends Component {
     async render() {

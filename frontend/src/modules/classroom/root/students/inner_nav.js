@@ -1,7 +1,7 @@
 // @flow
-import { div, a, span } from '../../../core/html';
+import { div, a, span } from '../../../../core/html';
 
-import { Component } from '../../../core/component';
+import { Component } from '../../../../core/component';
 
 class InnerNav extends Component {
     state = {

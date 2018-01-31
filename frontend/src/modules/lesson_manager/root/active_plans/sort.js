@@ -1,7 +1,7 @@
 // @flow
-import { div, aside, span, a } from '../../../core/html';
+import { div, aside, span, a } from '../../../../core/html';
 
-import { Component } from '../../../core/component';
+import { Component } from '../../../../core/component';
 
 class Sort extends Component {
     async render() {

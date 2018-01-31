@@ -1,16 +1,16 @@
 // @flow
-import { div, main, section } from '../../../core/html';
+import { div, main, section } from '../../../../core/html';
 
-import { RootComponent } from '../../../core/component';
-import Header from '../../header/root';
-import MainNav from '../../nav/main';
+import { RootComponent } from '../../../../core/component';
+import Header from '../../../header/root';
+import MainNav from '../../../nav/main';
 import DashboardNav from './dashboard_nav';
-import BasicSearch from '../../search/basic';
+import BasicSearch from '../../../search/basic';
 import RecentActivities from './recent_activities';
 import ActivePlans from './active_plans';
 import StudentOverview from './student_overview';
 
-class Home extends RootComponent {
+class Dashboard extends RootComponent {
     async render() {
         const header = new Header();
         const mainNav = new MainNav();
@@ -63,8 +63,8 @@ class Home extends RootComponent {
     }
 
     // async afterMount() {
-        
+
     // }
 }
 
-export default Home;
+export default Dashboard;

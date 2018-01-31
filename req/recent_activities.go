@@ -1,6 +1,7 @@
 package req
 
 import (
+	"git.juddus.com/HFC/beaconing/json"
 	"git.juddus.com/HFC/beaconing/route"
 	"git.juddus.com/HFC/beaconing/serv"
 )
@@ -49,7 +50,7 @@ func (r *RecentActivities) Handle(s *serv.SessionContext) {
 // naming... ?
 type LPAssignedActivity struct {
 	SimpleActivity
-	Plan LessonPlan `json:"plan"`
+	Plan json.LessonPlan `json:"plan"`
 }
 
 func (a *LPAssignedActivity) String() string {
@@ -69,7 +70,7 @@ func NewRecentActivities(path string) *RecentActivities {
 func NewLPAssignedActivity(planName string) LPAssignedActivity {
 	return LPAssignedActivity{
 		SimpleActivity: NewSimpleActivity("Assigned lesson plan"),
-		Plan: LessonPlan{
+		Plan: json.LessonPlan{
 			Name: planName,
 
 			// would this be in the database or

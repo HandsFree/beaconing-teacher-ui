@@ -1,9 +1,9 @@
 // @flow
-import { section } from '../../../core/html';
+import { section } from '../../../../core/html';
 
-import { Component } from '../../../core/component';
+import { Component } from '../../../../core/component';
 import StudentBox from './student_box';
-import Loading from '../../loading';
+import Loading from '../../../loading';
 
 /* eslint-disable no-restricted-syntax */
 

@@ -1,13 +1,13 @@
 // @flow
-import { div, p, a, i, img } from '../../../core/html';
+import { div, p, a, i } from '../../../../core/html';
 
-import { Component } from '../../../core/component';
+import { Component } from '../../../../core/component';
 import LoadActivePlans from './load_active_plans';
 
 class ActivePlans extends Component {
-
     async render() {
         const activePlans = new LoadActivePlans();
+
         const activePlansEl = await activePlans.attach();
 
         return div(

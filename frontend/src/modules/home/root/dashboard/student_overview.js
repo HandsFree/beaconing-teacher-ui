@@ -1,7 +1,7 @@
 // @flow
-import { div, p, a, i, span, h3, img } from '../../../core/html';
+import { div, p, a, i, span, h3, img } from '../../../../core/html';
 
-import { Component } from '../../../core/component';
+import { Component } from '../../../../core/component';
 
 class StudentOverview extends Component {
     async render() {

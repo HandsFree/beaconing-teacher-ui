@@ -1,7 +1,7 @@
 // @flow
-import { div, nav, a, i, span } from '../../../core/html';
+import { div, nav, a, i, span } from '../../../../core/html';
 
-import { Component } from '../../../core/component';
+import { Component } from '../../../../core/component';
 
 class Prompt extends Component {
     async render(params: { [string]: string }) {

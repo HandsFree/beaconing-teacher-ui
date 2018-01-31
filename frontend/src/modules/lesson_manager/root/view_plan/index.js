@@ -1,9 +1,9 @@
 // @flow
-import { div, main, section } from '../../../core/html';
+import { div, main, section } from '../../../../core/html';
 
-import { RootComponent } from '../../../core/component';
-import Header from '../../header/root';
-import MainNav from '../../nav/main';
+import { RootComponent } from '../../../../core/component';
+import Header from '../../../header/root';
+import MainNav from '../../../nav/main';
 
 class ViewPlan extends RootComponent {
     async render() {

@@ -1,14 +1,14 @@
 // @flow
 
 import Router from '../../../core/router';
-import Home from './home';
+import Dashboard from './dashboard';
 
 const router = new Router();
 
 router.setRoutes([
     {
         path: '/',
-        controller: new Home(),
+        controller: new Dashboard(),
     },
 ]);
 

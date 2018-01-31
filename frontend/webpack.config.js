@@ -104,12 +104,6 @@ const config = [
     },
     {
         entry: {
-            'pages/lesson_manager/view_plan': './modules/lesson_manager/view_plan/index.js',
-        },
-        ...mainSettings,
-    },
-    {
-        entry: {
             'pages/authoring_tool/index': './modules/authoring_tool/root/index.js',
         },
         ...mainSettings,

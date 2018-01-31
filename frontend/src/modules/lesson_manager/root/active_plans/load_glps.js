@@ -1,9 +1,9 @@
 // @flow
 // import List from 'list.js';
 
-import { div } from '../../../core/html';
+import { div } from '../../../../core/html';
 
-import { Component } from '../../../core/component';
+import { Component } from '../../../../core/component';
 import GLPBox from './glp_box';
 
 /* eslint-disable no-restricted-syntax */

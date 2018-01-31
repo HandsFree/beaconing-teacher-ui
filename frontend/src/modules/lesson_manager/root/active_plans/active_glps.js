@@ -1,8 +1,8 @@
 // @flow
-import { div } from '../../../core/html';
+import { div } from '../../../../core/html';
 
-import { Component } from '../../../core/component';
-import Loading from '../../loading';
+import { Component } from '../../../../core/component';
+import Loading from '../../../loading';
 import LoadGLPs from './load_glps';
 
 class ActiveGLPs extends Component {
