@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"git.juddus.com/HFC/beaconing/auth"
+	"git.juddus.com/HFC/beaconing/cfg"
 	"git.juddus.com/HFC/beaconing/page"
 	"git.juddus.com/HFC/beaconing/req"
 	"git.juddus.com/HFC/beaconing/route"
@@ -15,6 +16,8 @@ import (
 )
 
 func main() {
+	cfg.LoadConfig()
+
 	// Create the main router
 	router := gin.Default()
 

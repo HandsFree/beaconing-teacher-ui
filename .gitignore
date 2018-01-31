@@ -90,7 +90,7 @@ vendor/*/
 !vendor.json
 
 # Omit secret file
-config/api.go
+cfg/config.toml
 
 # .git file
 beaconing.git

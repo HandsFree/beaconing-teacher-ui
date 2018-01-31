@@ -7,7 +7,7 @@ import (
 	"log"
 	"net/http"
 
-	"git.juddus.com/HFC/beaconing/config"
+	"git.juddus.com/HFC/beaconing/cfg"
 	"git.juddus.com/HFC/beaconing/json"
 	"github.com/gin-contrib/sessions"
 	jsoniter "github.com/json-iterator/go"
@@ -15,7 +15,7 @@ import (
 
 func GetAuthToken(s *SessionContext) {
 	authLink := fmt.Sprintf("https://core.beaconing.eu/auth/auth?response_type=code%s%s%s%s",
-		"&client_id=", config.ClientID,
+		"&client_id=", cfg.Beaconing.Auth.ID,
 		"&redirect_uri=", RedirectBaseLink)
 
 	s.Redirect(http.StatusTemporaryRedirect, authLink)
@@ -29,8 +29,8 @@ func GetRefreshToken(s *SessionContext) error {
 	message, err := jsoniter.Marshal(json.TokenRequest{
 		GrantType:    "authorization_code",
 		Code:         accessToken,
-		ClientID:     config.ClientID,
-		ClientSecret: config.ClientSecret,
+		ClientID:     cfg.Beaconing.Auth.ID,
+		ClientSecret: cfg.Beaconing.Auth.Secret,
 		RedirectURI:  RedirectBaseLink,
 	})
 
