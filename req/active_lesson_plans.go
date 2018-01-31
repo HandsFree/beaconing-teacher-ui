@@ -21,7 +21,6 @@ func (r *ActiveLessonPlans) Handle(s *serv.SessionContext) {
 		NewLessonPlan("Algebra"),
 		NewLessonPlan("First steps to Engineering"),
 		NewLessonPlan("Advanced Masonary"),
-		NewLessonPlan("Underwater Basket Weaving"),
 	}
 	s.Jsonify(lps)
 }
