@@ -22,17 +22,17 @@ func (r *TokenRequest) Handle(s *serv.SessionContext) {
 	}
 
 	session := sessions.Default(s.Context)
-	session.Set("access_token", accessToken) // TODO: needs sanitisation
 
-	err := s.TryRefreshToken()
-	if err != nil {
+	// TODO: needs sanitisation
+	session.Set("access_token", accessToken)
+
+	if err := s.TryRefreshToken(); err != nil {
 		log.Fatal(err)
 		s.String(500, "Server Error: 500 Token Refresh Failed")
 		return
 	}
 
-	err = session.Save()
-	if err != nil {
+	if err := session.Save(); err != nil {
 		log.Fatal(err)
 		return
 	}
@@ -42,7 +42,6 @@ func (r *TokenRequest) Handle(s *serv.SessionContext) {
 		s.Redirect(http.StatusTemporaryRedirect, "/")
 		return
 	}
-
 	s.Redirect(http.StatusTemporaryRedirect, redirectPath.(string))
 }
 
