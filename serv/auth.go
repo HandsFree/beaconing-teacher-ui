@@ -13,7 +13,7 @@ import (
 	jsoniter "github.com/json-iterator/go"
 )
 
-func GetAuthToken(s *SessionContext) {
+func authRedirect(s *SessionContext) {
 	authLink := fmt.Sprintf("https://core.beaconing.eu/auth/auth?response_type=code%s%s%s%s",
 		"&client_id=", cfg.Beaconing.Auth.ID,
 		"&redirect_uri=", RedirectBaseLink)
@@ -76,7 +76,7 @@ func (s *SessionContext) TryAuth(redirectPath string) string {
 	}
 
 	if accessToken == nil {
-		GetAuthToken(s)
+		authRedirect(s)
 		return s.TryAuth(redirectPath)
 	}
 

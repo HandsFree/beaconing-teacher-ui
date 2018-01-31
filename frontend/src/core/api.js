@@ -31,6 +31,16 @@ class APICore {
         });
     }
 
+    async getActivePlans() {
+        const activePlans = await this.get(`//${window.location.host}/widget/active_lesson_plans`);
+        return activePlans;
+        const { auth } = await this.checkAuth();
+        if (!auth) {
+            return false;
+        }
+
+    }
+
     async checkAuth() {
         const { token } = await this.get('./auth/check');
 

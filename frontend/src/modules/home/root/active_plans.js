@@ -2,9 +2,14 @@
 import { div, p, a, i, img } from '../../../core/html';
 
 import { Component } from '../../../core/component';
+import LoadActivePlans from './load_active_plans';
 
 class ActivePlans extends Component {
+
     async render() {
+        const activePlans = new LoadActivePlans();
+        const activePlansEl = await activePlans.attach();
+
         return div(
             '.tile.flex-column.flex-2',
             div(
@@ -27,57 +32,7 @@ class ActivePlans extends Component {
                 '.content',
                 div(
                     '#active-plan-summary',
-                    div(
-                        '.plan',
-                        div(
-                            '.image',
-                            img({
-                                src: `//${window.location.host}/dist/beaconing/images/quest-image.jpg`,
-                                alt: 'Algebra Beginnings',
-                            }),
-                        ),
-                        div(
-                            '.info',
-                            div(
-                                '.name',
-                                p('Algebra Beginnings'),
-                            ),
-                        ),
-                    ),
-                    div(
-                        '.plan',
-                        div(
-                            '.image',
-                            img({
-                                src: `//${window.location.host}/dist/beaconing/images/quest-image.jpg`,
-                                alt: 'First steps to Engineering',
-                            }),
-                        ),
-                        div(
-                            '.info',
-                            div(
-                                '.name',
-                                p('First steps to Engineering'),
-                            ),
-                        ),
-                    ),
-                    div(
-                        '.plan',
-                        div(
-                            '.image',
-                            img({
-                                src: `//${window.location.host}/dist/beaconing/images/quest-image.jpg`,
-                                alt: 'Advanced Masonary',
-                            }),
-                        ),
-                        div(
-                            '.info',
-                            div(
-                                '.name',
-                                p('Advanced Masonary'),
-                            ),
-                        ),
-                    ),
+                    activePlansEl,
                 ),
             ),
         );

@@ -1,10 +1,9 @@
 #!/bin/bash
 
 run() {
-	if ! test -e "config/api.go"; then
-		echo "No config/api.go file!"
-		exit -1
-	fi
+	cd frontend/
+	yarn b
+	cd ../
 	go run *.go
 }
 

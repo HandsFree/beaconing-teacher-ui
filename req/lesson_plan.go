@@ -5,6 +5,6 @@ package req
 // link: http://whatever.com/algebra
 type LessonPlan struct {
 	Name  string `json:"name"`
-	Image string `json:"img"`
+	Image string `json:"image"`
 	Link  string `json:"link"`
 }
