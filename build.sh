@@ -9,11 +9,13 @@ run() {
 }
 
 run_fmt() {
+	go fmt git.juddus.com/HFC/beaconing/auth
+	go fmt git.juddus.com/HFC/beaconing/cfg
+	go fmt git.juddus.com/HFC/beaconing/json
 	go fmt git.juddus.com/HFC/beaconing/page
-	go fmt git.juddus.com/HFC/beaconing/serv
 	go fmt git.juddus.com/HFC/beaconing/req
 	go fmt git.juddus.com/HFC/beaconing/route
-	go fmt git.juddus.com/HFC/beaconing/auth
+	go fmt git.juddus.com/HFC/beaconing/serv
 	go fmt *.go
 }
 
