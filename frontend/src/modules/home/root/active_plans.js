@@ -32,7 +32,7 @@ class ActivePlans extends Component {
                         div(
                             '.image',
                             img({
-                                src: 'dist/beaconing/images/quest-image.jpg',
+                                src: `//${window.location.host}/dist/beaconing/images/quest-image.jpg`,
                                 alt: 'Algebra Beginnings',
                             }),
                         ),
@@ -49,7 +49,7 @@ class ActivePlans extends Component {
                         div(
                             '.image',
                             img({
-                                src: 'dist/beaconing/images/quest-image.jpg',
+                                src: `//${window.location.host}/dist/beaconing/images/quest-image.jpg`,
                                 alt: 'First steps to Engineering',
                             }),
                         ),
@@ -66,7 +66,7 @@ class ActivePlans extends Component {
                         div(
                             '.image',
                             img({
-                                src: 'dist/beaconing/images/quest-image.jpg',
+                                src: `//${window.location.host}/dist/beaconing/images/quest-image.jpg`,
                                 alt: 'Advanced Masonary',
                             }),
                         ),

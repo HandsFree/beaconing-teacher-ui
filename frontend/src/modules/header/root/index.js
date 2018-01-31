@@ -8,7 +8,7 @@ import { Component } from '../../../core/component';
 class Header extends Component {
     state = {
         teacherName: 'John Smith',
-        teacherIMG: 'dist/beaconing/images/profile.png',
+        teacherIMG: `//${window.location.host}/dist/beaconing/images/profile.png`,
     };
 
     async render() {
@@ -21,7 +21,7 @@ class Header extends Component {
                         href: './',
                     },
                     img({
-                        src: 'dist/beaconing/images/logo.png',
+                        src: `//${window.location.host}/dist/beaconing/images/logo.png`,
                         alt: 'Click to go to Home',
                     }),
                 ),

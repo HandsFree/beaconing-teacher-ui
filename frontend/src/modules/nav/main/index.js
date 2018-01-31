@@ -72,10 +72,15 @@ class MainNav extends Component {
                         href: './settings/',
                     },
                     i('.icon-cogs'),
-                    span('Classroom'),
+                    span('Settings'),
                 ),
                 a(
                     '.item',
+                    {
+                        onclick: () => {
+                            window.abarRuntime.open();
+                        },
+                    },
                     i('.icon-key-inv'),
                     span('Accessibility'),
                 ),

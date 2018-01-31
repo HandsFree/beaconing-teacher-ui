@@ -2,8 +2,6 @@
 
 /* eslint-disable class-methods-use-this, no-restricted-syntax */
 
-// use hyperscript to make elements, link components to elements
-
 class RootComponent {
     containerID: string = 'app';
     view: HTMLElement | Array<HTMLElement>;
@@ -80,7 +78,6 @@ class Component {
         this.view.appendChild(view);
     }
 
-    // calls start function, binds updates, handles functions after mount, follow state
     async attach(data: { [string]: any } = {}) {
         this.start();
 

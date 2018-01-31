@@ -14,31 +14,42 @@ type TokenRequest struct {
 	route.SimpleManagedRoute
 }
 
-func NewTokenRequest(path string) *TokenRequest {
-	req := &TokenRequest{}
-	req.SetPath(path)
-	return req
-}
-
 func (r *TokenRequest) Handle(s *serv.SessionContext) {
-	code := s.Query("code")
-	if code == "" {
-		// do something here!
+	accessToken := s.Query("code")
+	if accessToken == "" {
+		s.String(400, "Error: Access Token not provided")
 		return
 	}
 
 	session := sessions.Default(s.Context)
-	session.Set("code", code)
-	if !s.GetAuthToken() {
-		// some kind of failure here
-		// 505 redirect?
+	session.Set("access_token", accessToken) // TODO: needs sanitisation
+
+	err := s.TryRefreshToken()
+	if err != nil {
+		log.Fatal(err)
+		s.String(500, "Server Error: 500 Token Refresh Failed")
 		return
 	}
-	err := session.Save()
+
+	err = session.Save()
 	if err != nil {
 		log.Fatal(err)
 		return
 	}
 
-	s.Redirect(http.StatusTemporaryRedirect, "/")
+	redirectPath := session.Get("last_path")
+	if redirectPath == nil {
+		s.Redirect(http.StatusTemporaryRedirect, "/")
+		return
+	}
+
+	s.Redirect(http.StatusTemporaryRedirect, redirectPath.(string))
+}
+
+// ────────────────────────────────────────────────────────────────────────────────
+
+func NewTokenRequest(path string) *TokenRequest {
+	req := &TokenRequest{}
+	req.SetPath(path)
+	return req
 }

@@ -31,13 +31,19 @@ type SimpleActivity struct {
 	// TODO: time!
 }
 
-func NewSimpleActivity(message string) SimpleActivity {
-	return SimpleActivity{
-		Message: message,
-	}
-}
 func (s SimpleActivity) GetMessage() string {
 	return s.Message
+}
+
+type RecentActivities struct {
+	route.SimpleManagedRoute
+}
+
+func (r *RecentActivities) Handle(s *serv.SessionContext) {
+	activities := []Activity{
+		NewLPAssignedActivity("algebra"),
+	}
+	s.Jsonify(activities)
 }
 
 // naming... ?
@@ -49,6 +55,16 @@ type LPAssignedActivity struct {
 func (a *LPAssignedActivity) String() string {
 	return a.Message + " " + a.Plan.Name
 }
+
+// ────────────────────────────────────────────────────────────────────────────────
+
+func NewRecentActivities(path string) *RecentActivities {
+	req := &RecentActivities{}
+	req.SetPath(path)
+	return req
+}
+
+// ────────────────────────────────────────────────────────────────────────────────
 
 func NewLPAssignedActivity(planName string) LPAssignedActivity {
 	return LPAssignedActivity{
@@ -64,19 +80,8 @@ func NewLPAssignedActivity(planName string) LPAssignedActivity {
 	}
 }
 
-type RecentActivities struct {
-	route.SimpleManagedRoute
-}
-
-func NewRecentActivities(path string) *RecentActivities {
-	req := &RecentActivities{}
-	req.SetPath(path)
-	return req
-}
-
-func (r *RecentActivities) Handle(s *serv.SessionContext) {
-	activities := []Activity{
-		NewLPAssignedActivity("algebra"),
+func NewSimpleActivity(message string) SimpleActivity {
+	return SimpleActivity{
+		Message: message,
 	}
-	s.Jsonify(activities)
 }

@@ -10,7 +10,7 @@ class Loading extends Component {
             div(
                 '.loading',
                 img({
-                    src: 'dist/beaconing/images/loading.gif',
+                    src: `//${window.location.host}/dist/beaconing/images/loading.gif`,
                     alt: 'Loading',
                 }),
                 span('Loading...'),

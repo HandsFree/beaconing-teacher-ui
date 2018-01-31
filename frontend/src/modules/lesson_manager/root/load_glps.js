@@ -9,17 +9,15 @@ import GLPBox from './glp_box';
 /* eslint-disable no-restricted-syntax */
 
 const listConfig = {
-    listClass: 'plans-container',
     valueNames: ['name', 'domain', 'topic', 'description'],
-    searchClass: 'search-input',
     indexAsync: true,
 };
 
 class LoadGLPs extends Component {
-    list: List;
+    // list: List;
 
     async render() {
-        return div('.plans-container.flex-wrap');
+        return div('.plans-container.list.flex-wrap');
     }
 
     async load() {

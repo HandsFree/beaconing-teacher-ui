@@ -8,9 +8,9 @@ class BasicSearch extends Component {
         const { searchType } = data;
 
         return div(
-            '.search',
+            '.search.fuzzy-search',
             i('.icon-search', { 'aria-hidden': true }),
-            input(`.${searchType}.search-input`, { type: 'text' }),
+            input(`.${searchType}`, { type: 'text' }),
         );
     }
 }

@@ -6,8 +6,6 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/gin-contrib/sessions"
-
 	jsoniter "github.com/json-iterator/go"
 
 	"git.juddus.com/HFC/beaconing/route"
@@ -18,37 +16,14 @@ type GLPRequest struct {
 	route.SimpleManagedRoute
 }
 
-type glpData struct {
-	id           int
-	name         string
-	desc         string
-	author       string
-	category     string
-	content      string
-	gamePlotId   int
-	externConfig string
-}
-
-func NewGLPRequest(path string) *GLPRequest {
-	req := &GLPRequest{}
-	req.SetPath(path)
-	return req
-}
-
 // TODO: filter the useless stuff out of
 // the glp json
 func (a *GLPRequest) Handle(s *serv.SessionContext) {
 	glpID := s.Param("id")
 
-	session := sessions.Default(s.Context)
+	accessToken := s.TryAuth(a.GetPath())
 
-	accessToken := session.Get("access_token")
-	if accessToken == nil {
-		s.Redirect(http.StatusTemporaryRedirect, serv.AuthLink)
-		return
-	}
-
-	response, err := http.Get(fmt.Sprintf("https://core.beaconing.eu/api/gamifiedlessonpaths/%s?access_token=%s", glpID, accessToken.(string)))
+	response, err := http.Get(fmt.Sprintf("https://core.beaconing.eu/api/gamifiedlessonpaths/%s?access_token=%s", glpID, accessToken))
 	if err != nil {
 		log.Fatal(err)
 		return
@@ -69,4 +44,23 @@ func (a *GLPRequest) Handle(s *serv.SessionContext) {
 	strJSON := string(body)
 	s.Header("Content-Type", "application/json")
 	s.String(http.StatusOK, strJSON)
+}
+
+type glpData struct {
+	id           int
+	name         string
+	desc         string
+	author       string
+	category     string
+	content      string
+	gamePlotId   int
+	externConfig string
+}
+
+// ────────────────────────────────────────────────────────────────────────────────
+
+func NewGLPRequest(path string) *GLPRequest {
+	req := &GLPRequest{}
+	req.SetPath(path)
+	return req
 }

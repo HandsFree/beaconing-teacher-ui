@@ -6,8 +6,6 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/gin-contrib/sessions"
-
 	"git.juddus.com/HFC/beaconing/route"
 	"git.juddus.com/HFC/beaconing/serv"
 )
@@ -16,21 +14,10 @@ type GLPSRequest struct {
 	route.SimpleManagedRoute
 }
 
-func NewGLPSRequest(path string) *GLPSRequest {
-	req := &GLPSRequest{}
-	req.SetPath(path)
-	return req
-}
-
 func (a *GLPSRequest) Handle(s *serv.SessionContext) {
-	session := sessions.Default(s.Context)
-	accessToken := session.Get("access_token")
-	if accessToken == nil {
-		s.Redirect(http.StatusTemporaryRedirect, serv.AuthLink)
-		return
-	}
+	accessToken := s.TryAuth(a.GetPath())
 
-	response, err := http.Get(fmt.Sprintf("https://core.beaconing.eu/api/gamifiedlessonpaths?access_token=%s", accessToken.(string)))
+	response, err := http.Get(fmt.Sprintf("https://core.beaconing.eu/api/gamifiedlessonpaths?access_token=%s", accessToken))
 	if err != nil {
 		log.Fatal(err)
 		return
@@ -46,4 +33,12 @@ func (a *GLPSRequest) Handle(s *serv.SessionContext) {
 	strJSON := string(body)
 	s.Header("Content-Type", "application/json")
 	s.String(http.StatusOK, strJSON)
+}
+
+// ────────────────────────────────────────────────────────────────────────────────
+
+func NewGLPSRequest(path string) *GLPSRequest {
+	req := &GLPSRequest{}
+	req.SetPath(path)
+	return req
 }

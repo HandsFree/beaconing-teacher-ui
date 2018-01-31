@@ -7,23 +7,11 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/gin-contrib/sessions"
-
 	"git.juddus.com/HFC/beaconing/route"
 	"git.juddus.com/HFC/beaconing/serv"
 
 	jsoniter "github.com/json-iterator/go"
 )
-
-type AssignRequest struct {
-	route.SimpleManagedRoute
-}
-
-func NewAssignRequest(path string) *AssignRequest {
-	req := &AssignRequest{}
-	req.SetPath(path)
-	return req
-}
 
 type assignData struct {
 	studentID string
@@ -52,23 +40,30 @@ func (a *assignData) assignGLP(accessToken string) (string, error) {
 	return string(body), nil
 }
 
+type AssignRequest struct {
+	route.SimpleManagedRoute
+}
+
 func (a *AssignRequest) Handle(s *serv.SessionContext) {
 	studentID := s.Param("student")
 	glpID := s.Param("glp")
 
-	session := sessions.Default(s.Context)
-	accessToken := session.Get("access_token")
-	if accessToken == nil {
-		s.Redirect(http.StatusTemporaryRedirect, serv.AuthLink)
-		return
-	}
+	accessToken := s.TryAuth(a.GetPath())
 
 	assignReqData := &assignData{studentID, glpID}
-	assignReq, err := assignReqData.assignGLP(accessToken.(string))
+	assignReq, err := assignReqData.assignGLP(accessToken)
 	if err != nil {
 		log.Fatal(err)
 		return
 	}
 
 	s.Json(assignReq)
+}
+
+// ────────────────────────────────────────────────────────────────────────────────
+
+func NewAssignRequest(path string) *AssignRequest {
+	req := &AssignRequest{}
+	req.SetPath(path)
+	return req
 }

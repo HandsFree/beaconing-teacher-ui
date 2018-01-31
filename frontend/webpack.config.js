@@ -92,19 +92,31 @@ const config = [
     },
     {
         entry: {
-            'pages/home/index': './modules/home/index.js',
+            'pages/home/index': './modules/home/root/index.js',
         },
         ...mainSettings,
     },
     {
         entry: {
-            'pages/lesson_manager/index': './modules/lesson_manager/index.js',
+            'pages/lesson_manager/index': './modules/lesson_manager/root/index.js',
         },
         ...mainSettings,
     },
     {
         entry: {
-            'pages/authoring_tool/index': './modules/authoring_tool/index.js',
+            'pages/lesson_manager/view_plan': './modules/lesson_manager/view_plan/index.js',
+        },
+        ...mainSettings,
+    },
+    {
+        entry: {
+            'pages/authoring_tool/index': './modules/authoring_tool/root/index.js',
+        },
+        ...mainSettings,
+    },
+    {
+        entry: {
+            'pages/classroom/index': './modules/classroom/root/index.js',
         },
         ...mainSettings,
     },
