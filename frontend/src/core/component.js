@@ -10,6 +10,12 @@ class RootComponent {
 
     updateView(view: HTMLElement) {
         if (document.body) {
+            const app = document.getElementById(this.containerID);
+
+            if (app) {
+                document.body.removeChild(app);
+            }
+
             this.view = view;
             document.body.insertAdjacentElement('afterbegin', this.view);
         } else {
@@ -30,7 +36,7 @@ class RootComponent {
         }
     }
 
-    async startLifecycle() {
+    async doRender() {
         const element = await this.render();
 
         if (Array.isArray(element)) {
@@ -40,10 +46,6 @@ class RootComponent {
         } else {
             this.updateView(element);
         }
-
-        if (this.afterMount) {
-            this.afterMount();
-        }
     }
 
     async start(params: { [string]: string }) {
@@ -51,7 +53,16 @@ class RootComponent {
             this.params = params;
         }
 
-        this.startLifecycle();
+        if (this.init) {
+            await this.init();
+        }
+
+        await this.doRender();
+
+        if (this.afterMount) {
+            await this.afterMount();
+        }
+
         console.log('[Beaconing] Root Component Started!');
     }
 }
@@ -59,6 +70,7 @@ class RootComponent {
 class Component {
     state: { [string]: any } = {};
     view: HTMLElement;
+    props: { [string]: any } = {};
 
     updateView(view: HTMLElement) {
         if (document.readyState !== 'complete') {
@@ -78,25 +90,39 @@ class Component {
         this.view.appendChild(view);
     }
 
-    async attach(data: { [string]: any } = {}) {
-        this.start();
+    async attach(props: { [string]: any } = {}) {
+        this.props = props;
 
-        const element = await this.render(data);
+        const func = this.start();
 
+        const prom = func.next();
+
+        return prom.then((el) => {
+            func.next();
+            return el.value;
+        });
+    }
+
+    async doRender() {
+        const element = await this.render();
         this.view = element;
-
         return this.view;
     }
 
-    async startLifecycle() {
-        if (this.afterMount) {
-            this.afterMount();
+    // not sure how to do async generators in flow
+    // ALSO this is pretty hacky right now
+    async* start(): AsyncGenerator<> {
+        if (this.init) {
+            await this.init();
         }
-    }
 
-    async start() {
-        this.startLifecycle();
-        console.log(`[Beaconing] Started Component ${this.constructor.name}`);
+        yield await this.doRender();
+
+        if (this.afterMount) {
+            await this.afterMount();
+        }
+
+        return console.log(`[Beaconing] Started Component ${this.constructor.name}`);
     }
 }
 
