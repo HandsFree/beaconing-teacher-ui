@@ -32,17 +32,18 @@ class APICore {
     }
 
     async getActivePlans() {
-        const activePlans = await this.get(`//${window.location.host}/widget/active_lesson_plans`);
-        return activePlans;
-        const { auth } = await this.checkAuth();
+        const auth = await this.checkAuth();
+
         if (!auth) {
             return false;
         }
 
+        const activePlans = await this.get(`//${window.location.host}/widget/active_lesson_plans`);
+        return activePlans;
     }
 
     async checkAuth() {
-        const { token } = await this.get('./auth/check');
+        const { token } = await this.get(`//${window.location.host}/auth/check`);
 
         // needs more verification
         if (token) {
@@ -57,23 +58,34 @@ class APICore {
     async getGLPs() {
         const auth = await this.checkAuth();
 
-        if (auth) {
-            const glps = await this.get(`//${window.location.host}/intent/glps`);
-            return glps;
+        if (!auth) {
+            return false;
         }
 
-        return false;
+        const glps = await this.get(`//${window.location.host}/intent/glps`);
+        return glps;
+    }
+
+    async getGLP(id: number) {
+        const auth = await this.checkAuth();
+
+        if (!auth) {
+            return false;
+        }
+
+        const glp = await this.get(`//${window.location.host}/intent/glp/${id}`);
+        return glp;
     }
 
     async getStudents() {
         const auth = await this.checkAuth();
 
-        if (auth) {
-            const students = await this.get(`//${window.location.host}/intent/students`);
-            return students;
+        if (!auth) {
+            return false;
         }
 
-        return false;
+        const students = await this.get(`//${window.location.host}/intent/students`);
+        return students;
     }
 }
 

@@ -59,7 +59,7 @@ class Router {
             path = '/';
         }
 
-        // console.log(path);
+        // console.log(this.routes);
 
         if (this.routes.has(path)) {
             const controller = this.routes.get(path);
