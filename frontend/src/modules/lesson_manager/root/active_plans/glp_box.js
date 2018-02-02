@@ -4,14 +4,14 @@ import { div, p, a, h3, h4, strong } from '../../../../core/html';
 import { Component } from '../../../../core/component';
 
 class GLPBox extends Component {
-    async render(data: { [string]: any }) {
+    async render() {
         const {
             name,
             domain,
             topic,
             description,
             id,
-        } = data;
+        } = this.props;
 
         return div(
             '.box.flex-4.flex-column',

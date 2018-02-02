@@ -4,8 +4,8 @@ import { div, i, input } from '../../../core/html';
 import { Component } from '../../../core/component';
 
 class BasicSearch extends Component {
-    async render(data: { [string]: any }): Promise<string> {
-        const { searchType } = data;
+    async render() {
+        const { searchType } = this.props;
 
         return div(
             '.search.fuzzy-search',

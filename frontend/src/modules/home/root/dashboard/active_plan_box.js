@@ -1,15 +1,15 @@
 // @flow
-import { div, img, p, a } from '../../../../core/html';
+import { div, img, a } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 
 class ActivePlanBox extends Component {
-    async render(data: { [string]: any }) {
+    async render() {
         const {
             name,
             src,
             link,
-        } = data;
+        } = this.props;
 
         return div(
             '.plan',

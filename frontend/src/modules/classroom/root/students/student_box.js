@@ -4,11 +4,11 @@ import { div, figure, img, h4, a } from '../../../../core/html';
 import { Component } from '../../../../core/component';
 
 class StudentBox extends Component {
-    async render(data: { [string]: any }) {
+    async render() {
         const {
             id,
             username,
-        } = data;
+        } = this.props;
 
         return div(
             '.student-box',
