@@ -74,6 +74,7 @@ func main() {
 
 	auth := []route.Route{
 		req.NewCheckAuthRequest("/auth/check"),
+		req.NewLogOutRequest("/auth/logout"),
 	}
 
 	// Enable the routes
