@@ -20,6 +20,9 @@ var BaseLink = getBaseLink()
 // RedirectBaseLink contains the link core services redirects back to
 var RedirectBaseLink = getRedirectBaseLink()
 
+// LogOutLink is used to log out
+var LogOutLink = getProtocol() + BaseLink + "/"
+
 // ────────────────────────────────────────────────────────────────────────────────
 
 func getOutboundIP() net.IP {
