@@ -28,7 +28,12 @@ class Header extends Component {
             ),
             div(
                 '.profile',
-                div('.logout', a('Log Out')),
+                div('.logout', a(
+                    {
+                        href: `//${window.location.host}/auth/logout`,
+                    },
+                    'Log Out',
+                )),
                 div(
                     '.profile-img',
                     img(
