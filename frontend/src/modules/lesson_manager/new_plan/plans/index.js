@@ -8,9 +8,9 @@ import SecondNav from '../../../nav/second';
 import InnerNav from '../../inner_nav';
 import BasicSearch from '../../../search/basic';
 import Sort from './sort';
-import ActiveGLPs from './active_glps';
+import NewGLPs from './new_glps';
 
-class ActivePlans extends RootComponent {
+class NewPlans extends RootComponent {
     async render() {
         const header = new Header();
         const mainNav = new MainNav();
@@ -18,7 +18,7 @@ class ActivePlans extends RootComponent {
         const innerNav = new InnerNav();
         const search = new BasicSearch();
         const sort = new Sort();
-        const activeGLPs = new ActiveGLPs();
+        const newGLPs = new NewGLPs();
 
         return Promise.all([
             header.attach(),
@@ -31,7 +31,7 @@ class ActivePlans extends RootComponent {
                 searchType: 'width-expand',
             }),
             sort.attach(),
-            activeGLPs.attach(),
+            newGLPs.attach(),
         ]).then((values) => {
             const [
                 headerEl,
@@ -39,7 +39,7 @@ class ActivePlans extends RootComponent {
                 secondNavEl,
                 searchEl,
                 sortEl,
-                activeGLPsEl,
+                newGLPsEl,
             ] = values;
 
             return div(
@@ -50,11 +50,11 @@ class ActivePlans extends RootComponent {
                     mainNavEl,
                     secondNavEl,
                     main(
-                        '#active-glps',
+                        '#new-plans',
                         section('.flex-column', searchEl),
                         section(
                             '.flex-spacebetween',
-                            activeGLPsEl,
+                            newGLPsEl,
                             sortEl,
                         ),
                     ),
@@ -64,4 +64,4 @@ class ActivePlans extends RootComponent {
     }
 }
 
-export default ActivePlans;
+export default NewPlans;

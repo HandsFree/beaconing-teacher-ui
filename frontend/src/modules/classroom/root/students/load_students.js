@@ -8,16 +8,31 @@ import Loading from '../../../loading';
 /* eslint-disable no-restricted-syntax */
 
 class LoadStudents extends Component {
-    async render() {
-        const loading = new Loading();
-        const loadingEl = await loading.attach();
+    async init() {
+        if (window.sessionStorage) {
+            let studentsSession = window.sessionStorage.getItem('students');
 
-        return section('.flex-container.flex-wrap.margin-20.list', loadingEl);
+            if (studentsSession) {
+                // console.log(sessionGLP);
+                studentsSession = JSON.parse(studentsSession);
+
+                if ((Date.now() / 60000) - (studentsSession.time / 60000) < 1) {
+                    this.state.students = studentsSession.students;
+                    return;
+                }
+            }
+
+            const students = await window.beaconingAPI.getStudents();
+
+            this.state.students = students;
+            window.sessionStorage.setItem('students', JSON.stringify({
+                students: this.state.students,
+                time: Date.now(),
+            }));
+        }
     }
 
-    async load() {
-        this.state.students = await window.beaconingAPI.getStudents();
-
+    async render() {
         const students = Object.values(this.state.students);
         const promArr = [];
 
@@ -37,20 +52,8 @@ class LoadStudents extends Component {
             promArr.push(studentBoxProm);
         }
 
-        Promise.all(promArr).then((elements) => {
-            for (const el of elements) {
-                this.appendView(el);
-            }
-        });
-    }
-
-    async afterMount() {
-        await this.load();
-
-        // temporary solution
-        const loading = this.view.getElementsByClassName('loading-container')[0];
-
-        this.view.removeChild(loading);
+        return Promise.all(promArr)
+            .then(elements => section('.flex-container.flex-wrap.margin-20.list', elements));
     }
 }
 

@@ -18,7 +18,7 @@ class MainNav extends Component {
                 a(
                     path === '' ? '.item.active' : '.item',
                     {
-                        href: './',
+                        href: `//${window.location.host}/`,
                     },
                     i('.icon-home'),
                     span('Home'),
@@ -26,7 +26,7 @@ class MainNav extends Component {
                 a(
                     /^classroom/.test(path) ? '.item.active-orange' : '.item',
                     {
-                        href: './classroom/',
+                        href: `//${window.location.host}/classroom/`,
                     },
                     i('.icon-graduation-cap'),
                     span('Classroom'),
@@ -34,7 +34,7 @@ class MainNav extends Component {
                 a(
                     /^lesson_manager/.test(path) ? '.item.active-orange' : '.item',
                     {
-                        href: './lesson_manager/',
+                        href: `//${window.location.host}/lesson_manager/`,
                     },
                     i('.icon-authoring'),
                     span('Lesson Manager'),
@@ -42,18 +42,18 @@ class MainNav extends Component {
                 a(
                     /^calendar/.test(path) ? '.item.active' : '.item',
                     {
-                        href: './calendar/',
+                        href: `//${window.location.host}/calendar/`,
                     },
                     i('.icon-calendar'),
                     span('Calendar'),
                 ),
                 a(
-                    /^messages/.test(path) ? '.item.active-orange' : '.item',
+                    /^forum/.test(path) ? '.item.active-orange' : '.item',
                     {
-                        href: './messages/',
+                        href: `//${window.location.host}/forum/`,
                     },
                     i('.icon-chat'),
-                    span('Messages'),
+                    span('Forum'),
                 ),
             ),
             div(
@@ -61,7 +61,7 @@ class MainNav extends Component {
                 a(
                     /^search/.test(path) ? '.item.active' : '.item',
                     {
-                        href: './search/',
+                        href: `//${window.location.host}/search/`,
                     },
                     i('.icon-search'),
                     span('Search'),
@@ -69,7 +69,7 @@ class MainNav extends Component {
                 a(
                     /^settings/.test(path) ? '.item.active' : '.item',
                     {
-                        href: './settings/',
+                        href: `//${window.location.host}/settings/`,
                     },
                     i('.icon-cogs'),
                     span('Settings'),

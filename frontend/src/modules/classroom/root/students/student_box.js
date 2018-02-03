@@ -19,7 +19,7 @@ class StudentBox extends Component {
                 '.info.flex-column',
                 div(
                     '.title',
-                    h4(username),
+                    h4('.name', username),
                 ),
                 a(
                     {

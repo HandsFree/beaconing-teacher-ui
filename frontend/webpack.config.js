@@ -86,31 +86,37 @@ const mainSettings = {
 const config = [
     {
         entry: {
-            core: './core/index.js',
+            core: './core/',
         },
         ...mainSettings,
     },
     {
         entry: {
-            'pages/home/index': './modules/home/root/index.js',
+            'pages/home/page': './modules/home/root/',
         },
         ...mainSettings,
     },
     {
         entry: {
-            'pages/lesson_manager/index': './modules/lesson_manager/root/index.js',
+            'pages/lesson_manager/page': './modules/lesson_manager/root/',
         },
         ...mainSettings,
     },
     {
         entry: {
-            'pages/authoring_tool/index': './modules/authoring_tool/root/index.js',
+            'pages/lesson_manager/new_plan/page': './modules/lesson_manager/new_plan/',
         },
         ...mainSettings,
     },
     {
         entry: {
-            'pages/classroom/index': './modules/classroom/root/index.js',
+            'pages/authoring_tool/page': './modules/authoring_tool/root/',
+        },
+        ...mainSettings,
+    },
+    {
+        entry: {
+            'pages/classroom/page': './modules/classroom/root/',
         },
         ...mainSettings,
     },

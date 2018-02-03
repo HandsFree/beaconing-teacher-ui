@@ -1,19 +1,19 @@
 // @flow
 
 import Router from '../../../core/router';
-import ActivePlans from './active_plans';
-import ViewPlan from '../view_plan';
+import NewPlans from './plans';
+import ViewPlans from '../view_plan';
 
 const router = new Router();
 
 router.setRoutes([
     {
         path: '/',
-        controller: new ActivePlans(),
+        controller: new NewPlans(),
     },
     {
         path: 'view',
-        controller: new ViewPlan(),
+        controller: new ViewPlans(),
     },
 ]);
 

@@ -30,11 +30,11 @@
                 border-bottom: 1.5px dashed $bcn_light_orange;
 
                 &.active {
-                    border-bottom: 1.5px solid $bcn_light_orange;
+                    border-bottom: 4px solid $bcn_light_orange;
                     font-weight: 400;
 
                     &:hover {
-                        border-bottom: 1.5px dashed $bcn_light_orange;
+                        border-bottom: 4px solid $bcn_light_orange;
                     }
                 }
 

@@ -1,7 +1,7 @@
 // @flow
-import { div, a, span } from '../../../../core/html';
+import { div, a, span } from '../../../core/html';
 
-import { Component } from '../../../../core/component';
+import { Component } from '../../../core/component';
 
 class InnerNav extends Component {
     state = {
@@ -16,16 +16,16 @@ class InnerNav extends Component {
             a(
                 /^lesson_manager\/?$/.test(path) ? '.item.active-white' : '.item',
                 {
-                    href: './lesson_manager/',
+                    href: `//${window.location.host}/lesson_manager/`,
                 },
-                span('Active Lesson Plans'),
+                span('Active Plans'),
             ),
             a(
                 /^lesson_manager\/new_plan\/?/.test(path) ? '.item.active-white' : '.item',
                 {
-                    href: './lesson_manager/new_plan/',
+                    href: `//${window.location.host}/lesson_manager/new_plan/`,
                 },
-                span('Active New Plan'),
+                span('New Plan'),
             ),
         );
     }

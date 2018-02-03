@@ -5,9 +5,9 @@ import { RootComponent } from '../../../../core/component';
 import Header from '../../../header/root';
 import MainNav from '../../../nav/main';
 import SecondNav from '../../../nav/second';
-import InnerNav from './inner_nav';
+import InnerNav from '../../inner_nav';
 import BasicSearch from '../../../search/basic';
-import LoadStudents from './load_students';
+import StudentsContainer from './students';
 
 class Students extends RootComponent {
     async render() {
@@ -16,7 +16,7 @@ class Students extends RootComponent {
         const secondNav = new SecondNav();
         const innerNav = new InnerNav();
         const search = new BasicSearch();
-        const loadStudents = new LoadStudents();
+        const students = new StudentsContainer();
 
         return Promise.all([
             header.attach(),
@@ -28,7 +28,7 @@ class Students extends RootComponent {
             search.attach({
                 searchType: 'width-expand',
             }),
-            loadStudents.attach(),
+            students.attach(),
         ]).then((values) => {
             const [
                 headerEl,
