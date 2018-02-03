@@ -102,10 +102,10 @@ func main() {
 	}
 
 	// Enable the routes
-	manager.RegisterRoutes(pages...)
-	manager.RegisterRoutes(widgets...)
-	manager.RegisterRoutes(api...)
-	manager.RegisterRoutes(auth...)
+	manager.RegisterRoutes("GET", pages...)
+	manager.RegisterRoutes("GET", widgets...)
+	manager.RegisterRoutes("GET", api...)
+	manager.RegisterRoutes("GET", auth...)
 
 	// Start Gin
 	if err := router.Run(":8081"); err != nil {
