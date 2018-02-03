@@ -1,9 +1,9 @@
 package req
 
 import (
-	"git.juddus.com/HFC/beaconing/json"
 	"git.juddus.com/HFC/beaconing/route"
 	"git.juddus.com/HFC/beaconing/serv"
+	"git.juddus.com/HFC/beaconing/types"
 )
 
 // TODO: move ALL of these structures from the widgets into
@@ -50,7 +50,7 @@ func (r *RecentActivities) Handle(s *serv.SessionContext) {
 // naming... ?
 type LPAssignedActivity struct {
 	SimpleActivity
-	Plan json.LessonPlan `json:"plan"`
+	Plan types.LessonPlan `json:"plan"`
 }
 
 func (a *LPAssignedActivity) String() string {
@@ -70,7 +70,7 @@ func NewRecentActivities(path string) *RecentActivities {
 func NewLPAssignedActivity(planName string) LPAssignedActivity {
 	return LPAssignedActivity{
 		SimpleActivity: NewSimpleActivity("Assigned lesson plan"),
-		Plan: json.LessonPlan{
+		Plan: types.LessonPlan{
 			Name: planName,
 
 			// would this be in the database or

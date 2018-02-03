@@ -8,7 +8,7 @@ import (
 	"net/http"
 
 	"git.juddus.com/HFC/beaconing/cfg"
-	"git.juddus.com/HFC/beaconing/json"
+	"git.juddus.com/HFC/beaconing/types"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
@@ -26,7 +26,7 @@ func GetRefreshToken(s *SessionContext) error {
 
 	accessToken := session.Get("access_token").(string)
 
-	message, err := jsoniter.Marshal(json.TokenRequest{
+	message, err := jsoniter.Marshal(types.TokenRequest{
 		GrantType:    "authorization_code",
 		Code:         accessToken,
 		ClientID:     cfg.Beaconing.Auth.ID,
@@ -54,7 +54,7 @@ func GetRefreshToken(s *SessionContext) error {
 		return err
 	}
 
-	var respToken json.TokenResponse
+	var respToken types.TokenResponse
 	if err := jsoniter.Unmarshal(body, &respToken); err != nil {
 		log.Fatal(err)
 		return err

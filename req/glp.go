@@ -1,15 +1,18 @@
 package req
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
-
-	jsoniter "github.com/json-iterator/go"
+	"strconv"
 
 	"git.juddus.com/HFC/beaconing/route"
 	"git.juddus.com/HFC/beaconing/serv"
+	"git.juddus.com/HFC/beaconing/types"
+	jsoniter "github.com/json-iterator/go"
 )
 
 type GLPRequest struct {
@@ -20,6 +23,11 @@ type GLPRequest struct {
 // the glp json
 func (a *GLPRequest) Handle(s *serv.SessionContext) {
 	glpID := s.Param("id")
+	glpIDValue, err := strconv.Atoi(glpID)
+	if err != nil || glpIDValue < 0 {
+		s.SimpleErrorRedirect(400, "Client Error: Invalid GLP ID")
+		return
+	}
 
 	accessToken := s.GetAccessToken(a.GetPath())
 
@@ -36,25 +44,18 @@ func (a *GLPRequest) Handle(s *serv.SessionContext) {
 		return
 	}
 
-	data := glpData{}
+	data := types.GamifiedLessonPlan{}
 	if err := jsoniter.Unmarshal(body, &data); err != nil {
-		panic(err)
+		log.Println(err)
 	}
 
-	strJSON := string(body)
-	s.Header("Content-Type", "application/json")
-	s.String(http.StatusOK, strJSON)
-}
+	buffer := new(bytes.Buffer)
+	if err := json.Compact(buffer, body); err != nil {
+		log.Println(err)
+	}
 
-type glpData struct {
-	id           int
-	name         string
-	desc         string
-	author       string
-	category     string
-	content      string
-	gamePlotId   int
-	externConfig string
+	s.Header("Content-Type", "application/json")
+	s.String(http.StatusOK, buffer.String())
 }
 
 func NewGLPRequest(path string) *GLPRequest {

@@ -7,7 +7,6 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
 	"strconv"
 
 	"git.juddus.com/HFC/beaconing/route"
@@ -15,7 +14,6 @@ import (
 
 	"github.com/gin-contrib/sessions"
 	jsoniter "github.com/json-iterator/go"
-	"github.com/olekukonko/tablewriter"
 )
 
 // handles the assignment of a GLP
@@ -50,8 +48,7 @@ func (a *AssignData) submit(accessToken string) (string, error) {
 }
 
 func init() {
-	gob.Register(AssignData{})
-	gob.Register([]AssignData{})
+	gob.Register(map[int]bool{})
 }
 
 type AssignRequest struct {
@@ -89,28 +86,19 @@ func (a *AssignRequest) Handle(s *serv.SessionContext) {
 			log.Println("session assigned_plans doesn't exist")
 		}
 
-		assignedPlansTable := []AssignData{}
+		assignedPlansTable := map[int]bool{}
 		if assignedPlans != nil {
 			log.Println("restoring old ALP assignments table from session")
-			assignedPlansTable, _ = assignedPlans.([]AssignData)
+			assignedPlansTable, _ = assignedPlans.(map[int]bool)
 		}
 
 		// TODO: if we want to sort by time we should probably
 		// do this here, as well as we need to store the current time
 		// right now because there is no time.
 
-		// add our assignment to the table
-		assignedPlansTable = append(assignedPlansTable, assignReqData)
-
-		// pretty print a table with the data of the assign table
-		{
-			table := tablewriter.NewWriter(os.Stdout)
-			table.SetHeader([]string{"student_id", "glp_id"})
-			for _, assignment := range assignedPlansTable {
-				table.Append([]string{assignment.StudentID, assignment.GlpID})
-			}
-			table.Render()
-		}
+		// because we dont want to store duplicates we
+		// store these in a hashset-type thing
+		assignedPlansTable[glpIDValue] = true
 
 		session.Set("assigned_plans", assignedPlansTable)
 		if err := session.Save(); err != nil {
