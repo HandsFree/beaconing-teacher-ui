@@ -51,10 +51,11 @@ func main() {
 
 	// Route configs
 	pages := []route.Route{
-		page.NewPage("/", "Home", "dist/beaconing/pages/home/index.js"),
-		page.NewPage("/lesson_manager", "Lesson Manager", "dist/beaconing/pages/lesson_manager/index.js"),
-		page.NewPage("/authoring_tool", "Authoring Tool", "dist/beaconing/pages/authoring_tool/index.js"),
-		page.NewPage("/classroom", "Classroom", "dist/beaconing/pages/classroom/index.js"),
+		page.NewPage("/", "Home", "dist/beaconing/pages/home/page.js"),
+		page.NewPage("/lesson_manager", "Lesson Manager", "dist/beaconing/pages/lesson_manager/page.js"),
+		page.NewPage("/lesson_manager/new_plan", "Lesson Manager", "dist/beaconing/pages/lesson_manager/new_plan/page.js"),
+		page.NewPage("/authoring_tool", "Authoring Tool", "dist/beaconing/pages/authoring_tool/page.js"),
+		page.NewPage("/classroom", "Classroom", "dist/beaconing/pages/classroom/page.js"),
 	}
 
 	widgets := []route.Route{
