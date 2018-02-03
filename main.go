@@ -15,6 +15,27 @@ import (
 	"git.juddus.com/HFC/beaconing/serv"
 )
 
+// simple middleware to handle token auth
+func TokenAuth() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		code := c.Request.FormValue("code")
+
+		session := sessions.Default(c)
+		accessToken := session.Get("access_token")
+
+		if code == "" {
+			if accessToken == nil {
+				// we have no code and no access
+				// token so lets ask for auth
+				serv.AuthRedirect(c)
+				return
+			}
+		}
+
+		c.Next()
+	}
+}
+
 func main() {
 	cfg.LoadConfig()
 
@@ -29,6 +50,8 @@ func main() {
 
 	// Resources will be gzipped
 	router.Use(gzip.Gzip(gzip.BestSpeed))
+
+	router.Use(TokenAuth())
 
 	/**
 	 * TODO:

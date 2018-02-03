@@ -10,14 +10,15 @@ import (
 	"git.juddus.com/HFC/beaconing/cfg"
 	"git.juddus.com/HFC/beaconing/json"
 	"github.com/gin-contrib/sessions"
+	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 )
 
-func authRedirect(s *SessionContext) {
+func AuthRedirect(c *gin.Context) {
 	authLink := fmt.Sprintf("https://core.beaconing.eu/auth/auth?response_type=code%s%s%s%s",
 		"&client_id=", cfg.Beaconing.Auth.ID,
 		"&redirect_uri=", RedirectBaseLink)
-	s.Redirect(http.StatusTemporaryRedirect, authLink)
+	c.Redirect(http.StatusTemporaryRedirect, authLink)
 }
 
 func GetRefreshToken(s *SessionContext) error {
@@ -66,21 +67,33 @@ func GetRefreshToken(s *SessionContext) error {
 	return nil
 }
 
+// rename this function!
 func (s *SessionContext) TryAuth(redirectPath string) string {
 	session := sessions.Default(s.Context)
 	accessToken := session.Get("access_token")
-
-	if redirectPath != "" {
-		session.Set("last_path", redirectPath) // Temporary workaround
-		session.Save()
-	}
-
 	if accessToken == nil {
-		authRedirect(s)
-		return s.TryAuth(redirectPath)
+		s.SimpleErrorRedirect(401, "Unauthorised access")
+		// NOTE: no return here due to redirect
 	}
-
 	return accessToken.(string)
+
+	/*
+		session := sessions.Default(s.Context)
+		accessToken := session.Get("access_token")
+
+		if redirectPath != "" {
+			session.Set("last_path", redirectPath) // Temporary workaround
+			session.Save()
+		}
+
+		authAttempts := 50
+		for i := 0; i < authAttempts && accessToken == nil; i++ {
+			AuthRedirect(s.Context)
+			accessToken = session.Get("access_token")
+		}
+
+		return accessToken.(string)
+	*/
 }
 
 func (s *SessionContext) TryRefreshToken() error {
