@@ -48,11 +48,7 @@ class RootComponent {
         }
     }
 
-    async start(params: { [string]: string }) {
-        if (params) {
-            this.params = params;
-        }
-
+    async start() {
         if (this.init) {
             await this.init();
         }
@@ -73,20 +69,55 @@ class Component {
     props: { [string]: any } = {};
 
     updateView(view: HTMLElement) {
+        let parent = this.view.parentElement || null;
+
+        if (Array.isArray(this.view)) {
+            parent = this.view[0].parentElement;
+        }
+
+        const func = () => {
+            if (parent) {
+                if (Array.isArray(this.view)) {
+                    for (const el of this.view) {
+                        parent.removeChild(el);
+                    }
+                    return;
+                }
+    
+                if (!Array.isArray(this.view) && Array.isArray(view)) {
+                    parent.removeChild(this.view);
+                }
+    
+                if (Array.isArray(view)) {
+                    const firstEl = view[0];
+    
+                    parent.insertAdjacentElement('afterbegin', firstEl);
+    
+                    for (let i = 1; i < view.length; i++) {
+                        view[i - 1].insertAdjacentElement('afterend', view[i]);
+                    }
+    
+                    this.view = view;
+                    return;
+                }
+    
+                parent.replaceChild(view, this.view);
+                this.view = view;
+            }
+        };
+
         if (document.readyState !== 'complete') {
             document.body.onload = () => {
-                if (this.view.parentElement) {
-                    this.view.parentElement.replaceChild(view, this.view);
-                    this.view = view;
-                }
+                func();
             };
-        } else if (this.view.parentElement) {
-            this.view.parentElement.replaceChild(view, this.view);
-            this.view = view;
+            return;
         }
+        
+        func();
     }
 
     appendView(view: HTMLElement) {
+        // TODO: implement arrays
         this.view.appendChild(view);
     }
 
@@ -116,7 +147,9 @@ class Component {
             await this.init();
         }
 
-        yield await this.doRender();
+        if (this.render) {
+            yield await this.doRender();
+        }
 
         if (this.afterMount) {
             await this.afterMount();

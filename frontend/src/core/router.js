@@ -48,6 +48,7 @@ class Router {
     }
 
     handleEvent() {
+        this.getParams();
         this.findController();
     }
 
@@ -65,7 +66,8 @@ class Router {
             const controller = this.routes.get(path);
 
             if (controller) {
-                controller.start(this.params);
+                controller.params = this.params;
+                controller.start();
             }
         } else {
             const container = document.getElementById('app');
