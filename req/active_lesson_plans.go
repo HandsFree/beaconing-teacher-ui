@@ -2,6 +2,7 @@ package req
 
 import (
 	"log"
+	"math"
 	"strconv"
 
 	"git.juddus.com/HFC/beaconing/json"
@@ -27,7 +28,8 @@ func (r *ActiveLessonPlans) Handle(s *serv.SessionContext) {
 		NewLessonPlan("Advanced Masonary"),
 	}
 
-	s.Jsonify(lps[0:limitParamValue])
+	size := int(math.Min(float64(limitParamValue), float64(len(lps))))
+	s.Jsonify(lps[0:size])
 }
 
 func NewActiveLessonPlans(path string) *ActiveLessonPlans {

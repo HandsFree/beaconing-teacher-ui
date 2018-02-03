@@ -74,6 +74,7 @@ func (s *SessionContext) GetAccessToken(redirectPath string) string {
 	if accessToken == nil {
 		s.SimpleErrorRedirect(401, "Unauthorised access")
 		// NOTE: no return here due to redirect
+		return ""
 	}
 	return accessToken.(string)
 }
