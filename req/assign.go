@@ -2,35 +2,38 @@ package req
 
 import (
 	"bytes"
+	"encoding/gob"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 
 	"git.juddus.com/HFC/beaconing/route"
 	"git.juddus.com/HFC/beaconing/serv"
 
 	"github.com/gin-contrib/sessions"
 	jsoniter "github.com/json-iterator/go"
+	"github.com/olekukonko/tablewriter"
 )
 
 // handles the assignment of a GLP
 
-type assignData struct {
-	studentID string
-	glpID     string
+type AssignData struct {
+	StudentID string
+	GlpID     string
 }
 
 // submits this assignment data to
 // the api
-func (a *assignData) submit(accessToken string) (string, error) {
+func (a *AssignData) submit(accessToken string) (string, error) {
 	assignJSON, err := jsoniter.Marshal(a)
 	if err != nil {
 		return "", err
 	}
 
 	// TODO replace with a CONST URL
-	postURL := fmt.Sprintf("https://core.beaconing.eu/api/students/%s/assignedGlps?access_token=%s", a.studentID, accessToken)
+	postURL := fmt.Sprintf("https://core.beaconing.eu/api/students/%s/assignedGlps?access_token=%s", a.StudentID, accessToken)
 	response, err := http.Post(postURL, "application/json", bytes.NewBuffer(assignJSON))
 	if err != nil {
 		return "", err
@@ -45,6 +48,11 @@ func (a *assignData) submit(accessToken string) (string, error) {
 	return string(body), nil
 }
 
+func init() {
+	gob.Register(AssignData{})
+	gob.Register([]AssignData{})
+}
+
 type AssignRequest struct {
 	route.SimpleManagedRoute
 }
@@ -55,22 +63,24 @@ func (a *AssignRequest) Handle(s *serv.SessionContext) {
 
 	accessToken := s.GetAccessToken(a.GetPath())
 
-	assignReqData := assignData{studentID, glpID}
+	assignReqData := AssignData{studentID, glpID}
 
+	// TEMPORARY.
+	// for now we store the assignments in a table in the
+	// session. eventually this will be submitted to the API
 	{
-		// temporary. store in the session for now.
 		session := sessions.Default(s.Context)
 
 		assignedPlans := session.Get("assigned_plans")
 
-		var assignedPlansTable []assignData
-
-		// no table in the session so we create one
 		if assignedPlans == nil {
-			// create a new table.
-			assignedPlansTable = []assignData{}
-		} else {
-			assignedPlansTable = assignedPlans.([]assignData)
+			log.Println("session assigned_plans doesn't exist")
+		}
+
+		assignedPlansTable := []AssignData{}
+		if assignedPlans != nil {
+			log.Println("restoring old ALP assignments table from session")
+			assignedPlansTable, _ = assignedPlans.([]AssignData)
 		}
 
 		// TODO: if we want to sort by time we should probably
@@ -80,8 +90,20 @@ func (a *AssignRequest) Handle(s *serv.SessionContext) {
 		// add our assignment to the table
 		assignedPlansTable = append(assignedPlansTable, assignReqData)
 
+		// pretty print a table with the data of the assign table
+		{
+			table := tablewriter.NewWriter(os.Stdout)
+			table.SetHeader([]string{"student_id", "glp_id"})
+			for _, assignment := range assignedPlansTable {
+				table.Append([]string{assignment.StudentID, assignment.GlpID})
+			}
+			table.Render()
+		}
+
 		session.Set("assigned_plans", assignedPlansTable)
-		session.Save()
+		if err := session.Save(); err != nil {
+			log.Println(err.Error())
+		}
 	}
 
 	assignReq, err := assignReqData.submit(accessToken)

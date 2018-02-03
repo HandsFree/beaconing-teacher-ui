@@ -4,6 +4,7 @@ run() {
 	cd frontend/
 	yarn b
 	cd ../
+	redis-server --daemonize yes
 	go run *.go
 }
 

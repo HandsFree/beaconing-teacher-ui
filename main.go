@@ -45,6 +45,9 @@ func main() {
 	// Create the cookie store
 	store := sessions.NewCookieStore(auth.CreateSessionSecret(32), auth.CreateSessionSecret(16))
 
+	// for redis.
+	// store, _ := sessions.NewRedisStore(10, "tcp", "localhost:6379", "", auth.CreateSessionSecret(64))
+
 	// Config the router to use sessions with cookie store
 	router.Use(sessions.Sessions("beaconing", store))
 
