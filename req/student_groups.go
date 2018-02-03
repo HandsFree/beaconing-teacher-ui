@@ -10,14 +10,14 @@ import (
 	"git.juddus.com/HFC/beaconing/serv"
 )
 
-type GLPSRequest struct {
+type StudentGroupRequest struct {
 	route.SimpleManagedRoute
 }
 
-func (a *GLPSRequest) Handle(s *serv.SessionContext) {
-	accessToken := s.GetAccessToken(a.GetPath())
+func (r *StudentGroupRequest) Handle(s *serv.SessionContext) {
+	accessToken := s.GetAccessToken(r.GetPath())
 
-	response, err := http.Get(fmt.Sprintf("https://core.beaconing.eu/api/gamifiedlessonpaths?access_token=%s", accessToken))
+	response, err := http.Get(fmt.Sprintf("https://core.beaconing.eu/api/studentgroups?access_token=%s", accessToken))
 	if err != nil {
 		log.Fatal(err)
 		return
@@ -30,13 +30,12 @@ func (a *GLPSRequest) Handle(s *serv.SessionContext) {
 		return
 	}
 
-	strJSON := string(body)
 	s.Header("Content-Type", "application/json")
-	s.String(http.StatusOK, strJSON)
+	s.String(http.StatusOK, string(body))
 }
 
-func NewGLPSRequest(path string) *GLPSRequest {
-	req := &GLPSRequest{}
+func NewStudentGroupRequest(path string) *StudentGroupRequest {
+	req := &StudentGroupRequest{}
 	req.SetPath(path)
 	return req
 }

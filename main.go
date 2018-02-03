@@ -97,6 +97,7 @@ func main() {
 		req.NewAssignRequest("/intent/assign/:student/to/:glp"),
 		req.NewGLPSRequest("/intent/glps"),
 		req.NewGLPRequest("/intent/glp/:id"),
+		req.NewStudentGroupRequest("/intent/studentgroups"),
 	}
 
 	auth := []route.Route{
