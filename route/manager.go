@@ -17,17 +17,17 @@ func NewRouteManager(servInst *serv.SessionContext) *RouteManager {
 	}
 }
 
-func (r *RouteManager) RegisterRoutes(routes ...Route) {
+func (r *RouteManager) RegisterRoutes(routerType string, routes ...Route) {
 	for _, route := range routes {
-		r.RegisterRoute(route)
+		r.RegisterRoute(routerType, route)
 	}
 }
 
-func (r *RouteManager) RegisterRoute(route Route) {
+func (r *RouteManager) RegisterRoute(routerType string, route Route) {
 	route.SetManager(r)
 	r.routes[route.GetPath()] = route
 
-	r.SessionContext.RouterEngine.GET(route.GetPath(), func(ctx *gin.Context) {
+	r.SessionContext.RouterEngine.Handle(routerType, route.GetPath(), func(ctx *gin.Context) {
 		// set the context to pass thru
 		r.SessionContext.Context = ctx
 		route.Handle(r.SessionContext)

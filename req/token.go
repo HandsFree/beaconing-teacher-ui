@@ -17,7 +17,7 @@ type TokenRequest struct {
 func (r *TokenRequest) Handle(s *serv.SessionContext) {
 	accessToken := s.Query("code")
 	if accessToken == "" {
-		s.String(400, "Error: Access Token not provided")
+		s.SimpleErrorRedirect(400, "Error: Access Token not provided")
 		return
 	}
 
@@ -28,7 +28,7 @@ func (r *TokenRequest) Handle(s *serv.SessionContext) {
 
 	if err := s.TryRefreshToken(); err != nil {
 		log.Fatal(err)
-		s.String(500, "Server Error: 500 Token Refresh Failed")
+		s.SimpleErrorRedirect(500, "Server Error: 500 Token Refresh Failed")
 		return
 	}
 
