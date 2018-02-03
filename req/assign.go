@@ -48,6 +48,7 @@ type AssignRequest struct {
 
 func (a *AssignRequest) Handle(s *serv.SessionContext) {
 	studentID := s.Param("student")
+
 	glpID := s.Param("glp")
 
 	accessToken := s.GetAccessToken(a.GetPath())
@@ -61,8 +62,6 @@ func (a *AssignRequest) Handle(s *serv.SessionContext) {
 
 	s.Json(assignReq)
 }
-
-// ────────────────────────────────────────────────────────────────────────────────
 
 func NewAssignRequest(path string) *AssignRequest {
 	req := &AssignRequest{}
