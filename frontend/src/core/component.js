@@ -83,24 +83,24 @@ class Component {
                     }
                     return;
                 }
-    
+
                 if (!Array.isArray(this.view) && Array.isArray(view)) {
                     parent.removeChild(this.view);
                 }
-    
+
                 if (Array.isArray(view)) {
                     const firstEl = view[0];
-    
+
                     parent.insertAdjacentElement('afterbegin', firstEl);
-    
+
                     for (let i = 1; i < view.length; i++) {
                         view[i - 1].insertAdjacentElement('afterend', view[i]);
                     }
-    
+
                     this.view = view;
                     return;
                 }
-    
+
                 parent.replaceChild(view, this.view);
                 this.view = view;
             }
@@ -112,13 +112,26 @@ class Component {
             };
             return;
         }
-        
+
         func();
     }
 
     appendView(view: HTMLElement) {
-        // TODO: implement arrays
-        this.view.appendChild(view);
+        let parent = this.view;
+
+        if (Array.isArray(this.view)) {
+            parent = this.view[0].parentElement;
+        }
+
+        if (Array.isArray(view)) {
+            for (const v of view) {
+                parent.appendChild(v);
+            }
+
+            return;
+        }
+
+        parent.appendChild(view);
     }
 
     async attach(props: { [string]: any } = {}) {
