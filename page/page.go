@@ -16,7 +16,6 @@ type Page struct {
 }
 
 func (p *Page) Handle(s *serv.SessionContext) {
-	s.TryAuth(p.GetPath())
 	s.HTML(http.StatusOK, "index.html", &gin.H{
 		"pageTitle":  p.title,
 		"pageScript": p.script,

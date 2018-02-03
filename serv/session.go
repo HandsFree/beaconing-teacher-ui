@@ -25,6 +25,13 @@ func NewSessionContext(router *gin.Engine) *SessionContext {
 	}
 }
 
+// temporary helper for simple error redirects
+func (s *SessionContext) SimpleErrorRedirect(code int, message string) {
+	resp := map[string]string{"error": message}
+	s.JSON(code, resp)
+	s.Abort()
+}
+
 //
 // ─── JSON ───────────────────────────────────────────────────────────────────────
 //
