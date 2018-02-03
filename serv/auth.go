@@ -68,7 +68,7 @@ func GetRefreshToken(s *SessionContext) error {
 }
 
 // rename this function!
-func (s *SessionContext) TryAuth(redirectPath string) string {
+func (s *SessionContext) GetAccessToken(redirectPath string) string {
 	session := sessions.Default(s.Context)
 	accessToken := session.Get("access_token")
 	if accessToken == nil {
@@ -76,24 +76,6 @@ func (s *SessionContext) TryAuth(redirectPath string) string {
 		// NOTE: no return here due to redirect
 	}
 	return accessToken.(string)
-
-	/*
-		session := sessions.Default(s.Context)
-		accessToken := session.Get("access_token")
-
-		if redirectPath != "" {
-			session.Set("last_path", redirectPath) // Temporary workaround
-			session.Save()
-		}
-
-		authAttempts := 50
-		for i := 0; i < authAttempts && accessToken == nil; i++ {
-			AuthRedirect(s.Context)
-			accessToken = session.Get("access_token")
-		}
-
-		return accessToken.(string)
-	*/
 }
 
 func (s *SessionContext) TryRefreshToken() error {

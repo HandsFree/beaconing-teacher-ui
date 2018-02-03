@@ -13,6 +13,8 @@ import (
 	jsoniter "github.com/json-iterator/go"
 )
 
+// handles the assignment of a GLP
+
 type assignData struct {
 	studentID string
 	glpID     string
@@ -48,7 +50,7 @@ func (a *AssignRequest) Handle(s *serv.SessionContext) {
 	studentID := s.Param("student")
 	glpID := s.Param("glp")
 
-	accessToken := s.TryAuth(a.GetPath())
+	accessToken := s.GetAccessToken(a.GetPath())
 
 	assignReqData := &assignData{studentID, glpID}
 	assignReq, err := assignReqData.assignGLP(accessToken)

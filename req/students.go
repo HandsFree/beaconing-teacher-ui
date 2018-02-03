@@ -15,7 +15,7 @@ type StudentsRequest struct {
 }
 
 func (r *StudentsRequest) Handle(s *serv.SessionContext) {
-	accessToken := s.TryAuth(r.GetPath())
+	accessToken := s.GetAccessToken(r.GetPath())
 
 	response, err := http.Get(fmt.Sprintf("https://core.beaconing.eu/api/students?access_token=%s", accessToken))
 	if err != nil {

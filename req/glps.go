@@ -15,7 +15,7 @@ type GLPSRequest struct {
 }
 
 func (a *GLPSRequest) Handle(s *serv.SessionContext) {
-	accessToken := s.TryAuth(a.GetPath())
+	accessToken := s.GetAccessToken(a.GetPath())
 
 	response, err := http.Get(fmt.Sprintf("https://core.beaconing.eu/api/gamifiedlessonpaths?access_token=%s", accessToken))
 	if err != nil {

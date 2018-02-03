@@ -21,7 +21,7 @@ type GLPRequest struct {
 func (a *GLPRequest) Handle(s *serv.SessionContext) {
 	glpID := s.Param("id")
 
-	accessToken := s.TryAuth(a.GetPath())
+	accessToken := s.GetAccessToken(a.GetPath())
 
 	response, err := http.Get(fmt.Sprintf("https://core.beaconing.eu/api/gamifiedlessonpaths/%s?access_token=%s", glpID, accessToken))
 	if err != nil {

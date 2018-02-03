@@ -20,7 +20,7 @@ func (r *StudentRequest) Handle(s *serv.SessionContext) {
 
 	fmt.Println(action)
 
-	accessToken := s.TryAuth(r.GetPath())
+	accessToken := s.GetAccessToken(r.GetPath())
 
 	var strJSON string
 
