@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 
 	"git.juddus.com/HFC/beaconing/route"
 	"git.juddus.com/HFC/beaconing/serv"
@@ -59,7 +60,18 @@ type AssignRequest struct {
 
 func (a *AssignRequest) Handle(s *serv.SessionContext) {
 	studentID := s.Param("student")
+	studentIDValue, err := strconv.Atoi(studentID)
+	if err != nil || studentIDValue <= 0 {
+		s.SimpleErrorRedirect(400, "Client Error: Invalid student ID")
+		return
+	}
+
 	glpID := s.Param("glp")
+	glpIDValue, err := strconv.Atoi(glpID)
+	if err != nil || glpIDValue <= 0 {
+		s.SimpleErrorRedirect(400, "Client Error: Invalid GLP ID")
+		return
+	}
 
 	accessToken := s.GetAccessToken(a.GetPath())
 

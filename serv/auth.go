@@ -63,7 +63,9 @@ func GetRefreshToken(s *SessionContext) error {
 	session.Set("access_token", respToken.AccessToken)
 	session.Set("refresh_token", respToken.RefreshToken)
 	session.Set("token_type", respToken.TokenType)
-	session.Save()
+	if err := session.Save(); err != nil {
+		log.Println(err.Error())
+	}
 	return nil
 }
 
