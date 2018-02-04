@@ -15,6 +15,7 @@ import (
 	"git.juddus.com/HFC/beaconing/serv"
 )
 
+// TokenAuth ...
 // simple middleware to handle token auth
 func TokenAuth() gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -104,6 +105,8 @@ func main() {
 		req.NewCheckAuthRequest("/auth/check"),
 		req.NewLogOutRequest("/auth/logout"),
 	}
+
+	manager.RegisterRoute("POST", req.NewSearchRequest("/intent/search"))
 
 	// Enable the routes
 	manager.RegisterRoutes("GET", pages...)
