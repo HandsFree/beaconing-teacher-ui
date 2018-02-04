@@ -13,8 +13,6 @@ type GLPRequest struct {
 	route.SimpleManagedRoute
 }
 
-// TODO: filter the useless stuff out of
-// the glp json
 func (a *GLPRequest) Handle(s *serv.SessionContext) {
 	glpID := s.Param("id")
 	glpIDValue, err := strconv.Atoi(glpID)

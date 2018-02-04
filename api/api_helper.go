@@ -22,14 +22,20 @@ type ApiHelper struct {
 	APIPath string
 }
 
-func (a *ApiHelper) getPath(pathFmt string, accessToken string, args ...interface{}) string {
-	return fmt.Sprintf("%s%s?access_token=%s", a.APIPath, fmt.Sprintf(pathFmt, args), accessToken)
+func (a *ApiHelper) getPath(accessToken string, args ...string) string {
+	path := a.APIPath
+	for _, arg := range args {
+		path += arg
+	}
+	return fmt.Sprintf("%s?access_token=%s", path, accessToken)
 }
 
+// TODO: filter the useless stuff out of
+// the glp json
 func GetGamifiedLessonPlan(s *serv.SessionContext, id int) (string, *types.GamifiedLessonPlan) {
 	accessToken := s.GetAccessToken()
 
-	response, err := http.Get(Api.getPath("gamifiedlessonpaths%d", accessToken, id))
+	response, err := http.Get(Api.getPath(accessToken, "gamifiedlessonpaths/", fmt.Sprintf("%d", id)))
 	if err != nil {
 		log.Fatal(err)
 		return "", nil

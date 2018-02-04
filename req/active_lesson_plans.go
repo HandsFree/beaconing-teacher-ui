@@ -1,47 +1,19 @@
 package req
 
 import (
-	"fmt"
-	"io/ioutil"
 	"log"
 	"math"
-	"net/http"
 	"strconv"
 
+	"git.juddus.com/HFC/beaconing/api"
 	"git.juddus.com/HFC/beaconing/route"
 	"git.juddus.com/HFC/beaconing/serv"
 	"git.juddus.com/HFC/beaconing/types"
 	"github.com/gin-contrib/sessions"
-	jsoniter "github.com/json-iterator/go"
 )
 
 type ActiveLessonPlans struct {
 	route.SimpleManagedRoute
-}
-
-func getLessonPlan(s *serv.SessionContext, glpID int) (*types.GamifiedLessonPlan, error) {
-	log.Println("Getting lesson plan for id", glpID)
-
-	response, err := http.Get(fmt.Sprintf("%s/intent/glp/%d", serv.GetRootPath(), glpID))
-	if err != nil {
-		log.Println(err)
-		return nil, err
-	}
-
-	defer response.Body.Close()
-	body, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		log.Println(err)
-		return nil, err
-	}
-
-	log.Println("Got response for ", string(body))
-
-	data := &types.GamifiedLessonPlan{}
-	if err := jsoniter.Unmarshal(body, &data); err != nil {
-		log.Println(err)
-	}
-	return data, nil
 }
 
 func (r *ActiveLessonPlans) Handle(s *serv.SessionContext) {
@@ -66,8 +38,8 @@ func (r *ActiveLessonPlans) Handle(s *serv.SessionContext) {
 	}
 
 	for glpID, _ := range assigned {
-		glp, err := getLessonPlan(s, glpID)
-		if err != nil {
+		_, glp := api.GetGamifiedLessonPlan(s, glpID)
+		if glp == nil {
 			log.Println("No such lesson plan found for ", glpID, " error:\n", err.Error())
 			// skip this one, TODO
 			// should we insert a 404 empty plan here or ?
