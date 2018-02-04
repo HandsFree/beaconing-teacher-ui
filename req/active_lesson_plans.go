@@ -1,8 +1,10 @@
 package req
 
 import (
+	"fmt"
 	"log"
 	"math"
+	"os"
 	"strconv"
 
 	"git.juddus.com/HFC/beaconing/api"
@@ -10,6 +12,7 @@ import (
 	"git.juddus.com/HFC/beaconing/serv"
 	"git.juddus.com/HFC/beaconing/types"
 	"github.com/gin-contrib/sessions"
+	"github.com/olekukonko/tablewriter"
 )
 
 type ActiveLessonPlans struct {
@@ -36,6 +39,13 @@ func (r *ActiveLessonPlans) Handle(s *serv.SessionContext) {
 	} else {
 		log.Println("No assigned plans in the session!")
 	}
+
+	table := tablewriter.NewWriter(os.Stdout)
+	table.SetHeader([]string{"GLP"})
+	for id, _ := range assigned {
+		table.Append([]string{fmt.Sprintf("%d", id)})
+	}
+	table.Render()
 
 	for glpID, _ := range assigned {
 		_, glp := api.GetGamifiedLessonPlan(s, glpID)

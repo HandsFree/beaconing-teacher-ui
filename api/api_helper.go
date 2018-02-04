@@ -20,22 +20,38 @@ var Api *ApiHelper = NewApiHelper()
 
 type ApiHelper struct {
 	APIPath string
+	cache   ApiCache
 }
 
-func (a *ApiHelper) getPath(accessToken string, args ...string) string {
+func (a *ApiHelper) getPath(s *serv.SessionContext, args ...string) string {
 	path := a.APIPath
 	for _, arg := range args {
 		path += arg
 	}
-	return fmt.Sprintf("%s?access_token=%s", path, accessToken)
+	return fmt.Sprintf("%s?access_token=%s", path, s.GetAccessToken())
+}
+
+func GetGamifiedLessonPlans(s *serv.SessionContext) string {
+	response, err := http.Get(Api.getPath(s, "gamifiedlessonpaths"))
+	if err != nil {
+		log.Println(err.Error())
+		return ""
+	}
+
+	defer response.Body.Close()
+	body, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		log.Println(err.Error())
+		return ""
+	}
+
+	return string(body)
 }
 
 // TODO: filter the useless stuff out of
 // the glp json
 func GetGamifiedLessonPlan(s *serv.SessionContext, id int) (string, *types.GamifiedLessonPlan) {
-	accessToken := s.GetAccessToken()
-
-	response, err := http.Get(Api.getPath(accessToken, "gamifiedlessonpaths/", fmt.Sprintf("%d", id)))
+	response, err := http.Get(Api.getPath(s, "gamifiedlessonpaths/", fmt.Sprintf("%d", id)))
 	if err != nil {
 		log.Fatal(err)
 		return "", nil

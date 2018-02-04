@@ -108,7 +108,7 @@ func (a *AssignRequest) Handle(s *serv.SessionContext) {
 
 	assignReq, err := assignReqData.submit(accessToken)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 		return
 	}
 
