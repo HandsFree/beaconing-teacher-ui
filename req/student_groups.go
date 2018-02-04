@@ -20,8 +20,8 @@ type StudentGroupRequest struct {
 // TODO move these to the API layer
 
 type StudentGroupPost struct {
-	Id   int
-	Name string
+	Id   int    `json:"id"`
+	Name string `json:"name"`
 }
 
 func (r *StudentGroupRequest) Post(s *serv.SessionContext) {
