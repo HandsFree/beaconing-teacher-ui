@@ -42,13 +42,13 @@ func (r *TokenRequest) Handle(s *serv.SessionContext) {
 	session.Set("access_token", accessToken)
 
 	if err := s.TryRefreshToken(); err != nil {
-		log.Fatal(err)
+		log.Println(err.Error())
 		s.SimpleErrorRedirect(500, "Server Error: 500 Token Refresh Failed")
 		return
 	}
 
 	if err := session.Save(); err != nil {
-		log.Fatal(err)
+		log.Println(err.Error())
 		return
 	}
 

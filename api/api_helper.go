@@ -41,14 +41,14 @@ func (a *ApiHelper) getPath(s *serv.SessionContext, args ...string) string {
 func GetStudents(s *serv.SessionContext) string {
 	response, err := http.Get(Api.getPath(s, "students"))
 	if err != nil {
-		log.Println(err)
+		log.Println(err.Error())
 		return ""
 	}
 
 	defer response.Body.Close()
 	body, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		log.Println(err)
+		log.Println(err.Error())
 		return ""
 	}
 
@@ -111,27 +111,27 @@ func AssignStudentToGLP(s *serv.SessionContext, studentID int, glpID int) (strin
 func GetGamifiedLessonPlan(s *serv.SessionContext, id int) (string, *types.GamifiedLessonPlan) {
 	response, err := http.Get(Api.getPath(s, "gamifiedlessonpaths/", fmt.Sprintf("%d", id)))
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err.Error())
 		return "", nil
 	}
 
 	defer response.Body.Close()
 	body, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err.Error())
 		return "", nil
 	}
 
 	data := &types.GamifiedLessonPlan{}
 	if err := jsoniter.Unmarshal(body, data); err != nil {
-		log.Println(err)
+		log.Println(err.Error())
 	}
 
 	// should we compact everything?
 	// we do here because the json for glps request is stupidly long
 	buffer := new(bytes.Buffer)
 	if err := json.Compact(buffer, body); err != nil {
-		log.Println(err)
+		log.Println(err.Error())
 	}
 
 	return buffer.String(), data

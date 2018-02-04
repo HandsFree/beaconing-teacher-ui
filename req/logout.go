@@ -21,7 +21,7 @@ func (r *LogOutRequest) Handle(s *serv.SessionContext) {
 	session.Clear()
 
 	if err := session.Save(); err != nil {
-		log.Fatal(err)
+		log.Println(err.Error())
 		return
 	}
 

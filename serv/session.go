@@ -8,16 +8,10 @@ import (
 	jsoniter "github.com/json-iterator/go"
 )
 
-//
-// ─── STRUCTS ────────────────────────────────────────────────────────────────────
-//
-
 type SessionContext struct {
 	*gin.Context
 	RouterEngine *gin.Engine
 }
-
-// ────────────────────────────────────────────────────────────────────────────────
 
 func NewSessionContext(router *gin.Engine) *SessionContext {
 	return &SessionContext{
@@ -25,16 +19,11 @@ func NewSessionContext(router *gin.Engine) *SessionContext {
 	}
 }
 
-// temporary helper for simple error redirects
 func (s *SessionContext) SimpleErrorRedirect(code int, message string) {
 	resp := map[string]string{"error": message}
 	s.Jsonify(resp)
 	s.Abort()
 }
-
-//
-// ─── JSON ───────────────────────────────────────────────────────────────────────
-//
 
 func (s *SessionContext) Json(code string) {
 	s.Header("Content-Type", "application/json")
@@ -44,7 +33,7 @@ func (s *SessionContext) Json(code string) {
 func (s *SessionContext) Jsonify(things interface{}) {
 	json, err := jsoniter.Marshal(things)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err.Error())
 		return
 	}
 

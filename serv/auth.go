@@ -35,14 +35,14 @@ func GetRefreshToken(s *SessionContext) error {
 	})
 
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err.Error())
 		return err
 	}
 
 	const tokenRefreshLink = "https://core.beaconing.eu/auth/token"
 	response, err := http.Post(tokenRefreshLink, "application/json", bytes.NewBuffer(message))
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err.Error())
 		return err
 	}
 
@@ -50,13 +50,13 @@ func GetRefreshToken(s *SessionContext) error {
 
 	body, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err.Error())
 		return err
 	}
 
 	var respToken types.TokenResponse
 	if err := jsoniter.Unmarshal(body, &respToken); err != nil {
-		log.Fatal(err)
+		log.Println(err.Error())
 		return err
 	}
 

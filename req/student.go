@@ -28,14 +28,14 @@ func (r *StudentRequest) Handle(s *serv.SessionContext) {
 	case "/glps", "/glps/":
 		response, err := getStudentGLPS(studentID, accessToken)
 		if err != nil {
-			log.Fatal(err)
+			log.Println(err)
 			return
 		}
 		strJSON = response
 	default:
 		response, err := getStudent(studentID, accessToken)
 		if err != nil {
-			log.Fatal(err)
+			log.Println(err)
 			return
 		}
 		strJSON = response

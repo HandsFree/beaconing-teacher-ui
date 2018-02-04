@@ -19,14 +19,14 @@ func (r *StudentGroupRequest) Handle(s *serv.SessionContext) {
 
 	response, err := http.Get(fmt.Sprintf("https://core.beaconing.eu/api/studentgroups?access_token=%s", accessToken))
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err.Error())
 		return
 	}
 
 	defer response.Body.Close()
 	body, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err.Error())
 		return
 	}
 
