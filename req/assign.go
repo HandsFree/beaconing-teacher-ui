@@ -70,7 +70,7 @@ func (a *AssignRequest) Handle(s *serv.SessionContext) {
 		return
 	}
 
-	accessToken := s.GetAccessToken(a.GetPath())
+	accessToken := s.GetAccessToken()
 
 	assignReqData := AssignData{studentID, glpID}
 

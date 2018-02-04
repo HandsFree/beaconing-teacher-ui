@@ -70,7 +70,7 @@ func GetRefreshToken(s *SessionContext) error {
 }
 
 // rename this function!
-func (s *SessionContext) GetAccessToken(redirectPath string) string {
+func (s *SessionContext) GetAccessToken() string {
 	session := sessions.Default(s.Context)
 	accessToken := session.Get("access_token")
 	if accessToken == nil {

@@ -15,7 +15,7 @@ type StudentGroupRequest struct {
 }
 
 func (r *StudentGroupRequest) Handle(s *serv.SessionContext) {
-	accessToken := s.GetAccessToken(r.GetPath())
+	accessToken := s.GetAccessToken()
 
 	response, err := http.Get(fmt.Sprintf("https://core.beaconing.eu/api/studentgroups?access_token=%s", accessToken))
 	if err != nil {
