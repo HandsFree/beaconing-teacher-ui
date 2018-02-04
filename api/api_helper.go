@@ -4,10 +4,11 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	jsoniter "github.com/json-iterator/go"
 	"io/ioutil"
 	"log"
 	"net/http"
+
+	jsoniter "github.com/json-iterator/go"
 
 	"git.juddus.com/HFC/beaconing/serv"
 	"git.juddus.com/HFC/beaconing/types"
@@ -31,6 +32,8 @@ func (a *ApiHelper) getPath(s *serv.SessionContext, args ...string) string {
 	return fmt.Sprintf("%s?access_token=%s", path, s.GetAccessToken())
 }
 
+// GetGamifiedLessonPlans...
+//
 func GetGamifiedLessonPlans(s *serv.SessionContext) string {
 	response, err := http.Get(Api.getPath(s, "gamifiedlessonpaths"))
 	if err != nil {
@@ -48,6 +51,34 @@ func GetGamifiedLessonPlans(s *serv.SessionContext) string {
 	return string(body)
 }
 
+func AssignStudentToGLP(s *serv.SessionContext, studentID int, glpID int) (string, error) {
+	type assignment struct {
+		StudentID int
+		GlpID     int
+	}
+
+	assign := &assignment{studentID, glpID}
+
+	assignJSON, err := jsoniter.Marshal(assign)
+	if err != nil {
+		return "", err
+	}
+
+	response, err := http.Post(Api.getPath(s, "students/", fmt.Sprintf("%d", studentID), "/assignedGlps"), "application/json", bytes.NewBuffer(assignJSON))
+	defer response.Body.Close()
+	if err != nil {
+		return "", err
+	}
+
+	body, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return "", err
+	}
+
+	return string(body), nil
+}
+
+// GetGamifiedLessonPlan
 // TODO: filter the useless stuff out of
 // the glp json
 func GetGamifiedLessonPlan(s *serv.SessionContext, id int) (string, *types.GamifiedLessonPlan) {
