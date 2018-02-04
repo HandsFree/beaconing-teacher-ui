@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"time"
 
 	jsoniter "github.com/json-iterator/go"
 
@@ -23,13 +24,39 @@ import (
 // we should redo this to take just an access token because
 // that might make the api layer a bit more flexible.
 
-var Api *ApiHelper = NewApiHelper()
+var Api *ApiHelper = newApiHelper()
+
+type ApiCache struct {
+	// this probably isnt needed because if cacheData is
+	// being invoked then it's always going to be new data
+	// but we'll leave this here because I may implement it anyways
+	LastCache map[string]time.Time
+	Data      map[string]string
+}
+
+func cacheData(bucket string, data string) {
+	Api.cache.Data[bucket] = data
+}
+
+// Fetch...
+// checks the cache if the given value is present
+// an empty string is returned if there is no value
+func Fetch(bucket string) (string, bool) {
+	if val, ok := Api.cache.Data[bucket]; ok {
+		return val, true
+	}
+	return "", false
+}
 
 type ApiHelper struct {
 	APIPath string
-	cache   ApiCache
+	cache   *ApiCache
 }
 
+// getPath...
+// creates an API path, appending on the given beaconing URL
+// "https://core.beaconing.eu/api/", this makes concatenation painless
+// as well as it slaps the access token on the end
 func (a *ApiHelper) getPath(s *serv.SessionContext, args ...string) string {
 	path := a.APIPath
 	for _, arg := range args {
@@ -38,6 +65,8 @@ func (a *ApiHelper) getPath(s *serv.SessionContext, args ...string) string {
 	return fmt.Sprintf("%s?access_token=%s", path, s.GetAccessToken())
 }
 
+// GetStudents...
+//
 func GetStudents(s *serv.SessionContext) string {
 	response, err := http.Get(Api.getPath(s, "students"))
 	if err != nil {
@@ -52,7 +81,9 @@ func GetStudents(s *serv.SessionContext) string {
 		return ""
 	}
 
-	return string(body)
+	resp := string(body)
+	cacheData("students", resp)
+	return resp
 }
 
 // GetGamifiedLessonPlans...
@@ -72,7 +103,9 @@ func GetGamifiedLessonPlans(s *serv.SessionContext) string {
 		return ""
 	}
 
-	return string(body)
+	resp := string(body)
+	cacheData("glps", resp)
+	return resp
 }
 
 // AssignStudentToGLP...
@@ -137,9 +170,17 @@ func GetGamifiedLessonPlan(s *serv.SessionContext, id int) (string, *types.Gamif
 	return buffer.String(), data
 }
 
-func NewApiHelper() *ApiHelper {
+func newApiCache() *ApiCache {
+	return &ApiCache{
+		LastCache: map[string]time.Time{},
+		Data:      map[string]string{},
+	}
+}
+
+func newApiHelper() *ApiHelper {
 	// TODO: we can store this in the toml config
 	return &ApiHelper{
 		APIPath: "https://core.beaconing.eu/api/",
+		cache:   newApiCache(),
 	}
 }
