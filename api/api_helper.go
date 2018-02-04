@@ -14,8 +14,14 @@ import (
 	"git.juddus.com/HFC/beaconing/types"
 )
 
-// this is an api helper thing which will return
-// json objects as well as the raw json strings
+// ApiLayer is a layer which handles manipulation of
+// sending and retrieving data to the beaconing API
+//
+//
+// NOTE: all of these functions need a SessionContext
+// for the access token verification. maybe in the future
+// we should redo this to take just an access token because
+// that might make the api layer a bit more flexible.
 
 var Api *ApiHelper = NewApiHelper()
 
@@ -32,7 +38,25 @@ func (a *ApiHelper) getPath(s *serv.SessionContext, args ...string) string {
 	return fmt.Sprintf("%s?access_token=%s", path, s.GetAccessToken())
 }
 
+func GetStudents(s *serv.SessionContext) string {
+	response, err := http.Get(Api.getPath(s, "students"))
+	if err != nil {
+		log.Println(err)
+		return ""
+	}
+
+	defer response.Body.Close()
+	body, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		log.Println(err)
+		return ""
+	}
+
+	return string(body)
+}
+
 // GetGamifiedLessonPlans...
+//
 //
 func GetGamifiedLessonPlans(s *serv.SessionContext) string {
 	response, err := http.Get(Api.getPath(s, "gamifiedlessonpaths"))
@@ -51,6 +75,9 @@ func GetGamifiedLessonPlans(s *serv.SessionContext) string {
 	return string(body)
 }
 
+// AssignStudentToGLP...
+//
+//
 func AssignStudentToGLP(s *serv.SessionContext, studentID int, glpID int) (string, error) {
 	type assignment struct {
 		StudentID int
