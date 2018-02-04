@@ -15,7 +15,10 @@ type Page struct {
 	host   string
 }
 
-func (p *Page) Handle(s *serv.SessionContext) {
+func (r *Page) Post(s *serv.SessionContext)   {}
+func (r *Page) Delete(s *serv.SessionContext) {}
+
+func (p *Page) Get(s *serv.SessionContext) {
 	s.HTML(http.StatusOK, "index.html", &gin.H{
 		"pageTitle":  p.title,
 		"pageScript": p.script,

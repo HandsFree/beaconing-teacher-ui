@@ -14,7 +14,10 @@ type StudentRequest struct {
 	route.SimpleManagedRoute
 }
 
-func (r *StudentRequest) Handle(s *serv.SessionContext) {
+func (r *StudentRequest) Post(s *serv.SessionContext)   {}
+func (r *StudentRequest) Delete(s *serv.SessionContext) {}
+
+func (r *StudentRequest) Get(s *serv.SessionContext) {
 	studentID := s.Param("id")
 	action := s.Param("action")
 

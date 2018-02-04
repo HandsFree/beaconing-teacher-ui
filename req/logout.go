@@ -16,7 +16,10 @@ type LogOutRequest struct {
 	route.SimpleManagedRoute
 }
 
-func (r *LogOutRequest) Handle(s *serv.SessionContext) {
+func (r *LogOutRequest) Post(s *serv.SessionContext)   {}
+func (r *LogOutRequest) Delete(s *serv.SessionContext) {}
+
+func (r *LogOutRequest) Get(s *serv.SessionContext) {
 	session := sessions.Default(s.Context)
 	session.Clear()
 

@@ -13,7 +13,10 @@ type StudentOverview struct {
 	route.SimpleManagedRoute
 }
 
-func (r *StudentOverview) Handle(s *serv.SessionContext) {
+func (r *StudentOverview) Post(s *serv.SessionContext)   {}
+func (r *StudentOverview) Delete(s *serv.SessionContext) {}
+
+func (r *StudentOverview) Get(s *serv.SessionContext) {
 	countParam := s.DefaultQuery("count", "3")
 
 	fetchCount, err := strconv.Atoi(countParam)

@@ -17,19 +17,38 @@ func NewRouteManager(servInst *serv.SessionContext) *RouteManager {
 	}
 }
 
-func (r *RouteManager) RegisterRoutes(routerType string, routes ...Route) {
+func (r *RouteManager) RegisterRoutes(routes ...Route) {
 	for _, route := range routes {
-		r.RegisterRoute(routerType, route)
+		r.RegisterRoute(route)
 	}
 }
 
-func (r *RouteManager) RegisterRoute(routerType string, route Route) {
+func (r *RouteManager) RegisterRoute(route Route) {
 	route.SetManager(r)
 	r.routes[route.GetPath()] = route
 
-	r.SessionContext.RouterEngine.Handle(routerType, route.GetPath(), func(ctx *gin.Context) {
-		// set the context to pass thru
-		r.SessionContext.Context = ctx
-		route.Handle(r.SessionContext)
-	})
+	if path, ok := route.GetPaths()["get"]; ok {
+		r.SessionContext.RouterEngine.Handle("GET", path, func(ctx *gin.Context) {
+			// set the context to pass thru
+			r.SessionContext.Context = ctx
+			route.Get(r.SessionContext)
+		})
+	}
+
+	if path, ok := route.GetPaths()["post"]; ok {
+		r.SessionContext.RouterEngine.Handle("POST", path, func(ctx *gin.Context) {
+			// set the context to pass thru
+			r.SessionContext.Context = ctx
+			route.Post(r.SessionContext)
+		})
+	}
+
+	if path, ok := route.GetPaths()["delete"]; ok {
+		r.SessionContext.RouterEngine.Handle("DELETE", path, func(ctx *gin.Context) {
+			// set the context to pass thru
+			r.SessionContext.Context = ctx
+			route.Delete(r.SessionContext)
+		})
+
+	}
 }

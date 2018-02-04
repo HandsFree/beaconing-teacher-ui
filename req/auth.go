@@ -10,21 +10,20 @@ type CheckAuthRequest struct {
 	route.SimpleManagedRoute
 }
 
-func (a *CheckAuthRequest) Handle(s *serv.SessionContext) {
+func (r *CheckAuthRequest) Post(s *serv.SessionContext)   {}
+func (r *CheckAuthRequest) Delete(s *serv.SessionContext) {}
+
+func (a *CheckAuthRequest) Get(s *serv.SessionContext) {
 	accessToken := s.GetAccessToken()
 	s.Jsonify(&CheckAuthJSON{
 		Token: accessToken,
 	})
 }
 
-// CheckAuthJSON details json structure
 type CheckAuthJSON struct {
 	Token string `json:"token"`
 }
 
-// ────────────────────────────────────────────────────────────────────────────────
-
-// NewCheckAuthRequest returns initialised request struct
 func NewCheckAuthRequest(path string) *CheckAuthRequest {
 	req := &CheckAuthRequest{}
 	req.SetPath(path)

@@ -12,7 +12,10 @@ type GLPSRequest struct {
 	route.SimpleManagedRoute
 }
 
-func (a *GLPSRequest) Handle(s *serv.SessionContext) {
+func (r *GLPSRequest) Post(s *serv.SessionContext)   {}
+func (r *GLPSRequest) Delete(s *serv.SessionContext) {}
+
+func (a *GLPSRequest) Get(s *serv.SessionContext) {
 	json := api.GetGamifiedLessonPlans(s)
 	s.Header("Content-Type", "application/json")
 	s.String(http.StatusOK, json)

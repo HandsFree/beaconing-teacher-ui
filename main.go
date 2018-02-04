@@ -88,12 +88,24 @@ func main() {
 
 	api := []route.Route{
 		req.NewTokenRequest("/intent/token"),
-		req.NewStudentsRequest("/intent/students"),
+		req.NewStudentsRequest(map[string]string{
+			"get":    "/intent/students",
+			"delete": "/intent/students/:id/assignedglps/:glp",
+		}),
 		req.NewStudentRequest("/intent/student/:id/*action"),
 		req.NewAssignRequest("/intent/assign/:student/to/:glp"),
 		req.NewGLPSRequest("/intent/glps"),
-		req.NewGLPRequest("/intent/glp/:id"),
-		req.NewStudentGroupRequest("/intent/studentgroups"),
+
+		req.NewGLPRequest(map[string]string{
+			"get":    "/intent/glp/:id",
+			"delete": "/intent/glp/:id",
+		}),
+
+		req.NewStudentGroupRequest(map[string]string{
+			"get":    "/intent/studentgroups",
+			"post":   "/intent/studentgroups",
+			"delete": "/intent/studentgroups/:id",
+		}),
 	}
 
 	auth := []route.Route{
@@ -101,13 +113,13 @@ func main() {
 		req.NewLogOutRequest("/auth/logout"),
 	}
 
-	manager.RegisterRoute("POST", req.NewSearchRequest("/intent/search"))
+	manager.RegisterRoute(req.NewSearchRequest("/intent/search"))
 
 	// Enable the routes
-	manager.RegisterRoutes("GET", pages...)
-	manager.RegisterRoutes("GET", widgets...)
-	manager.RegisterRoutes("GET", api...)
-	manager.RegisterRoutes("GET", auth...)
+	manager.RegisterRoutes(pages...)
+	manager.RegisterRoutes(widgets...)
+	manager.RegisterRoutes(api...)
+	manager.RegisterRoutes(auth...)
 
 	// Start Gin
 	if err := router.Run(":8081"); err != nil {
