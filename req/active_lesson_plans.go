@@ -57,7 +57,7 @@ func (r *ActiveLessonPlans) Handle(s *serv.SessionContext) {
 		}
 
 		log.Println("Displaying ", glp.Name, " as a lesson plan")
-		lessonPlan := NewLessonPlan(glp.Name)
+		lessonPlan := NewLessonPlan(glp.Name, glpID)
 		lps = append(lps, lessonPlan)
 	}
 
@@ -71,10 +71,10 @@ func NewActiveLessonPlans(path string) *ActiveLessonPlans {
 	return req
 }
 
-func NewLessonPlan(name string) types.LessonPlan {
+func NewLessonPlan(name string, glpID int) types.LessonPlan {
 	return types.LessonPlan{
 		Name: name,
 		Src:  "https://via.placeholder.com/512x512&text=" + name,
-		Link: "#",
+		Link: "/lesson_manager#view?id=" + strconv.Itoa(glpID) + "&prev=lesson_manager",
 	}
 }

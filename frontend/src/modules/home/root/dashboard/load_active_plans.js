@@ -1,7 +1,7 @@
 // @flow
 // import List from 'list.js';
 
-import { div } from '../../../../core/html';
+import { div, span } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 import ActivePlanBox from './active_plan_box';
@@ -34,6 +34,11 @@ class LoadActivePlans extends Component {
 
     async render() {
         const values = Object.values(this.state.activePlans);
+
+        if (values.length < 1) {
+            // Add some style
+            return div('.active-plans-container.flex-column', span('No Active Plans'));
+        }
 
         const promArr = [];
 
