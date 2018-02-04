@@ -8,7 +8,7 @@ import (
 	"net/http"
 
 	"git.juddus.com/HFC/beaconing/cfg"
-	"git.juddus.com/HFC/beaconing/json"
+	"git.juddus.com/HFC/beaconing/types"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
@@ -26,7 +26,7 @@ func GetRefreshToken(s *SessionContext) error {
 
 	accessToken := session.Get("access_token").(string)
 
-	message, err := jsoniter.Marshal(json.TokenRequest{
+	message, err := jsoniter.Marshal(types.TokenRequest{
 		GrantType:    "authorization_code",
 		Code:         accessToken,
 		ClientID:     cfg.Beaconing.Auth.ID,
@@ -35,14 +35,14 @@ func GetRefreshToken(s *SessionContext) error {
 	})
 
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err.Error())
 		return err
 	}
 
 	const tokenRefreshLink = "https://core.beaconing.eu/auth/token"
 	response, err := http.Post(tokenRefreshLink, "application/json", bytes.NewBuffer(message))
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err.Error())
 		return err
 	}
 
@@ -50,50 +50,35 @@ func GetRefreshToken(s *SessionContext) error {
 
 	body, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err.Error())
 		return err
 	}
 
-	var respToken json.TokenResponse
+	var respToken types.TokenResponse
 	if err := jsoniter.Unmarshal(body, &respToken); err != nil {
-		log.Fatal(err)
+		log.Println(err.Error())
 		return err
 	}
 
 	session.Set("access_token", respToken.AccessToken)
 	session.Set("refresh_token", respToken.RefreshToken)
 	session.Set("token_type", respToken.TokenType)
-	session.Save()
+	if err := session.Save(); err != nil {
+		log.Println(err.Error())
+	}
 	return nil
 }
 
 // rename this function!
-func (s *SessionContext) TryAuth(redirectPath string) string {
+func (s *SessionContext) GetAccessToken() string {
 	session := sessions.Default(s.Context)
 	accessToken := session.Get("access_token")
 	if accessToken == nil {
 		s.SimpleErrorRedirect(401, "Unauthorised access")
 		// NOTE: no return here due to redirect
+		return ""
 	}
 	return accessToken.(string)
-
-	/*
-		session := sessions.Default(s.Context)
-		accessToken := session.Get("access_token")
-
-		if redirectPath != "" {
-			session.Set("last_path", redirectPath) // Temporary workaround
-			session.Save()
-		}
-
-		authAttempts := 50
-		for i := 0; i < authAttempts && accessToken == nil; i++ {
-			AuthRedirect(s.Context)
-			accessToken = session.Get("access_token")
-		}
-
-		return accessToken.(string)
-	*/
 }
 
 func (s *SessionContext) TryRefreshToken() error {

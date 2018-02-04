@@ -1,6 +1,7 @@
 package req
 
 import (
+	"log"
 	"math/rand"
 	"strconv"
 
@@ -16,16 +17,10 @@ func (r *StudentOverview) Handle(s *serv.SessionContext) {
 	countParam := s.DefaultQuery("count", "3")
 
 	fetchCount, err := strconv.Atoi(countParam)
-	if err != nil {
-		// it's not a number, set it to 3.
+	if err != nil || fetchCount <= 0 {
+		// NaN or improper data
 		fetchCount = 3
-
-		// TODO better log message!
-	}
-
-	// no cheeky negatives, must fetch at least 1 student.
-	if fetchCount <= 0 {
-		fetchCount = 3
+		log.Println("warning, fetchCount has an illegal value")
 	}
 
 	// TODO: request students, make sure they are sorted
@@ -80,20 +75,11 @@ type StudentOverviewJSON struct {
 	MostImprovement []*StudentData `json:"most_improvement"`
 }
 
-// ────────────────────────────────────────────────────────────────────────────────
-
-// DELETE ME!
-var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
-
-// ────────────────────────────────────────────────────────────────────────────────
-
 func NewStudentOverview(path string) *StudentOverview {
 	req := &StudentOverview{}
 	req.SetPath(path)
 	return req
 }
-
-// ────────────────────────────────────────────────────────────────────────────────
 
 func newDummyStudent() *StudentData {
 	student := &StudentData{
@@ -123,6 +109,10 @@ func genDummyStudentData(count int) []*StudentData {
 	}
 	return result
 }
+
+// TEMPORARY!
+
+var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
 func randStrSeq(n int) string {
 	b := make([]rune, n)

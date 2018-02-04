@@ -27,6 +27,12 @@
 			"revisionTime": "2017-05-03T20:53:33Z"
 		},
 		{
+			"checksumSHA1": "jqmBQhOgs+gI9W9bTgFkLuxmMdM=",
+			"path": "github.com/felixangell/fuzzysearch/fuzzy",
+			"revision": "cfc75cad531921d5111f6288eb96f7a3b9884c77",
+			"revisionTime": "2018-02-04T21:32:59Z"
+		},
+		{
 			"checksumSHA1": "2UmMbNHc8FBr98mJFN1k8ISOIHk=",
 			"path": "github.com/garyburd/redigo/internal",
 			"revision": "d1ed5c67e5794de818ea85e6b522fda02623a484",
@@ -121,6 +127,18 @@
 			"path": "github.com/mattn/go-isatty",
 			"revision": "6ca4dbf54d38eea1a992b3c722a76a5d1c4cb25c",
 			"revisionTime": "2017-11-07T05:05:31Z"
+		},
+		{
+			"checksumSHA1": "cJE7dphDlam/i7PhnsyosNWtbd4=",
+			"path": "github.com/mattn/go-runewidth",
+			"revision": "97311d9f7767e3d6f422ea06661bc2c7a19e8a5d",
+			"revisionTime": "2017-05-10T07:48:58Z"
+		},
+		{
+			"checksumSHA1": "txsZLJ7XQsUIoAze9dD+XHYJguk=",
+			"path": "github.com/olekukonko/tablewriter",
+			"revision": "b8a9be070da40449e501c3c4730a889e42d87a9e",
+			"revisionTime": "2018-01-30T16:27:43Z"
 		},
 		{
 			"checksumSHA1": "eqBP48RrDvMEtYYMZrPANsjjOjY=",

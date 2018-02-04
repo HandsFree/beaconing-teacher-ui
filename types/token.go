@@ -1,9 +1,4 @@
-package json
-
-/**
- * Not sure if these should stay here, better for now though.
- * Package name of json might not be the best thing
- */
+package types
 
 // TokenRequest is a json type for the
 // response from the tokenLink

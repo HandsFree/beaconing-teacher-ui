@@ -15,6 +15,7 @@ import (
 	"git.juddus.com/HFC/beaconing/serv"
 )
 
+// TokenAuth ...
 // simple middleware to handle token auth
 func TokenAuth() gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -44,6 +45,9 @@ func main() {
 
 	// Create the cookie store
 	store := sessions.NewCookieStore(auth.CreateSessionSecret(32), auth.CreateSessionSecret(16))
+
+	// for redis.
+	// store, _ := sessions.NewRedisStore(10, "tcp", "localhost:6379", "", auth.CreateSessionSecret(64))
 
 	// Config the router to use sessions with cookie store
 	router.Use(sessions.Sessions("beaconing", store))
@@ -89,12 +93,15 @@ func main() {
 		req.NewAssignRequest("/intent/assign/:student/to/:glp"),
 		req.NewGLPSRequest("/intent/glps"),
 		req.NewGLPRequest("/intent/glp/:id"),
+		req.NewStudentGroupRequest("/intent/studentgroups"),
 	}
 
 	auth := []route.Route{
 		req.NewCheckAuthRequest("/auth/check"),
 		req.NewLogOutRequest("/auth/logout"),
 	}
+
+	manager.RegisterRoute("POST", req.NewSearchRequest("/intent/search"))
 
 	// Enable the routes
 	manager.RegisterRoutes("GET", pages...)

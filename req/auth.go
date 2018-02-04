@@ -11,7 +11,7 @@ type CheckAuthRequest struct {
 }
 
 func (a *CheckAuthRequest) Handle(s *serv.SessionContext) {
-	accessToken := s.TryAuth(a.GetPath())
+	accessToken := s.GetAccessToken()
 	s.Jsonify(&CheckAuthJSON{
 		Token: accessToken,
 	})

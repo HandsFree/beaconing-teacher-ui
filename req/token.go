@@ -14,6 +14,19 @@ type TokenRequest struct {
 	route.SimpleManagedRoute
 }
 
+func isLetterOrDigit(c rune) bool {
+	return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9')
+}
+
+func isValidToken(tok string) bool {
+	for _, r := range tok {
+		if !isLetterOrDigit(r) {
+			return false
+		}
+	}
+	return true
+}
+
 func (r *TokenRequest) Handle(s *serv.SessionContext) {
 	accessToken := s.Query("code")
 	if accessToken == "" {
@@ -23,17 +36,19 @@ func (r *TokenRequest) Handle(s *serv.SessionContext) {
 
 	session := sessions.Default(s.Context)
 
-	// TODO: needs sanitisation
+	if !isValidToken(accessToken) {
+		s.SimpleErrorRedirect(400, "Client Error: Invalid access token")
+	}
 	session.Set("access_token", accessToken)
 
 	if err := s.TryRefreshToken(); err != nil {
-		log.Fatal(err)
+		log.Println(err.Error())
 		s.SimpleErrorRedirect(500, "Server Error: 500 Token Refresh Failed")
 		return
 	}
 
 	if err := session.Save(); err != nil {
-		log.Fatal(err)
+		log.Println(err.Error())
 		return
 	}
 

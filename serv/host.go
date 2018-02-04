@@ -53,6 +53,10 @@ func getBaseLink() string {
 	return "teacher.beaconing.eu"
 }
 
+func GetRootPath() string {
+	return getProtocol() + BaseLink
+}
+
 func getRedirectBaseLink() string {
-	return getProtocol() + BaseLink + "/intent/token/"
+	return GetRootPath() + "/intent/token/"
 }

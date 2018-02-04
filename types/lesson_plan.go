@@ -1,4 +1,4 @@
-package json
+package types
 
 // name: Algebra
 // image: http://imgur.com/some_image.png

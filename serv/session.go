@@ -8,16 +8,12 @@ import (
 	jsoniter "github.com/json-iterator/go"
 )
 
-//
-// ─── STRUCTS ────────────────────────────────────────────────────────────────────
-//
-
+// SessionContext...
+// a light wrapper over the gin contexts
 type SessionContext struct {
 	*gin.Context
 	RouterEngine *gin.Engine
 }
-
-// ────────────────────────────────────────────────────────────────────────────────
 
 func NewSessionContext(router *gin.Engine) *SessionContext {
 	return &SessionContext{
@@ -25,26 +21,29 @@ func NewSessionContext(router *gin.Engine) *SessionContext {
 	}
 }
 
-// temporary helper for simple error redirects
+// SimpleErrorRedirect...
+// Creates a really simple error message JSON response
+// and aborts the current session
 func (s *SessionContext) SimpleErrorRedirect(code int, message string) {
 	resp := map[string]string{"error": message}
-	s.JSON(code, resp)
+	s.Jsonify(resp)
 	s.Abort()
 }
 
-//
-// ─── JSON ───────────────────────────────────────────────────────────────────────
-//
-
+// Json...
+// Spits out the given json code in a 200 status page
 func (s *SessionContext) Json(code string) {
 	s.Header("Content-Type", "application/json")
 	s.String(http.StatusOK, code)
 }
 
+// Jsonify...
+// Spits out the given interfaces as a jsonified string
+// in a 200 status page
 func (s *SessionContext) Jsonify(things interface{}) {
 	json, err := jsoniter.Marshal(things)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err.Error())
 		return
 	}
 
