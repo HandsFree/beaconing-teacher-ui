@@ -9,7 +9,6 @@ class GLPBox extends Component {
             name,
             domain,
             topic,
-            description,
             id,
         } = this.props;
 
@@ -50,11 +49,6 @@ class GLPBox extends Component {
                     '.topic',
                     strong('Topic:'),
                     p(topic),
-                ),
-                div(
-                    '.description',
-                    strong('Description:'),
-                    p(description),
                 ),
             ),
         );

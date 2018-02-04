@@ -87,6 +87,18 @@ class APICore {
         const students = await this.get(`//${window.location.host}/intent/students`);
         return students;
     }
+
+    async assignStudent(studentID: number, glpID: number) {
+        const auth = await this.checkAuth();
+
+        if (!auth) {
+            return false;
+        }
+
+        const assignStatus = await this.get(`//${window.location.host}/intent/assign/${studentID}/to/${glpID}`);
+
+        return assignStatus.studentId || false;
+    }
 }
 
 export default APICore;

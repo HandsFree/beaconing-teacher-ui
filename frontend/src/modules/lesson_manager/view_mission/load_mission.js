@@ -2,15 +2,15 @@
 import { section } from '../../../core/html';
 
 import { Component } from '../../../core/component';
-import PlanHeader from './plan_header';
-import GLPDetails from './glp_details';
+import MissionHeader from './mission_header';
 import MissionDetails from './mission_details';
+import QuestDetails from './quest_details';
 
-class LoadPlan extends Component {
+class LoadMission extends Component {
     async init() {
         if (!this.props.id) {
             // console.log(this.props);
-            throw new Error('[Plan Overview] GLP ID not provided');
+            throw new Error('[Mission Overview] GLP ID not provided');
         }
 
         if (window.sessionStorage) {
@@ -36,29 +36,29 @@ class LoadPlan extends Component {
     }
 
     async render() {
-        const planHeader = new PlanHeader();
-        const glpDetails = new GLPDetails();
+        const missionHeader = new MissionHeader();
         const missionDetails = new MissionDetails();
+        const questDetails = new QuestDetails();
 
-        const planHeaderEl = await planHeader.attach(this.props);
-        const glpDetailsEl = await glpDetails.attach(this.props);
+        const missionHeaderEl = await missionHeader.attach(this.props);
         const missionDetailsEl = await missionDetails.attach(this.props);
+        const questDetailsEl = await questDetails.attach(this.props);
 
         return [
             section(
                 '.flex-column',
-                planHeaderEl,
-            ),
-            section(
-                '.flex-column',
-                glpDetailsEl,
+                missionHeaderEl,
             ),
             section(
                 '.flex-column',
                 missionDetailsEl,
             ),
+            section(
+                '.flex-column',
+                questDetailsEl,
+            ),
         ];
     }
 }
 
-export default LoadPlan;
+export default LoadMission;

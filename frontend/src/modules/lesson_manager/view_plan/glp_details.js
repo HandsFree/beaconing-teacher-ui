@@ -1,5 +1,5 @@
 // @flow
-import { div, h4 } from '../../../core/html';
+import { div, h4, span, strong, p } from '../../../core/html';
 
 import { Component } from '../../../core/component';
 
@@ -15,9 +15,46 @@ class GLPDetails extends Component {
     }
 
     async render() {
+        console.log(this.state.glp);
         return div(
             '#plan-details',
             div('.title', h4('GLP Details:')),
+            div(
+                '.small-details',
+                div(
+                    '.detail',
+                    strong('Age: '),
+                    span(this.state.glp.age_group),
+                ),
+                div(
+                    '.detail',
+                    strong('Domain: '),
+                    span(this.state.glp.domain),
+                ),
+                div(
+                    '.detail',
+                    strong('Year: '),
+                    span(this.state.glp.year),
+                ),
+            ),
+            div(
+                '.large-details',
+                div(
+                    '.detail',
+                    strong('Description:'),
+                    p(this.state.glp.description),
+                ),
+                div(
+                    '.detail',
+                    strong('Topic:'),
+                    p(this.state.glp.topic),
+                ),
+                div(
+                    '.detail',
+                    strong('Learning Objectives:'),
+                    p(this.state.glp.learning_objectives),
+                ),
+            ),
         );
     }
 }

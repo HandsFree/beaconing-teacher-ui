@@ -32,5 +32,13 @@
             @extend .link-underline;
             font-weight: 400;
         }
+
+        span {
+            padding: 1em;
+
+            &.tick {
+                color: green;
+            }
+        }
     }
 }

@@ -6,15 +6,15 @@ import Header from '../../header/root';
 import MainNav from '../../nav/main';
 import SecondNav from '../../nav/second';
 import InnerNav from '../inner_nav';
-import PlanOverview from './plan_overview';
+import MissionOverview from './mission_overview';
 
-class ViewPlan extends RootComponent {
+class ViewMission extends RootComponent {
     async render() {
         const header = new Header();
         const mainNav = new MainNav();
         const secondNav = new SecondNav();
         const innerNav = new InnerNav();
-        const planOverview = new PlanOverview();
+        const missionOverview = new MissionOverview();
 
         return Promise.all([
             header.attach(),
@@ -23,13 +23,13 @@ class ViewPlan extends RootComponent {
                 title: 'Lesson Manager',
                 innerNav: innerNav.attach(),
             }),
-            planOverview.attach(this.params),
+            missionOverview.attach(this.params),
         ]).then((values) => {
             const [
                 headerEl,
                 mainNavEl,
                 secondNavEl,
-                planOverviewEl,
+                missionOverviewEl,
             ] = values;
 
             return div(
@@ -40,8 +40,8 @@ class ViewPlan extends RootComponent {
                     mainNavEl,
                     secondNavEl,
                     main(
-                        '#view-plan',
-                        planOverviewEl,
+                        '#view-mission',
+                        missionOverviewEl,
                     ),
                 ),
             );
@@ -49,4 +49,4 @@ class ViewPlan extends RootComponent {
     }
 }
 
-export default ViewPlan;
+export default ViewMission;

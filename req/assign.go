@@ -14,8 +14,8 @@ import (
 )
 
 type assignData struct {
-	studentID string
-	glpID     string
+	studentId            string
+	gamifiedLessonPathId string
 }
 
 func (a *assignData) assignGLP(accessToken string) (string, error) {
@@ -25,7 +25,7 @@ func (a *assignData) assignGLP(accessToken string) (string, error) {
 	}
 
 	// TODO replace with a CONST URL
-	postURL := fmt.Sprintf("https://core.beaconing.eu/api/students/%s/assignedGlps?access_token=%s", a.studentID, accessToken)
+	postURL := fmt.Sprintf("https://core.beaconing.eu/api/students/%s/assignedGlps?access_token=%s", a.studentId, accessToken)
 	response, err := http.Post(postURL, "application/json", bytes.NewBuffer(assignJSON))
 	if err != nil {
 		return "", err

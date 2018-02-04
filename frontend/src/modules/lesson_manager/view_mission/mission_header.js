@@ -1,22 +1,23 @@
 // @flow
-import { div, a, i, h1, nav } from '../../../core/html';
+import { div, a, i, h1, nav, h2 } from '../../../core/html';
 
 import { Component } from '../../../core/component';
 
-class PlanHeader extends Component {
+class MissionHeader extends Component {
     async init() {
         if (!this.props.id) {
             // console.log(this.props);
-            throw new Error('[Plan Header] GLP ID not provided');
+            throw new Error('[Mission Header] GLP ID not provided');
         }
 
         const sessionGLP = JSON.parse(window.sessionStorage.getItem(`glp_${this.props.id}`));
         this.state.glp = sessionGLP.glp;
+        this.state.mission = this.state.glp.missions[this.props.index];
     }
 
     async render() {
         return div(
-            '#plan-header',
+            '#mission-header',
             a(
                 '.back',
                 {
@@ -25,7 +26,11 @@ class PlanHeader extends Component {
                 i('.icon-angle-left'),
                 'Go Back',
             ),
-            h1(this.state.glp.name),
+            div(
+                '.name-group',
+                h1(this.state.glp.name),
+                h2(this.state.mission.name),
+            ),
             nav(
                 '.mini',
                 a(
@@ -46,4 +51,4 @@ class PlanHeader extends Component {
     }
 }
 
-export default PlanHeader;
+export default MissionHeader;
