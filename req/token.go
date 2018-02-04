@@ -27,7 +27,10 @@ func isValidToken(tok string) bool {
 	return true
 }
 
-func (r *TokenRequest) Handle(s *serv.SessionContext) {
+func (r *TokenRequest) Post(s *serv.SessionContext)   {}
+func (r *TokenRequest) Delete(s *serv.SessionContext) {}
+
+func (r *TokenRequest) Get(s *serv.SessionContext) {
 	accessToken := s.Query("code")
 	if accessToken == "" {
 		s.SimpleErrorRedirect(400, "Error: Access Token not provided")

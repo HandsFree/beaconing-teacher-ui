@@ -125,12 +125,12 @@ func AssignStudentToGLP(s *serv.SessionContext, studentID int, glpID int) (strin
 	}
 
 	response, err := http.Post(Api.getPath(s, "students/", fmt.Sprintf("%d", studentID), "/assignedGlps"), "application/json", bytes.NewBuffer(assignJSON))
-	defer response.Body.Close()
 	if err != nil {
 		return "", err
 	}
 
 	body, err := ioutil.ReadAll(response.Body)
+	defer response.Body.Close()
 	if err != nil {
 		return "", err
 	}

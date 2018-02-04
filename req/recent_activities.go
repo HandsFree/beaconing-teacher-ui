@@ -40,7 +40,10 @@ type RecentActivities struct {
 	route.SimpleManagedRoute
 }
 
-func (r *RecentActivities) Handle(s *serv.SessionContext) {
+func (r *RecentActivities) Post(s *serv.SessionContext)   {}
+func (r *RecentActivities) Delete(s *serv.SessionContext) {}
+
+func (r *RecentActivities) Get(s *serv.SessionContext) {
 	activities := []Activity{
 		NewLPAssignedActivity("algebra"),
 	}

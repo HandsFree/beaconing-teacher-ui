@@ -19,7 +19,12 @@ type ActiveLessonPlans struct {
 	route.SimpleManagedRoute
 }
 
-func (r *ActiveLessonPlans) Handle(s *serv.SessionContext) {
+func (r *ActiveLessonPlans) Post(s *serv.SessionContext)   {}
+func (r *ActiveLessonPlans) Delete(s *serv.SessionContext) {}
+
+func (r *ActiveLessonPlans) Get(s *serv.SessionContext) {
+	log.Println("ACTIVE LESSON PLANS GET REQ")
+
 	limitParam := s.DefaultQuery("limit", "5")
 	limitParamValue, err := strconv.Atoi(limitParam)
 	if err != nil || limitParamValue <= 0 {

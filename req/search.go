@@ -96,7 +96,10 @@ func processSearch(s *serv.SessionContext, json SearchRequestQuery) *SearchQuery
 	return &SearchQueryResponse{matchedStudents, matchedGLPS}
 }
 
-func (a *SearchRequest) Handle(s *serv.SessionContext) {
+func (r *SearchRequest) Get(s *serv.SessionContext)    {}
+func (r *SearchRequest) Delete(s *serv.SessionContext) {}
+
+func (a *SearchRequest) Post(s *serv.SessionContext) {
 	var json SearchRequestQuery
 	if err := s.ShouldBindJSON(&json); err != nil {
 		log.Println(err.Error())
@@ -106,7 +109,7 @@ func (a *SearchRequest) Handle(s *serv.SessionContext) {
 
 	resp := processSearch(s, json)
 	if resp == nil {
-		s.SimpleErrorRedirect(400, "We fucked up somehow!")
+		s.SimpleErrorRedirect(400, "Something went wrong!")
 		return
 	}
 	s.Jsonify(resp)

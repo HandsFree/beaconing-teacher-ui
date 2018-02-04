@@ -2,13 +2,16 @@ package req
 
 import (
 	"encoding/gob"
+	"fmt"
 	"log"
+	"os"
 	"strconv"
 
 	"git.juddus.com/HFC/beaconing/api"
 	"git.juddus.com/HFC/beaconing/route"
 	"git.juddus.com/HFC/beaconing/serv"
 	"github.com/gin-contrib/sessions"
+	"github.com/olekukonko/tablewriter"
 )
 
 func init() {
@@ -19,7 +22,10 @@ type AssignRequest struct {
 	route.SimpleManagedRoute
 }
 
-func (a *AssignRequest) Handle(s *serv.SessionContext) {
+func (r *AssignRequest) Post(s *serv.SessionContext)   {}
+func (r *AssignRequest) Delete(s *serv.SessionContext) {}
+
+func (a *AssignRequest) Get(s *serv.SessionContext) {
 	studentID := s.Param("student")
 	studentIDValue, err := strconv.Atoi(studentID)
 	if err != nil || studentIDValue < 0 {
@@ -33,6 +39,8 @@ func (a *AssignRequest) Handle(s *serv.SessionContext) {
 		s.SimpleErrorRedirect(400, "Client Error: Invalid GLP ID")
 		return
 	}
+
+	log.Println("THIS IS AN ASSIGN REQUEST ! ", studentIDValue, glpIDValue)
 
 	// register the GLP in the session
 	registerGLP(s, glpIDValue)
@@ -72,6 +80,13 @@ func registerGLP(s *serv.SessionContext, glpID int) {
 	// because we dont want to store duplicates we
 	// store these in a hashset-type thing
 	assignedPlansTable[glpID] = true
+
+	table := tablewriter.NewWriter(os.Stdout)
+	table.SetHeader([]string{"GLP"})
+	for id, _ := range assignedPlansTable {
+		table.Append([]string{fmt.Sprintf("%d", id)})
+	}
+	table.Render()
 
 	session.Set("assigned_plans", assignedPlansTable)
 	if err := session.Save(); err != nil {
