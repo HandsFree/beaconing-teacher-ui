@@ -19,6 +19,7 @@ class Search extends RootComponent {
             mainNav.attach(),
             search.attach({
                 searchType: 'width-expand',
+                query: this.params.query,
             }),
             searchResults.attach(this.params),
         ]).then((values) => {

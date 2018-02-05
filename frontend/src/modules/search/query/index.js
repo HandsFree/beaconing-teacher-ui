@@ -5,7 +5,10 @@ import { Component } from '../../../core/component';
 
 class QuerySearch extends Component {
     async render() {
-        const { searchType } = this.props;
+        const {
+            searchType,
+            query,
+        } = this.props;
 
         return div(
             '.search.fuzzy-search',
@@ -24,6 +27,7 @@ class QuerySearch extends Component {
                             window.location.href = `//${window.location.host}/search?query=${encodeURIComponent(target.value)}`;
                         }
                     },
+                    value: query || '',
                 },
             ),
         );
