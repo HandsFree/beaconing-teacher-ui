@@ -3,7 +3,6 @@ import { section } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 import StudentBox from './student_box';
-import Loading from '../../../loading';
 
 /* eslint-disable no-restricted-syntax */
 

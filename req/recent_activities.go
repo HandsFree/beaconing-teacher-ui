@@ -53,7 +53,7 @@ func (r *RecentActivities) Get(s *serv.SessionContext) {
 // naming... ?
 type LPAssignedActivity struct {
 	SimpleActivity
-	Plan types.LessonPlan `json:"plan"`
+	Plan types.LessonPlanWidget `json:"plan"`
 }
 
 func (a *LPAssignedActivity) String() string {
@@ -73,7 +73,7 @@ func NewRecentActivities(path string) *RecentActivities {
 func NewLPAssignedActivity(planName string) LPAssignedActivity {
 	return LPAssignedActivity{
 		SimpleActivity: NewSimpleActivity("Assigned lesson plan"),
-		Plan: types.LessonPlan{
+		Plan: types.LessonPlanWidget{
 			Name: planName,
 
 			// would this be in the database or

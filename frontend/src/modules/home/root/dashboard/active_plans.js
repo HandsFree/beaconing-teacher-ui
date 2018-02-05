@@ -13,7 +13,7 @@ class ActivePlans extends Component {
                 p('Active Lesson Plans'),
                 a(
                     {
-                        href: './lesson_manager/',
+                        href: `${window.location.host}/lesson_manager/`,
                     },
                     i(
                         '.icon-link-ext-alt',
@@ -43,7 +43,7 @@ class ActivePlans extends Component {
                 p('Active Lesson Plans'),
                 a(
                     {
-                        href: './lesson_manager/',
+                        href: `//${window.location.host}/lesson_manager/`,
                     },
                     i(
                         '.icon-link-ext-alt',

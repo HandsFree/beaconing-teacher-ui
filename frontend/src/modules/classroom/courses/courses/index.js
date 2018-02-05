@@ -7,16 +7,16 @@ import MainNav from '../../../nav/main';
 import SecondNav from '../../../nav/second';
 import InnerNav from '../../inner_nav';
 import BasicSearch from '../../../search/basic';
-import StudentsContainer from './students_container';
+import CoursesContainer from './courses_container';
 
-class Students extends RootComponent {
+class Courses extends RootComponent {
     async render() {
         const header = new Header();
         const mainNav = new MainNav();
         const secondNav = new SecondNav();
         const innerNav = new InnerNav();
         const search = new BasicSearch();
-        const students = new StudentsContainer();
+        const courses = new CoursesContainer();
 
         return Promise.all([
             header.attach(),
@@ -28,14 +28,14 @@ class Students extends RootComponent {
             search.attach({
                 searchType: 'width-expand',
             }),
-            students.attach(),
+            courses.attach(),
         ]).then((values) => {
             const [
                 headerEl,
                 mainNavEl,
                 secondNavEl,
                 searchEl,
-                studentsEL,
+                coursesEL,
             ] = values;
 
             return div(
@@ -46,9 +46,9 @@ class Students extends RootComponent {
                     mainNavEl,
                     secondNavEl,
                     main(
-                        '#students',
+                        '#courses',
                         section('.flex-column', searchEl),
-                        studentsEL,
+                        coursesEL,
                     ),
                 ),
             );
@@ -56,4 +56,4 @@ class Students extends RootComponent {
     }
 }
 
-export default Students;
+export default Courses;

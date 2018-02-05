@@ -115,8 +115,8 @@ func (a *SearchRequest) Post(s *serv.SessionContext) {
 	s.Jsonify(resp)
 }
 
-func NewSearchRequest(path string) *SearchRequest {
+func NewSearchRequest(paths map[string]string) *SearchRequest {
 	req := &SearchRequest{}
-	req.SetPath(path)
+	req.SetPaths(paths)
 	return req
 }

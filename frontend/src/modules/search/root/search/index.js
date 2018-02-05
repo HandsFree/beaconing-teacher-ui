@@ -4,38 +4,29 @@ import { div, main, section } from '../../../../core/html';
 import { RootComponent } from '../../../../core/component';
 import Header from '../../../header/root';
 import MainNav from '../../../nav/main';
-import SecondNav from '../../../nav/second';
-import InnerNav from '../../inner_nav';
-import BasicSearch from '../../../search/basic';
-import StudentsContainer from './students_container';
+import QuerySearch from '../../query';
+import SearchResults from './search_results';
 
-class Students extends RootComponent {
+class Search extends RootComponent {
     async render() {
         const header = new Header();
         const mainNav = new MainNav();
-        const secondNav = new SecondNav();
-        const innerNav = new InnerNav();
-        const search = new BasicSearch();
-        const students = new StudentsContainer();
+        const search = new QuerySearch();
+        const searchResults = new SearchResults();
 
         return Promise.all([
             header.attach(),
             mainNav.attach(),
-            secondNav.attach({
-                title: 'Classroom',
-                innerNav: innerNav.attach(),
-            }),
             search.attach({
                 searchType: 'width-expand',
             }),
-            students.attach(),
+            searchResults.attach(this.params),
         ]).then((values) => {
             const [
                 headerEl,
                 mainNavEl,
-                secondNavEl,
                 searchEl,
-                studentsEL,
+                searchResultsEl,
             ] = values;
 
             return div(
@@ -44,11 +35,13 @@ class Students extends RootComponent {
                 div(
                     '.flex-container.expand.margin-top-2',
                     mainNavEl,
-                    secondNavEl,
                     main(
-                        '#students',
+                        '#search-results',
                         section('.flex-column', searchEl),
-                        studentsEL,
+                        section(
+                            '.flex-spacebetween',
+                            searchResultsEl,
+                        ),
                     ),
                 ),
             );
@@ -56,4 +49,4 @@ class Students extends RootComponent {
     }
 }
 
-export default Students;
+export default Search;

@@ -14,7 +14,7 @@ class StudentOverview extends Component {
                 p('Student Overview'),
                 a(
                     {
-                        href: './classroom/',
+                        href: `//${window.location.host}/classroom/`,
                     },
                     i(
                         '.icon-link-ext-alt',

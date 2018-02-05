@@ -120,6 +120,30 @@ const config = [
         },
         ...mainSettings,
     },
+    {
+        entry: {
+            'pages/classroom/classes/page': './modules/classroom/classes/',
+        },
+        ...mainSettings,
+    },
+    {
+        entry: {
+            'pages/classroom/groups/page': './modules/classroom/groups/',
+        },
+        ...mainSettings,
+    },
+    {
+        entry: {
+            'pages/classroom/courses/page': './modules/classroom/courses/',
+        },
+        ...mainSettings,
+    },
+    {
+        entry: {
+            'pages/search/page': './modules/search/root/',
+        },
+        ...mainSettings,
+    },
 ];
 
 module.exports = config;

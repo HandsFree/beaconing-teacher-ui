@@ -5,7 +5,7 @@ import { section } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 import Loading from '../../../loading';
-import LoadStudents from './load_students';
+import LoadGroups from './load_groups';
 
 /* eslint-disable no-restricted-syntax */
 
@@ -14,7 +14,7 @@ const listConfig = {
     indexAsync: true,
 };
 
-class StudentsContainer extends Component {
+class GroupsContainer extends Component {
     list: List;
 
     async render() {
@@ -25,16 +25,18 @@ class StudentsContainer extends Component {
     }
 
     async afterMount() {
-        const loadStudents = new LoadStudents();
+        const loadGroups = new LoadGroups();
 
-        const loadStudentsEl = await loadStudents.attach();
+        const loadGroupsEl = await loadGroups.attach();
 
-        const element = section('.flex-column', loadStudentsEl);
+        const element = section('.flex-column', loadGroupsEl);
 
         this.updateView(element);
+    }
 
-        this.list = new List('students', listConfig);
+    async afterViewUpdate() {
+        this.list = new List('groups', listConfig);
     }
 }
 
-export default StudentsContainer;
+export default GroupsContainer;

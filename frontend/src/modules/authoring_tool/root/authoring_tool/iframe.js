@@ -4,11 +4,11 @@ import { iframe } from '../../../../core/html';
 import { Component } from '../../../../core/component';
 
 class IFrame extends Component {
-    async render(params: { [string]: string }) {
+    async render() {
         return iframe(
             '#authoring-tool',
             {
-                src: `https://authoring.beaconing.eu/glp/${decodeURIComponent(params.id)}`,
+                src: `https://authoring.beaconing.eu/glp/${decodeURIComponent(this.props.id)}`,
             },
         );
     }

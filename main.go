@@ -67,6 +67,9 @@ func main() {
 	// Serve all static files
 	router.Static("/dist", "./frontend/public/dist")
 
+	// Redirect trailing slashes
+	router.RedirectTrailingSlash = true
+
 	// Create Gin wrappers
 	mainCtx := serv.NewSessionContext(router)
 	manager := route.NewRouteManager(mainCtx)
@@ -78,12 +81,16 @@ func main() {
 		page.NewPage("/lesson_manager/new_plan", "Lesson Manager", "dist/beaconing/pages/lesson_manager/new_plan/page.js"),
 		page.NewPage("/authoring_tool", "Authoring Tool", "dist/beaconing/pages/authoring_tool/page.js"),
 		page.NewPage("/classroom", "Classroom", "dist/beaconing/pages/classroom/page.js"),
+		page.NewPage("/classroom/classes", "Classroom", "dist/beaconing/pages/classroom/classes/page.js"),
+		page.NewPage("/classroom/groups", "Classroom", "dist/beaconing/pages/classroom/groups/page.js"),
+		page.NewPage("/classroom/courses", "Classroom", "dist/beaconing/pages/classroom/courses/page.js"),
+		page.NewPage("/search", "Search", "dist/beaconing/pages/search/page.js"),
 	}
 
 	widgets := []route.Route{
 		req.NewStudentOverview("/widget/student_overview"),
 		req.NewRecentActivities("/widget/recent_activities"),
-		req.NewActiveLessonPlans("/widget/active_lesson_plans"),
+		req.NewActiveLessonPlansWidget("/widget/active_lesson_plans"),
 	}
 
 	api := []route.Route{
@@ -106,14 +113,16 @@ func main() {
 			"post":   "/intent/studentgroups",
 			"delete": "/intent/studentgroups/:id",
 		}),
+		req.NewActiveLessonPlans("/intent/active_lesson_plans"),
+		req.NewSearchRequest(map[string]string{
+			"post": "/intent/search",
+		}),
 	}
 
 	auth := []route.Route{
 		req.NewCheckAuthRequest("/auth/check"),
 		req.NewLogOutRequest("/auth/logout"),
 	}
-
-	manager.RegisterRoute(req.NewSearchRequest("/intent/search"))
 
 	// Enable the routes
 	manager.RegisterRoutes(pages...)

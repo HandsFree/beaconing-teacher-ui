@@ -7,7 +7,7 @@ import MainNav from '../../../nav/main';
 import SecondNav from '../../../nav/second';
 import InnerNav from '../../inner_nav';
 import BasicSearch from '../../../search/basic';
-import StudentsContainer from './students_container';
+import ClassesContainer from './classes_container';
 
 class Students extends RootComponent {
     async render() {
@@ -16,7 +16,7 @@ class Students extends RootComponent {
         const secondNav = new SecondNav();
         const innerNav = new InnerNav();
         const search = new BasicSearch();
-        const students = new StudentsContainer();
+        const classes = new ClassesContainer();
 
         return Promise.all([
             header.attach(),
@@ -28,14 +28,14 @@ class Students extends RootComponent {
             search.attach({
                 searchType: 'width-expand',
             }),
-            students.attach(),
+            classes.attach(),
         ]).then((values) => {
             const [
                 headerEl,
                 mainNavEl,
                 secondNavEl,
                 searchEl,
-                studentsEL,
+                classesEL,
             ] = values;
 
             return div(
@@ -46,9 +46,9 @@ class Students extends RootComponent {
                     mainNavEl,
                     secondNavEl,
                     main(
-                        '#students',
+                        '#classes',
                         section('.flex-column', searchEl),
-                        studentsEL,
+                        classesEL,
                     ),
                 ),
             );

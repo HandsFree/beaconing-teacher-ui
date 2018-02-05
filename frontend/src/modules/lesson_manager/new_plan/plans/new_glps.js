@@ -31,7 +31,9 @@ class NewGLPs extends Component {
         const element = div('.plans.flex-column.flex-grow.margin-20', glpsEl);
 
         this.updateView(element);
+    }
 
+    async afterViewUpdate() {
         this.list = new List('new-plans', listConfig);
     }
 }

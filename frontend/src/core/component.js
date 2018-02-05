@@ -109,11 +109,17 @@ class Component {
         if (document.readyState !== 'complete') {
             document.body.onload = () => {
                 func();
+                if (this.afterViewUpdate) {
+                    this.afterViewUpdate();
+                }
             };
             return;
         }
 
         func();
+        if (this.afterViewUpdate) {
+            this.afterViewUpdate();
+        }
     }
 
     appendView(view: HTMLElement) {

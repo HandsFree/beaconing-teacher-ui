@@ -18,7 +18,7 @@ class Header extends Component {
                 '.logo',
                 a(
                     {
-                        href: './',
+                        href: `//${window.location.host}/`,
                     },
                     img({
                         src: `//${window.location.host}/dist/beaconing/images/logo.png`,

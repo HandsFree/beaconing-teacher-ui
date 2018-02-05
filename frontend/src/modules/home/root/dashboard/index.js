@@ -5,7 +5,7 @@ import { RootComponent } from '../../../../core/component';
 import Header from '../../../header/root';
 import MainNav from '../../../nav/main';
 import DashboardNav from './dashboard_nav';
-import BasicSearch from '../../../search/basic';
+import QuerySearch from '../../../search/query';
 import RecentActivities from './recent_activities';
 import ActivePlans from './active_plans';
 import StudentOverview from './student_overview';
@@ -15,7 +15,7 @@ class Dashboard extends RootComponent {
         const header = new Header();
         const mainNav = new MainNav();
         const dashboardNav = new DashboardNav();
-        const search = new BasicSearch();
+        const search = new QuerySearch();
         const recentActivities = new RecentActivities();
         const activePlans = new ActivePlans();
         const studentOverview = new StudentOverview();

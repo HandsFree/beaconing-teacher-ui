@@ -6,8 +6,6 @@ import Prompt from './prompt';
 import IFrame from './iframe';
 
 class AuthoringTool extends RootComponent {
-    params: { [string]: string } = {};
-
     async render() {
         const prompt = new Prompt();
         const iframe = new IFrame();

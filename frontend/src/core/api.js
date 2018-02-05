@@ -31,7 +31,33 @@ class APICore {
         });
     }
 
-    async getActivePlans() {
+    async post(link: string, data: string): Promise<Object> {
+        const xhr = new XMLHttpRequest();
+
+        xhr.responseType = 'json';
+        xhr.open('POST', link);
+        xhr.send(data);
+
+        return new Promise((resolve, reject) => {
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState === 4) {
+                    resolve(xhr.response);
+                }
+            };
+
+            xhr.onerror = () => {
+                const msg: string = `[API Core] Error: ${xhr.status}: ${xhr.statusText}`;
+
+                if (window.rollbar) {
+                    window.rollbar.error(msg);
+                }
+
+                reject(msg);
+            };
+        });
+    }
+
+    async getActivePlansWidget() {
         const auth = await this.checkAuth();
 
         if (!auth) {
@@ -39,6 +65,16 @@ class APICore {
         }
 
         const activePlans = await this.get(`//${window.location.host}/widget/active_lesson_plans`);
+        return activePlans;
+    }
+    async getActivePlans() {
+        const auth = await this.checkAuth();
+
+        if (!auth) {
+            return false;
+        }
+
+        const activePlans = await this.get(`//${window.location.host}/intent/active_lesson_plans`);
         return activePlans;
     }
 
@@ -88,6 +124,17 @@ class APICore {
         return students;
     }
 
+    async getGroups() {
+        const auth = await this.checkAuth();
+
+        if (!auth) {
+            return false;
+        }
+
+        const groups = await this.get(`//${window.location.host}/intent/studentgroups`);
+        return groups;
+    }
+
     async assignStudent(studentID: number, glpID: number) {
         const auth = await this.checkAuth();
 
@@ -98,6 +145,22 @@ class APICore {
         const assignStatus = await this.get(`//${window.location.host}/intent/assign/${studentID}/to/${glpID}`);
 
         return assignStatus.studentId || false;
+    }
+
+    async getSearchResults(query: string) {
+        const auth = await this.checkAuth();
+
+        if (!auth) {
+            return false;
+        }
+
+        const searchJSON = JSON.stringify({
+            Query: query,
+        });
+
+        const results = await this.post(`//${window.location.host}/intent/search`, searchJSON);
+
+        return results;
     }
 }
 

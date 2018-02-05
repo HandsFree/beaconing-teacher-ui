@@ -1,5 +1,5 @@
 // @flow
-import { div } from '../../../../core/html';
+import { div, span } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 import GLPBox from './glp_box';
@@ -11,56 +11,66 @@ class LoadGLPs extends Component {
 
     async init() {
         if (window.sessionStorage) {
-            let sessionGLPs = window.sessionStorage.getItem('glps');
+            let sessionGLPs = window.sessionStorage.getItem('active_glps');
 
             if (sessionGLPs) {
-                // console.log(sessionGLP);
                 sessionGLPs = JSON.parse(sessionGLPs);
 
-                if ((Date.now() / 60000) - (sessionGLPs.time / 60000) < 1) {
-                    this.state.glps = sessionGLPs.glps;
+                if ((Date.now() / 1000) - (sessionGLPs.time / 1000) < 10) {
+                    this.state.activeGLPs = sessionGLPs.glps;
                     return;
                 }
             }
 
-            const glps = await window.beaconingAPI.getGLPs();
+            const activeGLPs = await window.beaconingAPI.getActivePlans();
 
-            this.state.glps = glps;
-            window.sessionStorage.setItem('glps', JSON.stringify({
-                glps: this.state.glps,
+            this.state.activeGLPs = activeGLPs;
+            window.sessionStorage.setItem('active_glps', JSON.stringify({
+                glps: this.state.activeGLPs,
                 time: Date.now(),
             }));
         }
     }
 
     async render() {
-        const values = Object.values(this.state.glps);
-        const promArr = [];
+        const values = Object.values(this.state.activeGLPs);
 
-        for (const glp of values) {
-            const {
-                name,
-                domain,
-                topic,
-                description,
-                id,
-            } = JSON.parse(glp.content);
+        if (values.length > 0) {
+            const promArr = [];
 
-            const glpBox = new GLPBox();
+            for (const glpObj of values) {
+                const {
+                    name,
+                    domain,
+                    topic,
+                    description,
+                    id,
+                } = JSON.parse(glpObj.glp.Content);
 
-            const glpBoxProm = glpBox.attach({
-                name,
-                domain,
-                topic,
-                description,
-                id,
-            });
+                const glpBox = new GLPBox();
 
-            promArr.push(glpBoxProm);
+                const glpBoxProm = glpBox.attach({
+                    name,
+                    domain,
+                    topic,
+                    description,
+                    id,
+                });
+
+                promArr.push(glpBoxProm);
+            }
+
+            return Promise.all(promArr)
+                .then(elements => div('.plans-container.list.flex-wrap', elements));
         }
 
-        return Promise.all(promArr)
-            .then(elements => div('.plans-container.list.flex-wrap', elements));
+        return div(
+            '.plans-container.list.flex-wrap',
+            div(
+                '.status',
+                span('No Active Plans'),
+            ),
+        );
     }
 }
 
