@@ -18,20 +18,27 @@ type StudentsRequest struct {
 func (r *StudentsRequest) Post(s *serv.SessionContext) {}
 
 func (r *StudentsRequest) Delete(s *serv.SessionContext) {
-	studentID := s.Query("id")
-	glpID := s.Query("glp")
+	studentID := s.Param("id")
+	glpID := s.Param("glp")
 
 	accessToken := s.GetAccessToken()
 
+	clnt := &http.Client{}
+
 	// TODO sanitise
-	response, err := http.NewRequest("DELETE", fmt.Sprintf("https://core.beaconing.eu/api/students/%s/assignedGlps/%s?access_token=%s", studentID, glpID, accessToken), nil)
+	req, err := http.NewRequest("DELETE", fmt.Sprintf("https://core.beaconing.eu/api/students/%s/assignedGlps/%s?access_token=%s", studentID, glpID, accessToken), nil)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	defer response.Body.Close()
-	body, err := ioutil.ReadAll(response.Body)
+	resp, err := clnt.Do(req)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		log.Println(err.Error())
 		return
