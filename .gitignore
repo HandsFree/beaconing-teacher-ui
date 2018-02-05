@@ -83,12 +83,6 @@ jspm_packages
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 
-# Go Vendor
-# Ignore source code, but remember json file
-vendor/*/
-!vendor/
-!vendor.json
-
 # Omit secret file
 cfg/config.toml
 

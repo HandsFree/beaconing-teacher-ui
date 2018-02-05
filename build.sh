@@ -27,8 +27,7 @@ show_help() {
 }
 
 setup() {
-	go get -u github.com/kardianos/govendor
-	govendor sync
+	go install
 }
 
 case "$1" in
