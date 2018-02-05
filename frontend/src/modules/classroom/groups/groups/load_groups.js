@@ -15,7 +15,7 @@ class LoadStudents extends Component {
                 // console.log(sessionGLP);
                 groupsSession = JSON.parse(groupsSession);
 
-                if ((Date.now() / 60000) - (groupsSession.time / 60000) < 1) {
+                if ((Date.now() / 1000) - (groupsSession.time / 1000) < 10) {
                     this.state.groups = groupsSession.groups;
                     return;
                 }

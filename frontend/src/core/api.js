@@ -147,6 +147,17 @@ class APICore {
         return assignStatus.studentId || false;
     }
 
+    async addGroup(name: string) {
+        const groupJSON = JSON.stringify({
+            id: 0,
+            name,
+        });
+
+        const groupStatus = await this.post(`//${window.location.host}/intent/studentgroups`, groupJSON);
+
+        return groupStatus;
+    }
+
     async getSearchResults(query: string) {
         const auth = await this.checkAuth();
 

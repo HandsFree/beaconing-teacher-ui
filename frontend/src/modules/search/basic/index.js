@@ -8,7 +8,7 @@ class BasicSearch extends Component {
         const { searchType } = this.props;
 
         return div(
-            '.search.fuzzy-search',
+            '.search.fuzzy-search.flex-grow',
             i('.icon-search', { 'aria-hidden': true }),
             input(`.${searchType}`, { type: 'text' }),
         );
