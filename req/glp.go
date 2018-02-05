@@ -8,6 +8,7 @@ import (
 	"git.juddus.com/HFC/beaconing/api"
 	"git.juddus.com/HFC/beaconing/route"
 	"git.juddus.com/HFC/beaconing/serv"
+	"github.com/gin-gonic/gin"
 
 	"net/http"
 	"strconv"
@@ -23,25 +24,32 @@ func (r *GLPRequest) Post(s *serv.SessionContext) {
 
 func (r *GLPRequest) Delete(s *serv.SessionContext) {
 	// TODO sanitise
-	id := s.Query("id")
+	id := s.Param("id")
 
 	accessToken := s.GetAccessToken()
 
-	response, err := http.NewRequest("DELETE", fmt.Sprintf("https://core.beaconing.eu/api/gamifiedlessonpaths/%s?access_token=%s", id, accessToken), nil)
+	clnt := &http.Client{}
+
+	req, err := http.NewRequest("DELETE", fmt.Sprintf("https://core.beaconing.eu/api/gamifiedlessonpaths/%s?access_token=%s", id, accessToken), nil)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	defer response.Body.Close()
-	body, err := ioutil.ReadAll(response.Body)
+	resp, err := clnt.Do(req)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	body, err := ioutil.ReadAll(resp.Body)
+	defer resp.Body.Close()
 	if err != nil {
 		log.Println(err.Error())
 		return
 	}
 
 	s.Header("Content-Type", "application/json")
-	s.String(http.StatusOK, string(body))
+	s.JSON(http.StatusOK, gin.H{"status": string(body)})
 }
 
 func (a *GLPRequest) Get(s *serv.SessionContext) {

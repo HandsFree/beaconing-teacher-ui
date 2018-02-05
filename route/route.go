@@ -37,6 +37,7 @@ func (s *SimpleManagedRoute) GetPaths() map[string]string {
 }
 
 func (s *SimpleManagedRoute) SetPaths(paths map[string]string) {
+	// TODO HACK
 	if s.paths == nil {
 		s.paths = map[string]string{}
 	}
