@@ -1,6 +1,6 @@
 FROM golang:alpine
 
-# RUN apk add --no-cache git
+RUN apk add --no-cache git
 
 RUN mkdir -p /go/src/beaconing
 COPY . /go/src/beaconing

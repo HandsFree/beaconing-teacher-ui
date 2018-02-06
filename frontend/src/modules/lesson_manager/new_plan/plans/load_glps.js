@@ -17,7 +17,7 @@ class LoadGLPs extends Component {
                 // console.log(sessionGLP);
                 sessionGLPs = JSON.parse(sessionGLPs);
 
-                if ((Date.now() / 60000) - (sessionGLPs.time / 60000) < 1) {
+                if ((Date.now() / 1000) - (sessionGLPs.time / 1000) < 10) {
                     this.state.glps = sessionGLPs.glps;
                     return;
                 }
