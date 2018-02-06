@@ -38,25 +38,28 @@ class LoadGLPs extends Component {
         const promArr = [];
 
         for (const glp of values) {
-            const {
-                name,
-                domain,
-                topic,
-                description,
-                id,
-            } = JSON.parse(glp.content);
+            // console.log(glp);
+            if (glp.content) {
+                const {
+                    name,
+                    domain,
+                    topic,
+                    description,
+                    id,
+                } = JSON.parse(glp.content);
 
-            const glpBox = new GLPBox();
+                const glpBox = new GLPBox();
 
-            const glpBoxProm = glpBox.attach({
-                name,
-                domain,
-                topic,
-                description,
-                id,
-            });
+                const glpBoxProm = glpBox.attach({
+                    name,
+                    domain,
+                    topic,
+                    description,
+                    id,
+                });
 
-            promArr.push(glpBoxProm);
+                promArr.push(glpBoxProm);
+            }
         }
 
         return Promise.all(promArr)
