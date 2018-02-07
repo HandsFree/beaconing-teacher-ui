@@ -3,6 +3,7 @@ package req
 import (
 	"git.juddus.com/HFC/beaconing/route"
 	"git.juddus.com/HFC/beaconing/serv"
+	"git.juddus.com/HFC/beaconing/types"
 )
 
 // TODO: move ALL of these structures from the widgets into
@@ -31,29 +32,48 @@ type SimpleActivity struct {
 	// TODO: time!
 }
 
-func NewSimpleActivity(message string) SimpleActivity {
-	return SimpleActivity{
-		Message: message,
-	}
-}
 func (s SimpleActivity) GetMessage() string {
 	return s.Message
+}
+
+type RecentActivities struct {
+	route.SimpleManagedRoute
+}
+
+func (r *RecentActivities) Post(s *serv.SessionContext)   {}
+func (r *RecentActivities) Delete(s *serv.SessionContext) {}
+
+func (r *RecentActivities) Get(s *serv.SessionContext) {
+	activities := []Activity{
+		NewLPAssignedActivity("algebra"),
+	}
+	s.Jsonify(activities)
 }
 
 // naming... ?
 type LPAssignedActivity struct {
 	SimpleActivity
-	Plan LessonPlan `json:"plan"`
+	Plan types.LessonPlanWidget `json:"plan"`
 }
 
 func (a *LPAssignedActivity) String() string {
 	return a.Message + " " + a.Plan.Name
 }
 
+// ────────────────────────────────────────────────────────────────────────────────
+
+func NewRecentActivities(path string) *RecentActivities {
+	req := &RecentActivities{}
+	req.SetPath(path)
+	return req
+}
+
+// ────────────────────────────────────────────────────────────────────────────────
+
 func NewLPAssignedActivity(planName string) LPAssignedActivity {
 	return LPAssignedActivity{
 		SimpleActivity: NewSimpleActivity("Assigned lesson plan"),
-		Plan: LessonPlan{
+		Plan: types.LessonPlanWidget{
 			Name: planName,
 
 			// would this be in the database or
@@ -64,19 +84,8 @@ func NewLPAssignedActivity(planName string) LPAssignedActivity {
 	}
 }
 
-type RecentActivities struct {
-	route.SimpleManagedRoute
-}
-
-func NewRecentActivities(path string) *RecentActivities {
-	req := &RecentActivities{}
-	req.SetPath(path)
-	return req
-}
-
-func (r *RecentActivities) Handle(s *serv.SessionContext) {
-	activities := []Activity{
-		NewLPAssignedActivity("algebra"),
+func NewSimpleActivity(message string) SimpleActivity {
+	return SimpleActivity{
+		Message: message,
 	}
-	s.Jsonify(activities)
 }

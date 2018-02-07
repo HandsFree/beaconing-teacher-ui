@@ -2,6 +2,16 @@
 	flex-direction: column;
 	flex-grow: 1;
 
+	.status {
+		align-items: center;
+		justify-content: center;
+
+		span {
+			font-size: 1.2em;
+			font-weight: 400;
+		}
+	}
+
 	.plan {
 		align-items: center;
 		margin: 0.5em 0;
@@ -21,22 +31,22 @@
 			}
 
 			img {
-				width: 12em;
-				height: 12em;
+				width: 10em;
+				height: 10em;
 
 				@media screen and (min-width: 64em) and (max-width: 104.9375em) {
-					width: 10em;
-					height: 10em;
-				}
-
-				@media screen and (min-width: 40em) and (max-width: 63.9375em) {
 					width: 8em;
 					height: 8em;
 				}
 
-				@media screen and (max-width: 39.9375em) {
+				@media screen and (min-width: 40em) and (max-width: 63.9375em) {
 					width: 6em;
-					height: 8em;
+					height: 6em;
+				}
+
+				@media screen and (max-width: 39.9375em) {
+					width: 5em;
+					height: 5em;
 				}
 			}
 		}

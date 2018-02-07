@@ -1,0 +1,11 @@
+.plans-container {
+    .status {
+        flex-grow: 1;
+        justify-content: center;
+        align-items: center;
+
+        span {
+            font-size: 1.4em;
+        }
+    }
+}

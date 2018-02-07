@@ -1,0 +1,62 @@
+#plan-header {
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.2em;
+    border-bottom: 1px solid $bcn-light-orange;
+
+    @media screen and (max-width: 46.875em) {
+        font-size: 1em;
+    }
+
+    .back {
+        @extend .link-underline;
+        i {
+            color: $bcn_light_orange;
+
+            @media screen and (max-width: 46.875em) {
+                display: none;
+            }
+        }
+    }
+
+    h1 {
+        font-weight: 400;
+        text-overflow: ellipsis;
+        max-width: 20em;
+        font-size: 1.8em;
+        @media screen and (max-width: 46.875em) {
+            max-width: 10em;
+            font-size: 1.2em;
+        }
+    }
+}
+
+#mission-header {
+    @extend #plan-header;
+
+    .name-group {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    h1 {
+        margin: 0;
+    }
+
+    h2 {
+        margin: 0.1em 0;
+        font-weight: 300;
+        font-size: 1.2em;
+        color: $primary_font_colour_faded;
+
+        @media screen and (max-width: 46.875em) {
+            max-width: 10em;
+            font-size: 0.8em;
+        }
+    }
+}
+
+#assign-header {
+    @extend #mission-header;
+}

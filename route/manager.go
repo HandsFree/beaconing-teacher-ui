@@ -1,10 +1,6 @@
 package route
 
 import (
-	"net/http"
-
-	"github.com/gin-contrib/sessions"
-
 	"git.juddus.com/HFC/beaconing/serv"
 	"github.com/gin-gonic/gin"
 )
@@ -31,18 +27,28 @@ func (r *RouteManager) RegisterRoute(route Route) {
 	route.SetManager(r)
 	r.routes[route.GetPath()] = route
 
-	r.SessionContext.RouterEngine.GET(route.GetPath(), func(ctx *gin.Context) {
-		// set the context to pass thru
-		r.SessionContext.Context = ctx
-		route.Handle(r.SessionContext)
-	})
-}
-
-func (r *RouteManager) HandlePage(c *gin.Context, obj interface{}) {
-	session := sessions.Default(c)
-	key := session.Get("code")
-	if key == nil {
-		c.Redirect(http.StatusTemporaryRedirect, serv.AuthLink)
+	if path, ok := route.GetPaths()["get"]; ok {
+		r.SessionContext.RouterEngine.Handle("GET", path, func(ctx *gin.Context) {
+			// set the context to pass thru
+			r.SessionContext.Context = ctx
+			route.Get(r.SessionContext)
+		})
 	}
-	c.HTML(http.StatusOK, "index.html", obj)
+
+	if path, ok := route.GetPaths()["post"]; ok {
+		r.SessionContext.RouterEngine.Handle("POST", path, func(ctx *gin.Context) {
+			// set the context to pass thru
+			r.SessionContext.Context = ctx
+			route.Post(r.SessionContext)
+		})
+	}
+
+	if path, ok := route.GetPaths()["delete"]; ok {
+		r.SessionContext.RouterEngine.Handle("DELETE", path, func(ctx *gin.Context) {
+			// set the context to pass thru
+			r.SessionContext.Context = ctx
+			route.Delete(r.SessionContext)
+		})
+
+	}
 }

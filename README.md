@@ -1,11 +1,13 @@
-# Beaconing Backend
-> Note: Still in early development
+# Config
+Configuration files are stored in TOML.
 
-Handles communications between the Frontend and Core Services, and also statically hosts the Frontend (for now)
+### Authorisation
+In the configuration file, make sure to append/edit the `[auth]` section with the 
+id and secret as follows:
 
-# Development
-A secrets file is ommited from the repo which contains the client secret 
-
-# notes
-
-* [example json for GLP(s)](https://gist.github.com/juddus/244958c7b2f0cab55af56296cd6cacd8)
+client.toml
+```toml
+[auth]
+id = "teacherui"
+secret = "UrqTSjfnaWsaJHCTfGeU6YyEVNa3c2QzE8GrTLcoK1kljsNB3HrG6jXAGI6q8wKR"
+```

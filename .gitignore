@@ -83,14 +83,20 @@ jspm_packages
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 
-# Go Vendor
-# Ignore source code, but remember json file
-vendor/*/
-!vendor/
-!vendor.json
-
 # Omit secret file
-config/api.go
+cfg/config.toml
 
 # .git file
 beaconing.git
+
+# Omit regular compilations
+frontend/public/dist/beaconing/*.css
+frontend/public/dist/beaconing/*.js
+frontend/public/dist/beaconing/*.map
+frontend/public/dist/beaconing/pages
+
+# vendor
+vendor/
+
+# binary
+/beaconing

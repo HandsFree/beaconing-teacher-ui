@@ -1,74 +1,101 @@
 package req
 
 import (
-	"bytes"
+	"encoding/gob"
 	"fmt"
-	"io/ioutil"
 	"log"
-	"net/http"
+	"os"
+	"strconv"
 
-	"github.com/gin-contrib/sessions"
-
+	"git.juddus.com/HFC/beaconing/api"
 	"git.juddus.com/HFC/beaconing/route"
 	"git.juddus.com/HFC/beaconing/serv"
-
-	jsoniter "github.com/json-iterator/go"
+	"github.com/gin-contrib/sessions"
+	"github.com/olekukonko/tablewriter"
 )
+
+func init() {
+	gob.Register(map[int]bool{})
+}
 
 type AssignRequest struct {
 	route.SimpleManagedRoute
+}
+
+func (r *AssignRequest) Post(s *serv.SessionContext)   {}
+func (r *AssignRequest) Delete(s *serv.SessionContext) {}
+
+func (a *AssignRequest) Get(s *serv.SessionContext) {
+	studentID := s.Param("student")
+	studentIDValue, err := strconv.Atoi(studentID)
+	if err != nil || studentIDValue < 0 {
+		s.SimpleErrorRedirect(400, "Client Error: Invalid student ID")
+		return
+	}
+
+	glpID := s.Param("glp")
+	glpIDValue, err := strconv.Atoi(glpID)
+	if err != nil || glpIDValue < 0 {
+		s.SimpleErrorRedirect(400, "Client Error: Invalid GLP ID")
+		return
+	}
+
+	log.Println("THIS IS AN ASSIGN REQUEST ! ", studentIDValue, glpIDValue)
+
+	// register the GLP in the session
+	registerGLP(s, glpIDValue)
+
+	// do the post request to the beaconing API
+	// saying we're assigning said student to glp.
+	resp, err := api.AssignStudentToGLP(s, studentIDValue, glpIDValue)
+	if err != nil {
+		s.SimpleErrorRedirect(400, "Failed to assign student to glp")
+		return
+	}
+	s.Json(resp)
+}
+
+// registerGLP...
+// this is a temporary demo thing, basically when we assign
+// a glp, we store it in a hash set
+func registerGLP(s *serv.SessionContext, glpID int) {
+	session := sessions.Default(s.Context)
+
+	assignedPlans := session.Get("assigned_plans")
+
+	if assignedPlans == nil {
+		log.Println("session assigned_plans doesn't exist")
+	}
+
+	assignedPlansTable := map[int]bool{}
+	if assignedPlans != nil {
+		log.Println("restoring old ALP assignments table from session")
+		assignedPlansTable, _ = assignedPlans.(map[int]bool)
+	}
+
+	// TODO: if we want to sort by time we should probably
+	// do this here, as well as we need to store the current time
+	// right now because there is no time.
+
+	// because we dont want to store duplicates we
+	// store these in a hashset-type thing
+	assignedPlansTable[glpID] = true
+
+	table := tablewriter.NewWriter(os.Stdout)
+	table.SetHeader([]string{"GLP"})
+	for id, _ := range assignedPlansTable {
+		table.Append([]string{fmt.Sprintf("%d", id)})
+	}
+	table.Render()
+
+	session.Set("assigned_plans", assignedPlansTable)
+	if err := session.Save(); err != nil {
+		log.Println(err.Error())
+	}
 }
 
 func NewAssignRequest(path string) *AssignRequest {
 	req := &AssignRequest{}
 	req.SetPath(path)
 	return req
-}
-
-type assignData struct {
-	studentID string
-	glpID     string
-}
-
-func (a *assignData) assignGLP(accessToken string) (string, error) {
-	assignJSON, err := jsoniter.Marshal(a)
-	if err != nil {
-		return "", err
-	}
-
-	// TODO replace with a CONST URL
-	postURL := fmt.Sprintf("https://core.beaconing.eu/api/students/%s/assignedGlps?access_token=%s", a.studentID, accessToken)
-	response, err := http.Post(postURL, "application/json", bytes.NewBuffer(assignJSON))
-	if err != nil {
-		return "", err
-	}
-
-	defer response.Body.Close()
-	body, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		return "", err
-	}
-
-	return string(body), nil
-}
-
-func (a *AssignRequest) Handle(s *serv.SessionContext) {
-	studentID := s.Param("student")
-	glpID := s.Param("glp")
-
-	session := sessions.Default(s.Context)
-	accessToken := session.Get("access_token")
-	if accessToken == nil {
-		s.Redirect(http.StatusTemporaryRedirect, serv.AuthLink)
-		return
-	}
-
-	assignReqData := &assignData{studentID, glpID}
-	assignReq, err := assignReqData.assignGLP(accessToken.(string))
-	if err != nil {
-		log.Fatal(err)
-		return
-	}
-
-	s.Json(assignReq)
 }

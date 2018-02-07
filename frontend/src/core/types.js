@@ -5,6 +5,7 @@ export interface Component {
     startLifecycle(): void;
     start(): void;
     updateView(view: HTMLElement): void;
+    params: { [string]: string };
 }
 
 export type Route = {

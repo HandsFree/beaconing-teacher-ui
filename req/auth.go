@@ -1,8 +1,6 @@
 package req
 
 import (
-	"github.com/gin-contrib/sessions"
-
 	"git.juddus.com/HFC/beaconing/route"
 	"git.juddus.com/HFC/beaconing/serv"
 )
@@ -12,22 +10,22 @@ type CheckAuthRequest struct {
 	route.SimpleManagedRoute
 }
 
-// CheckAuthJSON details json structure
-type CheckAuthJSON struct {
-	Status bool `json:"status"`
+func (r *CheckAuthRequest) Post(s *serv.SessionContext)   {}
+func (r *CheckAuthRequest) Delete(s *serv.SessionContext) {}
+
+func (a *CheckAuthRequest) Get(s *serv.SessionContext) {
+	accessToken := s.GetAccessToken()
+	s.Jsonify(&CheckAuthJSON{
+		Token: accessToken,
+	})
 }
 
-// NewCheckAuthRequest returns initialised request struct
+type CheckAuthJSON struct {
+	Token string `json:"token"`
+}
+
 func NewCheckAuthRequest(path string) *CheckAuthRequest {
 	req := &CheckAuthRequest{}
 	req.SetPath(path)
 	return req
-}
-
-func (r *CheckAuthRequest) Handle(s *serv.SessionContext) {
-	session := sessions.Default(s.Context)
-	accessToken := session.Get("access_token")
-	s.Jsonify(&CheckAuthJSON{
-		Status: accessToken != nil,
-	})
 }

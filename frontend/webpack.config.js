@@ -86,25 +86,61 @@ const mainSettings = {
 const config = [
     {
         entry: {
-            core: './core/index.js',
+            core: './core/',
         },
         ...mainSettings,
     },
     {
         entry: {
-            'pages/home/index': './modules/home/index.js',
+            'pages/home/page': './modules/home/root/',
         },
         ...mainSettings,
     },
     {
         entry: {
-            'pages/lesson_manager/index': './modules/lesson_manager/index.js',
+            'pages/lesson_manager/page': './modules/lesson_manager/root/',
         },
         ...mainSettings,
     },
     {
         entry: {
-            'pages/authoring_tool/index': './modules/authoring_tool/index.js',
+            'pages/lesson_manager/new_plan/page': './modules/lesson_manager/new_plan/',
+        },
+        ...mainSettings,
+    },
+    {
+        entry: {
+            'pages/authoring_tool/page': './modules/authoring_tool/root/',
+        },
+        ...mainSettings,
+    },
+    {
+        entry: {
+            'pages/classroom/page': './modules/classroom/root/',
+        },
+        ...mainSettings,
+    },
+    {
+        entry: {
+            'pages/classroom/classes/page': './modules/classroom/classes/',
+        },
+        ...mainSettings,
+    },
+    {
+        entry: {
+            'pages/classroom/groups/page': './modules/classroom/groups/',
+        },
+        ...mainSettings,
+    },
+    {
+        entry: {
+            'pages/classroom/courses/page': './modules/classroom/courses/',
+        },
+        ...mainSettings,
+    },
+    {
+        entry: {
+            'pages/search/page': './modules/search/root/',
         },
         ...mainSettings,
     },

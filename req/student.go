@@ -6,8 +6,6 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/gin-contrib/sessions"
-
 	"git.juddus.com/HFC/beaconing/route"
 	"git.juddus.com/HFC/beaconing/serv"
 )
@@ -15,6 +13,52 @@ import (
 type StudentRequest struct {
 	route.SimpleManagedRoute
 }
+
+func (r *StudentRequest) Post(s *serv.SessionContext)   {}
+func (r *StudentRequest) Delete(s *serv.SessionContext) {}
+
+func (r *StudentRequest) Get(s *serv.SessionContext) {
+	studentID := s.Param("id")
+	action := s.Param("action")
+
+	fmt.Println(action)
+
+	accessToken := s.GetAccessToken()
+
+	var strJSON string
+
+	switch action {
+	case "/glps", "/glps/":
+		response, err := getStudentGLPS(studentID, accessToken)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		strJSON = response
+	default:
+		response, err := getStudent(studentID, accessToken)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		strJSON = response
+	}
+
+	s.Header("Content-Type", "application/json")
+	s.String(http.StatusOK, strJSON)
+}
+
+// ────────────────────────────────────────────────────────────────────────────────
+
+func NewStudentRequest(path string) *StudentRequest {
+	req := &StudentRequest{}
+	req.SetPath(path)
+	return req
+}
+
+//
+// ─── UTILITY ────────────────────────────────────────────────────────────────────
+//
 
 func getStudent(studentID string, accessToken string) (string, error) {
 	response, err := http.Get(fmt.Sprintf("https://core.beaconing.eu/api/students/%s?access_token=%s", studentID, accessToken))
@@ -46,46 +90,4 @@ func getStudentGLPS(studentID string, accessToken string) (string, error) {
 	}
 
 	return string(body), nil
-}
-
-func NewStudentRequest(path string) *StudentRequest {
-	req := &StudentRequest{}
-	req.SetPath(path)
-	return req
-}
-
-func (r *StudentRequest) Handle(s *serv.SessionContext) {
-	studentID := s.Param("id")
-	action := s.Param("action")
-
-	fmt.Println(action)
-
-	session := sessions.Default(s.Context)
-	accessToken := session.Get("access_token")
-	if accessToken == nil {
-		s.Redirect(http.StatusTemporaryRedirect, serv.AuthLink)
-		return
-	}
-
-	var strJSON string
-
-	switch action {
-	case "/glps", "/glps/":
-		response, err := getStudentGLPS(studentID, accessToken.(string))
-		if err != nil {
-			log.Fatal(err)
-			return
-		}
-		strJSON = response
-	default:
-		response, err := getStudent(studentID, accessToken.(string))
-		if err != nil {
-			log.Fatal(err)
-			return
-		}
-		strJSON = response
-	}
-
-	s.Header("Content-Type", "application/json")
-	s.String(http.StatusOK, strJSON)
 }

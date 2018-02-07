@@ -4,69 +4,69 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"net/http"
 
-	"github.com/gin-contrib/sessions"
-
-	jsoniter "github.com/json-iterator/go"
-
+	"git.juddus.com/HFC/beaconing/api"
 	"git.juddus.com/HFC/beaconing/route"
 	"git.juddus.com/HFC/beaconing/serv"
+	"github.com/gin-gonic/gin"
+
+	"net/http"
+	"strconv"
 )
 
 type GLPRequest struct {
 	route.SimpleManagedRoute
 }
 
-type glpData struct {
-	id           int
-	name         string
-	desc         string
-	author       string
-	category     string
-	content      string
-	gamePlotId   int
-	externConfig string
+func (r *GLPRequest) Post(s *serv.SessionContext) {
+
 }
 
-func NewGLPRequest(path string) *GLPRequest {
-	req := &GLPRequest{}
-	req.SetPath(path)
-	return req
-}
+func (r *GLPRequest) Delete(s *serv.SessionContext) {
+	// TODO sanitise
+	id := s.Param("id")
 
-// TODO: filter the useless stuff out of
-// the glp json
-func (a *GLPRequest) Handle(s *serv.SessionContext) {
-	glpID := s.Param("id")
+	accessToken := s.GetAccessToken()
 
-	session := sessions.Default(s.Context)
+	clnt := &http.Client{}
 
-	accessToken := session.Get("access_token")
-	if accessToken == nil {
-		s.Redirect(http.StatusTemporaryRedirect, serv.AuthLink)
-		return
-	}
-
-	response, err := http.Get(fmt.Sprintf("https://core.beaconing.eu/api/gamifiedlessonpaths/%s?access_token=%s", glpID, accessToken.(string)))
+	req, err := http.NewRequest("DELETE", fmt.Sprintf("https://core.beaconing.eu/api/gamifiedlessonpaths/%s?access_token=%s", id, accessToken), nil)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
 		return
 	}
 
-	defer response.Body.Close()
-	body, err := ioutil.ReadAll(response.Body)
+	resp, err := clnt.Do(req)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalln(err)
+	}
+
+	body, err := ioutil.ReadAll(resp.Body)
+	defer resp.Body.Close()
+	if err != nil {
+		log.Println(err.Error())
 		return
 	}
 
-	data := glpData{}
-	if err := jsoniter.Unmarshal(body, &data); err != nil {
-		panic(err)
-	}
-
-	strJSON := string(body)
 	s.Header("Content-Type", "application/json")
-	s.String(http.StatusOK, strJSON)
+	s.JSON(http.StatusOK, gin.H{"status": string(body)})
+}
+
+func (a *GLPRequest) Get(s *serv.SessionContext) {
+	glpID := s.Param("id")
+	glpIDValue, err := strconv.Atoi(glpID)
+	if err != nil || glpIDValue < 0 {
+		s.SimpleErrorRedirect(400, "Client Error: Invalid GLP ID")
+		return
+	}
+
+	json, _ := api.GetGamifiedLessonPlan(s, glpIDValue)
+	s.Header("Content-Type", "application/json")
+	s.String(http.StatusOK, json)
+}
+
+func NewGLPRequest(paths map[string]string) *GLPRequest {
+	req := &GLPRequest{}
+	req.SetPaths(paths)
+	return req
 }
