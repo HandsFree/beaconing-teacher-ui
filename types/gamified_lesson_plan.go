@@ -6,7 +6,6 @@ type GamifiedLessonPlan struct {
 	Desc         string
 	Author       string
 	Category     string
-	Content      string
 	GamePlotId   int
 	ExternConfig string
 }

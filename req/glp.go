@@ -18,6 +18,17 @@ type GLPRequest struct {
 	route.SimpleManagedRoute
 }
 
+type GLPModel struct {
+	Id           int    `json:"id"`
+	Name         string `json:"name"`
+	Desc         string `json:"description"`
+	Author       string `json:"author"`
+	Category     string `json:"category"`
+	Content      string `json:"content"`
+	GamePlotID   int    `json:"gamePlotId"`
+	ExternConfig string `json:"externConfig"`
+}
+
 func (r *GLPRequest) Post(s *serv.SessionContext) {
 
 }
@@ -25,6 +36,12 @@ func (r *GLPRequest) Post(s *serv.SessionContext) {
 func (r *GLPRequest) Delete(s *serv.SessionContext) {
 	// TODO sanitise
 	id := s.Param("id")
+	glpIDValue, err := strconv.Atoi(id)
+	if err != nil || glpIDValue < 0 {
+		log.Println("error when sanitising glp id", err.Error())
+		s.SimpleErrorRedirect(400, "Client Error: Invalid GLP ID")
+		return
+	}
 
 	accessToken := s.GetAccessToken()
 
@@ -60,9 +77,40 @@ func (a *GLPRequest) Get(s *serv.SessionContext) {
 		return
 	}
 
-	json, _ := api.GetGamifiedLessonPlan(s, glpIDValue)
+	minify := s.Query("minify")
+
+	// dont minify by default, however if
+	// we have a minify parameter with the value
+	// 1 then we will minify this glp request.
+	// NOTE: that if the parameter fails to parse, etc.
+	// then it is completely ignored in the request.
+	var shouldMinify bool = false
+	if minify != "" {
+		minifyParam, err := strconv.Atoi(minify)
+		if err == nil {
+			shouldMinify = minifyParam == 1
+		} else {
+			log.Println("Note: failed to atoi minify param in glp.go", err.Error())
+		}
+	}
+
+	json, plan := api.GetGamifiedLessonPlan(s, glpIDValue)
+
+	model := &GLPModel{
+		Id:           plan.Id,
+		Name:         plan.Name,
+		Desc:         plan.Desc,
+		Author:       plan.Author,
+		Category:     plan.Category,
+		GamePlotID:   plan.GamePlotId,
+		ExternConfig: plan.ExternConfig,
+	}
+	if !shouldMinify {
+		model.Content = json
+	}
+
 	s.Header("Content-Type", "application/json")
-	s.String(http.StatusOK, json)
+	s.Jsonify(model)
 }
 
 func NewGLPRequest(paths map[string]string) *GLPRequest {
