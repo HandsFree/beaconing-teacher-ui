@@ -17,8 +17,14 @@ type authInfo struct {
 	Secret string
 }
 
+// Beaconing is the instance of the main toml
+// configuration file "cfg/config.toml". This is
+// used to retrieve any of the data parsed from
+// the toml config file.
 var Beaconing tomlConfig
 
+// LoadConfig loads the configuration file from
+// cfg/config.toml and parses it into go structures
 func LoadConfig() {
 	filePath := "cfg/config.toml"
 

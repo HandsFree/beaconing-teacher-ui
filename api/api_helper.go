@@ -24,9 +24,11 @@ import (
 // we should redo this to take just an access token because
 // that might make the api layer a bit more flexible.
 
-var Api *ApiHelper = newApiHelper()
+// API is the main instance to the api helper
+// this performs any api requests necessary
+var API = newAPIHelper()
 
-type ApiCache struct {
+type apiCache struct {
 	// this probably isnt needed because if cacheData is
 	// being invoked then it's always going to be new data
 	// but we'll leave this here because I may implement it anyways
@@ -35,29 +37,29 @@ type ApiCache struct {
 }
 
 func cacheData(bucket string, data string) {
-	Api.cache.Data[bucket] = data
+	API.cache.Data[bucket] = data
 }
 
-// Fetch...
-// checks the cache if the given value is present
+// Fetch checks the cache if the given value is present
 // an empty string is returned if there is no value
 func Fetch(bucket string) (string, bool) {
-	if val, ok := Api.cache.Data[bucket]; ok {
+	if val, ok := API.cache.Data[bucket]; ok {
 		return val, true
 	}
 	return "", false
 }
 
-type ApiHelper struct {
+// CoreAPIManager manages all of the api middleman requests, etc.
+// as well as caching any json/requests that are frequently requested
+type CoreAPIManager struct {
 	APIPath string
-	cache   *ApiCache
+	cache   *apiCache
 }
 
-// getPath...
-// creates an API path, appending on the given beaconing URL
+// getPath creates an API path, appending on the given beaconing URL
 // "https://core.beaconing.eu/api/", this makes concatenation painless
 // as well as it slaps the access token on the end
-func (a *ApiHelper) getPath(s *serv.SessionContext, args ...string) string {
+func (a *CoreAPIManager) getPath(s *serv.SessionContext, args ...string) string {
 	path := a.APIPath
 	for _, arg := range args {
 		path += arg
@@ -65,10 +67,10 @@ func (a *ApiHelper) getPath(s *serv.SessionContext, args ...string) string {
 	return fmt.Sprintf("%s?access_token=%s", path, s.GetAccessToken())
 }
 
-// GetStudents...
-//
+// GetStudents requests a list of all students from the
+// core api, returned as a string of json
 func GetStudents(s *serv.SessionContext) string {
-	response, err := http.Get(Api.getPath(s, "students"))
+	response, err := http.Get(API.getPath(s, "students"))
 	if err != nil {
 		log.Println(err.Error())
 		return ""
@@ -86,11 +88,10 @@ func GetStudents(s *serv.SessionContext) string {
 	return resp
 }
 
-// GetGamifiedLessonPlans...
-//
-//
+// GetGamifiedLessonPlans requests all of the GLPs from the core
+// API returned as a json string
 func GetGamifiedLessonPlans(s *serv.SessionContext) string {
-	response, err := http.Get(Api.getPath(s, "gamifiedlessonpaths"))
+	response, err := http.Get(API.getPath(s, "gamifiedlessonpaths"))
 	if err != nil {
 		log.Println(err.Error())
 		return ""
@@ -108,9 +109,8 @@ func GetGamifiedLessonPlans(s *serv.SessionContext) string {
 	return resp
 }
 
-// AssignStudentToGLP...
-//
-//
+// AssignStudentToGLP assigns the given student (by id) to the given GLP (by id),
+// returns a string of the returned json from the core API as well as an error (if any).
 func AssignStudentToGLP(s *serv.SessionContext, studentID int, glpID int) (string, error) {
 	type assignment struct {
 		StudentID int
@@ -124,7 +124,7 @@ func AssignStudentToGLP(s *serv.SessionContext, studentID int, glpID int) (strin
 		return "", err
 	}
 
-	response, err := http.Post(Api.getPath(s, "students/", fmt.Sprintf("%d", studentID), "/assignedGlps"), "application/json", bytes.NewBuffer(assignJSON))
+	response, err := http.Post(API.getPath(s, "students/", fmt.Sprintf("%d", studentID), "/assignedGlps"), "application/json", bytes.NewBuffer(assignJSON))
 	if err != nil {
 		return "", err
 	}
@@ -138,11 +138,11 @@ func AssignStudentToGLP(s *serv.SessionContext, studentID int, glpID int) (strin
 	return string(body), nil
 }
 
-// GetGamifiedLessonPlan
-// TODO: filter the useless stuff out of
-// the glp json
+// GetGamifiedLessonPlan requests the GLP with the given id, this function returns
+// the string of json retrieved _as well as_ the parsed json object
+// see types.GamifiedLessonPlan
 func GetGamifiedLessonPlan(s *serv.SessionContext, id int) (string, *types.GamifiedLessonPlan) {
-	response, err := http.Get(Api.getPath(s, "gamifiedlessonpaths/", fmt.Sprintf("%d", id)))
+	response, err := http.Get(API.getPath(s, "gamifiedlessonpaths/", fmt.Sprintf("%d", id)))
 	if err != nil {
 		log.Println(err.Error())
 		return "", nil
@@ -170,16 +170,16 @@ func GetGamifiedLessonPlan(s *serv.SessionContext, id int) (string, *types.Gamif
 	return buffer.String(), data
 }
 
-func newApiCache() *ApiCache {
-	return &ApiCache{
+func newAPICache() *apiCache {
+	return &apiCache{
 		LastCache: map[string]time.Time{},
 		Data:      map[string]string{},
 	}
 }
 
-func newApiHelper() *ApiHelper {
-	return &ApiHelper{
+func newAPIHelper() *CoreAPIManager {
+	return &CoreAPIManager{
 		APIPath: "https://core.beaconing.eu/api/",
-		cache:   newApiCache(),
+		cache:   newAPICache(),
 	}
 }

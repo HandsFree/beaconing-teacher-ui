@@ -8,6 +8,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Page represents a web page in the beaconing
+// teacher ui. This wraps around a 'SimpleManagedRoute'
+// this will inject template information into the
+// index.html webpage with the relevant title, script
+// to load and the host.
 type Page struct {
 	route.SimpleManagedRoute
 	title  string
@@ -16,6 +21,7 @@ type Page struct {
 }
 
 func (r *Page) Post(s *serv.SessionContext)   {}
+
 func (r *Page) Delete(s *serv.SessionContext) {}
 
 func (p *Page) Get(s *serv.SessionContext) {

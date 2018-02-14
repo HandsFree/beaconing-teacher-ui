@@ -18,6 +18,7 @@ func init() {
 	gob.Register(map[int]bool{})
 }
 
+// AssignRequest handles a student to glp assignment
 type AssignRequest struct {
 	route.SimpleManagedRoute
 }

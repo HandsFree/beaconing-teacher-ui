@@ -17,6 +17,11 @@ type Route interface {
 	SetPath(path string)
 }
 
+// SimpleManagedRoute is a a route in the webpage
+// which handles all of the basic properties
+// though it does not handle the Post/Get/Delete
+// requests which are to be implemented by
+// the structure that embeds it.
 type SimpleManagedRoute struct {
 	Route
 	manager *RouteManager

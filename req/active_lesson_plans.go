@@ -13,6 +13,8 @@ import (
 	"github.com/olekukonko/tablewriter"
 )
 
+// ActiveLessonPlans handles an active lesson plan request
+// to the beaconing core api. It will spit out the json requested.
 type ActiveLessonPlans struct {
 	route.SimpleManagedRoute
 }
@@ -23,12 +25,12 @@ func (r *ActiveLessonPlans) Delete(s *serv.SessionContext) {}
 func (r *ActiveLessonPlans) Get(s *serv.SessionContext) {
 	log.Println("ACTIVE LESSON PLANS GET REQ")
 
-	lps := []types.LessonPlan{}
+	var lps []types.LessonPlan
 
 	session := sessions.Default(s.Context)
 	assignedPlans := session.Get("assigned_plans")
 
-	var assigned map[int]bool = map[int]bool{}
+	var assigned = map[int]bool{}
 	if assignedPlans != nil {
 		log.Println("Restored assigned plans: ", len(assigned), "plans active")
 		assigned = assignedPlans.(map[int]bool)
