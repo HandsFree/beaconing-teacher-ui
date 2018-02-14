@@ -178,7 +178,6 @@ func newApiCache() *ApiCache {
 }
 
 func newApiHelper() *ApiHelper {
-	// TODO: we can store this in the toml config
 	return &ApiHelper{
 		APIPath: "https://core.beaconing.eu/api/",
 		cache:   newApiCache(),
