@@ -20,7 +20,7 @@ type Page struct {
 	host   string
 }
 
-func (r *Page) Post(s *serv.SessionContext)   {}
+func (r *Page) Post(s *serv.SessionContext) {}
 
 func (r *Page) Delete(s *serv.SessionContext) {}
 
