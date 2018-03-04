@@ -104,6 +104,9 @@ func main() {
 		req.NewAssignRequest("/intent/assign/:student/to/:glp"),
 		req.NewGLPSRequest("/intent/glps"),
 
+		// TODO PUT
+		req.NewProfileRequest("/intent/profile"),
+
 		req.NewGLPRequest(map[string]string{
 			"get":    "/intent/glp/:id",
 			"delete": "/intent/glp/:id",

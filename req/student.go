@@ -21,7 +21,7 @@ func (r *StudentRequest) Get(s *serv.SessionContext) {
 	studentID := s.Param("id")
 	action := s.Param("action")
 
-	fmt.Println(action)
+	log.Println("action")
 
 	accessToken := s.GetAccessToken()
 
@@ -47,8 +47,6 @@ func (r *StudentRequest) Get(s *serv.SessionContext) {
 	s.Header("Content-Type", "application/json")
 	s.String(http.StatusOK, strJSON)
 }
-
-// ────────────────────────────────────────────────────────────────────────────────
 
 func NewStudentRequest(path string) *StudentRequest {
 	req := &StudentRequest{}

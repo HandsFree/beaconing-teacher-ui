@@ -88,6 +88,23 @@ func GetStudents(s *serv.SessionContext) string {
 	return resp
 }
 
+func GetCurrentUser(s *serv.SessionContext) string {
+	response, err := http.Get(API.getPath(s, "currentuser"))
+	if err != nil {
+		log.Println(err.Error())
+		return ""
+	}
+
+	defer response.Body.Close()
+	body, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		log.Println(err.Error())
+		return ""
+	}
+
+	return string(body)
+}
+
 // GetGamifiedLessonPlans requests all of the GLPs from the core
 // API returned as a json string
 func GetGamifiedLessonPlans(s *serv.SessionContext) string {
