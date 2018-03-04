@@ -4,6 +4,8 @@ OUT := beaconing
 all: $(OUT)
 	make front
 
+back: $(GO_FILES)
+
 fmt:
 	go fmt git.juddus.com/HFC/beaconing...
 
