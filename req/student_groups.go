@@ -1,63 +1,24 @@
 package req
 
 import (
-	"bytes"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
 
+	"git.juddus.com/HFC/beaconing/api"
 	"git.juddus.com/HFC/beaconing/route"
 	"git.juddus.com/HFC/beaconing/serv"
-	"github.com/gin-gonic/gin"
-	jsoniter "github.com/json-iterator/go"
 )
 
 type StudentGroupRequest struct {
 	route.SimpleManagedRoute
 }
 
-// TODO move these to the API layer
-
-type StudentGroupPost struct {
-	Id   int    `json:"id"`
-	Name string `json:"name"`
-}
-
 func (r *StudentGroupRequest) Post(s *serv.SessionContext) {
-	var json StudentGroupPost
-	if err := s.ShouldBindJSON(&json); err != nil {
-		log.Println(err.Error())
-		s.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	studentGroupPost, err := jsoniter.Marshal(json)
-	if err != nil {
-		log.Println(err.Error())
-		s.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	accessToken := s.GetAccessToken()
-
-	response, err := http.Post(fmt.Sprintf("https://core.beaconing.eu/api/studentgroups?access_token=%s", accessToken), "application/json", bytes.NewBuffer(studentGroupPost))
-	if err != nil {
-		log.Println(err.Error())
-		s.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	body, err := ioutil.ReadAll(response.Body)
-	defer response.Body.Close()
-	if err != nil {
-		log.Println(err.Error())
-		s.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
+	body := api.CreateStudentPOST(s)
 	s.Header("Content-Type", "application/json")
-	s.String(http.StatusOK, string(body))
+	s.String(http.StatusOK, body)
 }
 
 func (r *StudentGroupRequest) Delete(s *serv.SessionContext) {

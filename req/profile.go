@@ -15,7 +15,7 @@ func (r *ProfileRequest) Post(s *serv.SessionContext)   {}
 func (r *ProfileRequest) Delete(s *serv.SessionContext) {}
 
 func (r *ProfileRequest) Get(s *serv.SessionContext) {
-	resp := api.GetCurrentUser(s)
+	_, resp := api.GetCurrentUser(s)
 	s.Header("Content-Type", "application/json")
 	s.String(http.StatusOK, resp)
 }

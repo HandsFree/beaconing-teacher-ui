@@ -1,10 +1,24 @@
 package req
 
 import (
+	"git.juddus.com/HFC/beaconing/api"
 	"git.juddus.com/HFC/beaconing/route"
 	"git.juddus.com/HFC/beaconing/serv"
 	"git.juddus.com/HFC/beaconing/types"
+	_ "time"
 )
+
+/*
+
+CREATE TABLE activities (
+    id serial PRIMARY KEY,
+	teacher_id integer NOT NULL,
+    creation_date date NOT NULL,
+    activity_type integer NOT NULL,
+	api_req jsonb NOT NULL
+);
+
+*/
 
 // TODO: move ALL of these structures from the widgets into
 // some central thing otherwise I can imagine we will have
@@ -36,21 +50,33 @@ func (s SimpleActivity) GetMessage() string {
 	return s.Message
 }
 
+// WEB PAGE
+
 type RecentActivities struct {
 	route.SimpleManagedRoute
+}
+
+func (r *RecentActivities) getLastActivities(s *serv.SessionContext, n int) []types.Activity {
+	activities := api.GetActivities(api.GetUserID(s), n)
+	return activities
 }
 
 func (r *RecentActivities) Post(s *serv.SessionContext)   {}
 func (r *RecentActivities) Delete(s *serv.SessionContext) {}
 
 func (r *RecentActivities) Get(s *serv.SessionContext) {
-	activities := []Activity{
-		NewLPAssignedActivity("algebra"),
-	}
+	/*
+		first we get the current user using the current_user api
+
+		then we look up all of the activities in the local
+		database with the ID of the current_user
+	*/
+	activities := r.getLastActivities(s, 15)
 	s.Jsonify(activities)
 }
 
-// naming... ?
+// ACTIVITIES
+
 type LPAssignedActivity struct {
 	SimpleActivity
 	Plan types.LessonPlanWidget `json:"plan"`
@@ -60,15 +86,11 @@ func (a *LPAssignedActivity) String() string {
 	return a.Message + " " + a.Plan.Name
 }
 
-// ────────────────────────────────────────────────────────────────────────────────
-
 func NewRecentActivities(path string) *RecentActivities {
 	req := &RecentActivities{}
 	req.SetPath(path)
 	return req
 }
-
-// ────────────────────────────────────────────────────────────────────────────────
 
 func NewLPAssignedActivity(planName string) LPAssignedActivity {
 	return LPAssignedActivity{

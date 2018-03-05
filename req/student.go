@@ -14,7 +14,10 @@ type StudentRequest struct {
 	route.SimpleManagedRoute
 }
 
-func (r *StudentRequest) Post(s *serv.SessionContext)   {}
+func (r *StudentRequest) Post(s *serv.SessionContext) {
+
+}
+
 func (r *StudentRequest) Delete(s *serv.SessionContext) {}
 
 func (r *StudentRequest) Get(s *serv.SessionContext) {
@@ -53,10 +56,6 @@ func NewStudentRequest(path string) *StudentRequest {
 	req.SetPath(path)
 	return req
 }
-
-//
-// ─── UTILITY ────────────────────────────────────────────────────────────────────
-//
 
 func getStudent(studentID string, accessToken string) (string, error) {
 	response, err := http.Get(fmt.Sprintf("https://core.beaconing.eu/api/students/%s?access_token=%s", studentID, accessToken))
