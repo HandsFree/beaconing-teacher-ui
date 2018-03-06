@@ -78,7 +78,7 @@ func GetUserID(s *serv.SessionContext) int {
 
 func GetActivities(teacherID int, count int) []types.Activity {
 	if teacherID == -1 {
-		log.Println("Cannot fetch activities!")
+		log.Println("-- Cannot fetch activities!")
 		return []types.Activity{}
 	}
 
@@ -94,8 +94,10 @@ func GetActivities(teacherID int, count int) []types.Activity {
 		return []types.Activity{}
 	}
 
-	var activities []types.Activity
+	activities := []types.Activity{}
 	var result types.Activity
+
+	log.Println("--- Loading activities!")
 
 	for rows.Next() {
 		var creation_date time.Time
@@ -112,7 +114,7 @@ func GetActivities(teacherID int, count int) []types.Activity {
 		case Create_Student:
 			result = &types.CreatedStudentActivity{}
 		default:
-			log.Println("Unhandled activity type", ActivityType(activity_type))
+			log.Println("-- Unhandled activity type", ActivityType(activity_type))
 		}
 
 		// shouldn't happen
@@ -120,7 +122,7 @@ func GetActivities(teacherID int, count int) []types.Activity {
 			continue
 		}
 
-		log.Println("Loaded activity", result)
+		log.Println("-- Loaded activity", result)
 
 		activities = append(activities, result)
 	}
