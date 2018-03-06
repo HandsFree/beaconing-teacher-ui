@@ -76,6 +76,11 @@ func GetUserID(s *serv.SessionContext) int {
 	return obj.Id
 }
 
+// TODO we should cache this because
+// doing an SQL query everytime is probably not
+// a good idea, though im not sure if the frontend
+// would do this for us since this is invoked form a GET
+// request where the json response would be cached.
 func GetActivities(teacherID int, count int) []types.Activity {
 	if teacherID == -1 {
 		log.Println("-- Cannot fetch activities!")
@@ -112,7 +117,7 @@ func GetActivities(teacherID int, count int) []types.Activity {
 
 		switch ActivityType(activity_type) {
 		case Create_Student:
-			result = &types.CreatedStudentActivity{}
+			result = types.NewCreateStudentActivity(api_req)
 		default:
 			log.Println("-- Unhandled activity type", ActivityType(activity_type))
 		}
@@ -172,6 +177,8 @@ type StudentGroupPost struct {
 	Name string `json:"name"`
 }
 
+// this is technically creating a student group!
+// fixme
 func CreateStudentPOST(s *serv.SessionContext) string {
 	var json StudentGroupPost
 	if err := s.ShouldBindJSON(&json); err != nil {

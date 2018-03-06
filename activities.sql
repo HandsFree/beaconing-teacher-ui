@@ -18,3 +18,4 @@ CREATE TABLE activities (
 );
 
 GRANT ALL PRIVILEGES ON TABLE activities TO beaconing_db_user;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO beaconing_db_user;

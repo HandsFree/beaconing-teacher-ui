@@ -1,11 +1,12 @@
 package req
 
 import (
+	_ "time"
+
 	"git.juddus.com/HFC/beaconing/api"
 	"git.juddus.com/HFC/beaconing/route"
 	"git.juddus.com/HFC/beaconing/serv"
 	"git.juddus.com/HFC/beaconing/types"
-	_ "time"
 )
 
 /*
