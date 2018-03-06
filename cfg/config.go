@@ -10,6 +10,15 @@ import (
 type tomlConfig struct {
 	Title string
 	Auth  authInfo
+	DB    databaseInfo
+}
+
+type databaseInfo struct {
+	Username string
+	Password string
+	Name     string
+	Table    string
+	SSL      bool
 }
 
 type authInfo struct {
@@ -28,6 +37,8 @@ var Beaconing tomlConfig
 func LoadConfig() {
 	filePath := "cfg/config.toml"
 
+	log.Println("Loading configuration file from ", filePath)
+
 	configFileData, fileReadErr := ioutil.ReadFile(filePath)
 	if fileReadErr != nil {
 		log.Fatal("Failed to read file", filePath, "\n", fileReadErr.Error())
@@ -38,5 +49,4 @@ func LoadConfig() {
 		log.Fatal(decodeErr)
 		return
 	}
-	log.Printf("Loaded configuration file from: '%s'", filePath)
 }

@@ -7,6 +7,7 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 
+	"git.juddus.com/HFC/beaconing/api"
 	"git.juddus.com/HFC/beaconing/auth"
 	"git.juddus.com/HFC/beaconing/cfg"
 	"git.juddus.com/HFC/beaconing/page"
@@ -39,6 +40,7 @@ func TokenAuth() gin.HandlerFunc {
 
 func main() {
 	cfg.LoadConfig()
+	api.SetupAPIHelper()
 
 	// Create the main router
 	router := gin.Default()

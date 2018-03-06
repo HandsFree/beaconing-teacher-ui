@@ -10,10 +10,12 @@ import (
 	"time"
 
 	"database/sql"
+
 	_ "github.com/lib/pq"
 
 	jsoniter "github.com/json-iterator/go"
 
+	"git.juddus.com/HFC/beaconing/cfg"
 	"git.juddus.com/HFC/beaconing/serv"
 	"git.juddus.com/HFC/beaconing/types"
 )
@@ -29,7 +31,11 @@ import (
 
 // API is the main instance to the api helper
 // this performs any api requests necessary
-var API = newAPIHelper()
+var API *CoreAPIManager
+
+func SetupAPIHelper() {
+	API = newAPIHelper()
+}
 
 type apiCache struct {
 	// this probably isnt needed because if cacheData is
@@ -327,12 +333,25 @@ func newAPICache() *apiCache {
 	}
 }
 
+// TODO the toml layout for loading the
+// database could be a lot better.
+// but for now it works.
 func newAPIHelper() *CoreAPIManager {
-	log.Println("-- Creating new API instance.")
+	log.Println("-- Creating new API instance:")
+	log.Println("--- DB USER: ", cfg.Beaconing.DB.Username)
+	log.Println("--- DB PASS: ", cfg.Beaconing.DB.Password)
+	log.Println("--- DB NAME: ", cfg.Beaconing.DB.Name)
+	log.Println("--- DB TABLE: ", cfg.Beaconing.DB.Table)
+	log.Println("--- DB SSL ENABLED: ", cfg.Beaconing.DB.SSL)
 
 	// TODO if we are in release mode use SSL!
 
-	connStr := "user=felix dbname=beaconing sslmode=disable"
+	var sslMode string = "verify-full"
+	if !cfg.Beaconing.DB.SSL {
+		sslMode = "disable"
+	}
+
+	connStr := "user=" + cfg.Beaconing.DB.Username + " dbname=" + cfg.Beaconing.DB.Name + " sslmode=" + sslMode
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
 		log.Println("Failed to open db conn", err.Error())
