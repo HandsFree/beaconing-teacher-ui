@@ -43,10 +43,7 @@ func TokenAuth() gin.HandlerFunc {
 	}
 }
 
-func Start() *gin.Engine {
-	cfg.LoadConfig()
-	api.SetupAPIHelper()
-
+func GetRouterEngine() *gin.Engine {
 	// Create the main router
 	router := gin.Default()
 
@@ -73,11 +70,6 @@ func Start() *gin.Engine {
 
 	// Redirect trailing slashes
 	router.RedirectTrailingSlash = true
-
-	server := &http.Server{
-		Addr:    ":8081",
-		Handler: router,
-	}
 
 	// Create Gin wrappers
 	mainCtx := serv.NewSessionContext(router)
@@ -148,6 +140,18 @@ func Start() *gin.Engine {
 	manager.RegisterRoutes(api...)
 	manager.RegisterRoutes(auth...)
 
+	return router
+}
+
+func main() {
+	cfg.LoadConfig()
+	api.SetupAPIHelper()
+
+	server := &http.Server{
+		Addr:    ":8081",
+		Handler: GetRouterEngine(),
+	}
+
 	quit := make(chan os.Signal)
 	signal.Notify(quit, os.Interrupt)
 
@@ -167,16 +171,10 @@ func Start() *gin.Engine {
 		}
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
 	defer cancel()
 	if err := server.Shutdown(ctx); err != nil {
 		log.Fatal("Server Shutdown:", err)
 	}
 	log.Println("Server exiting")
-
-	return router
-}
-
-func main() {
-	Start()
 }
