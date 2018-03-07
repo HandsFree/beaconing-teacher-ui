@@ -3,6 +3,9 @@ import { div, figure, img, h4, a, span } from '../../../core/html';
 
 import { Component } from '../../../core/component';
 
+var Identicon = require('identicon.js');
+var sha512 = require('js-sha512').sha512;
+
 class StudentBox extends Component {
     async init() {
         if (!this.props.student) {
@@ -17,11 +20,13 @@ class StudentBox extends Component {
 
         const status = await window.beaconingAPI.assignStudent(student.id, id);
 
+        const data = new Identicon(sha512(id + username), 420).toString();
+
         if (status) {
             const element = div(
                 '.student-box',
                 figure(img({
-                    src: `//${window.location.host}/dist/beaconing/images/student.jpg`,
+                    src: `data:image/png;base64,${data}`,
                 })),
                 div(
                     '.info.flex-column',
