@@ -42,7 +42,7 @@ func (s *SimpleManagedRoute) GetPaths() map[string]string {
 }
 
 func (s *SimpleManagedRoute) SetPaths(paths map[string]string) {
-	// TODO HACK
+	// lazily allocate the paths!
 	if s.paths == nil {
 		s.paths = map[string]string{}
 	}
@@ -53,7 +53,7 @@ func (s *SimpleManagedRoute) GetPath() string {
 	return s.path
 }
 
-// TODO quick hack, fixme!
 func (s *SimpleManagedRoute) SetPath(path string) {
+	// we only have a get route.
 	s.SetPaths(map[string]string{"get": path})
 }
