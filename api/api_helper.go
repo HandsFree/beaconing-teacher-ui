@@ -2,6 +2,7 @@ package api
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -56,6 +57,27 @@ func Fetch(bucket string) (string, bool) {
 		return val, true
 	}
 	return "", false
+}
+
+func DoTimedRequest(method string, url string, timeout time.Duration) ([]byte, error) {
+	ctx, _ := context.WithTimeout(context.Background(), timeout)
+	req, err := http.NewRequest(method, url, nil)
+	if err != nil {
+		return []byte{}, err
+	}
+
+	resp, err := http.DefaultClient.Do(req.WithContext(ctx))
+	if err != nil {
+		return []byte{}, err
+	}
+
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return []byte{}, err
+	}
+
+	return body, nil
 }
 
 // CoreAPIManager manages all of the api middleman requests, etc.
@@ -213,22 +235,15 @@ func CreateStudentPOST(s *serv.SessionContext) string {
 // GetStudents requests a list of all students from the
 // core api, returned as a string of json
 func GetStudents(s *serv.SessionContext) string {
-	response, err := http.Get(API.getPath(s, "students"))
+	resp, err := DoTimedRequest("GET", API.getPath(s, "students"), 5*time.Second)
 	if err != nil {
 		log.Println(err.Error())
 		return ""
 	}
 
-	defer response.Body.Close()
-	body, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		log.Println(err.Error())
-		return ""
-	}
-
-	resp := string(body)
-	cacheData("students", resp)
-	return resp
+	body := string(resp)
+	cacheData("students", body)
+	return body
 }
 
 func GetCurrentUser(s *serv.SessionContext) (*types.CurrentUser, string) {
