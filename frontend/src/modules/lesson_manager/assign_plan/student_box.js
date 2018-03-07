@@ -20,7 +20,7 @@ class StudentBox extends Component {
 
         const status = await window.beaconingAPI.assignStudent(student.id, id);
 
-        const data = new Identicon(sha512(id + username), 420).toString();
+        const data = new Identicon(sha512(id + username), 256).toString();
 
         if (status) {
             const element = div(

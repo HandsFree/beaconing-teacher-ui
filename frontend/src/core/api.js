@@ -8,8 +8,6 @@ class APICore {
     async get(link: string): Promise<Object> {
         const xhr = new XMLHttpRequest();
 
-        console.log("api_get_req : " + link);
-
         xhr.responseType = 'json';
         xhr.open('GET', link);
         xhr.send();

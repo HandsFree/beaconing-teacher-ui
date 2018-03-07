@@ -22,7 +22,6 @@ class LoadStudents extends Component {
             }
 
             const students = await window.beaconingAPI.getStudents();
-
             this.state.students = students;
             window.sessionStorage.setItem('students', JSON.stringify({
                 students: this.state.students,
