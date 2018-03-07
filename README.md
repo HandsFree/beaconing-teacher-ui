@@ -1,6 +1,46 @@
 # Config
 Configuration files are stored in TOML.
 
+### PSQL
+You need the following database created locally.
+
+```sql
+-- you cant actually run this yet i havent
+-- figured it yet but we have to create a 
+-- database called beaconing with the
+-- user 'beaconing_db_user' and the password given
+
+CREATE DATABASE beaconing;
+
+CREATE ROLE beaconing_db_user WITH LOGIN PASSWORD 'beAcon1nGDatAbAseACCESS)**';
+
+GRANT ALL PRIVILEGES ON DATABASE beaconing TO beaconing_db_user;
+
+CREATE TABLE activities (
+    id serial PRIMARY KEY,
+	teacher_id integer NOT NULL,
+    creation_date date NOT NULL,
+    activity_type integer NOT NULL,
+	api_req jsonb NOT NULL
+);
+
+GRANT ALL PRIVILEGES ON TABLE activities TO beaconing_db_user;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO beaconing_db_user;
+```
+
+And this needs to be configured in the TOML config:
+
+```toml
+[db]
+username = "beaconing_db_user"
+password = "beAcon1nGDatAbAseACCESS)**"
+name = "beaconing"
+table = "activities"
+ssl = false
+```
+
+Note that SSL is false. This is for local development.
+
 ### Authorisation
 In the configuration file, make sure to append/edit the `[auth]` section with the 
 id and secret as follows:
