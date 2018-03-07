@@ -1,7 +1,12 @@
 package main
 
 import (
+	"context"
 	"log"
+	"net/http"
+	"os"
+	"os/signal"
+	"time"
 
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-contrib/sessions"
@@ -38,7 +43,7 @@ func TokenAuth() gin.HandlerFunc {
 	}
 }
 
-func main() {
+func Start() *gin.Engine {
 	cfg.LoadConfig()
 	api.SetupAPIHelper()
 
@@ -47,9 +52,6 @@ func main() {
 
 	// Create the cookie store
 	store := sessions.NewCookieStore(auth.CreateSessionSecret(32), auth.CreateSessionSecret(16))
-
-	// for redis.
-	// store, _ := sessions.NewRedisStore(10, "tcp", "localhost:6379", "", auth.CreateSessionSecret(64))
 
 	// Config the router to use sessions with cookie store
 	router.Use(sessions.Sessions("beaconing", store))
@@ -71,6 +73,11 @@ func main() {
 
 	// Redirect trailing slashes
 	router.RedirectTrailingSlash = true
+
+	server := &http.Server{
+		Addr:    ":8081",
+		Handler: router,
+	}
 
 	// Create Gin wrappers
 	mainCtx := serv.NewSessionContext(router)
@@ -141,8 +148,35 @@ func main() {
 	manager.RegisterRoutes(api...)
 	manager.RegisterRoutes(auth...)
 
-	// Start Gin
-	if err := router.Run(":8081"); err != nil {
-		log.Fatal(err)
+	quit := make(chan os.Signal)
+	signal.Notify(quit, os.Interrupt)
+
+	go func() {
+		<-quit
+		log.Println("receive interrupt signal")
+		if err := server.Close(); err != nil {
+			log.Fatal("Server Close:", err)
+		}
+	}()
+
+	if err := server.ListenAndServe(); err != nil {
+		if err == http.ErrServerClosed {
+			log.Println("Server closed under request")
+		} else {
+			log.Fatal("Server closed unexpectedly")
+		}
 	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	if err := server.Shutdown(ctx); err != nil {
+		log.Fatal("Server Shutdown:", err)
+	}
+	log.Println("Server exiting")
+
+	return router
+}
+
+func main() {
+	Start()
 }
