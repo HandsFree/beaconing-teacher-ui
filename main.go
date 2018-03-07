@@ -11,6 +11,7 @@ import (
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+	"github.com/unrolled/secure"
 
 	"git.juddus.com/HFC/beaconing/api"
 	"git.juddus.com/HFC/beaconing/auth"
@@ -56,6 +57,31 @@ func GetRouterEngine() *gin.Engine {
 	// Resources will be gzipped
 	router.Use(gzip.Gzip(gzip.BestSpeed))
 
+	// TODO configure me!
+	// - https://github.com/unrolled/secure
+	secureMiddleware := secure.New(secure.Options{
+		FrameDeny: true,
+	})
+
+	secureFunc := func() gin.HandlerFunc {
+		return func(c *gin.Context) {
+			err := secureMiddleware.Process(c.Writer, c.Request)
+
+			// If there was an error, do not continue.
+			if err != nil {
+				c.Abort()
+				return
+			}
+
+			// Avoid header rewrite if response is a redirection.
+			if status := c.Writer.Status(); status > 300 && status < 399 {
+				c.Abort()
+			}
+		}
+	}()
+	router.Use(secureFunc)
+
+	// token auth middleware
 	router.Use(TokenAuth())
 
 	router.NoRoute(func(c *gin.Context) {
