@@ -75,22 +75,22 @@ func GetRouterEngine() *gin.Engine {
 				return
 			}
 
-			// Avoid header rewrite if response is a redirection.
-			if status := c.Writer.Status(); status > 300 && status < 399 {
-				c.Abort()
-			}
 		}
 	}()
 	router.Use(secureFunc)
 
+	// FIXME!! TODO Elliot set this up please
+	// i have no idea what we need here.
 	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"*"},
-		AllowMethods:     []string{"PUT", "PATCH"},
-		AllowHeaders:     []string{"Origin"},
-		ExposeHeaders:    []string{"Content-Length"},
+		AllowMethods:     []string{"*"},
+		AllowHeaders:     []string{"*"},
+		ExposeHeaders:    []string{"*"},
+		AllowAllOrigins:  true,
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
 	}))
+
+	// router.Use(corsMiddleware())
 
 	// token auth middleware
 	router.Use(TokenAuth())
