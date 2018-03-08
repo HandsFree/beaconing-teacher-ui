@@ -7,6 +7,7 @@ import StudentBox from './student_box';
 /* eslint-disable no-restricted-syntax */
 
 class LoadStudents extends Component {
+
     async init() {
         if (window.sessionStorage) {
             let studentsSession = window.sessionStorage.getItem('students');

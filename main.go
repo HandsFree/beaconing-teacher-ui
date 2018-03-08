@@ -60,7 +60,8 @@ func GetRouterEngine() *gin.Engine {
 	// TODO configure me!
 	// - https://github.com/unrolled/secure
 	secureMiddleware := secure.New(secure.Options{
-		FrameDeny: true,
+		FrameDeny:     true,
+		IsDevelopment: gin.IsDebugging(),
 	})
 
 	secureFunc := func() gin.HandlerFunc {
