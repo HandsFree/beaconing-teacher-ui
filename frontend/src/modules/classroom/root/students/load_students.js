@@ -21,9 +21,23 @@ class LoadStudents extends Component {
                     return;
                 }
             }
+        }
 
+        // no students are set?
+        if (!this.state.students) {
             const students = await window.beaconingAPI.getStudents();
+            if (!students) {
+                console.log("Failed to load students!");
+
+                // set the students in the state to an
+                // empty array to avoid error later on.
+                this.state.students = [];
+                return;
+            }
+
             this.state.students = students;
+            console.log("Loaded students " + students);
+
             window.sessionStorage.setItem('students', JSON.stringify({
                 students: this.state.students,
                 time: Date.now(),

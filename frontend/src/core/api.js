@@ -19,6 +19,12 @@ class APICore {
                 }
             };
 
+            if (xhr.status == 0) {
+                const msg: string = "[API Core] Error: Get request for '" + link + "' returned _nothing_!";
+                console.log(msg);
+                reject(msg);
+            }
+
             xhr.onerror = () => {
                 const msg: string = `[API Core] Error: ${xhr.status}: ${xhr.statusText}`;
 
@@ -124,11 +130,9 @@ class APICore {
 
     async getStudents() {
         const auth = await this.checkAuth();
-
         if (!auth) {
             return false;
         }
-
         const students = await this.get(`//${window.location.host}/intent/students`);
         return students;
     }
