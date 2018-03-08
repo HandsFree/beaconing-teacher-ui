@@ -2,12 +2,14 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -41,6 +43,24 @@ func TokenAuth() gin.HandlerFunc {
 		}
 
 		c.Next()
+	}
+}
+
+func corsMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*") // TODO
+		c.Writer.Header().Set("Access-Control-Max-Age", "86400")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, UPDATE")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Origin, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+		c.Writer.Header().Set("Access-Control-Expose-Headers", "Content-Length")
+		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+
+		if c.Request.Method == "OPTIONS" {
+			fmt.Println("OPTIONS")
+			c.AbortWithStatus(200)
+		} else {
+			c.Next()
+		}
 	}
 }
 
@@ -81,6 +101,15 @@ func GetRouterEngine() *gin.Engine {
 		}
 	}()
 	router.Use(secureFunc)
+
+	router.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"*"},
+		AllowMethods:     []string{"PUT", "PATCH"},
+		AllowHeaders:     []string{"Origin"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
 
 	// token auth middleware
 	router.Use(TokenAuth())

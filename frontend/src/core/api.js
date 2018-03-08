@@ -16,14 +16,8 @@ class APICore {
             xhr.onreadystatechange = () => {
                 if (xhr.readyState === 4) {
                     resolve(xhr.response);
-                }
+                }    
             };
-
-            if (xhr.status == 0) {
-                const msg: string = "[API Core] Error: Get request for '" + link + "' returned _nothing_!";
-                console.log(msg);
-                reject(msg);
-            }
 
             xhr.onerror = () => {
                 const msg: string = `[API Core] Error: ${xhr.status}: ${xhr.statusText}`;
