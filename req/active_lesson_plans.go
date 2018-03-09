@@ -46,7 +46,7 @@ func (r *ActiveLessonPlans) Get(s *serv.SessionContext) {
 	table.Render()
 
 	for glpID, _ := range assigned {
-		_, glp := api.GetGamifiedLessonPlan(s, glpID)
+		glp, _ := api.GetGamifiedLessonPlan(s, glpID)
 		if glp == nil {
 			log.Println("No such lesson plan found for ", glpID)
 			// skip this one, TODO

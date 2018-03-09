@@ -56,7 +56,7 @@ func (a *GLPSRequest) Get(s *serv.SessionContext) {
 		numFails := 0
 
 		for i := index; len(plans) < 15 && numFails < attempts; i++ {
-			_, obj := api.GetGamifiedLessonPlan(s, i)
+			obj, _ := api.GetGamifiedLessonPlan(s, i)
 			if obj == nil {
 				log.Println(" - NO GAME PLAN AT INDEX ", i, " SKIPPING!")
 				numFails++

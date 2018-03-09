@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -59,9 +60,9 @@ func Fetch(bucket string) (string, bool) {
 	return "", false
 }
 
-func DoTimedRequest(method string, url string, timeout time.Duration) ([]byte, error) {
+func DoTimedRequestBody(method string, url string, reqBody io.Reader, timeout time.Duration) ([]byte, error) {
 	ctx, _ := context.WithTimeout(context.Background(), timeout)
-	req, err := http.NewRequest(method, url, nil)
+	req, err := http.NewRequest(method, url, reqBody)
 	if err != nil {
 		return []byte{}, err
 	}
@@ -78,6 +79,12 @@ func DoTimedRequest(method string, url string, timeout time.Duration) ([]byte, e
 	}
 
 	return body, nil
+}
+
+// request with no body?
+func DoTimedRequest(method string, url string, timeout time.Duration) ([]byte, error) {
+	data, err := DoTimedRequestBody(method, url, nil, timeout)
+	return data, err
 }
 
 // CoreAPIManager manages all of the api middleman requests, etc.
@@ -247,46 +254,32 @@ func GetStudents(s *serv.SessionContext) string {
 }
 
 func GetCurrentUser(s *serv.SessionContext) (*types.CurrentUser, string) {
-	response, err := http.Get(API.getPath(s, "currentuser"))
-	if err != nil {
-		log.Println(err.Error())
-		return nil, ""
-	}
-
-	defer response.Body.Close()
-	body, err := ioutil.ReadAll(response.Body)
+	resp, err := DoTimedRequest("GET", API.getPath(s, "currentuser"), 5*time.Second)
 	if err != nil {
 		log.Println(err.Error())
 		return nil, ""
 	}
 
 	data := &types.CurrentUser{}
-	if err := jsoniter.Unmarshal(body, data); err != nil {
+	if err := jsoniter.Unmarshal(resp, data); err != nil {
 		log.Println(err.Error())
 	}
 
-	return data, string(body)
+	return data, string(resp)
 }
 
 // GetGamifiedLessonPlans requests all of the GLPs from the core
 // API returned as a json string
 func GetGamifiedLessonPlans(s *serv.SessionContext) string {
-	response, err := http.Get(API.getPath(s, "gamifiedlessonpaths"))
+	resp, err := DoTimedRequest("GET", API.getPath(s, "gamifiedlessonpaths"), 5*time.Second)
 	if err != nil {
 		log.Println(err.Error())
 		return ""
 	}
 
-	defer response.Body.Close()
-	body, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		log.Println(err.Error())
-		return ""
-	}
-
-	resp := string(body)
-	cacheData("glps", resp)
-	return resp
+	response := string(resp)
+	cacheData("glps", response)
+	return response
 }
 
 // AssignStudentToGLP assigns the given student (by id) to the given GLP (by id),
@@ -321,33 +314,26 @@ func AssignStudentToGLP(s *serv.SessionContext, studentID int, glpID int) (strin
 // GetGamifiedLessonPlan requests the GLP with the given id, this function returns
 // the string of json retrieved _as well as_ the parsed json object
 // see types.GamifiedLessonPlan
-func GetGamifiedLessonPlan(s *serv.SessionContext, id int) (string, *types.GamifiedLessonPlan) {
-	response, err := http.Get(API.getPath(s, "gamifiedlessonpaths/", fmt.Sprintf("%d", id)))
+func GetGamifiedLessonPlan(s *serv.SessionContext, id int) (*types.GamifiedLessonPlan, string) {
+	resp, err := DoTimedRequest("GET", API.getPath(s, "gamifiedlessonpaths/", fmt.Sprintf("%d", id)), 5*time.Second)
 	if err != nil {
 		log.Println(err.Error())
-		return "", nil
-	}
-
-	defer response.Body.Close()
-	body, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		log.Println(err.Error())
-		return "", nil
+		return nil, ""
 	}
 
 	data := &types.GamifiedLessonPlan{}
-	if err := jsoniter.Unmarshal(body, data); err != nil {
+	if err := jsoniter.Unmarshal(resp, data); err != nil {
 		log.Println(err.Error())
 	}
 
 	// should we compact everything?
 	// we do here because the json for glps request is stupidly long
 	buffer := new(bytes.Buffer)
-	if err := json.Compact(buffer, body); err != nil {
+	if err := json.Compact(buffer, resp); err != nil {
 		log.Println(err.Error())
 	}
 
-	return buffer.String(), data
+	return data, buffer.String()
 }
 
 func newAPICache() *apiCache {

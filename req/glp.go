@@ -94,7 +94,7 @@ func (a *GLPRequest) Get(s *serv.SessionContext) {
 		}
 	}
 
-	json, plan := api.GetGamifiedLessonPlan(s, glpIDValue)
+	plan, json := api.GetGamifiedLessonPlan(s, glpIDValue)
 	if plan == nil {
 		s.SimpleErrorRedirect(500, "Funky error getting the GLP")
 		return
