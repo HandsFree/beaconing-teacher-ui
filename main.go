@@ -8,11 +8,9 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"github.com/unrolled/secure"
 
 	"git.juddus.com/HFC/beaconing/api"
 	"git.juddus.com/HFC/beaconing/auth"
@@ -58,40 +56,6 @@ func GetRouterEngine() *gin.Engine {
 
 	// Resources will be gzipped
 	router.Use(gzip.Gzip(gzip.BestSpeed))
-
-	// TODO configure me!
-	// - https://github.com/unrolled/secure
-	secureMiddleware := secure.New(secure.Options{
-		FrameDeny:     true,
-		IsDevelopment: gin.IsDebugging(),
-	})
-
-	secureFunc := func() gin.HandlerFunc {
-		return func(c *gin.Context) {
-			err := secureMiddleware.Process(c.Writer, c.Request)
-
-			// If there was an error, do not continue.
-			if err != nil {
-				c.Abort()
-				return
-			}
-
-		}
-	}()
-	router.Use(secureFunc)
-
-	// FIXME!! TODO Elliot set this up please
-	// i have no idea what we need here.
-	router.Use(cors.New(cors.Config{
-		AllowMethods:     []string{"*"},
-		AllowHeaders:     []string{"*"},
-		ExposeHeaders:    []string{"*"},
-		AllowAllOrigins:  true,
-		AllowCredentials: true,
-		MaxAge:           12 * time.Hour,
-	}))
-
-	// router.Use(corsMiddleware())
 
 	// token auth middleware
 	router.Use(TokenAuth())
