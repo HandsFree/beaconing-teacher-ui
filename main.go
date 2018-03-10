@@ -138,7 +138,12 @@ func GetRouterEngine() *gin.Engine {
 	}
 
 	api := []route.Route{
+		// These are all GET requests
 		req.NewTokenRequest("/intent/token"),
+		req.NewAssignRequest("/intent/assign/:student/to/:glp"),
+		req.NewStudentRequest("/intent/student/:id"),
+		req.NewActiveLessonPlans("/intent/active_lesson_plans"),
+		req.NewGLPSRequest("/intent/glps"),
 
 		req.NewStudentsRequest(paths.PathSet{
 			paths.Get("/intent/students"),
@@ -149,12 +154,6 @@ func GetRouterEngine() *gin.Engine {
 			paths.Get("/intent/students/:id/assignedglps"),
 			paths.Delete("/intent/students/:id/assignedglps/:glp"),
 		}),
-
-		req.NewAssignRequest("/intent/assign/:student/to/:glp"),
-
-		req.NewStudentRequest("/intent/student/:id"),
-
-		req.NewGLPSRequest("/intent/glps"),
 
 		// TODO PUT
 		req.NewProfileRequest("/intent/profile"),
@@ -169,8 +168,6 @@ func GetRouterEngine() *gin.Engine {
 			paths.Post("/intent/studentgroups"),
 			paths.Delete("/intent/studentgroups/:id"),
 		}),
-
-		req.NewActiveLessonPlans("/intent/active_lesson_plans"),
 
 		req.NewSearchRequest(paths.PathSet{
 			paths.Post("/intent/search"),
