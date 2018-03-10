@@ -123,7 +123,11 @@ func GetRouterEngine() *gin.Engine {
 		page.NewPage("/authoring_tool", "Authoring Tool", "dist/beaconing/pages/authoring_tool/page.js"),
 
 		page.NewPage("/classroom", "Classroom", "dist/beaconing/pages/classroom/page.js"),
-		page.NewPage("/classroom/", "Classroom", "dist/beaconing/pages/classroom/page.js"), // BUG: trailing slash not redirected
+
+		// see issue #61
+		page.NewPage("/classroom/", "Classroom", "dist/beaconing/pages/classroom/page.js"),
+		//.                   ^^^^
+
 		page.NewPage("/classroom/classes", "Classroom", "dist/beaconing/pages/classroom/classes/page.js"),
 		page.NewPage("/classroom/groups", "Classroom", "dist/beaconing/pages/classroom/groups/page.js"),
 		page.NewPage("/classroom/courses", "Classroom", "dist/beaconing/pages/classroom/courses/page.js"),

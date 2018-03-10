@@ -37,27 +37,6 @@ func SetupAPIHelper() {
 	API = newAPIHelper()
 }
 
-type apiCache struct {
-	// this probably isnt needed because if cacheData is
-	// being invoked then it's always going to be new data
-	// but we'll leave this here because I may implement it anyways
-	LastCache map[string]time.Time
-	Data      map[string]string
-}
-
-func cacheData(bucket string, data string) {
-	API.cache.Data[bucket] = data
-}
-
-// Fetch checks the cache if the given value is present
-// an empty string is returned if there is no value
-func Fetch(bucket string) (string, bool) {
-	if val, ok := API.cache.Data[bucket]; ok {
-		return val, true
-	}
-	return "", false
-}
-
 func DoTimedRequestBody(method string, url string, reqBody io.Reader, timeout time.Duration) ([]byte, error) {
 	ctx, _ := context.WithTimeout(context.Background(), timeout)
 	req, err := http.NewRequest(method, url, reqBody)
@@ -93,7 +72,7 @@ type CoreAPIManager struct {
 	db      *sql.DB
 }
 
-// getUserID returns the current users id number, if there is no
+// GetUserID returns the current users id number, if there is no
 // current user session it returns -1
 func GetUserID(s *serv.SessionContext) int {
 	obj, _ := GetCurrentUser(s)
@@ -127,13 +106,6 @@ func GetCurrentUser(s *serv.SessionContext) (*types.CurrentUser, string) {
 	}
 
 	return data, string(resp)
-}
-
-func newAPICache() *apiCache {
-	return &apiCache{
-		LastCache: map[string]time.Time{},
-		Data:      map[string]string{},
-	}
 }
 
 // TODO the toml layout for loading the
