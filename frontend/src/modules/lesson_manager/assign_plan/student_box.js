@@ -4,7 +4,6 @@ import { div, figure, img, h4, a, span } from '../../../core/html';
 import { Component } from '../../../core/component';
 
 var Identicon = require('identicon.js');
-var sha512 = require('js-sha512').sha512;
 
 class StudentBox extends Component {
     async init() {
@@ -19,8 +18,7 @@ class StudentBox extends Component {
         } = this.props;
 
         const status = await window.beaconingAPI.assignStudent(student.id, id);
-
-        const data = new Identicon(sha512(id + username), 256).toString();
+        const data = "";
 
         if (status) {
             const element = div(

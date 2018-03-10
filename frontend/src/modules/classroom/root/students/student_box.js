@@ -4,7 +4,6 @@ import { div, figure, img, h4, a } from '../../../../core/html';
 import { Component } from '../../../../core/component';
 
 var Identicon = require('identicon.js');
-var sha512 = require('js-sha512').sha512;
 
 class StudentBox extends Component {
     async render() {
@@ -13,7 +12,7 @@ class StudentBox extends Component {
             username,
         } = this.props;
 
-        const data = new Identicon(sha512(id + username), 256).toString();
+        const data = "";
 
         return div(
             '.student-box',

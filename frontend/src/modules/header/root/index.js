@@ -6,7 +6,6 @@ import { div, header, a, img } from '../../../core/html';
 import { Component } from '../../../core/component';
 
 var Identicon = require('identicon.js');
-var sha512 = require('js-sha512').sha512;
 
 class Header extends Component {
     state = {
@@ -15,12 +14,8 @@ class Header extends Component {
     };
 
     async render() {
-        var identifier = 2 + "teacher";
         const currUser = await window.beaconingAPI.getCurrentUser();
-        if (currUser) {
-            identifier = currUser.id + currUser.username;
-        }
-        const data = new Identicon(sha512(identifier), 64).toString();
+        const data = "";
 
         return header(
             '#main-header',

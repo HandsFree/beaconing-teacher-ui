@@ -1,7 +1,6 @@
 package req
 
 import (
-	"net/http"
 	"strconv"
 
 	"git.juddus.com/HFC/beaconing/api"
@@ -27,9 +26,8 @@ func (r *StudentRequest) Get(s *serv.SessionContext) {
 		return
 	}
 
-	response := api.GetStudent(s, studentID)
-	s.Header("Content-Type", "application/json")
-	s.String(http.StatusOK, response)
+	resp, _ := api.GetStudent(s, studentID)
+	s.Jsonify(resp)
 }
 
 func NewStudentRequest(path string) *StudentRequest {

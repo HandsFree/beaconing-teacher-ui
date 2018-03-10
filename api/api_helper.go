@@ -2,6 +2,9 @@ package api
 
 import (
 	"context"
+	"crypto/hmac"
+	"crypto/sha512"
+	"encoding/base64"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -105,7 +108,19 @@ func GetCurrentUser(s *serv.SessionContext) (*types.CurrentUser, string) {
 		log.Println(err.Error())
 	}
 
-	return data, string(resp)
+	input := fmt.Sprintf("%d%s", data.Id, data.Username)
+	hmac512 := hmac.New(sha512.New, []byte("what should the secret be!"))
+	hmac512.Write([]byte(input))
+	data.IdenticonSha512 = base64.StdEncoding.EncodeToString(hmac512.Sum(nil))
+
+	modifiedJSON, err := jsoniter.Marshal(data)
+	if err != nil {
+		log.Println(err.Error())
+		// error, return old json
+		return data, string(resp)
+	}
+
+	return data, string(modifiedJSON)
 }
 
 // TODO the toml layout for loading the
