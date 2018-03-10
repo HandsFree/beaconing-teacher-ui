@@ -39,6 +39,6 @@ func (r *LogOutRequest) Get(s *serv.SessionContext) {
 
 func NewLogOutRequest(path string) *LogOutRequest {
 	req := &LogOutRequest{}
-	req.SetPath(path)
+	req.SetGET(path)
 	return req
 }

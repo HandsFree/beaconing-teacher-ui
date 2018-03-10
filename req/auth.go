@@ -26,6 +26,6 @@ type CheckAuthJSON struct {
 
 func NewCheckAuthRequest(path string) *CheckAuthRequest {
 	req := &CheckAuthRequest{}
-	req.SetPath(path)
+	req.SetGET(path)
 	return req
 }

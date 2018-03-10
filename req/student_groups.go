@@ -8,6 +8,7 @@ import (
 	"strconv"
 
 	"git.juddus.com/HFC/beaconing/api"
+	"git.juddus.com/HFC/beaconing/paths"
 	"git.juddus.com/HFC/beaconing/route"
 	"git.juddus.com/HFC/beaconing/serv"
 )
@@ -81,8 +82,8 @@ func (r *StudentGroupRequest) Get(s *serv.SessionContext) {
 	s.String(http.StatusOK, string(body))
 }
 
-func NewStudentGroupRequest(paths map[string]string) *StudentGroupRequest {
+func NewStudentGroupRequest(p paths.PathSet) *StudentGroupRequest {
 	req := &StudentGroupRequest{}
-	req.SetPaths(paths)
+	req.SetPaths(p)
 	return req
 }

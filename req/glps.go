@@ -90,6 +90,6 @@ func (a *GLPSRequest) Get(s *serv.SessionContext) {
 
 func NewGLPSRequest(path string) *GLPSRequest {
 	req := &GLPSRequest{}
-	req.SetPath(path)
+	req.SetGET(path)
 	return req
 }

@@ -1,6 +1,7 @@
 package route
 
 import (
+	"git.juddus.com/HFC/beaconing/paths"
 	"git.juddus.com/HFC/beaconing/serv"
 )
 
@@ -12,9 +13,11 @@ type Route interface {
 	GetManager() *RouteManager
 	SetManager(m *RouteManager)
 
-	GetPaths() map[string]string
-	GetPath() string
-	SetPath(path string)
+	GetPaths() paths.PathSet
+
+	GET() string
+
+	SetGET(path string)
 }
 
 // SimpleManagedRoute is a a route in the webpage
@@ -26,7 +29,7 @@ type SimpleManagedRoute struct {
 	Route
 	manager *RouteManager
 	path    string
-	paths   map[string]string
+	paths   paths.PathSet
 }
 
 func (s *SimpleManagedRoute) SetManager(m *RouteManager) {
@@ -37,23 +40,23 @@ func (s *SimpleManagedRoute) GetManager() *RouteManager {
 	return s.manager
 }
 
-func (s *SimpleManagedRoute) GetPaths() map[string]string {
+func (s *SimpleManagedRoute) GetPaths() paths.PathSet {
 	return s.paths
 }
 
-func (s *SimpleManagedRoute) SetPaths(paths map[string]string) {
-	// lazily allocate the paths!
+func (s *SimpleManagedRoute) SetPaths(p paths.PathSet) {
+	// lazily allocate the paths
 	if s.paths == nil {
-		s.paths = map[string]string{}
+		s.paths = paths.Empty()
 	}
-	s.paths = paths
+	s.paths = p
 }
 
-func (s *SimpleManagedRoute) GetPath() string {
+func (s *SimpleManagedRoute) GET() string {
 	return s.path
 }
 
-func (s *SimpleManagedRoute) SetPath(path string) {
-	// we only have a get route.
-	s.SetPaths(map[string]string{"get": path})
+func (s *SimpleManagedRoute) SetGET(path string) {
+	// we only have a GET route.
+	s.SetPaths(paths.PathSet{paths.Get(path)})
 }

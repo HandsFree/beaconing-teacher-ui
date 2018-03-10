@@ -7,6 +7,7 @@ import (
 	"github.com/felixangell/fuzzysearch/fuzzy"
 
 	"git.juddus.com/HFC/beaconing/api"
+	"git.juddus.com/HFC/beaconing/paths"
 	"git.juddus.com/HFC/beaconing/route"
 	"git.juddus.com/HFC/beaconing/serv"
 	"git.juddus.com/HFC/beaconing/types"
@@ -115,8 +116,8 @@ func (a *SearchRequest) Post(s *serv.SessionContext) {
 	s.Jsonify(resp)
 }
 
-func NewSearchRequest(paths map[string]string) *SearchRequest {
+func NewSearchRequest(p paths.PathSet) *SearchRequest {
 	req := &SearchRequest{}
-	req.SetPaths(paths)
+	req.SetPaths(p)
 	return req
 }

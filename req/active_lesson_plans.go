@@ -63,7 +63,7 @@ func (r *ActiveLessonPlans) Get(s *serv.SessionContext) {
 
 func NewActiveLessonPlans(path string) *ActiveLessonPlans {
 	req := &ActiveLessonPlans{}
-	req.SetPath(path)
+	req.SetGET(path)
 	return req
 }
 

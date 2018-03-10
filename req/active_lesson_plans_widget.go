@@ -72,7 +72,7 @@ func (r *ActiveLessonPlansWidget) Get(s *serv.SessionContext) {
 
 func NewActiveLessonPlansWidget(path string) *ActiveLessonPlansWidget {
 	req := &ActiveLessonPlansWidget{}
-	req.SetPath(path)
+	req.SetGET(path)
 	return req
 }
 

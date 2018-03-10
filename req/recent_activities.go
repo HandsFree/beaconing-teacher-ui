@@ -89,7 +89,7 @@ func (a *LPAssignedActivity) String() string {
 
 func NewRecentActivities(path string) *RecentActivities {
 	req := &RecentActivities{}
-	req.SetPath(path)
+	req.SetGET(path)
 	return req
 }
 

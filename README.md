@@ -1,6 +1,14 @@
 # Config
 Configuration files are stored in TOML.
 
+### General Notes
+The API layer is the bridge between the backend and the API services provided
+from the core beaconing API (and other relevant APIs). This should not handle
+sanitisation of data _inputs_. 
+
+The requests are the backend request handlers, these are in charge of taking
+in data, sanitising it, and invoking the api layer.
+
 ### PSQL
 You need the following database created locally.
 

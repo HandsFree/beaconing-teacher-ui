@@ -54,6 +54,6 @@ func NewPage(path string, title string, script string) *Page {
 		script: script,
 		host:   serv.Protocol + serv.BaseLink + "/",
 	}
-	page.SetPath(path)
+	page.SetGET(path)
 	return page
 }

@@ -1,10 +1,11 @@
 package req
 
 import (
+	"net/http"
+
 	"git.juddus.com/HFC/beaconing/api"
 	"git.juddus.com/HFC/beaconing/route"
 	"git.juddus.com/HFC/beaconing/serv"
-	"net/http"
 )
 
 type ProfileRequest struct {
@@ -22,6 +23,6 @@ func (r *ProfileRequest) Get(s *serv.SessionContext) {
 
 func NewProfileRequest(path string) *ProfileRequest {
 	req := &ProfileRequest{}
-	req.SetPath(path)
+	req.SetGET(path)
 	return req
 }

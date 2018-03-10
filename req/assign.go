@@ -97,6 +97,6 @@ func registerGLP(s *serv.SessionContext, glpID int) {
 
 func NewAssignRequest(path string) *AssignRequest {
 	req := &AssignRequest{}
-	req.SetPath(path)
+	req.SetGET(path)
 	return req
 }

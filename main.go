@@ -18,6 +18,7 @@ import (
 	"git.juddus.com/HFC/beaconing/auth"
 	"git.juddus.com/HFC/beaconing/cfg"
 	"git.juddus.com/HFC/beaconing/page"
+	"git.juddus.com/HFC/beaconing/paths"
 	"git.juddus.com/HFC/beaconing/req"
 	"git.juddus.com/HFC/beaconing/route"
 	"git.juddus.com/HFC/beaconing/serv"
@@ -138,31 +139,41 @@ func GetRouterEngine() *gin.Engine {
 
 	api := []route.Route{
 		req.NewTokenRequest("/intent/token"),
-		req.NewStudentsRequest(map[string]string{
-			"get":    "/intent/students",
-			"post":   "/intent/students",
-			"delete": "/intent/students/:id/assignedglps/:glp",
+
+		req.NewStudentsRequest(paths.PathSet{
+			paths.Get("/intent/students"),
+			paths.Post("/intent/students"),
 		}),
-		req.NewStudentRequest("/intent/student/:id/*action"),
+
+		req.NewAssignedGLPsRequest(paths.PathSet{
+			paths.Get("/intent/students/:id/assignedglps"),
+			paths.Delete("/intent/students/:id/assignedglps/:glp"),
+		}),
+
 		req.NewAssignRequest("/intent/assign/:student/to/:glp"),
+
+		req.NewStudentRequest("/intent/student/:id"),
+
 		req.NewGLPSRequest("/intent/glps"),
 
 		// TODO PUT
 		req.NewProfileRequest("/intent/profile"),
 
-		req.NewGLPRequest(map[string]string{
-			"get":    "/intent/glp/:id",
-			"delete": "/intent/glp/:id",
+		req.NewGLPRequest(paths.PathSet{
+			paths.Get("/intent/glp/:id"),
+			paths.Delete("/intent/glp/:id"),
 		}),
 
-		req.NewStudentGroupRequest(map[string]string{
-			"get":    "/intent/studentgroups",
-			"post":   "/intent/studentgroups",
-			"delete": "/intent/studentgroups/:id",
+		req.NewStudentGroupRequest(paths.PathSet{
+			paths.Get("/intent/studentgroups"),
+			paths.Post("/intent/studentgroups"),
+			paths.Delete("/intent/studentgroups/:id"),
 		}),
+
 		req.NewActiveLessonPlans("/intent/active_lesson_plans"),
-		req.NewSearchRequest(map[string]string{
-			"post": "/intent/search",
+
+		req.NewSearchRequest(paths.PathSet{
+			paths.Post("/intent/search"),
 		}),
 	}
 

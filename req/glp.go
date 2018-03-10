@@ -6,6 +6,7 @@ import (
 	"log"
 
 	"git.juddus.com/HFC/beaconing/api"
+	"git.juddus.com/HFC/beaconing/paths"
 	"git.juddus.com/HFC/beaconing/route"
 	"git.juddus.com/HFC/beaconing/serv"
 	"github.com/gin-gonic/gin"
@@ -34,10 +35,9 @@ func (r *GLPRequest) Post(s *serv.SessionContext) {
 }
 
 func (r *GLPRequest) Delete(s *serv.SessionContext) {
-	// TODO sanitise
-	id := s.Param("id")
-	glpIDValue, err := strconv.Atoi(id)
-	if err != nil || glpIDValue < 0 {
+	idParam := s.Param("id")
+	id, err := strconv.Atoi(idParam)
+	if err != nil || id < 0 {
 		log.Println("error when sanitising glp id", err.Error())
 		s.SimpleErrorRedirect(400, "Client Error: Invalid GLP ID")
 		return
@@ -47,7 +47,7 @@ func (r *GLPRequest) Delete(s *serv.SessionContext) {
 
 	clnt := &http.Client{}
 
-	req, err := http.NewRequest("DELETE", fmt.Sprintf("https://core.beaconing.eu/api/gamifiedlessonpaths/%s?access_token=%s", id, accessToken), nil)
+	req, err := http.NewRequest("DELETE", fmt.Sprintf("https://core.beaconing.eu/api/gamifiedlessonpaths/%s?access_token=%s", idParam, accessToken), nil)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -117,8 +117,8 @@ func (a *GLPRequest) Get(s *serv.SessionContext) {
 	s.Jsonify(model)
 }
 
-func NewGLPRequest(paths map[string]string) *GLPRequest {
+func NewGLPRequest(p paths.PathSet) *GLPRequest {
 	req := &GLPRequest{}
-	req.SetPaths(paths)
+	req.SetPaths(p)
 	return req
 }

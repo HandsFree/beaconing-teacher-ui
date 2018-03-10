@@ -65,6 +65,6 @@ func (r *TokenRequest) Get(s *serv.SessionContext) {
 
 func NewTokenRequest(path string) *TokenRequest {
 	req := &TokenRequest{}
-	req.SetPath(path)
+	req.SetGET(path)
 	return req
 }

@@ -80,7 +80,7 @@ type StudentOverviewJSON struct {
 
 func NewStudentOverview(path string) *StudentOverview {
 	req := &StudentOverview{}
-	req.SetPath(path)
+	req.SetGET(path)
 	return req
 }
 
