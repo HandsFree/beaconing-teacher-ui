@@ -37,22 +37,22 @@ func (r *ActiveLessonPlansWidget) Get(s *serv.SessionContext) {
 	session := sessions.Default(s.Context)
 	assignedPlans := session.Get("assigned_plans")
 
-	var assigned map[int]bool = map[int]bool{}
+	var assigned map[uint64]bool = map[uint64]bool{}
 	if assignedPlans != nil {
 		log.Println("Restored assigned plans: ", len(assigned), "plans active")
-		assigned = assignedPlans.(map[int]bool)
+		assigned = assignedPlans.(map[uint64]bool)
 	} else {
 		log.Println("No assigned plans in the session!")
 	}
 
 	table := tablewriter.NewWriter(os.Stdout)
 	table.SetHeader([]string{"GLP"})
-	for id, _ := range assigned {
+	for id := range assigned {
 		table.Append([]string{fmt.Sprintf("%d", id)})
 	}
 	table.Render()
 
-	for glpID, _ := range assigned {
+	for glpID := range assigned {
 		glp, _ := api.GetGamifiedLessonPlan(s, glpID)
 		if glp == nil {
 			log.Println("No such lesson plan found for ", glpID)
@@ -76,10 +76,10 @@ func NewActiveLessonPlansWidget(path string) *ActiveLessonPlansWidget {
 	return req
 }
 
-func NewLessonPlanWidget(name string, glpID int) types.LessonPlanWidget {
+func NewLessonPlanWidget(name string, glpID uint64) types.LessonPlanWidget {
 	return types.LessonPlanWidget{
 		Name: name,
 		Src:  "https://via.placeholder.com/512x512&text=" + name,
-		Link: "/lesson_manager#view?id=" + strconv.Itoa(glpID) + "&prev=lesson_manager",
+		Link: "/lesson_manager#view?id=" + fmt.Sprintf("%d", glpID) + "&prev=lesson_manager",
 	}
 }

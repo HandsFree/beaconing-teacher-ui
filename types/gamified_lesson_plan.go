@@ -1,11 +1,11 @@
 package types
 
 type GamifiedLessonPlan struct {
-	Id           int
+	Id           uint64
 	Name         string
 	Desc         string
 	Author       string
 	Category     string
-	GamePlotId   int
+	GamePlotId   uint64
 	ExternConfig string
 }

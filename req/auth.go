@@ -1,6 +1,7 @@
 package req
 
 import (
+	"git.juddus.com/HFC/beaconing/api"
 	"git.juddus.com/HFC/beaconing/route"
 	"git.juddus.com/HFC/beaconing/serv"
 )
@@ -14,7 +15,7 @@ func (r *CheckAuthRequest) Post(s *serv.SessionContext)   {}
 func (r *CheckAuthRequest) Delete(s *serv.SessionContext) {}
 
 func (a *CheckAuthRequest) Get(s *serv.SessionContext) {
-	accessToken := s.GetAccessToken()
+	accessToken := api.GetAccessToken(s)
 	s.Jsonify(&CheckAuthJSON{
 		Token: accessToken,
 	})

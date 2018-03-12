@@ -20,22 +20,18 @@ func (r *GLPSRequest) Delete(s *serv.SessionContext) {}
 
 func (a *GLPSRequest) Get(s *serv.SessionContext) {
 	indexQuery := s.Query("index")
-	var index int = -1
-	if indexQuery != "" {
-		indexValue, err := strconv.Atoi(indexQuery)
-		if err != nil {
-			log.Println(err.Error())
-			index = -1
-		} else {
-			index = indexValue
-		}
+
+	index, err := strconv.ParseUint(indexQuery, 10, 64)
+	if err != nil {
+		log.Println(err.Error())
+		index = 0
 	}
 
 	// TODO a step here would be nice too.
 
 	// we have been given a positive index!
 	// return back the next 15 glps.
-	if index >= 0 {
+	if indexQuery != "" {
 
 		plans := []*types.GamifiedLessonPlan{}
 
@@ -83,7 +79,6 @@ func (a *GLPSRequest) Get(s *serv.SessionContext) {
 	}
 
 	json := api.GetGamifiedLessonPlans(s)
-
 	s.Header("Content-Type", "application/json")
 	s.String(http.StatusOK, json)
 }

@@ -35,7 +35,7 @@ func TokenAuth() gin.HandlerFunc {
 			if accessToken == nil {
 				// we have no code and no access
 				// token so lets ask for auth
-				serv.AuthRedirect(c)
+				api.AuthRedirect(c)
 				return
 			}
 		}

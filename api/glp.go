@@ -29,7 +29,7 @@ func GetGamifiedLessonPlans(s *serv.SessionContext) string {
 // GetGamifiedLessonPlan requests the GLP with the given id, this function returns
 // the string of json retrieved _as well as_ the parsed json object
 // see types.GamifiedLessonPlan
-func GetGamifiedLessonPlan(s *serv.SessionContext, id int) (*types.GamifiedLessonPlan, string) {
+func GetGamifiedLessonPlan(s *serv.SessionContext, id uint64) (*types.GamifiedLessonPlan, string) {
 	resp, err := DoTimedRequest("GET", API.getPath(s, "gamifiedlessonpaths/", fmt.Sprintf("%d", id)), 5*time.Second)
 	if err != nil {
 		log.Println(err.Error())
@@ -49,4 +49,18 @@ func GetGamifiedLessonPlan(s *serv.SessionContext, id int) (*types.GamifiedLesso
 	}
 
 	return data, buffer.String()
+}
+
+func DeleteGLP(s *serv.SessionContext, id uint64) string {
+	resp, err := DoTimedRequest("DELETE",
+		API.getPath(s,
+			"gamifiedlessonpaths",
+			fmt.Sprintf("%d", id)),
+		5*time.Second)
+	if err != nil {
+		fmt.Println(err)
+		return ""
+	}
+
+	return string(resp)
 }

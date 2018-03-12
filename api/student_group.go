@@ -2,9 +2,9 @@ package api
 
 import (
 	"bytes"
-	"io/ioutil"
+	"fmt"
 	"log"
-	"net/http"
+	"time"
 
 	"git.juddus.com/HFC/beaconing/serv"
 	jsoniter "github.com/json-iterator/go"
@@ -30,20 +30,34 @@ func CreateStudentPOST(s *serv.SessionContext) string {
 		return ""
 	}
 
-	response, err := http.Post(API.getPath(s, "studentgroups"), "application/json", bytes.NewBuffer(studentGroupPost))
+	resp, err := DoTimedRequestBody("POST",
+		API.getPath(s, "studentgroups"),
+		bytes.NewBuffer(studentGroupPost),
+		5*time.Second)
+
+	API.WriteActivity(GetUserID(s), Create_Student, resp)
+	return string(resp)
+}
+
+func GetStudentGroups(s *serv.SessionContext) string {
+	resp, err := DoTimedRequest("GET", API.getPath(s, "studentgroups"), 5*time.Second)
 	if err != nil {
 		log.Println(err.Error())
 		return ""
 	}
+	return string(resp)
+}
 
-	body, err := ioutil.ReadAll(response.Body)
-	defer response.Body.Close()
+func DeleteStudentGroup(s *serv.SessionContext, id int64) string {
+	req, err := DoTimedRequest("DELETE",
+		API.getPath(s,
+			"studentgroups/",
+			fmt.Sprintf("%d", id)),
+		5*time.Second)
 	if err != nil {
-		log.Println(err.Error())
+		fmt.Println(err)
 		return ""
 	}
 
-	API.WriteActivity(GetUserID(s), Create_Student, body)
-
-	return string(body)
+	return string(req)
 }

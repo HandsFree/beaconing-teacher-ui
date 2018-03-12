@@ -4,6 +4,6 @@ package types
 // image: http://imgur.com/some_image.png
 // link: http://whatever.com/algebra
 type LessonPlan struct {
-	ID  int                 `json:"id"`
+	ID  uint64              `json:"id"`
 	GLP *GamifiedLessonPlan `json:"glp"`
 }

@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-contrib/sessions"
 
+	"git.juddus.com/HFC/beaconing/api"
 	"git.juddus.com/HFC/beaconing/route"
 	"git.juddus.com/HFC/beaconing/serv"
 )
@@ -44,7 +45,7 @@ func (r *TokenRequest) Get(s *serv.SessionContext) {
 	}
 	session.Set("access_token", accessToken)
 
-	if err := s.TryRefreshToken(); err != nil {
+	if err := api.TryRefreshToken(s); err != nil {
 		log.Println(err.Error())
 		s.SimpleErrorRedirect(500, "Server Error: 500 Token Refresh Failed")
 		return

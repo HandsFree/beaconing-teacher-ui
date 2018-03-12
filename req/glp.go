@@ -1,8 +1,6 @@
 package req
 
 import (
-	"fmt"
-	"io/ioutil"
 	"log"
 
 	"git.juddus.com/HFC/beaconing/api"
@@ -20,13 +18,13 @@ type GLPRequest struct {
 }
 
 type GLPModel struct {
-	Id           int    `json:"id"`
+	Id           uint64 `json:"id"`
 	Name         string `json:"name"`
 	Desc         string `json:"description"`
 	Author       string `json:"author"`
 	Category     string `json:"category"`
 	Content      string `json:"content"`
-	GamePlotID   int    `json:"gamePlotId"`
+	GamePlotID   uint64 `json:"gamePlotId"`
 	ExternConfig string `json:"externConfig"`
 }
 
@@ -36,43 +34,22 @@ func (r *GLPRequest) Post(s *serv.SessionContext) {
 
 func (r *GLPRequest) Delete(s *serv.SessionContext) {
 	idParam := s.Param("id")
-	id, err := strconv.Atoi(idParam)
+	id, err := strconv.ParseUint(idParam, 10, 64)
 	if err != nil || id < 0 {
 		log.Println("error when sanitising glp id", err.Error())
 		s.SimpleErrorRedirect(400, "Client Error: Invalid GLP ID")
 		return
 	}
 
-	accessToken := s.GetAccessToken()
-
-	clnt := &http.Client{}
-
-	req, err := http.NewRequest("DELETE", fmt.Sprintf("https://core.beaconing.eu/api/gamifiedlessonpaths/%s?access_token=%s", idParam, accessToken), nil)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	resp, err := clnt.Do(req)
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	body, err := ioutil.ReadAll(resp.Body)
-	defer resp.Body.Close()
-	if err != nil {
-		log.Println(err.Error())
-		return
-	}
-
+	body := api.DeleteGLP(s, id)
 	s.Header("Content-Type", "application/json")
 	s.JSON(http.StatusOK, gin.H{"status": string(body)})
 }
 
 func (a *GLPRequest) Get(s *serv.SessionContext) {
-	glpID := s.Param("id")
-	glpIDValue, err := strconv.Atoi(glpID)
-	if err != nil || glpIDValue < 0 {
+	idParam := s.Param("id")
+	id, err := strconv.ParseUint(idParam, 10, 64)
+	if err != nil || id < 0 {
 		s.SimpleErrorRedirect(400, "Client Error: Invalid GLP ID")
 		return
 	}
@@ -94,7 +71,7 @@ func (a *GLPRequest) Get(s *serv.SessionContext) {
 		}
 	}
 
-	plan, json := api.GetGamifiedLessonPlan(s, glpIDValue)
+	plan, json := api.GetGamifiedLessonPlan(s, id)
 	if plan == nil {
 		s.SimpleErrorRedirect(500, "Funky error getting the GLP")
 		return

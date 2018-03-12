@@ -1,8 +1,6 @@
 package req
 
 import (
-	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"strconv"
@@ -36,50 +34,15 @@ func (r *StudentGroupRequest) Delete(s *serv.SessionContext) {
 		return
 	}
 
-	accessToken := s.GetAccessToken()
-
-	clnt := &http.Client{}
-
-	req, err := http.NewRequest("DELETE", fmt.Sprintf("https://core.beaconing.eu/api/studentgroups/%s?access_token=%s", id, accessToken), nil)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	resp, err := clnt.Do(req)
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	body, err := ioutil.ReadAll(resp.Body)
-	defer resp.Body.Close()
-	if err != nil {
-		log.Println(err.Error())
-		return
-	}
-
+	body := api.DeleteStudentGroup(s, id)
 	s.Header("Content-Type", "application/json")
-	s.String(http.StatusOK, string(body))
+	s.String(http.StatusOK, body)
 }
 
 func (r *StudentGroupRequest) Get(s *serv.SessionContext) {
-	accessToken := s.GetAccessToken()
-
-	response, err := http.Get(fmt.Sprintf("https://core.beaconing.eu/api/studentgroups?access_token=%s", accessToken))
-	if err != nil {
-		log.Println(err.Error())
-		return
-	}
-
-	defer response.Body.Close()
-	body, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		log.Println(err.Error())
-		return
-	}
-
+	body := api.GetStudentGroups(s)
 	s.Header("Content-Type", "application/json")
-	s.String(http.StatusOK, string(body))
+	s.String(http.StatusOK, body)
 }
 
 func NewStudentGroupRequest(p paths.PathSet) *StudentGroupRequest {

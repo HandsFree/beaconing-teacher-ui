@@ -30,22 +30,22 @@ func (r *ActiveLessonPlans) Get(s *serv.SessionContext) {
 	session := sessions.Default(s.Context)
 	assignedPlans := session.Get("assigned_plans")
 
-	var assigned = map[int]bool{}
+	var assigned = map[uint64]bool{}
 	if assignedPlans != nil {
 		log.Println("Restored assigned plans: ", len(assigned), "plans active")
-		assigned = assignedPlans.(map[int]bool)
+		assigned = assignedPlans.(map[uint64]bool)
 	} else {
 		log.Println("No assigned plans in the session!")
 	}
 
 	table := tablewriter.NewWriter(os.Stdout)
 	table.SetHeader([]string{"GLP"})
-	for id, _ := range assigned {
+	for id := range assigned {
 		table.Append([]string{fmt.Sprintf("%d", id)})
 	}
 	table.Render()
 
-	for glpID, _ := range assigned {
+	for glpID := range assigned {
 		glp, _ := api.GetGamifiedLessonPlan(s, glpID)
 		if glp == nil {
 			log.Println("No such lesson plan found for ", glpID)
@@ -67,7 +67,7 @@ func NewActiveLessonPlans(path string) *ActiveLessonPlans {
 	return req
 }
 
-func NewLessonPlan(glpID int, glp *types.GamifiedLessonPlan) types.LessonPlan {
+func NewLessonPlan(glpID uint64, glp *types.GamifiedLessonPlan) types.LessonPlan {
 	return types.LessonPlan{
 		ID:  glpID,
 		GLP: glp,

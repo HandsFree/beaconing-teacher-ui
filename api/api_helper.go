@@ -43,6 +43,10 @@ func SetupAPIHelper() {
 func DoTimedRequestBody(method string, url string, reqBody io.Reader, timeout time.Duration) ([]byte, error) {
 	ctx, _ := context.WithTimeout(context.Background(), timeout)
 	req, err := http.NewRequest(method, url, reqBody)
+
+	// TODO custom headers, for now we just assume its JSON!
+	req.Header.Set("Content-Type", "application/json")
+
 	if err != nil {
 		return []byte{}, err
 	}
@@ -93,7 +97,7 @@ func (a *CoreAPIManager) getPath(s *serv.SessionContext, args ...string) string 
 	for _, arg := range args {
 		path += arg
 	}
-	return fmt.Sprintf("%s?access_token=%s", path, s.GetAccessToken())
+	return fmt.Sprintf("%s?access_token=%s", path, GetAccessToken(s))
 }
 
 func GetCurrentUser(s *serv.SessionContext) (*types.CurrentUser, string) {

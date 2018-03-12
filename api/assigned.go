@@ -3,9 +3,7 @@ package api
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
 	"log"
-	"net/http"
 	"time"
 
 	"git.juddus.com/HFC/beaconing/serv"
@@ -20,25 +18,19 @@ func AssignStudentToGLP(s *serv.SessionContext, studentID int, glpID int) (strin
 		GlpID     int
 	}
 
-	assign := &assignment{studentID, glpID}
-
-	assignJSON, err := jsoniter.Marshal(assign)
+	assignJSON, err := jsoniter.Marshal(&assignment{studentID, glpID})
 	if err != nil {
 		return "", err
 	}
 
-	response, err := http.Post(API.getPath(s, "students/", fmt.Sprintf("%d", studentID), "/assignedGlps"), "application/json", bytes.NewBuffer(assignJSON))
-	if err != nil {
-		return "", err
-	}
+	resp, err := DoTimedRequestBody("POST",
+		API.getPath(s,
+			"students/",
+			fmt.Sprintf("%d", studentID),
+			"/assignedGlps"),
+		bytes.NewBuffer(assignJSON), 5*time.Second)
 
-	body, err := ioutil.ReadAll(response.Body)
-	defer response.Body.Close()
-	if err != nil {
-		return "", err
-	}
-
-	return string(body), nil
+	return string(resp), nil
 }
 
 func GetAssignedGLPS(s *serv.SessionContext, studentID int) string {
