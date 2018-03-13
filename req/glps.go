@@ -77,7 +77,6 @@ func (a *GLPSRequest) Get(s *serv.SessionContext) {
 		s.Jsonify(plans)
 		return
 	}
-
 	json := api.GetGamifiedLessonPlans(s)
 	s.Header("Content-Type", "application/json")
 	s.String(http.StatusOK, json)
