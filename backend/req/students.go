@@ -14,6 +14,8 @@ func GetStudentsRequest() gin.HandlerFunc {
 			s.String(http.StatusBadRequest, "oh boy! "+err.Error())
 			return
 		}
-		s.JSON(http.StatusOK, resp)
+
+		s.Header("Content-Type", "application/json")
+		s.String(http.StatusOK, resp)
 	}
 }
