@@ -11,7 +11,7 @@ import (
 
 func PostStudentGroupRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
-		body := api.CreateStudentPOST(s)
+		body := api.CreateStudentGroup(s)
 		s.Header("Content-Type", "application/json")
 		s.String(http.StatusOK, body)
 	}
