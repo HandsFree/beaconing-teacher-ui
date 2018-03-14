@@ -1,19 +1,20 @@
 package route
 
 import (
+	"sync"
+
 	"git.juddus.com/HFC/beaconing/paths"
 	"git.juddus.com/HFC/beaconing/serv"
 	"github.com/gin-gonic/gin"
 )
 
 type RouteManager struct {
-	routes         map[string]Route
 	SessionContext *serv.SessionContext
+	RouteLocker    sync.RWMutex
 }
 
 func NewRouteManager(servInst *serv.SessionContext) *RouteManager {
 	return &RouteManager{
-		routes:         map[string]Route{},
 		SessionContext: servInst,
 	}
 }
@@ -26,7 +27,7 @@ func (r *RouteManager) RegisterRoutes(routes ...Route) {
 
 func (r *RouteManager) RegisterRoute(route Route) {
 	route.SetManager(r)
-	r.routes[route.GET()] = route
+	r.RouteLocker.Lock()
 
 	// TODO handle all path types.
 	for _, path := range route.GetPaths() {
@@ -51,4 +52,6 @@ func (r *RouteManager) RegisterRoute(route Route) {
 			})
 		}
 	}
+
+	r.RouteLocker.Unlock()
 }

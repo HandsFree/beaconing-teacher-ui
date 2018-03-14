@@ -41,7 +41,7 @@ func NewCreateStudentActivity(apiReq []byte) *CreatedStudentActivity {
 
 	data := &StudentGroup{}
 	if err := jsoniter.Unmarshal(apiReq, data); err != nil {
-		log.Println(err.Error())
+		log.Println("NewCreateStudentActivity", err.Error())
 	}
 
 	if data != nil {

@@ -32,7 +32,8 @@ func processSearch(s *serv.SessionContext, json SearchRequestQuery) *SearchQuery
 	studentsData, studentsCached := api.Fetch("students")
 	if !studentsCached {
 		// cache miss, force a fetch to cache students
-		studentsData = api.GetStudents(s)
+		studentsData, _ = api.GetStudents(s)
+		// handle error!
 	}
 
 	glpData, glpsCached := api.Fetch("glps")
@@ -48,13 +49,13 @@ func processSearch(s *serv.SessionContext, json SearchRequestQuery) *SearchQuery
 	// conv json -> objects
 	var students []types.Student
 	if err := jsoniter.Unmarshal([]byte(studentsData), &students); err != nil {
-		log.Println(err)
+		log.Println("processSearch", err)
 		return nil
 	}
 
 	var glps []types.GamifiedLessonPlan
 	if err := jsoniter.Unmarshal([]byte(glpData), &glps); err != nil {
-		log.Println(err)
+		log.Println("processSearch", err)
 		return nil
 	}
 
@@ -103,7 +104,7 @@ func (r *SearchRequest) Delete(s *serv.SessionContext) {}
 func (a *SearchRequest) Post(s *serv.SessionContext) {
 	var json SearchRequestQuery
 	if err := s.ShouldBindJSON(&json); err != nil {
-		log.Println(err.Error())
+		log.Println("SearchRequest", err.Error())
 		s.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

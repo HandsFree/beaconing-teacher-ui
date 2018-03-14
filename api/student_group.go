@@ -20,13 +20,13 @@ type StudentGroupPost struct {
 func CreateStudentPOST(s *serv.SessionContext) string {
 	var json StudentGroupPost
 	if err := s.ShouldBindJSON(&json); err != nil {
-		log.Println(err.Error())
+		log.Println("CreateStudentPOST", err.Error())
 		return ""
 	}
 
 	studentGroupPost, err := jsoniter.Marshal(json)
 	if err != nil {
-		log.Println(err.Error())
+		log.Println("CreateStudentPOST", err.Error())
 		return ""
 	}
 
@@ -42,7 +42,7 @@ func CreateStudentPOST(s *serv.SessionContext) string {
 func GetStudentGroups(s *serv.SessionContext) string {
 	resp, err := DoTimedRequest("GET", API.getPath(s, "studentgroups"), 5*time.Second)
 	if err != nil {
-		log.Println(err.Error())
+		log.Println("CreateStudentGroups", err.Error())
 		return ""
 	}
 	return string(resp)

@@ -23,7 +23,7 @@ func (a *GLPSRequest) Get(s *serv.SessionContext) {
 
 	index, err := strconv.ParseUint(indexQuery, 10, 64)
 	if err != nil {
-		log.Println(err.Error())
+		log.Println("GLPSRequest", err.Error())
 		index = 0
 	}
 

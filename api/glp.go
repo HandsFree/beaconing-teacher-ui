@@ -17,7 +17,7 @@ import (
 func GetGamifiedLessonPlans(s *serv.SessionContext) string {
 	resp, err := DoTimedRequest("GET", API.getPath(s, "gamifiedlessonpaths"), 5*time.Second)
 	if err != nil {
-		log.Println(err.Error())
+		log.Println("GetGamifiedLessonPlans", err.Error())
 		return ""
 	}
 
@@ -32,20 +32,20 @@ func GetGamifiedLessonPlans(s *serv.SessionContext) string {
 func GetGamifiedLessonPlan(s *serv.SessionContext, id uint64) (*types.GamifiedLessonPlan, string) {
 	resp, err := DoTimedRequest("GET", API.getPath(s, "gamifiedlessonpaths/", fmt.Sprintf("%d", id)), 5*time.Second)
 	if err != nil {
-		log.Println(err.Error())
+		log.Println("GetGamifiedLessonPlan", err.Error())
 		return nil, ""
 	}
 
 	data := &types.GamifiedLessonPlan{}
 	if err := jsoniter.Unmarshal(resp, data); err != nil {
-		log.Println(err.Error())
+		log.Println("GetGamifiedLessonPlan", err.Error())
 	}
 
 	// should we compact everything?
 	// we do here because the json for glps request is stupidly long
 	buffer := new(bytes.Buffer)
 	if err := json.Compact(buffer, resp); err != nil {
-		log.Println(err.Error())
+		log.Println("GetGamifiedLessonPlan", err.Error())
 	}
 
 	return data, buffer.String()

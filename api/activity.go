@@ -26,7 +26,7 @@ func GetActivities(teacherID int, count int) []types.Activity {
 	query := "SELECT creation_date, activity_type, api_req FROM activities WHERE teacher_id = $2 LIMIT $1"
 	rows, err := API.db.Query(query, count, teacherID)
 	if err != nil {
-		log.Println(err.Error())
+		log.Println("GetActivities", err.Error())
 		return []types.Activity{}
 	}
 

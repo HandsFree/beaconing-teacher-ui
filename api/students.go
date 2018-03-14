@@ -15,16 +15,17 @@ import (
 
 // GetStudents requests a list of all students from the
 // core api, returned as a string of json
-func GetStudents(s *serv.SessionContext) string {
+func GetStudents(s *serv.SessionContext) (string, error) {
 	resp, err := DoTimedRequest("GET", API.getPath(s, "students"), 5*time.Second)
 	if err != nil {
-		log.Println(err.Error())
-		return ""
+		log.Println("GetStudents", err.Error())
+		return "", err
 	}
 
 	students := []*types.Student{}
 	if err := jsoniter.Unmarshal(resp, &students); err != nil {
-		log.Println(err.Error())
+		log.Println("GetStudents", err.Error())
+		return "", err
 	}
 
 	for _, s := range students {
@@ -36,27 +37,27 @@ func GetStudents(s *serv.SessionContext) string {
 
 	modifiedStudentsJSON, err := jsoniter.Marshal(students)
 	if err != nil {
-		log.Println(err.Error())
-		return string(resp)
+		log.Println("GetStudents", err.Error())
+		return string(resp), nil
 	}
 
 	body := string(modifiedStudentsJSON)
 	if len(students) > 0 {
 		cacheData("students", body)
 	}
-	return body
+	return body, nil
 }
 
 func GetStudent(s *serv.SessionContext, studentID int) (*types.Student, string) {
 	data, err := DoTimedRequest("GET", API.getPath(s, "students/", fmt.Sprintf("%d", studentID)), 5*time.Second)
 	if err != nil {
-		log.Println(err.Error())
+		log.Println("GetStudent", err.Error())
 		return nil, ""
 	}
 
 	student := &types.Student{}
 	if err := jsoniter.Unmarshal(data, student); err != nil {
-		log.Println(err.Error())
+		log.Println("GetStudent", err.Error())
 	}
 
 	input := fmt.Sprintf("%d%s", student.Id, student.Username)

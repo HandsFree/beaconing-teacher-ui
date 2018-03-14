@@ -46,13 +46,14 @@ func (r *TokenRequest) Get(s *serv.SessionContext) {
 	session.Set("access_token", accessToken)
 
 	if err := api.TryRefreshToken(s); err != nil {
-		log.Println(err.Error())
+		log.Println("TokenRequest", err.Error())
 		s.SimpleErrorRedirect(500, "Server Error: 500 Token Refresh Failed")
 		return
 	}
 
 	if err := session.Save(); err != nil {
-		log.Println(err.Error())
+		log.Println("TokenRequest", err.Error())
+		s.SimpleErrorRedirect(500, "Failed to save session")
 		return
 	}
 
@@ -61,6 +62,7 @@ func (r *TokenRequest) Get(s *serv.SessionContext) {
 		s.Redirect(http.StatusTemporaryRedirect, "/")
 		return
 	}
+
 	s.Redirect(http.StatusTemporaryRedirect, redirectPath.(string))
 }
 

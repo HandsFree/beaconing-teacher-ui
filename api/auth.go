@@ -36,32 +36,29 @@ func GetRefreshToken(s *serv.SessionContext) error {
 	})
 
 	if err != nil {
-		log.Println(err.Error())
+		log.Println("GetRefreshToken", err.Error())
 		return err
 	}
 
 	const tokenRefreshLink = "https://core.beaconing.eu/auth/token"
-	resp, err := DoTimedRequestBody("POST", tokenRefreshLink, bytes.NewBuffer(message), 5*time.Second)
+	resp, err := DoTimedRequestBody("POST", tokenRefreshLink, bytes.NewBuffer(message), 15*time.Second)
 	if err != nil {
-		log.Println(err.Error())
+		log.Println("GetRefreshToken", err.Error())
 		return err
 	}
 
-	log.Println("Doing auth with beaconing server, response was:\n", string(resp))
-
 	var respToken types.TokenResponse
 	if err := jsoniter.Unmarshal(resp, &respToken); err != nil {
-		log.Println(err.Error())
+		log.Println("GetRefreshToken", err.Error())
 		return err
 	}
 
 	log.Println("Auth: Set access token!")
-
 	session.Set("access_token", respToken.AccessToken)
 	session.Set("refresh_token", respToken.RefreshToken)
 	session.Set("token_type", respToken.TokenType)
 	if err := session.Save(); err != nil {
-		log.Println(err.Error())
+		log.Println("GetRefreshToken", err.Error())
 	}
 	return nil
 }

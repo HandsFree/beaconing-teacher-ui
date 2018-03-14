@@ -41,7 +41,7 @@ func GetAssignedGLPS(s *serv.SessionContext, studentID int) string {
 			"/assignedGlps"),
 		5*time.Second)
 	if err != nil {
-		log.Println(err.Error())
+		log.Println("GetAssignedGLPS", err.Error())
 		return ""
 	}
 	return string(resp)
@@ -57,7 +57,7 @@ func DeleteAssignedGLP(s *serv.SessionContext, studentID int, glpID int) string 
 		5*time.Second)
 
 	if err != nil {
-		log.Println(err.Error())
+		log.Println("DeleteAssignedGLP", err.Error())
 		return ""
 	}
 	return string(resp)

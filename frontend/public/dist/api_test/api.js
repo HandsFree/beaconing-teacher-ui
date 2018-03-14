@@ -1,16 +1,15 @@
 function get(link) {
     const xhr = new XMLHttpRequest();
-
-    xhr.responseType = 'text';
-    xhr.open('GET', link);
-    xhr.send();
+    xhr.open('GET', link, true);
+    xhr.responseType = 'json';
+    xhr.send(null);
 
     return new Promise((resolve, reject) => {
         xhr.onreadystatechange = () => {
             if (xhr.readyState === 4) {
-                console.log(xhr.response);
-                console.log(link);
-                resolve(JSON.parse(xhr.response));
+                console.log('Request Link: ', link);
+                console.log('Response Test: ', xhr.response);
+                console.log(xhr.status, ' ', xhr.statusText);
             }
         };
 
@@ -25,21 +24,39 @@ function get(link) {
 function getGLPs() {
     const glps = get(`//${window.location.host}/intent/glps`);
 
-    glps.then(values => console.log(values));
+    glps.then(values => console.log('JSON Object: ', values));
 }
 
 function getStudents() {
     const students = get(`//${window.location.host}/intent/students`);
 
-    students.then(values => console.log(values));
+    students.then((values) => {
+        console.log('JSON Object: ', values);
+
+        for (const student of values) {
+            console.log('ID: ', student.Id);
+            console.log('Username: ', student.Username);
+        }
+    });
+}
+
+function getGroups() {
+    const groups = get(`//${window.location.host}/intent/studentgroups`);
+
+    groups.then(values => console.log('JSON Object: ', values));
+}
+
+function getCurrentUser() {
+    const profile = get(`//${window.location.host}/intent/profile`);
+
+    profile.then(values => console.log('JSON Object: ', values));
 }
 
 function start() {
-    getGLPs();
     getStudents();
-    getGLPs();
+    let f = function(){};
+    getCurrentUser();
 }
 
 const button = document.getElementById('apibutton');
-
 button.onclick = start;

@@ -18,7 +18,12 @@ func (r *StudentsRequest) Post(s *serv.SessionContext) {}
 func (r *StudentsRequest) Delete(s *serv.SessionContext) {}
 
 func (r *StudentsRequest) Get(s *serv.SessionContext) {
-	resp := api.GetStudents(s)
+	resp, err := api.GetStudents(s)
+	if err != nil {
+		s.SimpleErrorRedirect(6969, "oh boy! "+err.Error())
+		return
+	}
+
 	s.Header("Content-Type", "application/json")
 	s.String(http.StatusOK, resp)
 }

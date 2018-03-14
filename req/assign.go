@@ -91,7 +91,7 @@ func registerGLP(s *serv.SessionContext, glpID int) {
 
 	session.Set("assigned_plans", assignedPlansTable)
 	if err := session.Save(); err != nil {
-		log.Println(err.Error())
+		log.Println("registerGLP", err.Error())
 	}
 }
 

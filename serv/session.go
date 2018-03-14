@@ -25,8 +25,8 @@ func NewSessionContext(router *gin.Engine) *SessionContext {
 // Creates a really simple error message JSON response
 // and aborts the current session
 func (s *SessionContext) SimpleErrorRedirect(code int, message string) {
-	resp := map[string]string{"error": message}
-	s.Jsonify(resp)
+	s.Header("Content-Type", "application/json")
+	s.String(code, `"error": `+message)
 	s.Abort()
 }
 
@@ -43,7 +43,7 @@ func (s *SessionContext) Json(code string) {
 func (s *SessionContext) Jsonify(things interface{}) {
 	json, err := jsoniter.Marshal(things)
 	if err != nil {
-		log.Println(err.Error())
+		log.Println("SessionContext", err.Error())
 		return
 	}
 

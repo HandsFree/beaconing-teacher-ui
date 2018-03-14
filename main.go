@@ -1,14 +1,8 @@
 package main
 
 import (
-	"context"
 	"log"
-	"net/http"
-	"os"
-	"os/signal"
-	"time"
 
-	"github.com/gin-contrib/gzip"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 
@@ -36,6 +30,7 @@ func TokenAuth() gin.HandlerFunc {
 				// we have no code and no access
 				// token so lets ask for auth
 				api.AuthRedirect(c)
+				c.Abort()
 				return
 			}
 		}
@@ -53,9 +48,6 @@ func GetRouterEngine() *gin.Engine {
 
 	// Config the router to use sessions with cookie store
 	router.Use(sessions.Sessions("beaconing", store))
-
-	// Resources will be gzipped
-	router.Use(gzip.Gzip(gzip.BestSpeed))
 
 	// token auth middleware
 	router.Use(TokenAuth())
@@ -160,34 +152,9 @@ func main() {
 	cfg.LoadConfig()
 	api.SetupAPIHelper()
 
-	server := &http.Server{
-		Addr:    ":8081",
-		Handler: GetRouterEngine(),
+	router := GetRouterEngine()
+	// Start Gin
+	if err := router.Run(":8081"); err != nil {
+		log.Fatal(err)
 	}
-
-	quit := make(chan os.Signal)
-	signal.Notify(quit, os.Interrupt)
-
-	go func() {
-		<-quit
-		log.Println("receive interrupt signal")
-		if err := server.Close(); err != nil {
-			log.Fatal("Server Close:", err)
-		}
-	}()
-
-	if err := server.ListenAndServe(); err != nil {
-		if err == http.ErrServerClosed {
-			log.Println("Server closed under request")
-		} else {
-			log.Fatal("Server closed unexpectedly")
-		}
-	}
-
-	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
-	defer cancel()
-	if err := server.Shutdown(ctx); err != nil {
-		log.Fatal("Server Shutdown:", err)
-	}
-	log.Println("Server exiting")
 }

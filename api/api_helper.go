@@ -41,24 +41,57 @@ func SetupAPIHelper() {
 }
 
 func DoTimedRequestBody(method string, url string, reqBody io.Reader, timeout time.Duration) ([]byte, error) {
+	// handle these method manually
+	// for now without a context.
+	if method == "POST" {
+		response, err := http.Post(url, "application/json", reqBody)
+		if err != nil {
+			log.Println("POST!", err.Error())
+			return []byte{}, err
+		}
+
+		defer response.Body.Close()
+		body, err := ioutil.ReadAll(response.Body)
+		if err != nil {
+			log.Println("POST!", err.Error())
+			return []byte{}, err
+		}
+		return body, nil
+	} else if method == "GET" {
+		response, err := http.Get(url)
+		if err != nil {
+			log.Println("GET!", err.Error())
+			return []byte{}, err
+		}
+
+		defer response.Body.Close()
+		body, err := ioutil.ReadAll(response.Body)
+		if err != nil {
+			log.Println("GET!", err.Error())
+			return []byte{}, err
+		}
+		return body, nil
+	}
+
 	ctx, _ := context.WithTimeout(context.Background(), timeout)
 	req, err := http.NewRequest(method, url, reqBody)
-
-	// TODO custom headers, for now we just assume its JSON!
-	req.Header.Set("Content-Type", "application/json")
+	log.Println("Doing HTTP request ", req)
 
 	if err != nil {
+		log.Println("DoTimedRequestBody", err.Error())
 		return []byte{}, err
 	}
 
 	resp, err := http.DefaultClient.Do(req.WithContext(ctx))
 	if err != nil {
+		log.Println("DoTimedRequestBody", err.Error())
 		return []byte{}, err
 	}
 
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
+		log.Println("DoTimedRequestBody", err.Error())
 		return []byte{}, err
 	}
 
@@ -103,13 +136,13 @@ func (a *CoreAPIManager) getPath(s *serv.SessionContext, args ...string) string 
 func GetCurrentUser(s *serv.SessionContext) (*types.CurrentUser, string) {
 	resp, err := DoTimedRequest("GET", API.getPath(s, "currentuser"), 5*time.Second)
 	if err != nil {
-		log.Println(err.Error())
+		log.Println("GetCurrentUser", err.Error())
 		return nil, ""
 	}
 
 	data := &types.CurrentUser{}
 	if err := jsoniter.Unmarshal(resp, data); err != nil {
-		log.Println(err.Error())
+		log.Println("GetCurrentUser", err.Error())
 	}
 
 	input := fmt.Sprintf("%d%s", data.Id, data.Username)
@@ -119,7 +152,7 @@ func GetCurrentUser(s *serv.SessionContext) (*types.CurrentUser, string) {
 
 	modifiedJSON, err := jsoniter.Marshal(data)
 	if err != nil {
-		log.Println(err.Error())
+		log.Println("GetCurrentUser", err.Error())
 		// error, return old json
 		return data, string(resp)
 	}
