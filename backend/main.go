@@ -8,11 +8,16 @@ import (
 
 	"git.juddus.com/HFC/beaconing/backend/api"
 	"git.juddus.com/HFC/beaconing/backend/auth"
+	"git.juddus.com/HFC/beaconing/backend/authoring_tool"
 	"git.juddus.com/HFC/beaconing/backend/cfg"
+	"git.juddus.com/HFC/beaconing/backend/classroom"
+	"git.juddus.com/HFC/beaconing/backend/lesson_manager"
 	"git.juddus.com/HFC/beaconing/backend/page"
 	"git.juddus.com/HFC/beaconing/backend/paths"
 	"git.juddus.com/HFC/beaconing/backend/req"
+	"git.juddus.com/HFC/beaconing/backend/root"
 	"git.juddus.com/HFC/beaconing/backend/route"
+	"git.juddus.com/HFC/beaconing/backend/search"
 	"git.juddus.com/HFC/beaconing/backend/serv"
 )
 
@@ -69,33 +74,34 @@ func GetRouterEngine() *gin.Engine {
 	mainCtx := serv.NewSessionContext(router)
 	manager := route.NewRouteManager(mainCtx)
 
-	// Route configs
-	pages := []route.Route{
-		page.NewPage("/", "Home", "dist/beaconing/pages/home/page.js"),
+	router.GET("/", root.Get(page.New("Home", "dist/beaconing/pages/home/page.js")))
 
-		page.NewPage("/lesson_manager", "Lesson Manager", "dist/beaconing/pages/lesson_manager/page.js"),
-		page.NewPage("/lesson_manager/new_plan", "Lesson Manager", "dist/beaconing/pages/lesson_manager/new_plan/page.js"),
-
-		page.NewPage("/authoring_tool", "Authoring Tool", "dist/beaconing/pages/authoring_tool/page.js"),
-
-		page.NewPage("/classroom", "Classroom", "dist/beaconing/pages/classroom/page.js"),
-
+	{
+		router.GET("/classroom", classroom.Get(page.New("Classroom", "dist/beaconing/pages/classroom/page.js")))
 		// see issue #61
-		page.NewPage("/classroom/", "Classroom", "dist/beaconing/pages/classroom/page.js"),
+		router.GET("/classroom/", classroom.Get(page.New("Classroom", "dist/beaconing/pages/classroom/page.js")))
 		//.                   ^^^^
 
-		page.NewPage("/classroom/classes", "Classroom", "dist/beaconing/pages/classroom/classes/page.js"),
-		page.NewPage("/classroom/groups", "Classroom", "dist/beaconing/pages/classroom/groups/page.js"),
-		page.NewPage("/classroom/courses", "Classroom", "dist/beaconing/pages/classroom/courses/page.js"),
-
-		page.NewPage("/search", "Search", "dist/beaconing/pages/search/page.js"),
+		router.GET("/classroom/classes", classroom.GetClasses(page.New("Classroom", "dist/beaconing/pages/classroom/classes/page.js")))
+		router.GET("/classroom/groups", classroom.GetGroups(page.New("Classroom", "dist/beaconing/pages/classroom/groups/page.js")))
+		router.GET("/classroom/courses", classroom.GetCourses(page.New("Classroom", "dist/beaconing/pages/classroom/courses/page.js")))
 	}
 
-	widgets := []route.Route{
-		req.NewStudentOverview("/widget/student_overview"),
-		req.NewRecentActivities("/widget/recent_activities"),
-		req.NewActiveLessonPlansWidget("/widget/active_lesson_plans"),
-	}
+	router.GET("/authoring_tool", authoring_tool.Get(page.New("Authoring Tool", "dist/beaconing/pages/authoring_tool/page.js")))
+
+	// TODO use a group here.
+	router.GET("/lesson_manager", lesson_manager.Get(page.New("Lesson Manager", "dist/beaconing/pages/lesson_manager/page.js")))
+	router.GET("/lesson_manager/new_plan", lesson_manager.GetNewPlan(page.New("Lesson Manager", "dist/beaconing/pages/lesson_manager/new_plan/page.js")))
+
+	router.GET("/search", search.Get(page.New("Search", "dist/beaconing/pages/search/page.js")))
+
+	/*
+		widgets := []route.Route{
+			req.NewStudentOverview("/widget/student_overview"),
+			req.NewRecentActivities("/widget/recent_activities"),
+			req.NewActiveLessonPlansWidget("/widget/active_lesson_plans"),
+		}
+	*/
 
 	api := []route.Route{
 		// These are all GET requests
@@ -139,9 +145,8 @@ func GetRouterEngine() *gin.Engine {
 		req.NewLogOutRequest("/auth/logout"),
 	}
 
-	// Enable the routes
-	manager.RegisterRoutes(pages...)
-	manager.RegisterRoutes(widgets...)
+	// manager.RegisterRoutes(pages...)
+	// manager.RegisterRoutes(widgets...)
 	manager.RegisterRoutes(api...)
 	manager.RegisterRoutes(auth...)
 
@@ -153,7 +158,6 @@ func main() {
 	api.SetupAPIHelper()
 
 	router := GetRouterEngine()
-	// Start Gin
 	if err := router.Run(":8081"); err != nil {
 		log.Fatal(err)
 	}
