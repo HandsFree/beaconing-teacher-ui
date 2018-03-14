@@ -1,37 +1,21 @@
 package req
 
 import (
+	"net/http"
 	"strconv"
 
 	"git.juddus.com/HFC/beaconing/backend/api"
-	"git.juddus.com/HFC/beaconing/backend/route"
-	"git.juddus.com/HFC/beaconing/backend/serv"
+	"github.com/gin-gonic/gin"
 )
 
-type StudentRequest struct {
-	route.SimpleManagedRoute
-}
-
-func (r *StudentRequest) Post(s *serv.SessionContext) {
-
-}
-
-func (r *StudentRequest) Delete(s *serv.SessionContext) {}
-
-func (r *StudentRequest) Get(s *serv.SessionContext) {
+func GetStudentRequest(s *gin.Context) {
 	studentIDParam := s.Param("id")
 	studentID, err := strconv.Atoi(studentIDParam)
 	if err != nil {
-		s.SimpleErrorRedirect(500, "ID thingy")
+		s.String(http.StatusBadRequest, "ID thingy")
 		return
 	}
 
 	resp, _ := api.GetStudent(s, studentID)
 	s.Jsonify(resp)
-}
-
-func NewStudentRequest(path string) *StudentRequest {
-	req := &StudentRequest{}
-	req.SetGET(path)
-	return req
 }

@@ -8,14 +8,14 @@ import (
 	"log"
 	"time"
 
-	"git.juddus.com/HFC/beaconing/backend/serv"
 	"git.juddus.com/HFC/beaconing/backend/types"
+	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 )
 
 // GetStudents requests a list of all students from the
 // core api, returned as a string of json
-func GetStudents(s *serv.SessionContext) (string, error) {
+func GetStudents(s *gin.Context) (string, error) {
 	resp, err := DoTimedRequest("GET", API.getPath(s, "students"), 5*time.Second)
 	if err != nil {
 		log.Println("GetStudents", err.Error())
@@ -48,7 +48,7 @@ func GetStudents(s *serv.SessionContext) (string, error) {
 	return body, nil
 }
 
-func GetStudent(s *serv.SessionContext, studentID int) (*types.Student, string) {
+func GetStudent(s *gin.Context, studentID int) (*types.Student, string) {
 	data, err := DoTimedRequest("GET", API.getPath(s, "students/", fmt.Sprintf("%d", studentID)), 5*time.Second)
 	if err != nil {
 		log.Println("GetStudent", err.Error())

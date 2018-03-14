@@ -6,13 +6,13 @@ import (
 	"log"
 	"time"
 
-	"git.juddus.com/HFC/beaconing/backend/serv"
+	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 )
 
 // AssignStudentToGLP assigns the given student (by id) to the given GLP (by id),
 // returns a string of the returned json from the core API as well as an error (if any).
-func AssignStudentToGLP(s *serv.SessionContext, studentID int, glpID int) (string, error) {
+func AssignStudentToGLP(s *gin.Context, studentID int, glpID int) (string, error) {
 	type assignment struct {
 		StudentID int
 		GlpID     int
@@ -33,7 +33,7 @@ func AssignStudentToGLP(s *serv.SessionContext, studentID int, glpID int) (strin
 	return string(resp), nil
 }
 
-func GetAssignedGLPS(s *serv.SessionContext, studentID int) string {
+func GetAssignedGLPS(s *gin.Context, studentID int) string {
 	resp, err := DoTimedRequest("GET",
 		API.getPath(s,
 			"students/",
@@ -47,7 +47,7 @@ func GetAssignedGLPS(s *serv.SessionContext, studentID int) string {
 	return string(resp)
 }
 
-func DeleteAssignedGLP(s *serv.SessionContext, studentID int, glpID int) string {
+func DeleteAssignedGLP(s *gin.Context, studentID int, glpID int) string {
 	resp, err := DoTimedRequest("DELETE",
 		API.getPath(s,
 			"students/",

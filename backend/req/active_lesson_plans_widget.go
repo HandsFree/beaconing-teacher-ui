@@ -8,21 +8,13 @@ import (
 	"strconv"
 
 	"git.juddus.com/HFC/beaconing/backend/api"
-	"git.juddus.com/HFC/beaconing/backend/route"
-	"git.juddus.com/HFC/beaconing/backend/serv"
 	"git.juddus.com/HFC/beaconing/backend/types"
 	"github.com/gin-contrib/sessions"
+	"github.com/gin-gonic/gin"
 	"github.com/olekukonko/tablewriter"
 )
 
-type ActiveLessonPlansWidget struct {
-	route.SimpleManagedRoute
-}
-
-func (r *ActiveLessonPlansWidget) Post(s *serv.SessionContext)   {}
-func (r *ActiveLessonPlansWidget) Delete(s *serv.SessionContext) {}
-
-func (r *ActiveLessonPlansWidget) Get(s *serv.SessionContext) {
+func GetActiveLessonPlansWidget(s *gin.Context) {
 	log.Println("ACTIVE LESSON PLANS GET REQ")
 
 	limitParam := s.DefaultQuery("limit", "5")
@@ -34,7 +26,7 @@ func (r *ActiveLessonPlansWidget) Get(s *serv.SessionContext) {
 
 	lps := []types.LessonPlanWidget{}
 
-	session := sessions.Default(s.Context)
+	session := sessions.Default(s)
 	assignedPlans := session.Get("assigned_plans")
 
 	var assigned map[uint64]bool = map[uint64]bool{}
@@ -68,12 +60,6 @@ func (r *ActiveLessonPlansWidget) Get(s *serv.SessionContext) {
 
 	size := int(math.Min(float64(limitParamValue), float64(len(lps))))
 	s.Jsonify(lps[0:size])
-}
-
-func NewActiveLessonPlansWidget(path string) *ActiveLessonPlansWidget {
-	req := &ActiveLessonPlansWidget{}
-	req.SetGET(path)
-	return req
 }
 
 func NewLessonPlanWidget(name string, glpID uint64) types.LessonPlanWidget {

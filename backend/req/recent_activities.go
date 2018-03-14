@@ -4,9 +4,8 @@ import (
 	_ "time"
 
 	"git.juddus.com/HFC/beaconing/backend/api"
-	"git.juddus.com/HFC/beaconing/backend/route"
-	"git.juddus.com/HFC/beaconing/backend/serv"
 	"git.juddus.com/HFC/beaconing/backend/types"
+	"github.com/gin-gonic/gin"
 )
 
 /*
@@ -53,26 +52,19 @@ func (s SimpleActivity) GetMessage() string {
 
 // WEB PAGE
 
-type RecentActivities struct {
-	route.SimpleManagedRoute
-}
-
-func (r *RecentActivities) getLastActivities(s *serv.SessionContext, n int) []types.Activity {
+func getLastActivities(s *gin.Context, n int) []types.Activity {
 	activities := api.GetActivities(api.GetUserID(s), n)
 	return activities
 }
 
-func (r *RecentActivities) Post(s *serv.SessionContext)   {}
-func (r *RecentActivities) Delete(s *serv.SessionContext) {}
-
-func (r *RecentActivities) Get(s *serv.SessionContext) {
+func GetRecentActivities(s *gin.Context) {
 	/*
 		first we get the current user using the current_user api
 
 		then we look up all of the activities in the local
 		database with the ID of the current_user
 	*/
-	activities := r.getLastActivities(s, 15)
+	activities := getLastActivities(s, 15)
 	s.Jsonify(activities)
 }
 
@@ -85,12 +77,6 @@ type LPAssignedActivity struct {
 
 func (a *LPAssignedActivity) String() string {
 	return a.Message + " " + a.Plan.Name
-}
-
-func NewRecentActivities(path string) *RecentActivities {
-	req := &RecentActivities{}
-	req.SetGET(path)
-	return req
 }
 
 func NewLPAssignedActivity(planName string) LPAssignedActivity {

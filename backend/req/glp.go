@@ -4,18 +4,11 @@ import (
 	"log"
 
 	"git.juddus.com/HFC/beaconing/backend/api"
-	"git.juddus.com/HFC/beaconing/backend/paths"
-	"git.juddus.com/HFC/beaconing/backend/route"
-	"git.juddus.com/HFC/beaconing/backend/serv"
 	"github.com/gin-gonic/gin"
 
 	"net/http"
 	"strconv"
 )
-
-type GLPRequest struct {
-	route.SimpleManagedRoute
-}
 
 type GLPModel struct {
 	Id           uint64 `json:"id"`
@@ -28,16 +21,12 @@ type GLPModel struct {
 	ExternConfig string `json:"externConfig"`
 }
 
-func (r *GLPRequest) Post(s *serv.SessionContext) {
-
-}
-
-func (r *GLPRequest) Delete(s *serv.SessionContext) {
+func DeleteGLPRequest(s *gin.Context) {
 	idParam := s.Param("id")
 	id, err := strconv.ParseUint(idParam, 10, 64)
 	if err != nil || id < 0 {
 		log.Println("error when sanitising glp id", err.Error())
-		s.SimpleErrorRedirect(400, "Client Error: Invalid GLP ID")
+		s.String(http.StatusBadRequest, "Client Error: Invalid GLP ID")
 		return
 	}
 
@@ -46,11 +35,11 @@ func (r *GLPRequest) Delete(s *serv.SessionContext) {
 	s.JSON(http.StatusOK, gin.H{"status": string(body)})
 }
 
-func (a *GLPRequest) Get(s *serv.SessionContext) {
+func GetGLPRequest(s *gin.Context) {
 	idParam := s.Param("id")
 	id, err := strconv.ParseUint(idParam, 10, 64)
 	if err != nil || id < 0 {
-		s.SimpleErrorRedirect(400, "Client Error: Invalid GLP ID")
+		s.String(http.StatusBadRequest, "Client Error: Invalid GLP ID")
 		return
 	}
 
@@ -73,7 +62,7 @@ func (a *GLPRequest) Get(s *serv.SessionContext) {
 
 	plan, json := api.GetGamifiedLessonPlan(s, id)
 	if plan == nil {
-		s.SimpleErrorRedirect(500, "Funky error getting the GLP")
+		s.String(http.StatusBadRequest, "Funky error getting the GLP")
 		return
 	}
 
@@ -92,10 +81,4 @@ func (a *GLPRequest) Get(s *serv.SessionContext) {
 
 	s.Header("Content-Type", "application/json")
 	s.Jsonify(model)
-}
-
-func NewGLPRequest(p paths.PathSet) *GLPRequest {
-	req := &GLPRequest{}
-	req.SetPaths(p)
-	return req
 }

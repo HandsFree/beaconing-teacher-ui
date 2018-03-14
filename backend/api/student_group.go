@@ -6,7 +6,7 @@ import (
 	"log"
 	"time"
 
-	"git.juddus.com/HFC/beaconing/backend/serv"
+	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 )
 
@@ -17,7 +17,7 @@ type StudentGroupPost struct {
 
 // this is technically creating a student group!
 // fixme
-func CreateStudentPOST(s *serv.SessionContext) string {
+func CreateStudentPOST(s *gin.Context) string {
 	var json StudentGroupPost
 	if err := s.ShouldBindJSON(&json); err != nil {
 		log.Println("CreateStudentPOST", err.Error())
@@ -39,7 +39,7 @@ func CreateStudentPOST(s *serv.SessionContext) string {
 	return string(resp)
 }
 
-func GetStudentGroups(s *serv.SessionContext) string {
+func GetStudentGroups(s *gin.Context) string {
 	resp, err := DoTimedRequest("GET", API.getPath(s, "studentgroups"), 5*time.Second)
 	if err != nil {
 		log.Println("CreateStudentGroups", err.Error())
@@ -48,7 +48,7 @@ func GetStudentGroups(s *serv.SessionContext) string {
 	return string(resp)
 }
 
-func DeleteStudentGroup(s *serv.SessionContext, id int64) string {
+func DeleteStudentGroup(s *gin.Context, id int64) string {
 	req, err := DoTimedRequest("DELETE",
 		API.getPath(s,
 			"studentgroups/",

@@ -4,13 +4,13 @@ import (
 	"encoding/gob"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 	"strconv"
 
 	"git.juddus.com/HFC/beaconing/backend/api"
-	"git.juddus.com/HFC/beaconing/backend/route"
-	"git.juddus.com/HFC/beaconing/backend/serv"
 	"github.com/gin-contrib/sessions"
+	"github.com/gin-gonic/gin"
 	"github.com/olekukonko/tablewriter"
 )
 
@@ -18,26 +18,18 @@ func init() {
 	gob.Register(map[int]bool{})
 }
 
-// AssignRequest handles a student to glp assignment
-type AssignRequest struct {
-	route.SimpleManagedRoute
-}
-
-func (r *AssignRequest) Post(s *serv.SessionContext)   {}
-func (r *AssignRequest) Delete(s *serv.SessionContext) {}
-
-func (a *AssignRequest) Get(s *serv.SessionContext) {
+func GetAssignRequest(s *gin.Context) {
 	studentID := s.Param("student")
 	studentIDValue, err := strconv.Atoi(studentID)
 	if err != nil || studentIDValue < 0 {
-		s.SimpleErrorRedirect(400, "Client Error: Invalid student ID")
+		s.String(http.StatusBadRequest, "Client Error: Invalid student ID")
 		return
 	}
 
 	glpID := s.Param("glp")
 	glpIDValue, err := strconv.Atoi(glpID)
 	if err != nil || glpIDValue < 0 {
-		s.SimpleErrorRedirect(400, "Client Error: Invalid GLP ID")
+		s.String(http.StatusBadRequest, "Client Error: Invalid GLP ID")
 		return
 	}
 
@@ -50,7 +42,7 @@ func (a *AssignRequest) Get(s *serv.SessionContext) {
 	// saying we're assigning said student to glp.
 	resp, err := api.AssignStudentToGLP(s, studentIDValue, glpIDValue)
 	if err != nil {
-		s.SimpleErrorRedirect(400, "Failed to assign student to glp")
+		s.String(http.StatusBadRequest, "Failed to assign student to glp")
 		return
 	}
 	s.Json(resp)
@@ -59,8 +51,8 @@ func (a *AssignRequest) Get(s *serv.SessionContext) {
 // registerGLP...
 // this is a temporary demo thing, basically when we assign
 // a glp, we store it in a hash set
-func registerGLP(s *serv.SessionContext, glpID int) {
-	session := sessions.Default(s.Context)
+func registerGLP(s *gin.Context, glpID int) {
+	session := sessions.Default(s)
 
 	assignedPlans := session.Get("assigned_plans")
 
@@ -93,10 +85,4 @@ func registerGLP(s *serv.SessionContext, glpID int) {
 	if err := session.Save(); err != nil {
 		log.Println("registerGLP", err.Error())
 	}
-}
-
-func NewAssignRequest(path string) *AssignRequest {
-	req := &AssignRequest{}
-	req.SetGET(path)
-	return req
 }

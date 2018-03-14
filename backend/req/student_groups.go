@@ -6,23 +6,16 @@ import (
 	"strconv"
 
 	"git.juddus.com/HFC/beaconing/backend/api"
-	"git.juddus.com/HFC/beaconing/backend/paths"
-	"git.juddus.com/HFC/beaconing/backend/route"
-	"git.juddus.com/HFC/beaconing/backend/serv"
+	"github.com/gin-gonic/gin"
 )
 
-type StudentGroupRequest struct {
-	route.SimpleManagedRoute
-}
-
-func (r *StudentGroupRequest) Post(s *serv.SessionContext) {
+func PostStudentGroupRequest(s *gin.Context) {
 	body := api.CreateStudentPOST(s)
 	s.Header("Content-Type", "application/json")
 	s.String(http.StatusOK, body)
 }
 
-// MOVE me into the api layer!
-func (r *StudentGroupRequest) Delete(s *serv.SessionContext) {
+func DeleteStudentGroupRequest(s *gin.Context) {
 	// TODO sanitise
 	idString := s.Param("id")
 	id, err := strconv.ParseInt(idString, 10, 64)
@@ -39,14 +32,8 @@ func (r *StudentGroupRequest) Delete(s *serv.SessionContext) {
 	s.String(http.StatusOK, body)
 }
 
-func (r *StudentGroupRequest) Get(s *serv.SessionContext) {
+func GetStudentGroupRequest(s *gin.Context) {
 	body := api.GetStudentGroups(s)
 	s.Header("Content-Type", "application/json")
 	s.String(http.StatusOK, body)
-}
-
-func NewStudentGroupRequest(p paths.PathSet) *StudentGroupRequest {
-	req := &StudentGroupRequest{}
-	req.SetPaths(p)
-	return req
 }

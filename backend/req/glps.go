@@ -6,19 +6,11 @@ import (
 	"strconv"
 
 	"git.juddus.com/HFC/beaconing/backend/api"
-	"git.juddus.com/HFC/beaconing/backend/route"
-	"git.juddus.com/HFC/beaconing/backend/serv"
 	"git.juddus.com/HFC/beaconing/backend/types"
+	"github.com/gin-gonic/gin"
 )
 
-type GLPSRequest struct {
-	route.SimpleManagedRoute
-}
-
-func (r *GLPSRequest) Post(s *serv.SessionContext)   {}
-func (r *GLPSRequest) Delete(s *serv.SessionContext) {}
-
-func (a *GLPSRequest) Get(s *serv.SessionContext) {
+func GetGLPSRequest(s *gin.Context) {
 	indexQuery := s.Query("index")
 
 	index, err := strconv.ParseUint(indexQuery, 10, 64)
@@ -80,10 +72,4 @@ func (a *GLPSRequest) Get(s *serv.SessionContext) {
 	json := api.GetGamifiedLessonPlans(s)
 	s.Header("Content-Type", "application/json")
 	s.String(http.StatusOK, json)
-}
-
-func NewGLPSRequest(path string) *GLPSRequest {
-	req := &GLPSRequest{}
-	req.SetGET(path)
-	return req
 }

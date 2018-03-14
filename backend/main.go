@@ -16,7 +16,6 @@ import (
 	"git.juddus.com/HFC/beaconing/backend/paths"
 	"git.juddus.com/HFC/beaconing/backend/req"
 	"git.juddus.com/HFC/beaconing/backend/root"
-	"git.juddus.com/HFC/beaconing/backend/route"
 	"git.juddus.com/HFC/beaconing/backend/search"
 	"git.juddus.com/HFC/beaconing/backend/serv"
 )
@@ -102,6 +101,13 @@ func GetRouterEngine() *gin.Engine {
 			req.NewActiveLessonPlansWidget("/widget/active_lesson_plans"),
 		}
 	*/
+
+	v1 := router.Group("/api/v1/")
+
+	tokens := v1.Group("token")
+	{
+		tokens.GET("/", req.GetTokenReq(page.NewPage("/", "/")))
+	}
 
 	api := []route.Route{
 		// These are all GET requests

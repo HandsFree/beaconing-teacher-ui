@@ -22,8 +22,8 @@ func AuthRedirect(c *gin.Context) {
 	c.Redirect(http.StatusTemporaryRedirect, authLink)
 }
 
-func GetRefreshToken(s *serv.SessionContext) error {
-	session := sessions.Default(s.Context)
+func GetRefreshToken(s *gin.Context) error {
+	session := sessions.Default(s)
 
 	accessToken := session.Get("access_token").(string)
 
@@ -63,18 +63,18 @@ func GetRefreshToken(s *serv.SessionContext) error {
 	return nil
 }
 
-func GetAccessToken(s *serv.SessionContext) string {
-	session := sessions.Default(s.Context)
+func GetAccessToken(s *gin.Context) string {
+	session := sessions.Default(s)
 	accessToken := session.Get("access_token")
 	if accessToken == nil {
-		s.SimpleErrorRedirect(401, "Unauthorised access")
+		s.String(http.StatusBadRequest, "Unauthorised access")
 		// NOTE: no return here due to redirect
 		return ""
 	}
 	return accessToken.(string)
 }
 
-func TryRefreshToken(s *serv.SessionContext) error {
+func TryRefreshToken(s *gin.Context) error {
 	err := GetRefreshToken(s)
 	return err
 }

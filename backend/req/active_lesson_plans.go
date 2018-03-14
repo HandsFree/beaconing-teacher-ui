@@ -6,28 +6,20 @@ import (
 	"os"
 
 	"git.juddus.com/HFC/beaconing/backend/api"
-	"git.juddus.com/HFC/beaconing/backend/route"
-	"git.juddus.com/HFC/beaconing/backend/serv"
 	"git.juddus.com/HFC/beaconing/backend/types"
 	"github.com/gin-contrib/sessions"
+	"github.com/gin-gonic/gin"
 	"github.com/olekukonko/tablewriter"
 )
 
 // ActiveLessonPlans handles an active lesson plan request
 // to the beaconing core api. It will spit out the json requested.
-type ActiveLessonPlans struct {
-	route.SimpleManagedRoute
-}
-
-func (r *ActiveLessonPlans) Post(s *serv.SessionContext)   {}
-func (r *ActiveLessonPlans) Delete(s *serv.SessionContext) {}
-
-func (r *ActiveLessonPlans) Get(s *serv.SessionContext) {
+func GetActiveLessonPlans(s *gin.Context) {
 	log.Println("ACTIVE LESSON PLANS GET REQ")
 
 	var lps []types.LessonPlan
 
-	session := sessions.Default(s.Context)
+	session := sessions.Default(s)
 	assignedPlans := session.Get("assigned_plans")
 
 	var assigned = map[uint64]bool{}
@@ -59,12 +51,6 @@ func (r *ActiveLessonPlans) Get(s *serv.SessionContext) {
 		lps = append(lps, lessonPlan)
 	}
 	s.Jsonify(lps)
-}
-
-func NewActiveLessonPlans(path string) *ActiveLessonPlans {
-	req := &ActiveLessonPlans{}
-	req.SetGET(path)
-	return req
 }
 
 func NewLessonPlan(glpID uint64, glp *types.GamifiedLessonPlan) types.LessonPlan {

@@ -5,18 +5,10 @@ import (
 	"math/rand"
 	"strconv"
 
-	"git.juddus.com/HFC/beaconing/backend/route"
-	"git.juddus.com/HFC/beaconing/backend/serv"
+	"github.com/gin-gonic/gin"
 )
 
-type StudentOverview struct {
-	route.SimpleManagedRoute
-}
-
-func (r *StudentOverview) Post(s *serv.SessionContext)   {}
-func (r *StudentOverview) Delete(s *serv.SessionContext) {}
-
-func (r *StudentOverview) Get(s *serv.SessionContext) {
+func GetStudentOverview(s *gin.Context) {
 	countParam := s.DefaultQuery("count", "3")
 
 	fetchCount, err := strconv.Atoi(countParam)
@@ -76,12 +68,6 @@ type StudentOverviewJSON struct {
 	BestPerforming  []*StudentData `json:"best_performing"`
 	NeedsAttention  []*StudentData `json:"needs_attention"`
 	MostImprovement []*StudentData `json:"most_improvement"`
-}
-
-func NewStudentOverview(path string) *StudentOverview {
-	req := &StudentOverview{}
-	req.SetGET(path)
-	return req
 }
 
 func newDummyStudent() *StudentData {

@@ -7,9 +7,6 @@ import (
 	"github.com/felixangell/fuzzysearch/fuzzy"
 
 	"git.juddus.com/HFC/beaconing/backend/api"
-	"git.juddus.com/HFC/beaconing/backend/paths"
-	"git.juddus.com/HFC/beaconing/backend/route"
-	"git.juddus.com/HFC/beaconing/backend/serv"
 	"git.juddus.com/HFC/beaconing/backend/types"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
@@ -24,11 +21,7 @@ type SearchQueryResponse struct {
 	MatchedGLPS     []types.GamifiedLessonPlan
 }
 
-type SearchRequest struct {
-	route.SimpleManagedRoute
-}
-
-func processSearch(s *serv.SessionContext, json SearchRequestQuery) *SearchQueryResponse {
+func processSearch(s *gin.Context, json SearchRequestQuery) *SearchQueryResponse {
 	studentsData, studentsCached := api.Fetch("students")
 	if !studentsCached {
 		// cache miss, force a fetch to cache students
@@ -98,10 +91,7 @@ func processSearch(s *serv.SessionContext, json SearchRequestQuery) *SearchQuery
 	return &SearchQueryResponse{matchedStudents, matchedGLPS}
 }
 
-func (r *SearchRequest) Get(s *serv.SessionContext)    {}
-func (r *SearchRequest) Delete(s *serv.SessionContext) {}
-
-func (a *SearchRequest) Post(s *serv.SessionContext) {
+func PostSearchRequest(s *gin.Context) {
 	var json SearchRequestQuery
 	if err := s.ShouldBindJSON(&json); err != nil {
 		log.Println("SearchRequest", err.Error())
@@ -111,14 +101,8 @@ func (a *SearchRequest) Post(s *serv.SessionContext) {
 
 	resp := processSearch(s, json)
 	if resp == nil {
-		s.SimpleErrorRedirect(400, "Something went wrong!")
+		s.String(http.StatusBadRequest, "Something went wrong!")
 		return
 	}
 	s.Jsonify(resp)
-}
-
-func NewSearchRequest(p paths.PathSet) *SearchRequest {
-	req := &SearchRequest{}
-	req.SetPaths(p)
-	return req
 }

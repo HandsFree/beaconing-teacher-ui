@@ -14,12 +14,12 @@ import (
 
 	"database/sql"
 
+	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
 
 	jsoniter "github.com/json-iterator/go"
 
 	"git.juddus.com/HFC/beaconing/backend/cfg"
-	"git.juddus.com/HFC/beaconing/backend/serv"
 	"git.juddus.com/HFC/beaconing/backend/types"
 )
 
@@ -114,7 +114,7 @@ type CoreAPIManager struct {
 
 // GetUserID returns the current users id number, if there is no
 // current user session it returns -1
-func GetUserID(s *serv.SessionContext) int {
+func GetUserID(s *gin.Context) int {
 	obj, _ := GetCurrentUser(s)
 	if obj == nil {
 		return -1
@@ -125,7 +125,7 @@ func GetUserID(s *serv.SessionContext) int {
 // getPath creates an API path, appending on the given beaconing URL
 // "https://core.beaconing.eu/api/", this makes concatenation painless
 // as well as it slaps the access token on the end
-func (a *CoreAPIManager) getPath(s *serv.SessionContext, args ...string) string {
+func (a *CoreAPIManager) getPath(s *gin.Context, args ...string) string {
 	path := a.APIPath
 	for _, arg := range args {
 		path += arg
@@ -133,7 +133,7 @@ func (a *CoreAPIManager) getPath(s *serv.SessionContext, args ...string) string 
 	return fmt.Sprintf("%s?access_token=%s", path, GetAccessToken(s))
 }
 
-func GetCurrentUser(s *serv.SessionContext) (*types.CurrentUser, string) {
+func GetCurrentUser(s *gin.Context) (*types.CurrentUser, string) {
 	resp, err := DoTimedRequest("GET", API.getPath(s, "currentuser"), 5*time.Second)
 	if err != nil {
 		log.Println("GetCurrentUser", err.Error())

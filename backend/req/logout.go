@@ -6,21 +6,14 @@ import (
 	"net/http"
 
 	"github.com/gin-contrib/sessions"
+	"github.com/gin-gonic/gin"
 
 	"git.juddus.com/HFC/beaconing/backend/cfg"
-	"git.juddus.com/HFC/beaconing/backend/route"
 	"git.juddus.com/HFC/beaconing/backend/serv"
 )
 
-type LogOutRequest struct {
-	route.SimpleManagedRoute
-}
-
-func (r *LogOutRequest) Post(s *serv.SessionContext)   {}
-func (r *LogOutRequest) Delete(s *serv.SessionContext) {}
-
-func (r *LogOutRequest) Get(s *serv.SessionContext) {
-	session := sessions.Default(s.Context)
+func GetLogOutRequest(s *gin.Context) {
+	session := sessions.Default(s)
 	session.Clear()
 
 	if err := session.Save(); err != nil {
@@ -35,10 +28,4 @@ func (r *LogOutRequest) Get(s *serv.SessionContext) {
 	fmt.Println(logoutLink)
 
 	s.Redirect(http.StatusTemporaryRedirect, logoutLink)
-}
-
-func NewLogOutRequest(path string) *LogOutRequest {
-	req := &LogOutRequest{}
-	req.SetGET(path)
-	return req
 }
