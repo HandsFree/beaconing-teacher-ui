@@ -10,9 +10,6 @@
 # Icon must end with two \r
 Icon
 
-# !!! 
-.vscode/
-
 # Thumbnails
 ._*
 
@@ -86,7 +83,7 @@ jspm_packages
 *.out
 
 # Omit secret file
-cfg/config.toml
+config.toml
 
 # .git file
 beaconing.git
@@ -100,5 +97,6 @@ frontend/public/dist/beaconing/pages
 # vendor
 vendor/
 
-# binary
-/beaconing
+# go build output
+backend/cfg/config.toml
+backend/backend

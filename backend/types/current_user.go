@@ -4,7 +4,7 @@ package types
 // their id and their username.
 // https://core.beaconing.eu/api-docs/#!/currentuser/getCurrentUser
 type CurrentUser struct {
-	Id              int
-	Username        string
-	IdenticonSha512 string
+	Id              int    `json:"id"`
+	Username        string `json:"username"`
+	IdenticonSha512 string `json:"identiconSha512"`
 }
