@@ -80,22 +80,21 @@ func GetRouterEngine() *gin.Engine {
 
 	router.GET("/", root.Get(page.New("Home", "dist/beaconing/pages/home/page.js")))
 
+	classroomGroup := router.Group("/classroom")
 	{
-		router.GET("/classroom", classroom.Get(page.New("Classroom", "dist/beaconing/pages/classroom/page.js")))
-		// see issue #61
-		router.GET("/classroom/", classroom.Get(page.New("Classroom", "dist/beaconing/pages/classroom/page.js")))
-		//.                   ^^^^
-
-		router.GET("/classroom/classes", classroom.GetClasses(page.New("Classroom", "dist/beaconing/pages/classroom/classes/page.js")))
-		router.GET("/classroom/groups", classroom.GetGroups(page.New("Classroom", "dist/beaconing/pages/classroom/groups/page.js")))
-		router.GET("/classroom/courses", classroom.GetCourses(page.New("Classroom", "dist/beaconing/pages/classroom/courses/page.js")))
+		classroomGroup.GET("/", classroom.Get(page.New("Classroom", "dist/beaconing/pages/classroom/page.js")))
+		classroomGroup.GET("/classes", classroom.GetClasses(page.New("Classroom", "dist/beaconing/pages/classroom/classes/page.js")))
+		classroomGroup.GET("/groups", classroom.GetGroups(page.New("Classroom", "dist/beaconing/pages/classroom/groups/page.js")))
+		classroomGroup.GET("/courses", classroom.GetCourses(page.New("Classroom", "dist/beaconing/pages/classroom/courses/page.js")))
 	}
 
 	router.GET("/authoring_tool", authoring_tool.Get(page.New("Authoring Tool", "dist/beaconing/pages/authoring_tool/page.js")))
 
-	// TODO use a group here.
-	router.GET("/lesson_manager", lesson_manager.Get(page.New("Lesson Manager", "dist/beaconing/pages/lesson_manager/page.js")))
-	router.GET("/lesson_manager/new_plan", lesson_manager.GetNewPlan(page.New("Lesson Manager", "dist/beaconing/pages/lesson_manager/new_plan/page.js")))
+	lessonManager := router.Group("/lesson_manager")
+	{
+		lessonManager.GET("/", lesson_manager.Get(page.New("Lesson Manager", "dist/beaconing/pages/lesson_manager/page.js")))
+		lessonManager.GET("/new_plan", lesson_manager.GetNewPlan(page.New("Lesson Manager", "dist/beaconing/pages/lesson_manager/new_plan/page.js")))
+	}
 
 	router.GET("/search", search.Get(page.New("Search", "dist/beaconing/pages/search/page.js")))
 

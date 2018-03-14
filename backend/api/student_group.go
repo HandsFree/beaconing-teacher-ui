@@ -15,9 +15,7 @@ type StudentGroupPost struct {
 	Name string `json:"name"`
 }
 
-// this is technically creating a student group!
-// fixme
-func CreateStudentPOST(s *gin.Context) string {
+func CreateStudentGroup(s *gin.Context) string {
 	var json StudentGroupPost
 	if err := s.ShouldBindJSON(&json); err != nil {
 		log.Println("CreateStudentPOST", err.Error())

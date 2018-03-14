@@ -14,8 +14,8 @@ import (
 // returns a string of the returned json from the core API as well as an error (if any).
 func AssignStudentToGLP(s *gin.Context, studentID int, glpID int) (string, error) {
 	type assignment struct {
-		StudentID int
-		GlpID     int
+		StudentID int `json:"studentId"`
+		GlpID     int `json:"gamifiedLessonPathId"`
 	}
 
 	assignJSON, err := jsoniter.Marshal(&assignment{studentID, glpID})
