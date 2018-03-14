@@ -41,7 +41,9 @@ func GetStudents(s *serv.SessionContext) string {
 	}
 
 	body := string(modifiedStudentsJSON)
-	cacheData("students", body)
+	if len(students) > 0 {
+		cacheData("students", body)
+	}
 	return body
 }
 

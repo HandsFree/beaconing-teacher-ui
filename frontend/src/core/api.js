@@ -12,6 +12,8 @@ class APICore {
         xhr.open('GET', link);
         xhr.send();
 
+        console.log("[API Core] GET: " + link);
+
         return new Promise((resolve, reject) => {
             xhr.onreadystatechange = () => {
                 if (xhr.readyState === 4) {
