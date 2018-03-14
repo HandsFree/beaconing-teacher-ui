@@ -23,7 +23,6 @@ func (r *StudentsRequest) Get(s *serv.SessionContext) {
 		s.SimpleErrorRedirect(6969, "oh boy! "+err.Error())
 		return
 	}
-
 	s.Header("Content-Type", "application/json")
 	s.String(http.StatusOK, resp)
 }

@@ -10,6 +10,7 @@ function get(link) {
                 console.log('Request Link: ', link);
                 console.log('Response Test: ', xhr.response);
                 console.log(xhr.status, ' ', xhr.statusText);
+                console.log(Object.values(xhr.response)[0].Id);
             }
         };
 
@@ -54,8 +55,6 @@ function getCurrentUser() {
 
 function start() {
     getStudents();
-    let f = function(){};
-    getCurrentUser();
 }
 
 const button = document.getElementById('apibutton');
