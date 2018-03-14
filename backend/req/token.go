@@ -23,7 +23,7 @@ func isValidToken(tok string) bool {
 	return true
 }
 
-func GetTokenRequest(s *gin.Context) gin.HandlerFunc {
+func GetTokenRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
 		accessToken := s.Query("code")
 		if accessToken == "" {

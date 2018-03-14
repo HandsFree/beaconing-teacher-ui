@@ -41,41 +41,14 @@ func SetupAPIHelper() {
 }
 
 func DoTimedRequestBody(method string, url string, reqBody io.Reader, timeout time.Duration) ([]byte, error) {
-	// handle these method manually
-	// for now without a context.
-	if method == "POST" {
-		response, err := http.Post(url, "application/json", reqBody)
-		if err != nil {
-			log.Println("POST!", err.Error())
-			return []byte{}, err
-		}
-
-		defer response.Body.Close()
-		body, err := ioutil.ReadAll(response.Body)
-		if err != nil {
-			log.Println("POST!", err.Error())
-			return []byte{}, err
-		}
-		return body, nil
-	} else if method == "GET" {
-		response, err := http.Get(url)
-		if err != nil {
-			log.Println("GET!", err.Error())
-			return []byte{}, err
-		}
-
-		defer response.Body.Close()
-		body, err := ioutil.ReadAll(response.Body)
-		if err != nil {
-			log.Println("GET!", err.Error())
-			return []byte{}, err
-		}
-		return body, nil
-	}
-
 	ctx, _ := context.WithTimeout(context.Background(), timeout)
 	req, err := http.NewRequest(method, url, reqBody)
 	log.Println("Doing HTTP request ", req)
+
+	// sort of hacky but it should work fine.
+	if method == "POST" {
+		req.Header.Set("Content-Type", "application/json")
+	}
 
 	if err != nil {
 		log.Println("DoTimedRequestBody", err.Error())

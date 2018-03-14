@@ -7,12 +7,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func GetStudentsRequest(s *gin.Context) {
-	resp, err := api.GetStudents(s)
-	if err != nil {
-		s.String(http.StatusBadRequest, "oh boy! "+err.Error())
-		return
+func GetStudentsRequest() gin.HandlerFunc {
+	return func(s *gin.Context) {
+		resp, err := api.GetStudents(s)
+		if err != nil {
+			s.String(http.StatusBadRequest, "oh boy! "+err.Error())
+			return
+		}
+		s.JSON(http.StatusOK, resp)
 	}
-	s.Header("Content-Type", "application/json")
-	s.String(http.StatusOK, resp)
 }

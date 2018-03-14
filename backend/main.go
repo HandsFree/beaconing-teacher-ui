@@ -1,8 +1,14 @@
 package main
 
 import (
+	"context"
 	"log"
+	"net/http"
+	"os"
+	"os/signal"
+	"time"
 
+	"github.com/gin-contrib/gzip"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 
@@ -13,11 +19,9 @@ import (
 	"git.juddus.com/HFC/beaconing/backend/classroom"
 	"git.juddus.com/HFC/beaconing/backend/lesson_manager"
 	"git.juddus.com/HFC/beaconing/backend/page"
-	"git.juddus.com/HFC/beaconing/backend/paths"
 	"git.juddus.com/HFC/beaconing/backend/req"
 	"git.juddus.com/HFC/beaconing/backend/root"
 	"git.juddus.com/HFC/beaconing/backend/search"
-	"git.juddus.com/HFC/beaconing/backend/serv"
 )
 
 // TokenAuth ...
@@ -53,6 +57,9 @@ func GetRouterEngine() *gin.Engine {
 	// Config the router to use sessions with cookie store
 	router.Use(sessions.Sessions("beaconing", store))
 
+	// Resources will be gzipped
+	router.Use(gzip.Gzip(gzip.BestSpeed))
+
 	// token auth middleware
 	router.Use(TokenAuth())
 
@@ -70,8 +77,6 @@ func GetRouterEngine() *gin.Engine {
 	router.RedirectTrailingSlash = true
 
 	// Create Gin wrappers
-	mainCtx := serv.NewSessionContext(router)
-	manager := route.NewRouteManager(mainCtx)
 
 	router.GET("/", root.Get(page.New("Home", "dist/beaconing/pages/home/page.js")))
 
@@ -94,67 +99,74 @@ func GetRouterEngine() *gin.Engine {
 
 	router.GET("/search", search.Get(page.New("Search", "dist/beaconing/pages/search/page.js")))
 
-	/*
-		widgets := []route.Route{
-			req.NewStudentOverview("/widget/student_overview"),
-			req.NewRecentActivities("/widget/recent_activities"),
-			req.NewActiveLessonPlansWidget("/widget/active_lesson_plans"),
-		}
-	*/
+	widgets := router.Group("/widget/")
+	{
+		widgets.GET("student_overview", req.GetStudentOverview())
 
-	v1 := router.Group("/api/v1/")
+		widgets.GET("recent_activities", req.GetRecentActivities())
+
+		widgets.GET("active_lesson_plans", req.GetActiveLessonPlansWidget())
+	}
+
+	// TODO change this from intent to /api/v1/
+	v1 := router.Group("/intent/")
 
 	tokens := v1.Group("token")
 	{
-		tokens.GET("/", req.GetTokenReq(page.NewPage("/", "/")))
+		tokens.GET("/", req.GetTokenRequest())
 	}
 
-	api := []route.Route{
-		// These are all GET requests
-		req.NewTokenRequest("/intent/token"),
-		req.NewAssignRequest("/intent/assign/:student/to/:glp"),
-		req.NewStudentRequest("/intent/student/:id"),
-		req.NewActiveLessonPlans("/intent/active_lesson_plans"),
-		req.NewGLPSRequest("/intent/glps"),
-
-		req.NewStudentsRequest(paths.PathSet{
-			paths.Get("/intent/students"),
-			paths.Post("/intent/students"),
-		}),
-
-		req.NewAssignedGLPsRequest(paths.PathSet{
-			paths.Get("/intent/students/:id/assignedglps"),
-			paths.Delete("/intent/students/:id/assignedglps/:glp"),
-		}),
-
-		// TODO PUT
-		req.NewProfileRequest("/intent/profile"),
-
-		req.NewGLPRequest(paths.PathSet{
-			paths.Get("/intent/glp/:id"),
-			paths.Delete("/intent/glp/:id"),
-		}),
-
-		req.NewStudentGroupRequest(paths.PathSet{
-			paths.Get("/intent/studentgroups"),
-			paths.Post("/intent/studentgroups"),
-			paths.Delete("/intent/studentgroups/:id"),
-		}),
-
-		req.NewSearchRequest(paths.PathSet{
-			paths.Post("/intent/search"),
-		}),
+	assign := v1.Group("assign")
+	{
+		assign.GET("/:student/to/:glp", req.GetAssignRequest())
 	}
 
-	auth := []route.Route{
-		req.NewCheckAuthRequest("/auth/check"),
-		req.NewLogOutRequest("/auth/logout"),
+	student := v1.Group("student")
+	{
+		student.GET("/:id", req.GetStudentRequest())
 	}
 
-	// manager.RegisterRoutes(pages...)
-	// manager.RegisterRoutes(widgets...)
-	manager.RegisterRoutes(api...)
-	manager.RegisterRoutes(auth...)
+	students := v1.Group("students")
+	{
+		students.GET("/", req.GetStudentsRequest())
+
+		students.GET("/:id/assignedglps", req.GetAssignedGLPsRequest())
+		students.DELETE("/:id/assignedglps/:glp", req.DeleteAssignedGLPsRequest())
+
+		// TODO!
+		// students.POST("/", req.PostStudentsRequest())
+	}
+
+	// TODO PUT!
+	v1.GET("profile", req.GetProfileRequest())
+
+	v1.GET("active_lesson_plans", req.GetActiveLessonPlans())
+
+	glps := v1.Group("glps")
+	{
+		glps.GET("/", req.GetGLPSRequest())
+	}
+
+	glp := v1.Group("glps")
+	{
+		glp.GET("/:id", req.GetGLPRequest())
+		glp.DELETE("/:id", req.DeleteGLPRequest())
+	}
+
+	studentGroups := v1.Group("studentgroups")
+	{
+		studentGroups.GET("/", req.GetStudentGroupRequest())
+		studentGroups.POST("/", req.PostStudentGroupRequest())
+		studentGroups.DELETE("/", req.DeleteStudentGroupRequest())
+	}
+
+	v1.POST("search", req.PostSearchRequest())
+
+	auth := router.Group("auth")
+	{
+		auth.GET("check", req.GetCheckAuthRequest())
+		auth.GET("logout", req.GetLogOutRequest())
+	}
 
 	return router
 }
@@ -163,8 +175,34 @@ func main() {
 	cfg.LoadConfig()
 	api.SetupAPIHelper()
 
-	router := GetRouterEngine()
-	if err := router.Run(":8081"); err != nil {
-		log.Fatal(err)
+	server := &http.Server{
+		Addr:    ":8081",
+		Handler: GetRouterEngine(),
 	}
+
+	quit := make(chan os.Signal)
+	signal.Notify(quit, os.Interrupt)
+
+	go func() {
+		<-quit
+		log.Println("receive interrupt signal")
+		if err := server.Close(); err != nil {
+			log.Fatal("Server Close:", err)
+		}
+	}()
+
+	if err := server.ListenAndServe(); err != nil {
+		if err == http.ErrServerClosed {
+			log.Println("Server closed under request")
+		} else {
+			log.Fatal("Server closed unexpectedly")
+		}
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
+	defer cancel()
+	if err := server.Shutdown(ctx); err != nil {
+		log.Fatal("Server Shutdown:", err)
+	}
+	log.Println("Server exiting")
 }

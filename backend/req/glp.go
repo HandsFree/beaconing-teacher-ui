@@ -5,6 +5,7 @@ import (
 
 	"git.juddus.com/HFC/beaconing/backend/api"
 	"github.com/gin-gonic/gin"
+	jsoniter "github.com/json-iterator/go"
 
 	"net/http"
 	"strconv"
@@ -21,64 +22,74 @@ type GLPModel struct {
 	ExternConfig string `json:"externConfig"`
 }
 
-func DeleteGLPRequest(s *gin.Context) {
-	idParam := s.Param("id")
-	id, err := strconv.ParseUint(idParam, 10, 64)
-	if err != nil || id < 0 {
-		log.Println("error when sanitising glp id", err.Error())
-		s.String(http.StatusBadRequest, "Client Error: Invalid GLP ID")
-		return
-	}
+func DeleteGLPRequest() gin.HandlerFunc {
+	return func(s *gin.Context) {
+		idParam := s.Param("id")
+		id, err := strconv.ParseUint(idParam, 10, 64)
+		if err != nil || id < 0 {
+			log.Println("error when sanitising glp id", err.Error())
+			s.String(http.StatusBadRequest, "Client Error: Invalid GLP ID")
+			return
+		}
 
-	body := api.DeleteGLP(s, id)
-	s.Header("Content-Type", "application/json")
-	s.JSON(http.StatusOK, gin.H{"status": string(body)})
+		body := api.DeleteGLP(s, id)
+		s.Header("Content-Type", "application/json")
+		s.JSON(http.StatusOK, gin.H{"status": string(body)})
+	}
 }
 
-func GetGLPRequest(s *gin.Context) {
-	idParam := s.Param("id")
-	id, err := strconv.ParseUint(idParam, 10, 64)
-	if err != nil || id < 0 {
-		s.String(http.StatusBadRequest, "Client Error: Invalid GLP ID")
-		return
-	}
-
-	minify := s.Query("minify")
-
-	// dont minify by default, however if
-	// we have a minify parameter with the value
-	// 1 then we will minify this glp request.
-	// NOTE: that if the parameter fails to parse, etc.
-	// then it is completely ignored in the request.
-	var shouldMinify bool = false
-	if minify != "" {
-		minifyParam, err := strconv.Atoi(minify)
-		if err == nil {
-			shouldMinify = minifyParam == 1
-		} else {
-			log.Println("Note: failed to atoi minify param in glp.go", err.Error())
+func GetGLPRequest() gin.HandlerFunc {
+	return func(s *gin.Context) {
+		idParam := s.Param("id")
+		id, err := strconv.ParseUint(idParam, 10, 64)
+		if err != nil || id < 0 {
+			s.String(http.StatusBadRequest, "Client Error: Invalid GLP ID")
+			return
 		}
-	}
 
-	plan, json := api.GetGamifiedLessonPlan(s, id)
-	if plan == nil {
-		s.String(http.StatusBadRequest, "Funky error getting the GLP")
-		return
-	}
+		minify := s.Query("minify")
 
-	model := &GLPModel{
-		Id:           plan.Id,
-		Name:         plan.Name,
-		Desc:         plan.Desc,
-		Author:       plan.Author,
-		Category:     plan.Category,
-		GamePlotID:   plan.GamePlotId,
-		ExternConfig: plan.ExternConfig,
-	}
-	if !shouldMinify {
-		model.Content = json
-	}
+		// dont minify by default, however if
+		// we have a minify parameter with the value
+		// 1 then we will minify this glp request.
+		// NOTE: that if the parameter fails to parse, etc.
+		// then it is completely ignored in the request.
+		var shouldMinify bool = false
+		if minify != "" {
+			minifyParam, err := strconv.Atoi(minify)
+			if err == nil {
+				shouldMinify = minifyParam == 1
+			} else {
+				log.Println("Note: failed to atoi minify param in glp.go", err.Error())
+			}
+		}
 
-	s.Header("Content-Type", "application/json")
-	s.Jsonify(model)
+		plan, json := api.GetGamifiedLessonPlan(s, id)
+		if plan == nil {
+			s.String(http.StatusBadRequest, "Funky error getting the GLP")
+			return
+		}
+
+		model := &GLPModel{
+			Id:           plan.Id,
+			Name:         plan.Name,
+			Desc:         plan.Desc,
+			Author:       plan.Author,
+			Category:     plan.Category,
+			GamePlotID:   plan.GamePlotId,
+			ExternConfig: plan.ExternConfig,
+		}
+		if !shouldMinify {
+			model.Content = json
+		}
+
+		modelJSON, err := jsoniter.Marshal(model)
+		if err != nil {
+			log.Println(err.Error())
+			return
+		}
+
+		s.Header("Content-Type", "application/json")
+		s.String(http.StatusOK, string(modelJSON))
+	}
 }

@@ -55,6 +55,7 @@ function getCurrentUser() {
 
 function start() {
     getStudents();
+    getCurrentUser();
 }
 
 const button = document.getElementById('apibutton');

@@ -18,34 +18,38 @@ func init() {
 	gob.Register(map[int]bool{})
 }
 
-func GetAssignRequest(s *gin.Context) {
-	studentID := s.Param("student")
-	studentIDValue, err := strconv.Atoi(studentID)
-	if err != nil || studentIDValue < 0 {
-		s.String(http.StatusBadRequest, "Client Error: Invalid student ID")
-		return
+func GetAssignRequest() gin.HandlerFunc {
+	return func(s *gin.Context) {
+		studentID := s.Param("student")
+		studentIDValue, err := strconv.Atoi(studentID)
+		if err != nil || studentIDValue < 0 {
+			s.String(http.StatusBadRequest, "Client Error: Invalid student ID")
+			return
+		}
+
+		glpID := s.Param("glp")
+		glpIDValue, err := strconv.Atoi(glpID)
+		if err != nil || glpIDValue < 0 {
+			s.String(http.StatusBadRequest, "Client Error: Invalid GLP ID")
+			return
+		}
+
+		log.Println("THIS IS AN ASSIGN REQUEST ! ", studentIDValue, glpIDValue)
+
+		// register the GLP in the session
+		registerGLP(s, glpIDValue)
+
+		// do the post request to the beaconing API
+		// saying we're assigning said student to glp.
+		resp, err := api.AssignStudentToGLP(s, studentIDValue, glpIDValue)
+		if err != nil {
+			s.String(http.StatusBadRequest, "Failed to assign student to glp")
+			return
+		}
+
+		s.Header("Content-Type", "application/json")
+		s.String(http.StatusOK, resp)
 	}
-
-	glpID := s.Param("glp")
-	glpIDValue, err := strconv.Atoi(glpID)
-	if err != nil || glpIDValue < 0 {
-		s.String(http.StatusBadRequest, "Client Error: Invalid GLP ID")
-		return
-	}
-
-	log.Println("THIS IS AN ASSIGN REQUEST ! ", studentIDValue, glpIDValue)
-
-	// register the GLP in the session
-	registerGLP(s, glpIDValue)
-
-	// do the post request to the beaconing API
-	// saying we're assigning said student to glp.
-	resp, err := api.AssignStudentToGLP(s, studentIDValue, glpIDValue)
-	if err != nil {
-		s.String(http.StatusBadRequest, "Failed to assign student to glp")
-		return
-	}
-	s.Json(resp)
 }
 
 // registerGLP...

@@ -12,20 +12,22 @@ import (
 	"git.juddus.com/HFC/beaconing/backend/serv"
 )
 
-func GetLogOutRequest(s *gin.Context) {
-	session := sessions.Default(s)
-	session.Clear()
+func GetLogOutRequest() gin.HandlerFunc {
+	return func(s *gin.Context) {
+		session := sessions.Default(s)
+		session.Clear()
 
-	if err := session.Save(); err != nil {
-		log.Println("LogOutRequest", err.Error())
-		return
+		if err := session.Save(); err != nil {
+			log.Println("LogOutRequest", err.Error())
+			return
+		}
+
+		logoutLink := fmt.Sprintf("https://core.beaconing.eu/auth/logout?client_id=%s&redirect_uri=%s",
+			cfg.Beaconing.Auth.ID,
+			serv.LogOutLink)
+
+		fmt.Println(logoutLink)
+
+		s.Redirect(http.StatusTemporaryRedirect, logoutLink)
 	}
-
-	logoutLink := fmt.Sprintf("https://core.beaconing.eu/auth/logout?client_id=%s&redirect_uri=%s",
-		cfg.Beaconing.Auth.ID,
-		serv.LogOutLink)
-
-	fmt.Println(logoutLink)
-
-	s.Redirect(http.StatusTemporaryRedirect, logoutLink)
 }

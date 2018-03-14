@@ -1,11 +1,14 @@
 package req
 
 import (
+	"log"
+	"net/http"
 	_ "time"
 
 	"git.juddus.com/HFC/beaconing/backend/api"
 	"git.juddus.com/HFC/beaconing/backend/types"
 	"github.com/gin-gonic/gin"
+	jsoniter "github.com/json-iterator/go"
 )
 
 /*
@@ -57,15 +60,24 @@ func getLastActivities(s *gin.Context, n int) []types.Activity {
 	return activities
 }
 
-func GetRecentActivities(s *gin.Context) {
-	/*
-		first we get the current user using the current_user api
+func GetRecentActivities() gin.HandlerFunc {
+	return func(s *gin.Context) {
+		/*
+			first we get the current user using the current_user api
 
-		then we look up all of the activities in the local
-		database with the ID of the current_user
-	*/
-	activities := getLastActivities(s, 15)
-	s.Jsonify(activities)
+			then we look up all of the activities in the local
+			database with the ID of the current_user
+		*/
+		activities := getLastActivities(s, 15)
+		json, err := jsoniter.Marshal(activities)
+		if err != nil {
+			log.Println(err.Error())
+			return
+		}
+
+		s.Header("Content-Type", "application/json")
+		s.String(http.StatusOK, string(json))
+	}
 }
 
 // ACTIVITIES

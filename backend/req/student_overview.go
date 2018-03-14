@@ -3,29 +3,41 @@ package req
 import (
 	"log"
 	"math/rand"
+	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	jsoniter "github.com/json-iterator/go"
 )
 
-func GetStudentOverview(s *gin.Context) {
-	countParam := s.DefaultQuery("count", "3")
+func GetStudentOverview() gin.HandlerFunc {
+	return func(s *gin.Context) {
+		countParam := s.DefaultQuery("count", "3")
 
-	fetchCount, err := strconv.Atoi(countParam)
-	if err != nil || fetchCount <= 0 {
-		// NaN or improper data
-		fetchCount = 3
-		log.Println("warning, fetchCount has an illegal value")
-	}
+		fetchCount, err := strconv.Atoi(countParam)
+		if err != nil || fetchCount <= 0 {
+			// NaN or improper data
+			fetchCount = 3
+			log.Println("warning, fetchCount has an illegal value")
+		}
 
-	// TODO: request students, make sure they are sorted
-	// best to worst (or worst to best depending on ctx)
-	req := StudentOverviewJSON{
-		BestPerforming:  genDummyStudentData(fetchCount),
-		NeedsAttention:  genDummyStudentData(fetchCount),
-		MostImprovement: genDummyStudentData(fetchCount),
+		// TODO: request students, make sure they are sorted
+		// best to worst (or worst to best depending on ctx)
+		req := StudentOverviewJSON{
+			BestPerforming:  genDummyStudentData(fetchCount),
+			NeedsAttention:  genDummyStudentData(fetchCount),
+			MostImprovement: genDummyStudentData(fetchCount),
+		}
+
+		json, err := jsoniter.Marshal(req)
+		if err != nil {
+			log.Println(err.Error())
+			return
+		}
+
+		s.Header("Content-Type", "application/json")
+		s.String(http.StatusOK, string(json))
 	}
-	s.Jsonify(req)
 }
 
 type StudentData struct {

@@ -91,18 +91,28 @@ func processSearch(s *gin.Context, json SearchRequestQuery) *SearchQueryResponse
 	return &SearchQueryResponse{matchedStudents, matchedGLPS}
 }
 
-func PostSearchRequest(s *gin.Context) {
-	var json SearchRequestQuery
-	if err := s.ShouldBindJSON(&json); err != nil {
-		log.Println("SearchRequest", err.Error())
-		s.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
+func PostSearchRequest() gin.HandlerFunc {
+	return func(s *gin.Context) {
+		var json SearchRequestQuery
+		if err := s.ShouldBindJSON(&json); err != nil {
+			log.Println("SearchRequest", err.Error())
+			s.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
 
-	resp := processSearch(s, json)
-	if resp == nil {
-		s.String(http.StatusBadRequest, "Something went wrong!")
-		return
+		resp := processSearch(s, json)
+		if resp == nil {
+			s.String(http.StatusBadRequest, "Something went wrong!")
+			return
+		}
+
+		searchJSON, err := jsoniter.Marshal(&resp)
+		if err != nil {
+			log.Println(err.Error())
+			return
+		}
+
+		s.Header("Content-Type", "application/json")
+		s.String(http.StatusOK, string(searchJSON))
 	}
-	s.Jsonify(resp)
 }
