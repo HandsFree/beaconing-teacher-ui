@@ -1,0 +1,10 @@
+[db]
+username = "beaconing_db_user"
+password = "beAcon1nGDatAbAseACCESS)**"
+name = "beaconing"
+table = "activities"
+ssl = false
+
+[auth]
+id = "teacherui"
+secret = "UrqTSjfnaWsaJHCTfGeU6YyEVNa3c2QzE8GrTLcoK1kljsNB3HrG6jXAGI6q8wKR"
