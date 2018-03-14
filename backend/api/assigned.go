@@ -33,6 +33,8 @@ func AssignStudentToGLP(s *gin.Context, studentID int, glpID int) (string, error
 	return string(resp), nil
 }
 
+// GetAssignedGLPS returns a JSON string of all of the
+// glps that have been assigned to the given student {studentID}.
 func GetAssignedGLPS(s *gin.Context, studentID int) string {
 	resp, err := DoTimedRequest("GET",
 		API.getPath(s,
@@ -47,6 +49,8 @@ func GetAssignedGLPS(s *gin.Context, studentID int) string {
 	return string(resp)
 }
 
+// DeleteAssignedGLP deletes the given {glpID} from the {studentID}
+// or "un-assigns" the glp.
 func DeleteAssignedGLP(s *gin.Context, studentID int, glpID int) string {
 	resp, err := DoTimedRequest("DELETE",
 		API.getPath(s,

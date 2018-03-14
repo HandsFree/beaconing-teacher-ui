@@ -48,6 +48,8 @@ func GetStudents(s *gin.Context) (string, error) {
 	return body, nil
 }
 
+// GetStudent returns a decoded object as well as the json response
+// of the given student of id {studentID}
 func GetStudent(s *gin.Context, studentID int) (*types.Student, string) {
 	data, err := DoTimedRequest("GET", API.getPath(s, "students/", fmt.Sprintf("%d", studentID)), 5*time.Second)
 	if err != nil {

@@ -15,6 +15,8 @@ import (
 	"database/sql"
 
 	"github.com/gin-gonic/gin"
+
+	// psql stuff
 	_ "github.com/lib/pq"
 
 	jsoniter "github.com/json-iterator/go"
@@ -36,12 +38,18 @@ import (
 // this performs any api requests necessary
 var API *CoreAPIManager
 
+// SetupAPIHelper sets up an instanceof the API manager
+// should not be called more than once (in theory!)
 func SetupAPIHelper() {
 	API = newAPIHelper()
 }
 
+// DoTimedRequestBody does a timed request of type {method} to {url} with an optional {reqBody}, if
+// there is no body pass nil, as well as a timeout can be specified.
 func DoTimedRequestBody(method string, url string, reqBody io.Reader, timeout time.Duration) ([]byte, error) {
-	ctx, _ := context.WithTimeout(context.Background(), timeout)
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
+
 	req, err := http.NewRequest(method, url, reqBody)
 	log.Println("Doing HTTP request ", req)
 
@@ -71,7 +79,8 @@ func DoTimedRequestBody(method string, url string, reqBody io.Reader, timeout ti
 	return body, nil
 }
 
-// request with no body?
+// DoTimedRequest is the same as DoTimedRequestBody, however it does not have
+// a body passed to the request.
 func DoTimedRequest(method string, url string, timeout time.Duration) ([]byte, error) {
 	data, err := DoTimedRequestBody(method, url, nil, timeout)
 	return data, err
@@ -106,6 +115,8 @@ func (a *CoreAPIManager) getPath(s *gin.Context, args ...string) string {
 	return fmt.Sprintf("%s?access_token=%s", path, GetAccessToken(s))
 }
 
+// GetCurrentUser returns an object with information about the current
+// user, as well as the JSON string decoded from the object.
 func GetCurrentUser(s *gin.Context) (*types.CurrentUser, string) {
 	resp, err := DoTimedRequest("GET", API.getPath(s, "currentuser"), 5*time.Second)
 	if err != nil {
@@ -146,7 +157,7 @@ func newAPIHelper() *CoreAPIManager {
 
 	// TODO if we are in release mode use SSL!
 
-	var sslMode string = "verify-full"
+	sslMode := "verify-full"
 	if !cfg.Beaconing.DB.SSL {
 		sslMode = "disable"
 	}

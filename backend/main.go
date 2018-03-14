@@ -47,7 +47,7 @@ func TokenAuth() gin.HandlerFunc {
 	}
 }
 
-func GetRouterEngine() *gin.Engine {
+func getRouterEngine() *gin.Engine {
 	// Create the main router
 	router := gin.Default()
 
@@ -176,7 +176,7 @@ func main() {
 
 	server := &http.Server{
 		Addr:    ":8081",
-		Handler: GetRouterEngine(),
+		Handler: getRouterEngine(),
 	}
 
 	quit := make(chan os.Signal)

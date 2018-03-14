@@ -51,6 +51,8 @@ func GetGamifiedLessonPlan(s *gin.Context, id uint64) (*types.GamifiedLessonPlan
 	return data, buffer.String()
 }
 
+// DeleteGLP deletes the given GLP of {id} from the
+// core database.
 func DeleteGLP(s *gin.Context, id uint64) string {
 	resp, err := DoTimedRequest("DELETE",
 		API.getPath(s,
@@ -61,6 +63,5 @@ func DeleteGLP(s *gin.Context, id uint64) string {
 		fmt.Println(err)
 		return ""
 	}
-
 	return string(resp)
 }

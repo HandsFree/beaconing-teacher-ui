@@ -15,6 +15,9 @@ import (
 	jsoniter "github.com/json-iterator/go"
 )
 
+// AuthRedirect redirects the user to the authorisation page
+// for the beaconing api auth.
+// NOTE: this is kind of messy and can be replaced
 func AuthRedirect(c *gin.Context) {
 	authLink := fmt.Sprintf("https://core.beaconing.eu/auth/auth?response_type=code%s%s%s%s",
 		"&client_id=", cfg.Beaconing.Auth.ID,
@@ -22,6 +25,9 @@ func AuthRedirect(c *gin.Context) {
 	c.Redirect(http.StatusTemporaryRedirect, authLink)
 }
 
+// GetRefreshToken retrieves a refresh token from the beaconing
+// core api. If all is well, the token will be set in the
+// users session which can be referenced later.
 func GetRefreshToken(s *gin.Context) error {
 	session := sessions.Default(s)
 
@@ -63,6 +69,9 @@ func GetRefreshToken(s *gin.Context) error {
 	return nil
 }
 
+// GetAccessToken will return the access token as a string
+// if there is no token set then we spit out an unauthorised
+// access error.
 func GetAccessToken(s *gin.Context) string {
 	session := sessions.Default(s)
 	accessToken := session.Get("access_token")
@@ -74,6 +83,8 @@ func GetAccessToken(s *gin.Context) string {
 	return accessToken.(string)
 }
 
+// TryRefreshToken is a shim for trying to refresh
+// a token ... to be implemented at a later date.
 func TryRefreshToken(s *gin.Context) error {
 	err := GetRefreshToken(s)
 	return err

@@ -7,6 +7,9 @@ import (
 	"git.juddus.com/HFC/beaconing/backend/types"
 )
 
+// GetActivities looks up in the local PSQL database
+// all of the activities performed by the given teacherID
+//
 // TODO we should cache this because
 // doing an SQL query everytime is probably not
 // a good idea, though im not sure if the frontend
@@ -36,21 +39,21 @@ func GetActivities(teacherID int, count int) []types.Activity {
 	log.Println("--- Loading activities!")
 
 	for rows.Next() {
-		var creation_date time.Time
-		var activity_type int
-		var api_req []byte
+		var creationDate time.Time
+		var activityType int
+		var apiReq []byte
 
-		err = rows.Scan(&creation_date, &activity_type, &api_req)
+		err = rows.Scan(&creationDate, &activityType, &apiReq)
 		if err != nil {
 			log.Println("-- Failed to request row in GetActivities query!")
 			continue
 		}
 
-		switch ActivityType(activity_type) {
-		case Create_Student:
-			result = types.NewCreateStudentActivity(api_req)
+		switch ActivityType(activityType) {
+		case CreateStudent:
+			result = types.NewCreateStudentActivity(apiReq)
 		default:
-			log.Println("-- Unhandled activity type", ActivityType(activity_type))
+			log.Println("-- Unhandled activity type", ActivityType(activityType))
 		}
 
 		// shouldn't happen
@@ -66,12 +69,25 @@ func GetActivities(teacherID int, count int) []types.Activity {
 	return activities
 }
 
+// ActivityType is a type of activity
+// that can be performed, for example
+// an assignment. These activities
+// are displayed on the dashboard as
+// "recent activities".
 type ActivityType int
 
 const (
-	Create_Student ActivityType = iota
+	// CreateStudent is created when
+	// a teacher creates a new student.
+	CreateStudent ActivityType = iota
 )
 
+// WriteActivity writes the given activity into the database. The activity database
+// simply stores the type of activity, the person who executed it (teacherID) as well
+// as the json that was executed (i.e the API call).
+//
+// in theory this could be a big old relational database but it's not really necessary
+// and most of the times I feel like the JSON wont be used! this may change in the future...
 func (c *CoreAPIManager) WriteActivity(teacherID int, kind ActivityType, jsonData []byte) {
 	if teacherID == -1 {
 		log.Println("Cannot write activity for NULL user, skipping.")
