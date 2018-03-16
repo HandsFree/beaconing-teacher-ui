@@ -1,6 +1,7 @@
 package req
 
 import (
+	"errors"
 	"log"
 	"net/http"
 
@@ -21,7 +22,7 @@ type SearchQueryResponse struct {
 	MatchedGLPS     []types.GamifiedLessonPlan
 }
 
-func processSearch(s *gin.Context, json SearchRequestQuery) *SearchQueryResponse {
+func processSearch(s *gin.Context, json SearchRequestQuery) (*SearchQueryResponse, error) {
 	studentsData, studentsCached := api.Fetch("students")
 	if !studentsCached {
 		// cache miss, force a fetch to cache students
@@ -31,25 +32,29 @@ func processSearch(s *gin.Context, json SearchRequestQuery) *SearchQueryResponse
 
 	glpData, glpsCached := api.Fetch("glps")
 	if !glpsCached {
-		glpData = api.GetGamifiedLessonPlans(s)
+		var err error
+		glpData, err = api.GetGamifiedLessonPlans(s)
+		if err != nil {
+			log.Println("processSearch", err.Error())
+			return nil, err
+		}
 	}
 
 	if glpData == "" || studentsData == "" {
-		// TODO: some kind of error here!
-		return nil
+		return nil, errors.New("No student/GLP data")
 	}
 
 	// conv json -> objects
 	var students []types.Student
 	if err := jsoniter.Unmarshal([]byte(studentsData), &students); err != nil {
 		log.Println("processSearch", err)
-		return nil
+		return nil, err
 	}
 
 	var glps []types.GamifiedLessonPlan
 	if err := jsoniter.Unmarshal([]byte(glpData), &glps); err != nil {
 		log.Println("processSearch", err)
-		return nil
+		return nil, err
 	}
 
 	// TODO: optimize me!
@@ -88,7 +93,7 @@ func processSearch(s *gin.Context, json SearchRequestQuery) *SearchQueryResponse
 		matchedGLPS = append(matchedGLPS, glps[glpIndex])
 	}
 
-	return &SearchQueryResponse{matchedStudents, matchedGLPS}
+	return &SearchQueryResponse{matchedStudents, matchedGLPS}, nil
 }
 
 func PostSearchRequest() gin.HandlerFunc {
@@ -100,9 +105,9 @@ func PostSearchRequest() gin.HandlerFunc {
 			return
 		}
 
-		resp := processSearch(s, json)
-		if resp == nil {
-			s.String(http.StatusBadRequest, "Something went wrong!")
+		resp, err := processSearch(s, json)
+		if err != nil {
+			s.AbortWithError(http.StatusBadRequest, err)
 			return
 		}
 

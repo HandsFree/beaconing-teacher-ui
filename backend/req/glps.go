@@ -78,7 +78,13 @@ func GetGLPSRequest() gin.HandlerFunc {
 			s.String(http.StatusOK, string(json))
 			return
 		}
-		json := api.GetGamifiedLessonPlans(s)
+
+		json, err := api.GetGamifiedLessonPlans(s)
+		if err != nil {
+			s.AbortWithError(http.StatusBadRequest, err)
+			return
+		}
+
 		s.Header("Content-Type", "application/json")
 		s.String(http.StatusOK, json)
 	}

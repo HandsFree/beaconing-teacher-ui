@@ -11,7 +11,13 @@ import (
 
 func PostStudentGroupRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
-		body := api.CreateStudentGroup(s)
+		body, err := api.CreateStudentGroup(s)
+		if err != nil {
+			log.Println("PostStudentGroupRequest", err.Error())
+			s.AbortWithError(http.StatusBadRequest, err)
+			return
+		}
+
 		s.Header("Content-Type", "application/json")
 		s.String(http.StatusOK, body)
 	}
@@ -30,7 +36,13 @@ func DeleteStudentGroupRequest() gin.HandlerFunc {
 			return
 		}
 
-		body := api.DeleteStudentGroup(s, id)
+		body, err := api.DeleteStudentGroup(s, id)
+		if err != nil {
+			log.Println("DeleteStudentGroupRequest", err.Error())
+			s.AbortWithError(http.StatusBadRequest, err)
+			return
+		}
+
 		s.Header("Content-Type", "application/json")
 		s.String(http.StatusOK, body)
 	}
@@ -38,7 +50,13 @@ func DeleteStudentGroupRequest() gin.HandlerFunc {
 
 func GetStudentGroupRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
-		body := api.GetStudentGroups(s)
+		body, err := api.GetStudentGroups(s)
+		if err != nil {
+			log.Println("GetStudentGroupRequest", err.Error())
+			s.AbortWithError(http.StatusBadRequest, err)
+			return
+		}
+
 		s.Header("Content-Type", "application/json")
 		s.String(http.StatusOK, body)
 	}

@@ -55,9 +55,8 @@ func (s SimpleActivity) GetMessage() string {
 
 // WEB PAGE
 
-func getLastActivities(s *gin.Context, n int) []types.Activity {
-	activities := api.GetActivities(api.GetUserID(s), n)
-	return activities
+func getLastActivities(s *gin.Context, n int) ([]types.Activity, error) {
+	return api.GetActivities(api.GetUserID(s), n)
 }
 
 func GetRecentActivities() gin.HandlerFunc {
@@ -68,10 +67,17 @@ func GetRecentActivities() gin.HandlerFunc {
 			then we look up all of the activities in the local
 			database with the ID of the current_user
 		*/
-		activities := getLastActivities(s, 15)
+		activities, err := getLastActivities(s, 15)
+		if err != nil {
+			log.Println("GetRecentActivities", err.Error())
+			s.AbortWithError(http.StatusBadRequest, err)
+			return
+		}
+
 		json, err := jsoniter.Marshal(activities)
 		if err != nil {
-			log.Println(err.Error())
+			log.Println("GetRecentActivities", err.Error())
+			s.AbortWithError(http.StatusBadRequest, err)
 			return
 		}
 

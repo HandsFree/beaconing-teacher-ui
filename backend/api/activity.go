@@ -1,6 +1,7 @@
 package api
 
 import (
+	"errors"
 	"log"
 	"time"
 
@@ -15,22 +16,22 @@ import (
 // a good idea, though im not sure if the frontend
 // would do this for us since this is invoked form a GET
 // request where the json response would be cached.
-func GetActivities(teacherID int, count int) []types.Activity {
+func GetActivities(teacherID int, count int) ([]types.Activity, error) {
 	if teacherID == -1 {
-		log.Println("-- Cannot fetch activities!")
-		return []types.Activity{}
+		log.Println("GetActivites, Cannot fetch activities!")
+		return []types.Activity{}, errors.New("No current user?")
 	}
 
 	if API.db == nil {
-		log.Println("-- No database connection has been established")
-		return []types.Activity{}
+		log.Println("GetActivities, No database connection has been established")
+		return []types.Activity{}, errors.New("No database connection established")
 	}
 
 	query := "SELECT creation_date, activity_type, api_req FROM activities WHERE teacher_id = $2 LIMIT $1"
 	rows, err := API.db.Query(query, count, teacherID)
 	if err != nil {
 		log.Println("GetActivities", err.Error())
-		return []types.Activity{}
+		return []types.Activity{}, err
 	}
 
 	activities := []types.Activity{}
@@ -45,7 +46,7 @@ func GetActivities(teacherID int, count int) []types.Activity {
 
 		err = rows.Scan(&creationDate, &activityType, &apiReq)
 		if err != nil {
-			log.Println("-- Failed to request row in GetActivities query!")
+			log.Println("-- Failed to request row in GetActivities query!", err.Error())
 			continue
 		}
 
@@ -66,7 +67,7 @@ func GetActivities(teacherID int, count int) []types.Activity {
 		activities = append(activities, result)
 	}
 
-	return activities
+	return activities, nil
 }
 
 // ActivityType is a type of activity
@@ -88,15 +89,15 @@ const (
 //
 // in theory this could be a big old relational database but it's not really necessary
 // and most of the times I feel like the JSON wont be used! this may change in the future...
-func (c *CoreAPIManager) WriteActivity(teacherID int, kind ActivityType, jsonData []byte) {
+func (c *CoreAPIManager) WriteActivity(teacherID int, kind ActivityType, jsonData []byte) error {
 	if teacherID == -1 {
 		log.Println("Cannot write activity for NULL user, skipping.")
-		return
+		return errors.New("Cannot write activity for NULL user")
 	}
 
 	if c.db == nil {
 		log.Println("-- No database connection has been established")
-		return
+		return errors.New("No database connection")
 	}
 
 	// TODO store the activity type!
@@ -105,5 +106,8 @@ func (c *CoreAPIManager) WriteActivity(teacherID int, kind ActivityType, jsonDat
 	_, err := c.db.Exec(query, teacherID, time.Now(), int(kind), jsonData)
 	if err != nil {
 		log.Println("-- ", err.Error())
+		return err
 	}
+
+	return nil
 }

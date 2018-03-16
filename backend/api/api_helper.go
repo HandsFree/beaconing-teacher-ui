@@ -51,7 +51,6 @@ func DoTimedRequestBody(method string, url string, reqBody io.Reader, timeout ti
 	defer cancel()
 
 	req, err := http.NewRequest(method, url, reqBody)
-	log.Println("Doing HTTP request ", req)
 
 	// sort of hacky but it should work fine.
 	if method == "POST" {
@@ -117,31 +116,26 @@ func (a *CoreAPIManager) getPath(s *gin.Context, args ...string) string {
 
 // GetCurrentUser returns an object with information about the current
 // user, as well as the JSON string decoded from the object.
-func GetCurrentUser(s *gin.Context) (*types.CurrentUser, string) {
+func GetCurrentUser(s *gin.Context) (*types.CurrentUser, error) {
 	resp, err := DoTimedRequest("GET", API.getPath(s, "currentuser"), 5*time.Second)
 	if err != nil {
 		log.Println("GetCurrentUser", err.Error())
-		return nil, ""
+		return nil, err
 	}
 
 	data := &types.CurrentUser{}
 	if err := jsoniter.Unmarshal(resp, data); err != nil {
 		log.Println("GetCurrentUser", err.Error())
+		return nil, err
 	}
 
 	input := fmt.Sprintf("%d%s", data.Id, data.Username)
 	hmac512 := hmac.New(sha512.New, []byte("what should the secret be!"))
 	hmac512.Write([]byte(input))
+
 	data.IdenticonSha512 = base64.StdEncoding.EncodeToString(hmac512.Sum(nil))
 
-	modifiedJSON, err := jsoniter.Marshal(data)
-	if err != nil {
-		log.Println("GetCurrentUser", err.Error())
-		// error, return old json
-		return data, string(resp)
-	}
-
-	return data, string(modifiedJSON)
+	return data, nil
 }
 
 // TODO the toml layout for loading the

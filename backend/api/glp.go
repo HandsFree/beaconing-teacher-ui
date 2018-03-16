@@ -14,26 +14,26 @@ import (
 
 // GetGamifiedLessonPlans requests all of the GLPs from the core
 // API returned as a json string
-func GetGamifiedLessonPlans(s *gin.Context) string {
+func GetGamifiedLessonPlans(s *gin.Context) (string, error) {
 	resp, err := DoTimedRequest("GET", API.getPath(s, "gamifiedlessonpaths"), 10*time.Second)
 	if err != nil {
 		log.Println("GetGamifiedLessonPlans", err.Error())
-		return ""
+		return "", err
 	}
 
 	response := string(resp)
 	cacheData("glps", response)
-	return response
+	return response, nil
 }
 
 // GetGamifiedLessonPlan requests the GLP with the given id, this function returns
 // the string of json retrieved _as well as_ the parsed json object
 // see types.GamifiedLessonPlan
-func GetGamifiedLessonPlan(s *gin.Context, id uint64) (*types.GamifiedLessonPlan, string) {
+func GetGamifiedLessonPlan(s *gin.Context, id uint64) (*types.GamifiedLessonPlan, error) {
 	resp, err := DoTimedRequest("GET", API.getPath(s, "gamifiedlessonpaths/", fmt.Sprintf("%d", id)), 5*time.Second)
 	if err != nil {
 		log.Println("GetGamifiedLessonPlan", err.Error())
-		return nil, ""
+		return nil, err
 	}
 
 	data := &types.GamifiedLessonPlan{}
@@ -48,12 +48,12 @@ func GetGamifiedLessonPlan(s *gin.Context, id uint64) (*types.GamifiedLessonPlan
 		log.Println("GetGamifiedLessonPlan", err.Error())
 	}
 
-	return data, buffer.String()
+	return data, nil
 }
 
 // DeleteGLP deletes the given GLP of {id} from the
 // core database.
-func DeleteGLP(s *gin.Context, id uint64) string {
+func DeleteGLP(s *gin.Context, id uint64) (string, error) {
 	resp, err := DoTimedRequest("DELETE",
 		API.getPath(s,
 			"gamifiedlessonpaths",
@@ -61,7 +61,7 @@ func DeleteGLP(s *gin.Context, id uint64) string {
 		5*time.Second)
 	if err != nil {
 		fmt.Println(err)
-		return ""
+		return "", err
 	}
-	return string(resp)
+	return string(resp), nil
 }

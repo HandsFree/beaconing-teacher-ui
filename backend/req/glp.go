@@ -32,7 +32,12 @@ func DeleteGLPRequest() gin.HandlerFunc {
 			return
 		}
 
-		body := api.DeleteGLP(s, id)
+		body, err := api.DeleteGLP(s, id)
+		if err != nil {
+			s.AbortWithError(http.StatusBadRequest, err)
+			return
+		}
+
 		s.Header("Content-Type", "application/json")
 		s.JSON(http.StatusOK, gin.H{"status": string(body)})
 	}
@@ -64,9 +69,16 @@ func GetGLPRequest() gin.HandlerFunc {
 			}
 		}
 
-		plan, json := api.GetGamifiedLessonPlan(s, id)
-		if plan == nil {
-			s.String(http.StatusBadRequest, "Funky error getting the GLP")
+		plan, err := api.GetGamifiedLessonPlan(s, id)
+		if err != nil {
+			s.AbortWithError(http.StatusBadRequest, err)
+			return
+		}
+
+		planJSON, err := jsoniter.Marshal(&plan)
+		if err != nil {
+			log.Println("GetGLPRequest", err.Error())
+			s.AbortWithError(http.StatusBadRequest, err)
 			return
 		}
 
@@ -80,7 +92,7 @@ func GetGLPRequest() gin.HandlerFunc {
 			ExternConfig: plan.ExternConfig,
 		}
 		if !shouldMinify {
-			model.Content = json
+			model.Content = string(planJSON)
 		}
 
 		modelJSON, err := jsoniter.Marshal(model)
