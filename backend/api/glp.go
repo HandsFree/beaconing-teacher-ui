@@ -15,7 +15,7 @@ import (
 // GetGamifiedLessonPlans requests all of the GLPs from the core
 // API returned as a json string
 func GetGamifiedLessonPlans(s *gin.Context) string {
-	resp, err := DoTimedRequest("GET", API.getPath(s, "gamifiedlessonpaths"), 5*time.Second)
+	resp, err := DoTimedRequest("GET", API.getPath(s, "gamifiedlessonpaths"), 10*time.Second)
 	if err != nil {
 		log.Println("GetGamifiedLessonPlans", err.Error())
 		return ""
