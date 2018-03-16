@@ -1,6 +1,7 @@
 package api
 
 import (
+	"bytes"
 	"crypto/hmac"
 	"crypto/sha512"
 	"encoding/base64"
@@ -50,16 +51,17 @@ func GetStudents(s *gin.Context) (string, error) {
 
 // GetStudent returns a decoded object as well as the json response
 // of the given student of id {studentID}
-func GetStudent(s *gin.Context, studentID int) (*types.Student, string) {
+func GetStudent(s *gin.Context, studentID int) (*types.Student, error) {
 	data, err := DoTimedRequest("GET", API.getPath(s, "students/", fmt.Sprintf("%d", studentID)), 5*time.Second)
 	if err != nil {
 		log.Println("GetStudent", err.Error())
-		return nil, ""
+		return nil, err
 	}
 
 	student := &types.Student{}
 	if err := jsoniter.Unmarshal(data, student); err != nil {
 		log.Println("GetStudent", err.Error())
+		return nil, err
 	}
 
 	input := fmt.Sprintf("%d%s", student.Id, student.Username)
@@ -67,5 +69,37 @@ func GetStudent(s *gin.Context, studentID int) (*types.Student, string) {
 	hmac512.Write([]byte(input))
 	student.IdenticonSha512 = base64.StdEncoding.EncodeToString(hmac512.Sum(nil))
 
-	return student, string(data)
+	return student, nil
+}
+
+type studentPost struct {
+	Id       uint   `json:"id"`
+	Username string `json:"username"`
+	Profile  string `json:"profile"`
+}
+
+func PostStudent(s *gin.Context) (string, error) {
+	var json studentPost
+	if err := s.ShouldBindJSON(&json); err != nil {
+		log.Println("PostStudent", err.Error())
+		return "", err
+	}
+
+	postStudent, err := jsoniter.Marshal(json)
+	if err != nil {
+		log.Println("PostStudent", err.Error())
+		return "", err
+	}
+
+	resp, err := DoTimedRequestBody("POST",
+		API.getPath(s, "students"),
+		bytes.NewBuffer(postStudent),
+		5*time.Second)
+	if err != nil {
+		log.Println("PostStudent", err.Error())
+		return "", err
+	}
+
+	API.WriteActivity(GetUserID(s), CreateStudent, resp)
+	return string(resp), nil
 }

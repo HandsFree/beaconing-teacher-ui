@@ -14,6 +14,12 @@ import (
 func GetGLPSRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
 		indexQuery := s.Query("index")
+		stepQuery := s.DefaultQuery("step", "15")
+		step, err := strconv.ParseUint(stepQuery, 10, 32)
+		if err != nil {
+			log.Print("Invalid step", err.Error())
+			step = 15
+		}
 
 		index, err := strconv.ParseUint(indexQuery, 10, 64)
 		if err != nil {
@@ -24,7 +30,7 @@ func GetGLPSRequest() gin.HandlerFunc {
 		// TODO a step here would be nice too.
 
 		// we have been given a positive index!
-		// return back the next 15 glps.
+		// return back the next {step} glps.
 		if indexQuery != "" {
 
 			plans := []*types.GamifiedLessonPlan{}
@@ -32,7 +38,7 @@ func GetGLPSRequest() gin.HandlerFunc {
 			// SO BASICALLY because an id might be
 			// gone, i.e. say GLPs 52342, 52343, 52344 have been deleted
 			// we will keep iterating and trying go get glp's until
-			// we have at least 15 plans fetched.
+			// we have at least {step} plans fetched.
 			// we should have a timeout here however
 			// because this will likely hang in the event that
 			// say we're at GLP 2343 and there are no more plans that exist
@@ -45,7 +51,7 @@ func GetGLPSRequest() gin.HandlerFunc {
 			attempts := 128
 			numFails := 0
 
-			for i := index; len(plans) < 15 && numFails < attempts; i++ {
+			for i := index; len(plans) < int(step) && numFails < attempts; i++ {
 				obj, _ := api.GetGamifiedLessonPlan(s, i)
 				if obj == nil {
 					log.Println(" - NO GAME PLAN AT INDEX ", i, " SKIPPING!")

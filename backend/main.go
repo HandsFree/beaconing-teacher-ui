@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -22,6 +23,7 @@ import (
 	"git.juddus.com/HFC/beaconing/backend/req"
 	"git.juddus.com/HFC/beaconing/backend/root"
 	"git.juddus.com/HFC/beaconing/backend/search"
+	"git.juddus.com/HFC/beaconing/backend/serv"
 )
 
 // TokenAuth ...
@@ -33,14 +35,14 @@ func TokenAuth() gin.HandlerFunc {
 		session := sessions.Default(c)
 		accessToken := session.Get("access_token")
 
-		if code == "" {
-			if accessToken == nil {
-				// we have no code and no access
-				// token so lets ask for auth
-				api.AuthRedirect(c)
-				c.Abort()
-				return
-			}
+		if code == "" && accessToken == nil {
+			// we have no code and no access
+			// token so lets ask for auth
+			authLink := fmt.Sprintf("https://core.beaconing.eu/auth/auth?response_type=code%s%s%s%s",
+				"&client_id=", cfg.Beaconing.Auth.ID,
+				"&redirect_uri=", serv.RedirectBaseLink)
+			c.Redirect(http.StatusTemporaryRedirect, authLink)
+			return
 		}
 
 		c.Next()
@@ -136,8 +138,11 @@ func getRouterEngine() *gin.Engine {
 		// students.POST("/", req.PostStudentsRequest())
 	}
 
-	// TODO PUT!
-	v1.GET("profile", req.GetProfileRequest())
+	profile := v1.Group("profile")
+	{
+		profile.GET("/", req.GetProfileRequest())
+		profile.PUT("/", req.PutProfileRequest())
+	}
 
 	v1.GET("active_lesson_plans", req.GetActiveLessonPlans())
 

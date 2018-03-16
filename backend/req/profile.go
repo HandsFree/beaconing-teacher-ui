@@ -1,6 +1,7 @@
 package req
 
 import (
+	"log"
 	"net/http"
 
 	"git.juddus.com/HFC/beaconing/backend/api"
@@ -24,5 +25,19 @@ func GetProfileRequest() gin.HandlerFunc {
 
 		s.Header("Content-Type", "application/json")
 		s.String(http.StatusOK, string(respJSON))
+	}
+}
+
+func PutProfileRequest() gin.HandlerFunc {
+	return func(s *gin.Context) {
+		body, err := api.PutProfile(s)
+		if err != nil {
+			log.Println("PutProfileRequest", err.Error())
+			s.AbortWithError(http.StatusBadRequest, err)
+			return
+		}
+
+		s.Header("Content-Type", "application/json")
+		s.String(http.StatusOK, body)
 	}
 }

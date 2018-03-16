@@ -15,18 +15,39 @@ func GetStudentRequest() gin.HandlerFunc {
 		studentIDParam := s.Param("id")
 		studentID, err := strconv.Atoi(studentIDParam)
 		if err != nil {
-			s.String(http.StatusBadRequest, "ID thingy")
+			log.Println("GetStudentRequest", err.Error())
+			s.AbortWithError(http.StatusBadRequest, err)
 			return
 		}
 
-		resp, _ := api.GetStudent(s, studentID)
+		resp, err := api.GetStudent(s, studentID)
+		if err != nil {
+			log.Println("GetStudentRequest", err.Error())
+			s.AbortWithError(http.StatusBadRequest, err)
+			return
+		}
+
 		json, err := jsoniter.Marshal(resp)
 		if err != nil {
-			log.Println(err.Error())
+			log.Println("GetStudentRequest", err.Error())
+			s.AbortWithError(http.StatusBadRequest, err)
 			return
 		}
 
 		s.Header("Content-Type", "application/json")
 		s.String(http.StatusOK, string(json))
+	}
+}
+
+func PostStudentRequest() gin.HandlerFunc {
+	return func(s *gin.Context) {
+		resp, err := api.PostStudent(s)
+		if err != nil {
+			s.AbortWithError(http.StatusBadRequest, err)
+			return
+		}
+
+		s.Header("Content-Type", "application/json")
+		s.String(http.StatusOK, string(resp))
 	}
 }

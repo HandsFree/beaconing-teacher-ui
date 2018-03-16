@@ -2,7 +2,6 @@ package api
 
 import (
 	"bytes"
-	"fmt"
 	"log"
 	"net/http"
 	"time"
@@ -14,16 +13,6 @@ import (
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 )
-
-// AuthRedirect redirects the user to the authorisation page
-// for the beaconing api auth.
-// NOTE: this is kind of messy and can be replaced
-func AuthRedirect(c *gin.Context) {
-	authLink := fmt.Sprintf("https://core.beaconing.eu/auth/auth?response_type=code%s%s%s%s",
-		"&client_id=", cfg.Beaconing.Auth.ID,
-		"&redirect_uri=", serv.RedirectBaseLink)
-	c.Redirect(http.StatusTemporaryRedirect, authLink)
-}
 
 // GetRefreshToken retrieves a refresh token from the beaconing
 // core api. If all is well, the token will be set in the

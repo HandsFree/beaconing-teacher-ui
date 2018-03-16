@@ -53,7 +53,7 @@ func DoTimedRequestBody(method string, url string, reqBody io.Reader, timeout ti
 	req, err := http.NewRequest(method, url, reqBody)
 
 	// sort of hacky but it should work fine.
-	if method == "POST" {
+	if method == "POST" || method == "PUT" {
 		req.Header.Set("Content-Type", "application/json")
 	}
 
