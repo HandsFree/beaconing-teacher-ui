@@ -46,75 +46,14 @@ func sortBySTEM(plans []*types.GamifiedLessonPlan, order SortingOrder) ([]*types
 	}
 
 	results := []*types.GamifiedLessonPlan{}
+
 	for _, plan := range plans {
 		if len(plan.Content) == 0 {
+			log.Println("Skipping GLP", plan.ID)
 			continue
 		}
 
-		// returns the domain
-		parseDomain := func(inputString string) string {
-			input := []rune(inputString)
-			index := 0
-
-			consume := func() rune {
-				val := input[index]
-				index++
-				return val
-			}
-
-			hasNext := func() bool {
-				return index < len(input)
-			}
-
-			consumeWhile := func(pred func(r rune) bool) string {
-				value := []rune{}
-				for hasNext() && pred(input[index]) {
-					value = append(value, consume())
-				}
-
-				result := string(value)
-				log.Println(result)
-				return result
-			}
-
-			eatJunk := func() {
-				consumeWhile(func(r rune) bool {
-					return r <= ' '
-				})
-			}
-
-			var domain string
-
-			eatJunk()
-
-			// consume till we hit a quote
-			consumeWhile(func(r rune) bool { return r != '"' })
-			eatJunk()
-
-			if strings.HasSuffix(string(input[index:]), "domain") {
-				eatJunk()
-
-				// eat the quote
-				consumeWhile(func(r rune) bool { return r != '"' })
-				eatJunk()
-
-				// doesn't match!
-				if consume() != ':' {
-					return ""
-				}
-				eatJunk()
-
-				if consume() != '"' {
-					return ""
-				}
-
-				domain = consumeWhile(func(r rune) bool { return r != '"' })
-
-				consume() // this should be a quote.
-			}
-
-			return domain
-		}
+		log.Println("Decoding ", plan.Content)
 
 		type glpContent struct {
 			Domain string `json:"domain"`
@@ -122,8 +61,12 @@ func sortBySTEM(plans []*types.GamifiedLessonPlan, order SortingOrder) ([]*types
 
 		var data glpContent
 		err := jsoniter.Unmarshal([]byte(plan.Content), &data)
+		if err != nil {
+			log.Println("Failed to decode domain, ", err.Error())
+			continue
+		}
 
-		domain := parseDomain(content)
+		domain := data.Domain
 		log.Println("Sorting by stem! Domain is '" + domain + "'")
 		if isSTEM(domain) {
 			results = append(results, plan)
