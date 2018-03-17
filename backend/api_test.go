@@ -1,7 +1,6 @@
 package main_test
 
 import (
-	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -20,20 +19,14 @@ func performRequest(r http.Handler, method, path string) *httptest.ResponseRecor
 	return w
 }
 
-func TestIndex(t *testing.T) {
-	body := gin.H{
-		"hello":"world",
-	}
-
+// TestNoAuth checks if the authorisation fails on a normal page
+// request! I.e. the server will do a 307 request to an auth page
+// if we have not been authorised.
+// TODO: we could probably check where we are redirected to, etc.
+func TestNoAuth(t *testing.T) {
 	router := makeServer()
-
 	w := performRequest(router, "GET", "/")
-
-	jsonEncoded, err := json.Marshal(body)
-
-	assert.Nil(t, err)
-	assert.Equal(t, http.StatusOK, w.Code)
-	assert.Equal(t, string(jsonEncoded)+"\n", w.Body.String())
+	assert.Equal(t, http.StatusTemporaryRedirect, w.Code)
 }
 
 func makeServer() *gin.Engine {
