@@ -1,9 +1,10 @@
-package types
+package activities
 
 import (
 	"log"
 
 	jsoniter "github.com/json-iterator/go"
+	"git.juddus.com/HFC/beaconing/backend/types"
 )
 
 type Activity interface {
@@ -27,7 +28,7 @@ func (s SimpleActivity) SetMessage(msg string) {
 	s.Message = msg
 }
 
-type CreatedStudentActivity struct {
+type CreatedStudentGroupActivity struct {
 	SimpleActivity
 	GroupName string
 }
@@ -36,20 +37,21 @@ type CreatedStudentActivity struct {
 // in the future yes because we can store a link i.e
 // whatever.com/whatever/student_groups/{the_id_here}
 // so when we click the group it will take us there!
-func NewCreateStudentActivity(apiReq []byte) *CreatedStudentActivity {
+func NewCreateStudentGroupActivity(apiReq []byte) *CreatedStudentGroupActivity {
 	groupName := "Undefined Group Name!" // just in case this happens!
 
-	data := &StudentGroup{}
+	data := &types.StudentGroup{}
 	if err := jsoniter.Unmarshal(apiReq, data); err != nil {
-		log.Println("NewCreateStudentActivity", err.Error())
+		log.Println("NewCreateStudentGroupActivity", err.Error())
 	}
 
 	if data != nil {
 		groupName = data.Name
 	}
 
-	return &CreatedStudentActivity{
+	return &CreatedStudentGroupActivity{
 		newSimpleActivity("Created student group"),
 		groupName,
 	}
 }
+

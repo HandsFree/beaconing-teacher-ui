@@ -100,6 +100,6 @@ func PostStudent(s *gin.Context) (string, error) {
 		return "", err
 	}
 
-	API.WriteActivity(GetUserID(s), CreateStudent, resp)
+	API.WriteActivity(GetUserID(s), CreateStudentActivity, resp)
 	return string(resp), nil
 }

@@ -40,7 +40,7 @@ func CreateStudentGroup(s *gin.Context) (string, error) {
 		return "", err
 	}
 
-	API.WriteActivity(GetUserID(s), CreateStudent, resp)
+	API.WriteActivity(GetUserID(s), CreateStudentGroupActivity, resp)
 	return string(resp), nil
 }
 
@@ -68,5 +68,6 @@ func DeleteStudentGroup(s *gin.Context, id int64) (string, error) {
 		return "", err
 	}
 
+	API.WriteActivity(GetUserID(s), DeleteStudentGroupActivity, req)
 	return string(req), nil
 }

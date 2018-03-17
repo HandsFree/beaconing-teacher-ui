@@ -30,6 +30,7 @@ func AssignStudentToGLP(s *gin.Context, studentID int, glpID int) (string, error
 			"/assignedGlps"),
 		bytes.NewBuffer(assignJSON), 5*time.Second)
 
+	API.WriteActivity(GetUserID(s), AssignedGLPActivity, resp)
 	return string(resp), nil
 }
 
@@ -64,5 +65,6 @@ func DeleteAssignedGLP(s *gin.Context, studentID int, glpID int) string {
 		log.Println("DeleteAssignedGLP", err.Error())
 		return ""
 	}
+
 	return string(resp)
 }
