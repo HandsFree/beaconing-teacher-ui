@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"git.juddus.com/HFC/beaconing/backend/cfg"
-	"git.juddus.com/HFC/beaconing/backend/serv"
 	"git.juddus.com/HFC/beaconing/backend/types"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -27,7 +26,7 @@ func GetRefreshToken(s *gin.Context) error {
 		Code:         accessToken,
 		ClientID:     cfg.Beaconing.Auth.ID,
 		ClientSecret: cfg.Beaconing.Auth.Secret,
-		RedirectURI:  serv.RedirectBaseLink,
+		RedirectURI:  RedirectBaseLink,
 	})
 
 	if err != nil {
