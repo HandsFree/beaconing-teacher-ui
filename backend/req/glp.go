@@ -69,7 +69,7 @@ func GetGLPRequest() gin.HandlerFunc {
 			}
 		}
 
-		plan, err := api.GetGamifiedLessonPlan(s, id)
+		plan, err := api.GetGLP(s, id)
 		if err != nil {
 			s.AbortWithError(http.StatusBadRequest, err)
 			return

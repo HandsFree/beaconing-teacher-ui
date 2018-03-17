@@ -14,7 +14,6 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"git.juddus.com/HFC/beaconing/backend/api"
-	"git.juddus.com/HFC/beaconing/backend/auth"
 	"git.juddus.com/HFC/beaconing/backend/authoring_tool"
 	"git.juddus.com/HFC/beaconing/backend/cfg"
 	"git.juddus.com/HFC/beaconing/backend/classroom"
@@ -24,6 +23,7 @@ import (
 	"git.juddus.com/HFC/beaconing/backend/root"
 	"git.juddus.com/HFC/beaconing/backend/search"
 	"git.juddus.com/HFC/beaconing/backend/serv"
+	"crypto/rand"
 )
 
 // TokenAuth ...
@@ -49,12 +49,24 @@ func TokenAuth() gin.HandlerFunc {
 	}
 }
 
+// CreateSessionSecret returns a random byte array
+func createSessionSecret(size int) []byte {
+	sessionKey := make([]byte, size)
+
+	_, err := rand.Read(sessionKey)
+	if err != nil {
+		panic(err)
+	}
+
+	return sessionKey
+}
+
 func getRouterEngine() *gin.Engine {
 	// Create the main router
 	router := gin.Default()
 
 	// Create the cookie store
-	store := sessions.NewCookieStore(auth.CreateSessionSecret(32), auth.CreateSessionSecret(16))
+	store := sessions.NewCookieStore(createSessionSecret(32), createSessionSecret(16))
 
 	// Config the router to use sessions with cookie store
 	router.Use(sessions.Sessions("beaconing", store))
@@ -125,6 +137,7 @@ func getRouterEngine() *gin.Engine {
 	student := v1.Group("student")
 	{
 		student.GET("/:id", req.GetStudentRequest())
+		student.POST("/:id", req.PostStudentRequest())
 	}
 
 	students := v1.Group("students")

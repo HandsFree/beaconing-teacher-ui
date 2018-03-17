@@ -12,6 +12,7 @@ import (
 	"git.juddus.com/HFC/beaconing/backend/types"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
+	"git.juddus.com/HFC/beaconing/backend/activities"
 )
 
 // GetStudents requests a list of all students from the
@@ -100,6 +101,6 @@ func PostStudent(s *gin.Context) (string, error) {
 		return "", err
 	}
 
-	API.WriteActivity(GetUserID(s), CreateStudentActivity, resp)
+	API.WriteActivity(GetUserID(s), activities.CreateStudentActivity, resp)
 	return string(resp), nil
 }

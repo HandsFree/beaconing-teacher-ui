@@ -50,11 +50,11 @@ func GetActivities(teacherID int, count int) ([]activities.Activity, error) {
 			continue
 		}
 
-		switch ActivityType(activityType) {
-		case CreateStudentGroupActivity:
+		switch activities.ActivityType(activityType) {
+		case activities.CreateStudentGroupActivity:
 			result = activities.NewCreateStudentGroupActivity(apiReq)
 		default:
-			log.Println("-- Unhandled activity type", ActivityType(activityType))
+			log.Println("-- Unhandled activity type", activities.ActivityType(activityType))
 		}
 
 		// shouldn't happen
@@ -70,39 +70,13 @@ func GetActivities(teacherID int, count int) ([]activities.Activity, error) {
 	return loadedActivities, nil
 }
 
-// ActivityType is a type of activity
-// that can be performed, for example
-// an assignment. These activities
-// are displayed on the dashboard as
-// "recent activities".
-type ActivityType int
-
-const (
-	CreateStudentGroupActivity ActivityType = iota
-	DeleteStudentGroupActivity
-
-	CreateStudentActivity
-	DeleteStudentActivity
-
-	DeleteGLPActivity
-	CreateGLPActivity
-	AssignedGLPActivity
-	// TODO: Unassign GLP activity
-	// TODO: EditGLPActivity
-
-	// TODO: changes a setting
-	// TODO: edits a student
-	// TODO: edits a group
-
-)
-
 // WriteActivity writes the given activity into the database. The activity database
 // simply stores the type of activity, the person who executed it (teacherID) as well
 // as the json that was executed (i.e the API call).
 //
 // in theory this could be a big old relational database but it's not really necessary
 // and most of the times I feel like the JSON wont be used! this may change in the future...
-func (c *CoreAPIManager) WriteActivity(teacherID int, kind ActivityType, jsonData []byte) error {
+func (c *CoreAPIManager) WriteActivity(teacherID int, kind activities.ActivityType, jsonData []byte) error {
 	if teacherID == -1 {
 		log.Println("Cannot write activity for NULL user, skipping.")
 		return errors.New("Cannot write activity for NULL user")

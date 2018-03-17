@@ -19,7 +19,7 @@ type SearchRequestQuery struct {
 
 type SearchQueryResponse struct {
 	MatchedStudents []types.Student
-	MatchedGLPS     []types.GamifiedLessonPlan
+	MatchedGLPS     []types.GLP
 }
 
 func processSearch(s *gin.Context, json SearchRequestQuery) (*SearchQueryResponse, error) {
@@ -33,7 +33,7 @@ func processSearch(s *gin.Context, json SearchRequestQuery) (*SearchQueryRespons
 	glpData, glpsCached := api.Fetch("glps")
 	if !glpsCached {
 		var err error
-		glpData, err = api.GetGamifiedLessonPlans(s)
+		glpData, err = api.GetGLPS(s)
 		if err != nil {
 			log.Println("processSearch", err.Error())
 			return nil, err
@@ -51,7 +51,7 @@ func processSearch(s *gin.Context, json SearchRequestQuery) (*SearchQueryRespons
 		return nil, err
 	}
 
-	var glps []types.GamifiedLessonPlan
+	var glps []types.GLP
 	if err := jsoniter.Unmarshal([]byte(glpData), &glps); err != nil {
 		log.Println("processSearch", err)
 		return nil, err
@@ -79,7 +79,7 @@ func processSearch(s *gin.Context, json SearchRequestQuery) (*SearchQueryRespons
 	}
 
 	matchedStudents := []types.Student{}
-	matchedGLPS := []types.GamifiedLessonPlan{}
+	matchedGLPS := []types.GLP{}
 
 	studentSearches := fuzzy.RankFindFold(json.Query, studentNames)
 	for _, studentRank := range studentSearches {

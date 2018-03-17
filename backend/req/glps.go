@@ -21,7 +21,7 @@ const (
 	Descending
 )
 
-func sortByName(plans []*types.GamifiedLessonPlan, order SortingOrder) ([]*types.GamifiedLessonPlan, error) {
+func sortByName(plans []*types.GLP, order SortingOrder) ([]*types.GLP, error) {
 	sort.Slice(plans, func(i, j int) bool {
 		if order == Descending {
 			return plans[i].Name[0] > plans[j].Name[0]
@@ -32,7 +32,7 @@ func sortByName(plans []*types.GamifiedLessonPlan, order SortingOrder) ([]*types
 	return plans, nil
 }
 
-func sortBySTEM(plans []*types.GamifiedLessonPlan, order SortingOrder) ([]*types.GamifiedLessonPlan, error) {
+func sortBySTEM(plans []*types.GLP, order SortingOrder) ([]*types.GLP, error) {
 	isSTEM := func(name string) bool {
 		name = strings.ToLower(name)
 		switch name {
@@ -45,7 +45,7 @@ func sortBySTEM(plans []*types.GamifiedLessonPlan, order SortingOrder) ([]*types
 		return false
 	}
 
-	results := []*types.GamifiedLessonPlan{}
+	results := []*types.GLP{}
 
 	for _, plan := range plans {
 		if len(plan.Content) == 0 {
@@ -78,7 +78,7 @@ func sortBySTEM(plans []*types.GamifiedLessonPlan, order SortingOrder) ([]*types
 	return results, nil
 }
 
-func sortByCreationTime(plans []*types.GamifiedLessonPlan, order SortingOrder) ([]*types.GamifiedLessonPlan, error) {
+func sortByCreationTime(plans []*types.GLP, order SortingOrder) ([]*types.GLP, error) {
 	// based of the assumption (see issue #45) that they
 	// are from the core API in order of creation if we
 	// are in ascending order, do nothing that is the most
@@ -97,7 +97,7 @@ func sortByCreationTime(plans []*types.GamifiedLessonPlan, order SortingOrder) (
 
 // invoke sort plan with query
 // ?sort=name, ?sort=stem, ?sort=created, etc.
-func sortPlans(plans []*types.GamifiedLessonPlan, sortType string, order SortingOrder) ([]*types.GamifiedLessonPlan, error) {
+func sortPlans(plans []*types.GLP, sortType string, order SortingOrder) ([]*types.GLP, error) {
 	// TODO
 	// sort by most assigned "popular"
 	// sort by deadline soonest/further "deadline"
@@ -145,7 +145,7 @@ func GetGLPSRequest() gin.HandlerFunc {
 			}
 		}
 
-		plans := []*types.GamifiedLessonPlan{}
+		plans := []*types.GLP{}
 
 		// we have been given a positive index!
 		// return back the next {step} glps.
@@ -167,7 +167,7 @@ func GetGLPSRequest() gin.HandlerFunc {
 			numFails := 0
 
 			for i := index; len(plans) < int(step) && numFails < attempts; i++ {
-				obj, _ := api.GetGamifiedLessonPlan(s, i)
+				obj, _ := api.GetGLP(s, i)
 				if obj == nil {
 					log.Println(" - NO GAME PLAN AT INDEX ", i, " SKIPPING!")
 					numFails++
@@ -189,7 +189,7 @@ func GetGLPSRequest() gin.HandlerFunc {
 				plans = append(plans, obj)
 			}
 		} else {
-			result, err := api.GetGamifiedLessonPlans(s)
+			result, err := api.GetGLPS(s)
 			if err != nil {
 				log.Println("GetGLPSRequst", err.Error())
 				s.AbortWithError(http.StatusBadRequest, err)

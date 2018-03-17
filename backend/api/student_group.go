@@ -8,6 +8,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
+	"git.juddus.com/HFC/beaconing/backend/activities"
 )
 
 type studentGroupPostJSON struct {
@@ -40,7 +41,7 @@ func CreateStudentGroup(s *gin.Context) (string, error) {
 		return "", err
 	}
 
-	API.WriteActivity(GetUserID(s), CreateStudentGroupActivity, resp)
+	API.WriteActivity(GetUserID(s), activities.CreateStudentGroupActivity, resp)
 	return string(resp), nil
 }
 
@@ -68,6 +69,6 @@ func DeleteStudentGroup(s *gin.Context, id int64) (string, error) {
 		return "", err
 	}
 
-	API.WriteActivity(GetUserID(s), DeleteStudentGroupActivity, req)
+	API.WriteActivity(GetUserID(s), activities.DeleteStudentGroupActivity, req)
 	return string(req), nil
 }

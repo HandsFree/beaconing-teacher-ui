@@ -1,10 +1,28 @@
 package activities
 
-import (
-	"log"
+// ActivityType is a type of activity
+// that can be performed, for example
+// an assignment. These activities
+// are displayed on the dashboard as
+// "recent activities".
+type ActivityType int
 
-	jsoniter "github.com/json-iterator/go"
-	"git.juddus.com/HFC/beaconing/backend/types"
+const (
+	CreateStudentGroupActivity ActivityType = iota
+	DeleteStudentGroupActivity
+
+	CreateStudentActivity
+	DeleteStudentActivity
+
+	DeleteGLPActivity
+	CreateGLPActivity
+	AssignedGLPActivity
+	// TODO: Unassign GLP activity
+	// TODO: EditGLPActivity
+
+	// TODO: changes a setting
+	// TODO: edits a student
+	// TODO: edits a group
 )
 
 type Activity interface {
@@ -27,31 +45,3 @@ func (s SimpleActivity) GetMessage() string {
 func (s SimpleActivity) SetMessage(msg string) {
 	s.Message = msg
 }
-
-type CreatedStudentGroupActivity struct {
-	SimpleActivity
-	GroupName string
-}
-
-// TODO do we have to store the ID of the group here?
-// in the future yes because we can store a link i.e
-// whatever.com/whatever/student_groups/{the_id_here}
-// so when we click the group it will take us there!
-func NewCreateStudentGroupActivity(apiReq []byte) *CreatedStudentGroupActivity {
-	groupName := "Undefined Group Name!" // just in case this happens!
-
-	data := &types.StudentGroup{}
-	if err := jsoniter.Unmarshal(apiReq, data); err != nil {
-		log.Println("NewCreateStudentGroupActivity", err.Error())
-	}
-
-	if data != nil {
-		groupName = data.Name
-	}
-
-	return &CreatedStudentGroupActivity{
-		newSimpleActivity("Created student group"),
-		groupName,
-	}
-}
-

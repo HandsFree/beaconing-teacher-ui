@@ -48,7 +48,7 @@ func GetActiveLessonPlansWidget() gin.HandlerFunc {
 		table.Render()
 
 		for glpID := range assigned {
-			glp, _ := api.GetGamifiedLessonPlan(s, glpID)
+			glp, _ := api.GetGLP(s, glpID)
 			if glp == nil {
 				log.Println("No such lesson plan found for ", glpID)
 				// skip this one, TODO
