@@ -95,6 +95,16 @@ func sortByCreationTime(plans []*types.GLP, order SortingOrder) ([]*types.GLP, e
 	return plans, nil
 }
 
+func sortByRecentlyUpdated(plans []*types.GLP, order SortingOrder) ([]*types.GLP, error) {
+	sort.Slice(plans, func(i, j int) bool {
+		if order == Descending {
+			return plans[j].UpdatedAt.Before(plans[i].UpdatedAt)
+		}
+		return plans[i].UpdatedAt.Before(plans[j].UpdatedAt)
+	})
+	return plans, nil
+}
+
 // invoke sort plan with query
 // ?sort=name, ?sort=stem, ?sort=created, etc.
 func sortPlans(plans []*types.GLP, sortType string, order SortingOrder) ([]*types.GLP, error) {
@@ -111,6 +121,8 @@ func sortPlans(plans []*types.GLP, sortType string, order SortingOrder) ([]*type
 		return sortBySTEM(plans[:], order)
 	case "created":
 		return sortByCreationTime(plans[:], order)
+	case "updated":
+		return sortByRecentlyUpdated(plans[:], order)
 	default:
 		return nil, errors.New("No such sort type '" + sortType + "'")
 	}
