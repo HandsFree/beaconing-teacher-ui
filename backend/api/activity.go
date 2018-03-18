@@ -5,7 +5,7 @@ import (
 	"log"
 	"time"
 
-	"git.juddus.com/HFC/beaconing/backend/types"
+	"git.juddus.com/HFC/beaconing/backend/activities"
 )
 
 // GetActivities looks up in the local PSQL database
@@ -16,26 +16,26 @@ import (
 // a good idea, though im not sure if the frontend
 // would do this for us since this is invoked form a GET
 // request where the json response would be cached.
-func GetActivities(teacherID int, count int) ([]types.Activity, error) {
+func GetActivities(teacherID int, count int) ([]activities.Activity, error) {
 	if teacherID == -1 {
 		log.Println("GetActivites, Cannot fetch activities!")
-		return []types.Activity{}, errors.New("No current user?")
+		return []activities.Activity{}, errors.New("No current user?")
 	}
 
 	if API.db == nil {
 		log.Println("GetActivities, No database connection has been established")
-		return []types.Activity{}, errors.New("No database connection established")
+		return []activities.Activity{}, errors.New("No database connection established")
 	}
 
 	query := "SELECT creation_date, activity_type, api_req FROM activities WHERE teacher_id = $2 LIMIT $1"
 	rows, err := API.db.Query(query, count, teacherID)
 	if err != nil {
 		log.Println("GetActivities", err.Error())
-		return []types.Activity{}, err
+		return []activities.Activity{}, err
 	}
 
-	activities := []types.Activity{}
-	var result types.Activity
+	loadedActivities := []activities.Activity{}
+	var result activities.Activity
 
 	log.Println("--- Loading activities!")
 
@@ -50,11 +50,11 @@ func GetActivities(teacherID int, count int) ([]types.Activity, error) {
 			continue
 		}
 
-		switch ActivityType(activityType) {
-		case CreateStudent:
-			result = types.NewCreateStudentActivity(apiReq)
+		switch activities.ActivityType(activityType) {
+		case activities.CreateStudentGroupActivity:
+			result = activities.NewCreateStudentGroupActivity(apiReq)
 		default:
-			log.Println("-- Unhandled activity type", ActivityType(activityType))
+			log.Println("-- Unhandled activity type", activities.ActivityType(activityType))
 		}
 
 		// shouldn't happen
@@ -64,24 +64,11 @@ func GetActivities(teacherID int, count int) ([]types.Activity, error) {
 
 		log.Println("-- Loaded activity", result)
 
-		activities = append(activities, result)
+		loadedActivities = append(loadedActivities, result)
 	}
 
-	return activities, nil
+	return loadedActivities, nil
 }
-
-// ActivityType is a type of activity
-// that can be performed, for example
-// an assignment. These activities
-// are displayed on the dashboard as
-// "recent activities".
-type ActivityType int
-
-const (
-	// CreateStudent is created when
-	// a teacher creates a new student.
-	CreateStudent ActivityType = iota
-)
 
 // WriteActivity writes the given activity into the database. The activity database
 // simply stores the type of activity, the person who executed it (teacherID) as well
@@ -89,7 +76,7 @@ const (
 //
 // in theory this could be a big old relational database but it's not really necessary
 // and most of the times I feel like the JSON wont be used! this may change in the future...
-func (c *CoreAPIManager) WriteActivity(teacherID int, kind ActivityType, jsonData []byte) error {
+func (c *CoreAPIManager) WriteActivity(teacherID int, kind activities.ActivityType, jsonData []byte) error {
 	if teacherID == -1 {
 		log.Println("Cannot write activity for NULL user, skipping.")
 		return errors.New("Cannot write activity for NULL user")
@@ -99,8 +86,6 @@ func (c *CoreAPIManager) WriteActivity(teacherID int, kind ActivityType, jsonDat
 		log.Println("-- No database connection has been established")
 		return errors.New("No database connection")
 	}
-
-	// TODO store the activity type!
 
 	query := "INSERT INTO activities (teacher_id, creation_date, activity_type, api_req) VALUES($1, $2, $3, $4)"
 	_, err := c.db.Exec(query, teacherID, time.Now(), int(kind), jsonData)

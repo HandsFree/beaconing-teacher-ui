@@ -1,6 +1,8 @@
 package page
 
-import "git.juddus.com/HFC/beaconing/backend/serv"
+import (
+	"git.juddus.com/HFC/beaconing/backend/api"
+)
 
 // Page represents a web page in the beaconing
 // teacher ui. This wraps around a 'SimpleManagedRoute'
@@ -19,6 +21,6 @@ func New(title string, script string) *Page {
 		Title:    title,
 		Script:   script,
 		Template: "index.html",
-		Host:     serv.Protocol + serv.BaseLink + "/",
+		Host:     api.Protocol + api.BaseLink + "/",
 	}
 }

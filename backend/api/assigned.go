@@ -8,6 +8,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
+	activities "git.juddus.com/HFC/beaconing/backend/activities"
 )
 
 // AssignStudentToGLP assigns the given student (by id) to the given GLP (by id),
@@ -30,6 +31,7 @@ func AssignStudentToGLP(s *gin.Context, studentID int, glpID int) (string, error
 			"/assignedGlps"),
 		bytes.NewBuffer(assignJSON), 5*time.Second)
 
+	API.WriteActivity(GetUserID(s), activities.AssignedGLPActivity, resp)
 	return string(resp), nil
 }
 
@@ -64,5 +66,6 @@ func DeleteAssignedGLP(s *gin.Context, studentID int, glpID int) string {
 		log.Println("DeleteAssignedGLP", err.Error())
 		return ""
 	}
+
 	return string(resp)
 }

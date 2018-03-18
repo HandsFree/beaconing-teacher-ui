@@ -9,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"git.juddus.com/HFC/beaconing/backend/cfg"
-	"git.juddus.com/HFC/beaconing/backend/serv"
+	"git.juddus.com/HFC/beaconing/backend/api"
 )
 
 func GetLogOutRequest() gin.HandlerFunc {
@@ -24,7 +24,7 @@ func GetLogOutRequest() gin.HandlerFunc {
 
 		logoutLink := fmt.Sprintf("https://core.beaconing.eu/auth/logout?client_id=%s&redirect_uri=%s",
 			cfg.Beaconing.Auth.ID,
-			serv.LogOutLink)
+			api.LogOutLink)
 
 		fmt.Println(logoutLink)
 

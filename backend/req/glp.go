@@ -59,7 +59,7 @@ func GetGLPRequest() gin.HandlerFunc {
 		// 1 then we will minify this glp request.
 		// NOTE: that if the parameter fails to parse, etc.
 		// then it is completely ignored in the request.
-		var shouldMinify bool = false
+		shouldMinify := false
 		if minify != "" {
 			minifyParam, err := strconv.Atoi(minify)
 			if err == nil {
@@ -69,7 +69,7 @@ func GetGLPRequest() gin.HandlerFunc {
 			}
 		}
 
-		plan, err := api.GetGamifiedLessonPlan(s, id)
+		plan, err := api.GetGLP(s, id)
 		if err != nil {
 			s.AbortWithError(http.StatusBadRequest, err)
 			return
@@ -83,14 +83,17 @@ func GetGLPRequest() gin.HandlerFunc {
 		}
 
 		model := &GLPModel{
-			Id:           plan.Id,
+			Id:           plan.ID,
 			Name:         plan.Name,
 			Desc:         plan.Desc,
 			Author:       plan.Author,
 			Category:     plan.Category,
-			GamePlotID:   plan.GamePlotId,
+			GamePlotID:   plan.GamePlotID,
 			ExternConfig: plan.ExternConfig,
 		}
+
+		// only inject the content if we should
+		// not minify the model.
 		if !shouldMinify {
 			model.Content = string(planJSON)
 		}

@@ -1,54 +1,37 @@
 package main_test
 
 import (
-	"context"
-	"log"
 	"net/http"
-	"os"
-	"os/signal"
+	"net/http/httptest"
 	"testing"
-	"time"
 
 	"git.juddus.com/HFC/beaconing/backend/api"
 	"git.juddus.com/HFC/beaconing/backend/cfg"
+	"git.juddus.com/HFC/beaconing/backend/serv"
+	"github.com/gin-gonic/gin"
+	"github.com/stretchr/testify/assert"
 )
 
-func TestGetStudents(t *testing.T) {
-	makeServer()
+func performRequest(r http.Handler, method, path string) *httptest.ResponseRecorder {
+	req, _ := http.NewRequest(method, path, nil)
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+	return w
 }
 
-func makeServer() {
+// TestNoAuth checks if the authorisation fails on a normal page
+// request! I.e. the server will do a 307 request to an auth page
+// if we have not been authorised.
+// TODO: we could probably check where we are redirected to, etc.
+func TestNoAuth(t *testing.T) {
+	router := makeServer()
+	w := performRequest(router, "GET", "/")
+	assert.Equal(t, http.StatusTemporaryRedirect, w.Code)
+}
+
+func makeServer() *gin.Engine {
 	cfg.LoadConfig()
 	api.SetupAPIHelper()
 
-	server := &http.Server{
-		Addr:    ":8081",
-		Handler: GetRouterEngine(),
-	}
-
-	quit := make(chan os.Signal)
-	signal.Notify(quit, os.Interrupt)
-
-	go func() {
-		<-quit
-		log.Println("receive interrupt signal")
-		if err := server.Close(); err != nil {
-			log.Fatal("Server Close:", err)
-		}
-	}()
-
-	if err := server.ListenAndServe(); err != nil {
-		if err == http.ErrServerClosed {
-			log.Println("Server closed under request")
-		} else {
-			log.Fatal("Server closed unexpectedly")
-		}
-	}
-
-	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
-	defer cancel()
-	if err := server.Shutdown(ctx); err != nil {
-		log.Fatal("Server Shutdown:", err)
-	}
-	log.Println("Server exiting")
+	return serv.GetRouterEngine()
 }

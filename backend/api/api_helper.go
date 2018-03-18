@@ -23,6 +23,7 @@ import (
 
 	"git.juddus.com/HFC/beaconing/backend/cfg"
 	"git.juddus.com/HFC/beaconing/backend/types"
+	"net"
 )
 
 // ApiLayer is a layer which handles manipulation of
@@ -37,6 +38,57 @@ import (
 // API is the main instance to the api helper
 // this performs any api requests necessary
 var API *CoreAPIManager
+
+// Protocol contains the server protocol (http or https)
+var Protocol = getProtocol()
+
+// BaseLink contains the server address
+var BaseLink = getBaseLink()
+
+// RedirectBaseLink contains the link core services redirects back to
+var RedirectBaseLink = getRedirectBaseLink()
+
+// LogOutLink is used to log out
+var LogOutLink = getProtocol() + BaseLink + "/"
+
+// ────────────────────────────────────────────────────────────────────────────────
+
+func getOutboundIP() net.IP {
+	conn, err := net.Dial("udp", "8.8.8.8:80")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer conn.Close()
+
+	localAddr := conn.LocalAddr().(*net.UDPAddr)
+
+	return localAddr.IP
+}
+
+func getProtocol() string {
+	if gin.IsDebugging() {
+		return "http://"
+	}
+
+	return "https://"
+}
+
+func getBaseLink() string {
+	if gin.IsDebugging() {
+		// we have to slap the port on there
+		return getOutboundIP().String() + ":8081"
+	}
+	return "teacher.beaconing.eu"
+}
+
+func GetRootPath() string {
+	return getProtocol() + BaseLink
+}
+
+func getRedirectBaseLink() string {
+	return GetRootPath() + "/intent/token/"
+}
+
 
 // SetupAPIHelper sets up an instanceof the API manager
 // should not be called more than once (in theory!)

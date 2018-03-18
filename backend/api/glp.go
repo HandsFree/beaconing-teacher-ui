@@ -12,12 +12,12 @@ import (
 	jsoniter "github.com/json-iterator/go"
 )
 
-// GetGamifiedLessonPlans requests all of the GLPs from the core
+// GetGLPS requests all of the GLPs from the core
 // API returned as a json string
-func GetGamifiedLessonPlans(s *gin.Context) (string, error) {
+func GetGLPS(s *gin.Context) (string, error) {
 	resp, err := DoTimedRequest("GET", API.getPath(s, "gamifiedlessonpaths"), 10*time.Second)
 	if err != nil {
-		log.Println("GetGamifiedLessonPlans", err.Error())
+		log.Println("GetGLPS", err.Error())
 		return "", err
 	}
 
@@ -26,26 +26,26 @@ func GetGamifiedLessonPlans(s *gin.Context) (string, error) {
 	return response, nil
 }
 
-// GetGamifiedLessonPlan requests the GLP with the given id, this function returns
+// GetGLP requests the GLP with the given id, this function returns
 // the string of json retrieved _as well as_ the parsed json object
-// see types.GamifiedLessonPlan
-func GetGamifiedLessonPlan(s *gin.Context, id uint64) (*types.GamifiedLessonPlan, error) {
+// see types.GLP
+func GetGLP(s *gin.Context, id uint64) (*types.GLP, error) {
 	resp, err := DoTimedRequest("GET", API.getPath(s, "gamifiedlessonpaths/", fmt.Sprintf("%d", id)), 5*time.Second)
 	if err != nil {
-		log.Println("GetGamifiedLessonPlan", err.Error())
+		log.Println("GetGLP", err.Error())
 		return nil, err
 	}
 
-	data := &types.GamifiedLessonPlan{}
+	data := &types.GLP{}
 	if err := jsoniter.Unmarshal(resp, data); err != nil {
-		log.Println("GetGamifiedLessonPlan", err.Error())
+		log.Println("GetGLP", err.Error())
 	}
 
 	// should we compact everything?
 	// we do here because the json for glps request is stupidly long
 	buffer := new(bytes.Buffer)
 	if err := json.Compact(buffer, resp); err != nil {
-		log.Println("GetGamifiedLessonPlan", err.Error())
+		log.Println("GetGLP", err.Error())
 	}
 
 	return data, nil
