@@ -3,14 +3,55 @@ package api
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"time"
 
+	"git.juddus.com/HFC/beaconing/backend/activities"
 	"git.juddus.com/HFC/beaconing/backend/types"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 )
+
+func GetRecentlyAssignedGLPS(s *gin.Context) ([]*types.GLP, error) {
+	if API.db == nil {
+		log.Println("-- No database connection has been established")
+		return nil, errors.New("No database connection")
+	}
+
+	query := "SELECT api_req FROM activities WHERE activity_type = $1 ORDER BY creation_date ASC"
+	rows, err := API.db.Query(query, fmt.Sprintf("%d", int(activities.AssignGLPActivity)))
+	if err != nil {
+		log.Println("-- ", err.Error())
+		return nil, err
+	}
+
+	recentlyAssigned := []*types.GLP{}
+
+	for rows.Next() {
+		var apiReq []byte
+
+		err = rows.Scan(&apiReq)
+		if err != nil {
+			log.Println("-- Failed to request row in GetActivities query!", err.Error())
+			continue
+		}
+
+		var glpReq types.AssignPOST
+		jsoniter.Unmarshal(apiReq, &glpReq)
+
+		glp, err := GetGLP(s, glpReq.GlpID)
+		if err != nil {
+			log.Println("GetRecentlyAssigned", err.Error())
+			continue
+		}
+
+		recentlyAssigned = append(recentlyAssigned, glp)
+	}
+
+	return recentlyAssigned, nil
+}
 
 // GetGLPS requests all of the GLPs from the core
 // API returned as a json string

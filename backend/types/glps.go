@@ -21,3 +21,8 @@ type GLP struct {
 type GamifiedLessonPlans struct {
 	Data []GLP
 }
+
+type AssignPOST struct {
+	StudentID uint64 `json:"studentId"`
+	GlpID     uint64 `json:"gamifiedLessonPathId"`
+}

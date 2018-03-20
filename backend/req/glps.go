@@ -21,7 +21,7 @@ const (
 	Descending
 )
 
-func sortByName(plans []*types.GLP, order SortingOrder) ([]*types.GLP, error) {
+func sortByName(s *gin.Context, plans []*types.GLP, order SortingOrder) ([]*types.GLP, error) {
 	sort.Slice(plans, func(i, j int) bool {
 		if order == Descending {
 			return plans[i].Name[0] > plans[j].Name[0]
@@ -32,7 +32,7 @@ func sortByName(plans []*types.GLP, order SortingOrder) ([]*types.GLP, error) {
 	return plans, nil
 }
 
-func sortBySTEM(plans []*types.GLP, order SortingOrder) ([]*types.GLP, error) {
+func sortBySTEM(s *gin.Context, plans []*types.GLP, order SortingOrder) ([]*types.GLP, error) {
 	isSTEM := func(name string) bool {
 		name = strings.ToLower(name)
 		switch name {
@@ -78,7 +78,7 @@ func sortBySTEM(plans []*types.GLP, order SortingOrder) ([]*types.GLP, error) {
 	return results, nil
 }
 
-func sortByCreationTime(plans []*types.GLP, order SortingOrder) ([]*types.GLP, error) {
+func sortByCreationTime(s *gin.Context, plans []*types.GLP, order SortingOrder) ([]*types.GLP, error) {
 	// based of the assumption (see issue #45) that they
 	// are from the core API in order of creation if we
 	// are in ascending order, do nothing that is the most
@@ -88,16 +88,39 @@ func sortByCreationTime(plans []*types.GLP, order SortingOrder) ([]*types.GLP, e
 		return plans, nil
 	}
 
-	s := plans[:]
-	for i, j := 0, len(s)-1; i < j; i, j = i+1, j-1 {
-		s[i], s[j] = s[j], s[i]
+	sortedPlans := plans[:]
+	for i, j := 0, len(sortedPlans)-1; i < j; i, j = i+1, j-1 {
+		sortedPlans[i], sortedPlans[j] = sortedPlans[j], sortedPlans[i]
 	}
+	return sortedPlans, nil
+}
+
+func sortByRecentlyUpdated(s *gin.Context, plans []*types.GLP, order SortingOrder) ([]*types.GLP, error) {
+	sort.Slice(plans, func(i, j int) bool {
+		if order == Descending {
+			return plans[j].UpdatedAt.Before(plans[i].UpdatedAt)
+		}
+		return plans[i].UpdatedAt.Before(plans[j].UpdatedAt)
+	})
 	return plans, nil
+}
+
+func sortByRecentlyAssigned(s *gin.Context, plans []*types.GLP, order SortingOrder) ([]*types.GLP, error) {
+	// TODO we do a load for the GLPS and basically
+	// throw them out to reload the ones that have been
+	// recently assigned
+	// i.e. this could be faster
+	glps, err := api.GetRecentlyAssignedGLPS(s)
+	if err == nil {
+		log.Println("failed to get recently assigned glps")
+		return plans, err
+	}
+	return glps, nil
 }
 
 // invoke sort plan with query
 // ?sort=name, ?sort=stem, ?sort=created, etc.
-func sortPlans(plans []*types.GLP, sortType string, order SortingOrder) ([]*types.GLP, error) {
+func sortPlans(s *gin.Context, plans []*types.GLP, sortType string, order SortingOrder) ([]*types.GLP, error) {
 	// TODO
 	// sort by most assigned "popular"
 	// sort by deadline soonest/further "deadline"
@@ -106,11 +129,15 @@ func sortPlans(plans []*types.GLP, sortType string, order SortingOrder) ([]*type
 
 	switch strings.ToLower(sortType) {
 	case "name":
-		return sortByName(plans[:], order)
+		return sortByName(s, plans[:], order)
 	case "stem":
-		return sortBySTEM(plans[:], order)
+		return sortBySTEM(s, plans[:], order)
 	case "created":
-		return sortByCreationTime(plans[:], order)
+		return sortByCreationTime(s, plans[:], order)
+	case "updated":
+		return sortByRecentlyUpdated(s, plans[:], order)
+	case "assigned":
+		return sortByRecentlyAssigned(s, plans[:], order)
 	default:
 		return nil, errors.New("No such sort type '" + sortType + "'")
 	}
@@ -214,7 +241,7 @@ func GetGLPSRequest() gin.HandlerFunc {
 
 		// in theory we should have a sort here.
 		if sortQuery != "" {
-			resultPlans, err := sortPlans(plans, sortQuery, sortOrder)
+			resultPlans, err := sortPlans(s, plans, sortQuery, sortOrder)
 			if err != nil {
 				log.Println("Failed to sort GLPs by ", sortQuery, " in order ", sortOrder)
 				// the question is, do we throw an

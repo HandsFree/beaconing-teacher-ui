@@ -21,14 +21,14 @@ func init() {
 func GetAssignRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
 		studentID := s.Param("student")
-		studentIDValue, err := strconv.Atoi(studentID)
+		studentIDValue, err := strconv.ParseUint(studentID, 10, 64)
 		if err != nil || studentIDValue < 0 {
 			s.String(http.StatusBadRequest, "Client Error: Invalid student ID")
 			return
 		}
 
 		glpID := s.Param("glp")
-		glpIDValue, err := strconv.Atoi(glpID)
+		glpIDValue, err := strconv.ParseUint(glpID, 10, 64)
 		if err != nil || glpIDValue < 0 {
 			s.String(http.StatusBadRequest, "Client Error: Invalid GLP ID")
 			return
@@ -55,7 +55,7 @@ func GetAssignRequest() gin.HandlerFunc {
 // registerGLP...
 // this is a temporary demo thing, basically when we assign
 // a glp, we store it in a hash set
-func registerGLP(s *gin.Context, glpID int) {
+func registerGLP(s *gin.Context, glpID uint64) {
 	session := sessions.Default(s)
 
 	assignedPlans := session.Get("assigned_plans")
@@ -64,10 +64,10 @@ func registerGLP(s *gin.Context, glpID int) {
 		log.Println("session assigned_plans doesn't exist")
 	}
 
-	assignedPlansTable := map[int]bool{}
+	assignedPlansTable := map[uint64]bool{}
 	if assignedPlans != nil {
 		log.Println("restoring old ALP assignments table from session")
-		assignedPlansTable, _ = assignedPlans.(map[int]bool)
+		assignedPlansTable, _ = assignedPlans.(map[uint64]bool)
 	}
 
 	// TODO: if we want to sort by time we should probably
