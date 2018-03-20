@@ -27,7 +27,13 @@ func AssignStudentToGLP(s *gin.Context, studentID uint64, glpID uint64) (string,
 			"/assignedGlps"),
 		bytes.NewBuffer(assignJSON), 5*time.Second)
 
-	API.WriteActivity(GetUserID(s), activities.AssignedGLPActivity, resp)
+	id, err := GetUserID(s)
+	if err != nil {
+		log.Println("No such user when assigning GLP", err.Error())
+		return string(resp), nil
+	}
+
+	API.WriteActivity(id, activities.AssignedGLPActivity, resp)
 	return string(resp), nil
 }
 

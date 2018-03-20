@@ -6,9 +6,9 @@ import (
 	"log"
 	"time"
 
+	"git.juddus.com/HFC/beaconing/backend/activities"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
-	"git.juddus.com/HFC/beaconing/backend/activities"
 )
 
 type studentGroupPostJSON struct {
@@ -41,7 +41,13 @@ func CreateStudentGroup(s *gin.Context) (string, error) {
 		return "", err
 	}
 
-	API.WriteActivity(GetUserID(s), activities.CreateStudentGroupActivity, resp)
+	id, err := GetUserID(s)
+	if err != nil {
+		log.Println("No such current user", err.Error())
+		return string(resp), err
+	}
+
+	API.WriteActivity(id, activities.CreateStudentGroupActivity, resp)
 	return string(resp), nil
 }
 
@@ -69,6 +75,12 @@ func DeleteStudentGroup(s *gin.Context, id int64) (string, error) {
 		return "", err
 	}
 
-	API.WriteActivity(GetUserID(s), activities.DeleteStudentGroupActivity, req)
+	currUserID, err := GetUserID(s)
+	if err != nil {
+		log.Println("No such current user", err.Error())
+		return string(req), err
+	}
+
+	API.WriteActivity(currUserID, activities.DeleteStudentGroupActivity, req)
 	return string(req), nil
 }

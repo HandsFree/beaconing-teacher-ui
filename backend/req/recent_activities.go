@@ -5,10 +5,10 @@ import (
 	"net/http"
 	_ "time"
 
+	"git.juddus.com/HFC/beaconing/backend/activities"
 	"git.juddus.com/HFC/beaconing/backend/api"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
-	"git.juddus.com/HFC/beaconing/backend/activities"
 )
 
 /*
@@ -24,7 +24,12 @@ CREATE TABLE activities (
 */
 
 func getLastActivities(s *gin.Context, n int) ([]activities.Activity, error) {
-	return api.GetActivities(api.GetUserID(s), n)
+	currUserId, err := api.GetUserID(s)
+	if err != nil {
+		log.Println("No such current user!", err.Error())
+		return []activities.Activity{}, err
+	}
+	return api.GetActivities(currUserId, n)
 }
 
 func GetRecentActivities() gin.HandlerFunc {

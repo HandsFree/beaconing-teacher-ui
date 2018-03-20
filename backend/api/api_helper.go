@@ -5,6 +5,7 @@ import (
 	"crypto/hmac"
 	"crypto/sha512"
 	"encoding/base64"
+	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -147,12 +148,12 @@ type CoreAPIManager struct {
 
 // GetUserID returns the current users id number, if there is no
 // current user session it returns -1
-func GetUserID(s *gin.Context) int {
+func GetUserID(s *gin.Context) (uint64, error) {
 	obj, _ := GetCurrentUser(s)
 	if obj == nil {
-		return -1
+		return 0, errors.New("No such user")
 	}
-	return obj.Id
+	return obj.Id, nil
 }
 
 // getPath creates an API path, appending on the given beaconing URL
@@ -175,19 +176,78 @@ func GetCurrentUser(s *gin.Context) (*types.CurrentUser, error) {
 		return nil, err
 	}
 
-	data := &types.CurrentUser{}
-	if err := jsoniter.Unmarshal(resp, data); err != nil {
+	student := &types.CurrentUser{}
+	if err := jsoniter.Unmarshal(resp, student); err != nil {
 		log.Println("GetCurrentUser", err.Error())
 		return nil, err
 	}
 
-	input := fmt.Sprintf("%d%s", data.Id, data.Username)
+	// TODO probably some caching can be done here.
+
+	// try load the user avatar from the local
+	// database, if we fail  set the user avatar
+	// and re-load it.
+	// TODO if we fail again return some error
+	// identicon and spit the error out in the logs
+	avatar, err := getUserAvatar(s, student.Id)
+	if err != nil {
+		log.Println("getUserAvatar", err.Error())
+
+		avatar, err = setUserAvatar(s, student.Id, student.Username)
+		if err != nil {
+			log.Println("setUserAvatar", err.Error())
+			avatar = "TODO identicon fall back here"
+		}
+	}
+	student.IdenticonSha512 = avatar
+
+	return student, nil
+}
+
+func getUserAvatar(s *gin.Context, id uint64) (string, error) {
+	query := "SELECT avatar_blob FROM student_avatars WHERE student_id = $1"
+	rows, err := API.db.Query(query, id)
+	if err != nil {
+		log.Println("-- ", err.Error())
+		return "", err
+	}
+
+	for rows.Next() {
+		var avatarHash []byte
+
+		err = rows.Scan(&avatarHash)
+		if err != nil {
+			log.Println("-- Failed to request row in avatar_blob query!", err.Error())
+			continue
+		}
+
+		return string(avatarHash), nil
+	}
+
+	return "", errors.New("Failed to get avatar_blob of user")
+}
+
+func setUserAvatar(s *gin.Context, id uint64, username string) (string, error) {
+	if API.db == nil {
+		log.Println("-- No database connection has been established")
+		return "", errors.New("No database connection")
+	}
+
+	input := fmt.Sprintf("%d%s", id, username)
 	hmac512 := hmac.New(sha512.New, []byte("what should the secret be!"))
 	hmac512.Write([]byte(input))
 
-	data.IdenticonSha512 = base64.StdEncoding.EncodeToString(hmac512.Sum(nil))
+	avatarHash := base64.StdEncoding.EncodeToString(hmac512.Sum(nil))
+	log.Println("Setting avatar hash for student ", id, username, " to ", avatarHash)
 
-	return data, nil
+	query := "INSERT INTO student_avatars (student_id, avatar_blob) VALUES($1, $2)"
+	_, err := API.db.Exec(query, id, avatarHash)
+	if err != nil {
+		log.Println("-- ", err.Error())
+		return "", err
+	}
+
+	return avatarHash, nil
 }
 
 // TODO the toml layout for loading the
