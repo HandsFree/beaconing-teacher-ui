@@ -21,9 +21,10 @@ import (
 
 	jsoniter "github.com/json-iterator/go"
 
+	"net"
+
 	"git.juddus.com/HFC/beaconing/backend/cfg"
 	"git.juddus.com/HFC/beaconing/backend/types"
-	"net"
 )
 
 // ApiLayer is a layer which handles manipulation of
@@ -88,7 +89,6 @@ func GetRootPath() string {
 func getRedirectBaseLink() string {
 	return GetRootPath() + "/intent/token/"
 }
-
 
 // SetupAPIHelper sets up an instanceof the API manager
 // should not be called more than once (in theory!)

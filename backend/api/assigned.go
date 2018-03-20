@@ -6,20 +6,16 @@ import (
 	"log"
 	"time"
 
+	activities "git.juddus.com/HFC/beaconing/backend/activities"
+	"git.juddus.com/HFC/beaconing/backend/types"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
-	activities "git.juddus.com/HFC/beaconing/backend/activities"
 )
 
 // AssignStudentToGLP assigns the given student (by id) to the given GLP (by id),
 // returns a string of the returned json from the core API as well as an error (if any).
-func AssignStudentToGLP(s *gin.Context, studentID int, glpID int) (string, error) {
-	type assignPOST struct {
-		StudentID int `json:"studentId"`
-		GlpID     int `json:"gamifiedLessonPathId"`
-	}
-
-	assignJSON, err := jsoniter.Marshal(&assignPOST{studentID, glpID})
+func AssignStudentToGLP(s *gin.Context, studentID uint64, glpID uint64) (string, error) {
+	assignJSON, err := jsoniter.Marshal(&types.AssignPOST{studentID, glpID})
 	if err != nil {
 		return "", err
 	}
