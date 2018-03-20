@@ -9,10 +9,10 @@ import (
 	"log"
 	"time"
 
+	"git.juddus.com/HFC/beaconing/backend/activities"
 	"git.juddus.com/HFC/beaconing/backend/types"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
-	"git.juddus.com/HFC/beaconing/backend/activities"
 )
 
 // GetStudents requests a list of all students from the
@@ -30,11 +30,20 @@ func GetStudents(s *gin.Context) (string, error) {
 		return "", err
 	}
 
-	for _, s := range students {
-		input := fmt.Sprintf("%d%s", s.Id, s.Username)
-		hmac512 := hmac.New(sha512.New, []byte("what should the secret be!"))
-		hmac512.Write([]byte(input))
-		s.IdenticonSha512 = base64.StdEncoding.EncodeToString(hmac512.Sum(nil))
+	// TODO we could easily batch this into one SQL
+	// query
+	for _, student := range students {
+		avatar, err := getUserAvatar(s, student.Id)
+		if err != nil {
+			log.Println("getUserAvatar", err.Error())
+
+			avatar, err = setUserAvatar(s, student.Id, student.Username)
+			if err != nil {
+				log.Println("setUserAvatar", err.Error())
+				avatar = "TODO identicon fall back here"
+			}
+		}
+		student.IdenticonSha512 = avatar
 	}
 
 	modifiedStudentsJSON, err := jsoniter.Marshal(students)
@@ -101,6 +110,12 @@ func PostStudent(s *gin.Context) (string, error) {
 		return "", err
 	}
 
-	API.WriteActivity(GetUserID(s), activities.CreateStudentActivity, resp)
+	currUserId, err := GetUserID(s)
+	if err != nil {
+		log.Println("No such user", err.Error())
+		return string(resp), err
+	}
+
+	API.WriteActivity(currUserId, activities.CreateStudentActivity, resp)
 	return string(resp), nil
 }
