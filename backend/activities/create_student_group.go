@@ -1,9 +1,10 @@
 package activities
 
 import (
-	"github.com/json-iterator/go"
-	"git.juddus.com/HFC/beaconing/backend/types"
 	"log"
+
+	"git.juddus.com/HFC/beaconing/backend/types"
+	"github.com/json-iterator/go"
 )
 
 type CreatedStudentGroupActivity struct {
@@ -11,10 +12,6 @@ type CreatedStudentGroupActivity struct {
 	GroupName string
 }
 
-// TODO do we have to store the ID of the group here?
-// in the future yes because we can store a link i.e
-// whatever.com/whatever/student_groups/{the_id_here}
-// so when we click the group it will take us there!
 func NewCreateStudentGroupActivity(apiReq []byte) *CreatedStudentGroupActivity {
 	groupName := "Undefined Group Name!" // just in case this happens!
 
@@ -32,5 +29,3 @@ func NewCreateStudentGroupActivity(apiReq []byte) *CreatedStudentGroupActivity {
 		groupName,
 	}
 }
-
-
