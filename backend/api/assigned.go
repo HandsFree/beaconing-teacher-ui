@@ -33,7 +33,7 @@ func AssignStudentToGLP(s *gin.Context, studentID uint64, glpID uint64) (string,
 		return string(resp), nil
 	}
 
-	API.WriteActivity(id, activities.AssignedGLPActivity, resp)
+	API.WriteActivity(id, activities.AssignGLPActivity, resp)
 	return string(resp), nil
 }
 

@@ -48,6 +48,20 @@ func GetActivities(teacherID uint64, count int) ([]activities.Activity, error) {
 		switch activities.ActivityType(activityType) {
 		case activities.CreateStudentGroupActivity:
 			result = activities.NewCreateStudentGroupActivity(apiReq)
+		case activities.DeleteStudentGroupActivity:
+			result = activities.NewDeleteStudentGroupActivity(apiReq)
+
+		case activities.CreateStudentActivity:
+			result = activities.NewDeleteStudentActivity(apiReq)
+		case activities.DeleteStudentActivity:
+			result = activities.NewDeleteStudentActivity(apiReq)
+
+		case activities.DeleteGLPActivity:
+			result = activities.NewDeleteGLPActivity(apiReq)
+		case activities.CreateGLPActivity:
+			result = activities.NewCreateGLPActivity(apiReq)
+		case activities.AssignGLPActivity:
+			result = activities.NewAssignedGLPActivity(apiReq)
 		default:
 			log.Println("-- Unhandled activity type", activities.ActivityType(activityType))
 		}

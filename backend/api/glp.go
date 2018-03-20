@@ -21,7 +21,7 @@ func GetRecentlyAssignedGLPS(s *gin.Context) ([]*types.GLP, error) {
 	}
 
 	query := "SELECT api_req FROM activities WHERE activity_type = $1 ORDER BY creation_date ASC"
-	rows, err := API.db.Query(query, fmt.Sprintf("%d", int(activities.AssignedGLPActivity)))
+	rows, err := API.db.Query(query, fmt.Sprintf("%d", int(activities.AssignGLPActivity)))
 	if err != nil {
 		log.Println("-- ", err.Error())
 		return nil, err
