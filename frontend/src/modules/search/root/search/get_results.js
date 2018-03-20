@@ -39,7 +39,7 @@ class SearchResults extends Component {
                 '.result-group',
                 div(
                     '.title',
-                    h4('Student\'s:'),
+                    h4('Students:'),
                 ),
                 div(
                     '.flex-container.flex-wrap',
