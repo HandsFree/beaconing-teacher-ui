@@ -8,6 +8,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Delete's the assigned GLP from the student
+// i.e. an un-assign operation
+//
+// inputs:
+// - student id
+// - glp id
 func DeleteAssignedGLPsRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
 		studentIDParam := s.Param("id")

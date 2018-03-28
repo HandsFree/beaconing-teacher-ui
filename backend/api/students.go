@@ -18,7 +18,7 @@ import (
 // GetStudents requests a list of all students from the
 // core api, returned as a string of json
 func GetStudents(s *gin.Context) (string, error) {
-	resp, err := DoTimedRequest("GET", API.getPath(s, "students"), 5*time.Second)
+	resp, err := DoTimedRequest(s, "GET", API.getPath(s, "students"), 5*time.Second)
 	if err != nil {
 		log.Println("GetStudents", err.Error())
 		return "", err
@@ -26,7 +26,7 @@ func GetStudents(s *gin.Context) (string, error) {
 
 	students := []*types.Student{}
 	if err := jsoniter.Unmarshal(resp, &students); err != nil {
-		log.Println("GetStudents", err.Error())
+		log.Println("GetStudents", err.Error(), "resp was", string(resp))
 		return "", err
 	}
 
@@ -62,7 +62,7 @@ func GetStudents(s *gin.Context) (string, error) {
 // GetStudent returns a decoded object as well as the json response
 // of the given student of id {studentID}
 func GetStudent(s *gin.Context, studentID int) (*types.Student, error) {
-	data, err := DoTimedRequest("GET", API.getPath(s, "students/", fmt.Sprintf("%d", studentID)), 5*time.Second)
+	data, err := DoTimedRequest(s, "GET", API.getPath(s, "students/", fmt.Sprintf("%d", studentID)), 5*time.Second)
 	if err != nil {
 		log.Println("GetStudent", err.Error())
 		return nil, err
@@ -118,9 +118,9 @@ func PostStudent(s *gin.Context) (string, error) {
 		return "", err
 	}
 
-	fmt.Println(string(postStudent))
+	log.Println(string(postStudent))
 
-	resp, err := DoTimedRequestBody("POST",
+	resp, err := DoTimedRequestBody(s, "POST",
 		API.getPath(s, "students"),
 		bytes.NewBuffer(postStudent),
 		5*time.Second)
@@ -128,8 +128,6 @@ func PostStudent(s *gin.Context) (string, error) {
 		log.Println("PostStudent", err.Error())
 		return "", err
 	}
-
-	// fmt.Println(string(resp))
 
 	currUserId, err := GetUserID(s)
 	if err != nil {
@@ -154,7 +152,7 @@ func PutStudent(s *gin.Context, studentID int) (string, error) {
 		return "", err
 	}
 
-	resp, err := DoTimedRequestBody("PUT",
+	resp, err := DoTimedRequestBody(s, "PUT",
 		API.getPath(s, "students/", fmt.Sprintf("%d", studentID)),
 		bytes.NewBuffer(putStudent),
 		5*time.Second)
@@ -169,8 +167,7 @@ func PutStudent(s *gin.Context, studentID int) (string, error) {
 }
 
 func DeleteStudent(s *gin.Context, studentID int) (string, error) {
-	data, err := DoTimedRequest(
-		"DELETE",
+	data, err := DoTimedRequest(s, "DELETE",
 		API.getPath(s, "students/", fmt.Sprintf("%d", studentID)),
 		5*time.Second,
 	)

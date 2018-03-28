@@ -11,6 +11,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strings"
 	"time"
 
 	"database/sql"
@@ -97,13 +98,47 @@ func SetupAPIHelper() {
 	API = newAPIHelper()
 }
 
+// formatRequest generates ascii representation of a request
+func formatRequest(r *http.Request) string {
+	// Create return string
+	var request []string
+	// Add the request string
+	url := fmt.Sprintf("%v %v %v", r.Method, r.URL, r.Proto)
+	request = append(request, url)
+	// Add the host
+	request = append(request, fmt.Sprintf("Host: %v", r.Host))
+	// Loop through headers
+	for name, headers := range r.Header {
+		name = strings.ToLower(name)
+		for _, h := range headers {
+			request = append(request, fmt.Sprintf("%v: %v", name, h))
+		}
+	}
+
+	// If this is a POST, add post data
+	if r.Method == "POST" {
+		r.ParseForm()
+		request = append(request, "\n")
+		request = append(request, r.Form.Encode())
+	}
+
+	// Return the request as a string
+	return strings.Join(request, "\n")
+}
+
 // DoTimedRequestBody does a timed request of type {method} to {url} with an optional {reqBody}, if
 // there is no body pass nil, as well as a timeout can be specified.
-func DoTimedRequestBody(method string, url string, reqBody io.Reader, timeout time.Duration) ([]byte, error) {
+func DoTimedRequestBody(s *gin.Context, method string, url string, reqBody io.Reader, timeout time.Duration) ([]byte, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
 
 	req, err := http.NewRequest(method, url, reqBody)
+	{
+		req.Header.Add("accept", "application/json")
+		req.Header.Add("authorization", fmt.Sprintf("Bearer %s", GetAccessToken(s)))
+	}
+
+	log.Println("Doing timed request of\n", formatRequest(req))
 
 	// sort of hacky but it should work fine.
 	if method == "POST" || method == "PUT" {
@@ -133,9 +168,9 @@ func DoTimedRequestBody(method string, url string, reqBody io.Reader, timeout ti
 
 // DoTimedRequest is the same as DoTimedRequestBody, however it does not have
 // a body passed to the request.
-func DoTimedRequest(method string, url string, timeout time.Duration) ([]byte, error) {
+func DoTimedRequest(s *gin.Context, method string, url string, timeout time.Duration) ([]byte, error) {
 	fmt.Printf("%s%s\n", "URL: ", url)
-	data, err := DoTimedRequestBody(method, url, nil, timeout)
+	data, err := DoTimedRequestBody(s, method, url, nil, timeout)
 	return data, err
 }
 
@@ -165,7 +200,7 @@ func (a *CoreAPIManager) getPath(s *gin.Context, args ...string) string {
 	for _, arg := range args {
 		path += arg
 	}
-	return fmt.Sprintf("%s?access_token=%s", path, GetAccessToken(s))
+	return fmt.Sprintf("%s", path)
 }
 
 // getPathWithFlag is the same as getPath, except a GET variable can be added
@@ -181,7 +216,7 @@ func (a *CoreAPIManager) getPathWithFlag(s *gin.Context, flag string, args ...st
 // GetCurrentUser returns an object with information about the current
 // user, as well as the JSON string decoded from the object.
 func GetCurrentUser(s *gin.Context) (*types.CurrentUser, error) {
-	resp, err := DoTimedRequest("GET", API.getPath(s, "currentuser"), 5*time.Second)
+	resp, err := DoTimedRequest(s, "GET", API.getPath(s, "currentuser"), 5*time.Second)
 	if err != nil {
 		log.Println("GetCurrentUser", err.Error())
 		return nil, err

@@ -28,22 +28,22 @@ type studentGroupPostJSON struct {
 func CreateStudentGroup(s *gin.Context) (string, error) {
 	var json studentGroupPostJSON
 	if err := s.ShouldBindJSON(&json); err != nil {
-		log.Println("CreateStudentPOST", err.Error())
+		log.Println("CreateStudentGroupPOST", err.Error())
 		return "", err
 	}
 
 	studentGroupPost, err := jsoniter.Marshal(json)
 	if err != nil {
-		log.Println("CreateStudentPOST", err.Error())
+		log.Println("CreateStudentGroupPOST", err.Error())
 		return "", err
 	}
 
-	resp, err := DoTimedRequestBody("POST",
+	resp, err := DoTimedRequestBody(s, "POST",
 		API.getPath(s, "studentgroups"),
 		bytes.NewBuffer(studentGroupPost),
 		5*time.Second)
 	if err != nil {
-		log.Println("CreateStudentPOST", err.Error())
+		log.Println("CreateStudentGroupPOST", err.Error())
 		return "", err
 	}
 
@@ -60,7 +60,7 @@ func CreateStudentGroup(s *gin.Context) (string, error) {
 // GetStudentGroups gets all of the student groups
 // currently registered.
 func GetStudentGroups(s *gin.Context) (string, error) {
-	resp, err := DoTimedRequest("GET", API.getPath(s, "studentgroups"), 5*time.Second)
+	resp, err := DoTimedRequest(s, "GET", API.getPath(s, "studentgroups"), 5*time.Second)
 	if err != nil {
 		log.Println("GetStudentGroups", err.Error())
 		return "", err
@@ -71,8 +71,7 @@ func GetStudentGroups(s *gin.Context) (string, error) {
 // GetStudentGroup gets all of the student groups
 // currently registered.
 func GetStudentGroup(s *gin.Context, groupID int) (string, error) {
-	resp, err := DoTimedRequest(
-		"GET",
+	resp, err := DoTimedRequest(s, "GET",
 		API.getPath(s, "studentgroups/", fmt.Sprintf("%d", groupID)),
 		5*time.Second,
 	)
@@ -88,7 +87,7 @@ func GetStudentGroup(s *gin.Context, groupID int) (string, error) {
 // DeleteStudentGroup deletes a specific student group of
 // the given id {id}.
 func DeleteStudentGroup(s *gin.Context, id int64) (string, error) {
-	req, err := DoTimedRequest("DELETE",
+	req, err := DoTimedRequest(s, "DELETE",
 		API.getPath(s,
 			"studentgroups/",
 			fmt.Sprintf("%d", id)),
@@ -122,8 +121,7 @@ func PutStudentGroup(s *gin.Context, groupID int) (string, error) {
 		return "", err
 	}
 
-	resp, err := DoTimedRequestBody(
-		"PUT",
+	resp, err := DoTimedRequestBody(s, "PUT",
 		API.getPath(s, "studentgroups/", fmt.Sprintf("%d", groupID)),
 		bytes.NewBuffer(putJSON),
 		5*time.Second,

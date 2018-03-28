@@ -11,7 +11,7 @@ func GetStudentsRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
 		resp, err := api.GetStudents(s)
 		if err != nil {
-			s.String(http.StatusBadRequest, "oh boy! "+err.Error())
+			s.AbortWithError(http.StatusBadRequest, err)
 			return
 		}
 

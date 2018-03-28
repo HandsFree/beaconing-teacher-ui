@@ -65,27 +65,8 @@ func sortBySTEM(s *gin.Context, plans []*types.GLP, order SortingOrder) ([]*type
 	results := []*types.GLP{}
 
 	for _, plan := range plans {
-		if len(plan.Content) == 0 {
-			// log.Println("Skipping GLP", plan.ID)
-			continue
-		}
-
-		// log.Println("Decoding ", plan.Content)
-
-		type glpContent struct {
-			Domain string `json:"domain"`
-		}
-
-		var data glpContent
-		err := jsoniter.Unmarshal([]byte(plan.Content), &data)
-		if err != nil {
-			log.Println("Failed to decode domain, ", err.Error())
-			continue
-		}
-
-		domain := data.Domain
-		// log.Println("Sorting by stem! Domain is '" + domain + "'")
-		if isSTEM(domain) {
+		log.Println("Sorting by stem! Domain is '" + plan.Domain + "'")
+		if isSTEM(plan.Domain) {
 			results = append(results, plan)
 		}
 	}
@@ -158,6 +139,15 @@ func sortPlans(s *gin.Context, plans []*types.GLP, sortType string, order Sortin
 	}
 }
 
+// retrieves multiple glps
+//
+// inputs:
+// - index - the starting glp id (int)
+// - step - ... rename me to stride... how many
+//   glps to request for (optional, defaults at 15)
+//
+// - sort - asc or desc, the order in which to sort the glps
+//   defaults to ascending
 func GetGLPSRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
 		indexQuery := s.Query("index")
@@ -166,6 +156,23 @@ func GetGLPSRequest() gin.HandlerFunc {
 		if err != nil {
 			log.Print("Invalid step", err.Error())
 			step = 15
+		}
+
+		minify := s.Query("minify")
+
+		// dont minify by default, however if
+		// we have a minify parameter with the value
+		// 1 then we will minify this glp request.
+		// NOTE: that if the parameter fails to parse, etc.
+		// then it is completely ignored in the request.
+		shouldMinify := false
+		if minify != "" {
+			minifyParam, err := strconv.Atoi(minify)
+			if err == nil {
+				shouldMinify = minifyParam == 1
+			} else {
+				log.Println("Note: failed to atoi minify param in glps.go", err.Error())
+			}
 		}
 
 		index, err := strconv.ParseUint(indexQuery, 10, 64)
@@ -218,7 +225,7 @@ func GetGLPSRequest() gin.HandlerFunc {
 			numFails := 0
 
 			for i := index; len(plans) < int(step) && numFails < attempts; i++ {
-				obj, _ := api.GetGLP(s, i, false)
+				obj, _ := api.GetGLP(s, i, shouldMinify)
 				if obj == nil {
 					log.Println(" - NO GAME PLAN AT INDEX ", i, " SKIPPING!")
 					numFails++
@@ -240,7 +247,7 @@ func GetGLPSRequest() gin.HandlerFunc {
 				plans = append(plans, obj)
 			}
 		} else {
-			result, err := api.GetGLPS(s)
+			result, err := api.GetGLPS(s, shouldMinify)
 			if err != nil {
 				log.Println("GetGLPSRequst", err.Error())
 				s.AbortWithError(http.StatusBadRequest, err)
@@ -267,13 +274,13 @@ func GetGLPSRequest() gin.HandlerFunc {
 		if sortQuery != "" {
 			resultPlans, err := sortPlans(s, plans, sortQuery, sortOrder)
 			if err != nil {
-				log.Println("Failed to sort GLPs by ", sortQuery, " in order ", sortOrder)
+				log.Println("Failed to sort GLPs by ", sortQuery, " in order ", sortOrder, "\n"+err.Error())
 				// the question is, do we throw an
 				// error or do we allow the unsorted
 				// glps to pass through anyway.
+			} else {
+				plans = resultPlans
 			}
-
-			plans = resultPlans
 		}
 
 		// convert the plans into json and display

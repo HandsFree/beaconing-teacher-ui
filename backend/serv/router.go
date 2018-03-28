@@ -144,6 +144,13 @@ func GetRouterEngine() *gin.Engine {
 	students := v1.Group("students")
 	{
 		students.GET("/", req.GetStudentsRequest())
+		students.GET("/:id/assignedglps", req.GetAssignedGLPsRequest())
+		students.DELETE("/:id/assignedglps/:glp", req.DeleteAssignedGLPsRequest())
+
+		// TODO!
+		// PUT
+		// POST id/assigned glps
+		// students.POST("/", req.PostStudentsRequest())
 	}
 
 	profile := v1.Group("profile")

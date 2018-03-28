@@ -11,6 +11,21 @@ import (
 	"strconv"
 )
 
+type GLPModel struct {
+	Id           uint64 `json:"id"`
+	Name         string `json:"name"`
+	Desc         string `json:"description"`
+	Author       string `json:"author"`
+	Category     string `json:"category"`
+	Content      string `json:"content"`
+	GamePlotID   uint64 `json:"gamePlotId"`
+	ExternConfig string `json:"externConfig"`
+}
+
+// deletes the given glp
+//
+// inputs:
+// - glp id
 func DeleteGLPRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
 		idParam := s.Param("id")
@@ -32,6 +47,12 @@ func DeleteGLPRequest() gin.HandlerFunc {
 	}
 }
 
+// retrieves the given glp
+//
+// inputs:
+// - glp id
+// - minify (bool, optional)
+//   whether the "contents" of the GLP is omitted or not
 func GetGLPRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
 		idParam := s.Param("id")

@@ -20,7 +20,7 @@ func AssignStudentToGLP(s *gin.Context, studentID uint64, glpID uint64) (string,
 		return "", err
 	}
 
-	resp, err := DoTimedRequestBody("POST",
+	resp, err := DoTimedRequestBody(s, "POST",
 		API.getPath(s,
 			"students/",
 			fmt.Sprintf("%d", studentID),
@@ -45,7 +45,7 @@ func AssignGroupToGLP(s *gin.Context, groupID uint64, glpID uint64) (string, err
 		return "", err
 	}
 
-	resp, err := DoTimedRequestBody("POST",
+	resp, err := DoTimedRequestBody(s, "POST",
 		API.getPath(s,
 			"studentgroups/",
 			fmt.Sprintf("%d", groupID),
@@ -65,7 +65,7 @@ func AssignGroupToGLP(s *gin.Context, groupID uint64, glpID uint64) (string, err
 // GetAssignedGLPS returns a JSON string of all of the
 // glps that have been assigned to the given student {studentID}.
 func GetAssignedGLPS(s *gin.Context, studentID int) string {
-	resp, err := DoTimedRequest("GET",
+	resp, err := DoTimedRequest(s, "GET",
 		API.getPath(s,
 			"students/",
 			fmt.Sprintf("%d", studentID),
@@ -81,7 +81,7 @@ func GetAssignedGLPS(s *gin.Context, studentID int) string {
 // GetGroupAssignedGLPS returns a JSON string of all of the
 // glps that have been assigned to the given group {groupID}.
 func GetGroupAssignedGLPS(s *gin.Context, groupID int) string {
-	resp, err := DoTimedRequest("GET",
+	resp, err := DoTimedRequest(s, "GET",
 		API.getPath(s,
 			"studentgroups/",
 			fmt.Sprintf("%d", groupID),
@@ -97,7 +97,7 @@ func GetGroupAssignedGLPS(s *gin.Context, groupID int) string {
 // DeleteAssignedGLP deletes the given {glpID} from the {studentID}
 // or "un-assigns" the glp.
 func DeleteAssignedGLP(s *gin.Context, studentID int, glpID int) string {
-	resp, err := DoTimedRequest("DELETE",
+	resp, err := DoTimedRequest(s, "DELETE",
 		API.getPath(s,
 			"students/",
 			fmt.Sprintf("%d", studentID),
@@ -116,7 +116,7 @@ func DeleteAssignedGLP(s *gin.Context, studentID int, glpID int) string {
 // DeleteGroupAssignedGLP deletes the given {glpID} from the {groupID}
 // or "un-assigns" the glp.
 func DeleteGroupAssignedGLP(s *gin.Context, groupID int, glpID int) string {
-	resp, err := DoTimedRequest("DELETE",
+	resp, err := DoTimedRequest(s, "DELETE",
 		API.getPath(s,
 			"studentgroups/",
 			fmt.Sprintf("%d", groupID),

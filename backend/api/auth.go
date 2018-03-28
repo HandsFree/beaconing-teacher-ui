@@ -35,7 +35,7 @@ func GetRefreshToken(s *gin.Context) error {
 	}
 
 	const tokenRefreshLink = "https://core.beaconing.eu/auth/token"
-	resp, err := DoTimedRequestBody("POST", tokenRefreshLink, bytes.NewBuffer(message), 15*time.Second)
+	resp, err := DoTimedRequestBody(s, "POST", tokenRefreshLink, bytes.NewBuffer(message), 15*time.Second)
 	if err != nil {
 		log.Println("GetRefreshToken", err.Error())
 		return err

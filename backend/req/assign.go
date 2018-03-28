@@ -18,6 +18,11 @@ func init() {
 	gob.Register(map[int]bool{})
 }
 
+// Assign's a student to the given GLP
+//
+// inputs:
+// - student id
+// - glp id
 func GetAssignRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
 		studentID := s.Param("student")
