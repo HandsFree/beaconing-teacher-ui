@@ -82,10 +82,27 @@ func GetStudent(s *gin.Context, studentID int) (*types.Student, error) {
 	return student, nil
 }
 
+type studentAddress struct {
+	Line1    string `json:"line1"`
+	Line2    string `json:"line2"`
+	City     string `json:"city"`
+	Country  string `json:"country"`
+	County   string `json:"county"`
+	Postcode string `json:"postcode"`
+}
+
+type studentProfile struct {
+	FirstName string         `json:"firstName"`
+	LastName  string         `json:"lastName"`
+	DOB       string         `json:"DOB"`
+	Address   studentAddress `json:"address"`
+}
+
 type studentPost struct {
-	Id       uint   `json:"id"`
-	Username string `json:"username"`
-	Profile  string `json:"profile"`
+	Id       uint           `json:"id"`
+	Username string         `json:"username"`
+	Email    string         `json:"email"`
+	Profile  studentProfile `json:"profile"`
 }
 
 func PostStudent(s *gin.Context) (string, error) {
@@ -101,6 +118,8 @@ func PostStudent(s *gin.Context) (string, error) {
 		return "", err
 	}
 
+	fmt.Println(string(postStudent))
+
 	resp, err := DoTimedRequestBody("POST",
 		API.getPath(s, "students"),
 		bytes.NewBuffer(postStudent),
@@ -110,6 +129,8 @@ func PostStudent(s *gin.Context) (string, error) {
 		return "", err
 	}
 
+	// fmt.Println(string(resp))
+
 	currUserId, err := GetUserID(s)
 	if err != nil {
 		log.Println("No such user", err.Error())
@@ -118,4 +139,46 @@ func PostStudent(s *gin.Context) (string, error) {
 
 	API.WriteActivity(currUserId, activities.CreateStudentActivity, resp)
 	return string(resp), nil
+}
+
+func PutStudent(s *gin.Context, studentID int) (string, error) {
+	var json studentPost
+	if err := s.ShouldBindJSON(&json); err != nil {
+		log.Println("PutStudent", err.Error())
+		return "", err
+	}
+
+	putStudent, err := jsoniter.Marshal(json)
+	if err != nil {
+		log.Println("PutStudent", err.Error())
+		return "", err
+	}
+
+	resp, err := DoTimedRequestBody("PUT",
+		API.getPath(s, "students/", fmt.Sprintf("%d", studentID)),
+		bytes.NewBuffer(putStudent),
+		5*time.Second)
+	if err != nil {
+		log.Println("PutStudent", err.Error())
+		return "", err
+	}
+
+	fmt.Println(string(resp))
+
+	return string(resp), nil
+}
+
+func DeleteStudent(s *gin.Context, studentID int) (string, error) {
+	data, err := DoTimedRequest(
+		"DELETE",
+		API.getPath(s, "students/", fmt.Sprintf("%d", studentID)),
+		5*time.Second,
+	)
+
+	if err != nil {
+		log.Println("Delete Student", err.Error())
+		return "", err
+	}
+
+	return string(data), nil
 }
