@@ -1,21 +1,11 @@
 CREATE ROLE beaconing_db_user WITH LOGIN PASSWORD '123ABCCBA';
 
-CREATE DATABASE beaconing WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'en_US.utf8' LC_CTYPE = 'en_US.utf8';
+CREATE DATABASE beaconing IF NOT EXISTS WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'en_US.utf8' LC_CTYPE = 'en_US.utf8';
 
 
 ALTER DATABASE beaconing OWNER TO postgres;
 
 \connect beaconing
-
-SET statement_timeout = 0;
-SET lock_timeout = 0;
-SET idle_in_transaction_session_timeout = 0;
-SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
-SELECT pg_catalog.set_config('search_path', '', false);
-SET check_function_bodies = false;
-SET client_min_messages = warning;
-SET row_security = on;
 
 --
 -- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
