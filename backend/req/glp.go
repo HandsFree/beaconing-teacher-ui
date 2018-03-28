@@ -11,17 +11,6 @@ import (
 	"strconv"
 )
 
-type GLPModel struct {
-	Id           uint64 `json:"id"`
-	Name         string `json:"name"`
-	Desc         string `json:"description"`
-	Author       string `json:"author"`
-	Category     string `json:"category"`
-	Content      string `json:"content"`
-	GamePlotID   uint64 `json:"gamePlotId"`
-	ExternConfig string `json:"externConfig"`
-}
-
 func DeleteGLPRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
 		idParam := s.Param("id")
@@ -61,50 +50,27 @@ func GetGLPRequest() gin.HandlerFunc {
 		// then it is completely ignored in the request.
 		shouldMinify := false
 		if minify != "" {
-			minifyParam, err := strconv.Atoi(minify)
-			if err == nil {
+			minifyParam, errConv := strconv.Atoi(minify)
+			if errConv == nil {
 				shouldMinify = minifyParam == 1
 			} else {
 				log.Println("Note: failed to atoi minify param in glp.go", err.Error())
 			}
 		}
 
-		plan, err := api.GetGLP(s, id)
+		plan, err := api.GetGLP(s, id, shouldMinify)
 		if err != nil {
 			s.AbortWithError(http.StatusBadRequest, err)
 			return
 		}
 
-		planJSON, err := jsoniter.Marshal(&plan)
-		if err != nil {
-			log.Println("GetGLPRequest", err.Error())
-			s.AbortWithError(http.StatusBadRequest, err)
-			return
-		}
-
-		model := &GLPModel{
-			Id:           plan.ID,
-			Name:         plan.Name,
-			Desc:         plan.Desc,
-			Author:       plan.Author,
-			Category:     plan.Category,
-			GamePlotID:   plan.GamePlotID,
-			ExternConfig: plan.ExternConfig,
-		}
-
-		// only inject the content if we should
-		// not minify the model.
-		if !shouldMinify {
-			model.Content = string(planJSON)
-		}
-
-		modelJSON, err := jsoniter.Marshal(model)
+		planJSON, err := jsoniter.Marshal(plan)
 		if err != nil {
 			log.Println(err.Error())
 			return
 		}
 
 		s.Header("Content-Type", "application/json")
-		s.String(http.StatusOK, string(modelJSON))
+		s.String(http.StatusOK, string(planJSON))
 	}
 }
