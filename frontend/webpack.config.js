@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const { resolve } = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+// const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 const dev = process.env.NODE_ENV === 'development';
 
@@ -27,6 +28,7 @@ const mainSettings = {
         rules: [
             {
                 test: /\.js$/,
+                exclude: /node_modules/,
                 use: [
                     'babel-loader?cacheDirectory=true',
                 ],
@@ -49,14 +51,16 @@ const mainSettings = {
         ],
     },
     plugins: dev ? [
+        new webpack.NoEmitOnErrorsPlugin(),
         new webpack.optimize.OccurrenceOrderPlugin(),
         new ExtractTextPlugin('app.css'),
-        // new webpack.HotModuleReplacementPlugin(),
         new webpack.NamedModulesPlugin(),
         new webpack.BannerPlugin({
             banner: devBanner,
         }),
+        // new BundleAnalyzerPlugin(),
     ] : [
+        new webpack.NoEmitOnErrorsPlugin(),
         new webpack.optimize.UglifyJsPlugin({
             parallel: true,
             sourceMap: false,
@@ -73,14 +77,7 @@ const mainSettings = {
             banner: prodBanner,
         }),
     ],
-    devServer: {
-        contentBase: './public/',
-        publicPath: 'http://localhost:8080/',
-        open: false,
-        hot: true,
-        hotOnly: true,
-    },
-    devtool: dev ? 'source-map' : false,
+    devtool: dev ? 'inline-source-map' : false,
 };
 
 const config = [
@@ -104,12 +101,6 @@ const config = [
     },
     {
         entry: {
-            'pages/lesson_manager/new_plan/page': './modules/lesson_manager/new_plan/',
-        },
-        ...mainSettings,
-    },
-    {
-        entry: {
             'pages/authoring_tool/page': './modules/authoring_tool/root/',
         },
         ...mainSettings,
@@ -122,7 +113,7 @@ const config = [
     },
     {
         entry: {
-            'pages/classroom/classes/page': './modules/classroom/classes/',
+            'pages/classroom/student/page': './modules/classroom/student/',
         },
         ...mainSettings,
     },
@@ -134,7 +125,7 @@ const config = [
     },
     {
         entry: {
-            'pages/classroom/courses/page': './modules/classroom/courses/',
+            'pages/classroom/group/page': './modules/classroom/group/',
         },
         ...mainSettings,
     },
