@@ -4,8 +4,6 @@ import { div, h4 } from '../../../core/html';
 import { Component } from '../../../core/component';
 import QuestDetail from './quest_detail';
 
-/* eslint-disable no-restricted-syntax */
-
 class QuestDetails extends Component {
     async init() {
         if (!this.props.id) {
@@ -20,25 +18,32 @@ class QuestDetails extends Component {
 
     async render() {
         const questsProm = [];
-
-        for (const questObj of this.state.quests) {
-            const quest = new QuestDetail();
-            const questEl = quest.attach({
-                quest: questObj,
-            });
-
-            questsProm.push(questEl);
+        
+        if (this.state.quests) {
+            for (const questObj of this.state.quests) {
+                const quest = new QuestDetail();
+                const questEl = quest.attach({
+                    quest: questObj,
+                });
+    
+                questsProm.push(questEl);
+            }
+    
+            return Promise.all(questsProm)
+                .then(questsEl => div(
+                    '#quests-details',
+                    div('.title', h4('Quests:')),
+                    div(
+                        '.details-container',
+                        questsEl,
+                    ),
+                ));
         }
 
-        return Promise.all(questsProm)
-            .then(questsEl => div(
-                '#quests-details',
-                div('.title', h4('Quests:')),
-                div(
-                    '.details-container',
-                    questsEl,
-                ),
-            ));
+        return div(
+            '#quests-details',
+            div('.title', h4('Quests:')),
+        );
     }
 }
 

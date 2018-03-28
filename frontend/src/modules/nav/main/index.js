@@ -41,17 +41,17 @@ class MainNav extends Component {
                 ),
                 a(
                     /^calendar/.test(path) ? '.item.active' : '.item',
-                    {
-                        href: `//${window.location.host}/calendar/`,
-                    },
+                    // {
+                    //     href: `//${window.location.host}/calendar/`,
+                    // },
                     i('.icon-calendar'),
                     span('Calendar'),
                 ),
                 a(
                     /^forum/.test(path) ? '.item.active-orange' : '.item',
-                    {
-                        href: `//${window.location.host}/forum/`,
-                    },
+                    // {
+                    //     href: `//${window.location.host}/forum/`,
+                    // },
                     i('.icon-chat'),
                     span('Forum'),
                 ),
@@ -65,14 +65,6 @@ class MainNav extends Component {
                     },
                     i('.icon-search'),
                     span('Search'),
-                ),
-                a(
-                    /^settings/.test(path) ? '.item.active' : '.item',
-                    {
-                        href: `//${window.location.host}/settings/`,
-                    },
-                    i('.icon-cogs'),
-                    span('Settings'),
                 ),
                 a(
                     '.item',

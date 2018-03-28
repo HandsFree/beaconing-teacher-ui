@@ -8,7 +8,7 @@ class StudentOverview extends Component {
         // TODO: way too beefy, need to split into other components
         // (this component will become defunct depending on analytics changes)
         return div(
-            '.tile.flex-column',
+            '.draggable.tile.flex-column',
             div(
                 '.title',
                 p('Student Overview'),

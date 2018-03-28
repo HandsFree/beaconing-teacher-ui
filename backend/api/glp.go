@@ -6,13 +6,25 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"os"
 	"time"
 
 	"git.juddus.com/HFC/beaconing/backend/activities"
 	"git.juddus.com/HFC/beaconing/backend/types"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
+	"github.com/olekukonko/tablewriter"
 )
+
+func containsGLP(glpID uint64, glpArr []*types.GLP) bool {
+	for _, glp := range glpArr {
+		if glp.ID == glpID {
+			return true
+		}
+	}
+
+	return false
+}
 
 func GetRecentlyAssignedGLPS(s *gin.Context) ([]*types.GLP, error) {
 	if API.db == nil {
@@ -38,10 +50,20 @@ func GetRecentlyAssignedGLPS(s *gin.Context) ([]*types.GLP, error) {
 			continue
 		}
 
-		var glpReq types.AssignPOST
+		var glpReq types.AssignActivity
 		jsoniter.Unmarshal(apiReq, &glpReq)
 
-		glp, err := GetGLP(s, glpReq.GlpID)
+		if glpReq.GlpID == 0 {
+			continue
+		}
+
+		// log.Println(glpReq.GlpID)
+		contains := containsGLP(glpReq.GlpID, recentlyAssigned)
+		if contains {
+			continue
+		}
+
+		glp, err := GetGLP(s, glpReq.GlpID, false)
 		if err != nil {
 			log.Println("GetRecentlyAssigned", err.Error())
 			continue
@@ -49,6 +71,13 @@ func GetRecentlyAssignedGLPS(s *gin.Context) ([]*types.GLP, error) {
 
 		recentlyAssigned = append(recentlyAssigned, glp)
 	}
+
+	table := tablewriter.NewWriter(os.Stdout)
+	table.SetHeader([]string{"Active GLPs"})
+	for _, glp := range recentlyAssigned {
+		table.Append([]string{fmt.Sprintf("%d", glp.ID)})
+	}
+	table.Render()
 
 	return recentlyAssigned, nil
 }
@@ -70,8 +99,14 @@ func GetGLPS(s *gin.Context) (string, error) {
 // GetGLP requests the GLP with the given id, this function returns
 // the string of json retrieved _as well as_ the parsed json object
 // see types.GLP
-func GetGLP(s *gin.Context, id uint64) (*types.GLP, error) {
-	resp, err := DoTimedRequest("GET", API.getPath(s, "gamifiedlessonpaths/", fmt.Sprintf("%d", id)), 5*time.Second)
+func GetGLP(s *gin.Context, id uint64, shouldMinify bool) (*types.GLP, error) {
+	minifyFlag := ""
+
+	if shouldMinify {
+		minifyFlag = "noContent=true"
+	}
+
+	resp, err := DoTimedRequest("GET", API.getPathWithFlag(s, minifyFlag, "gamifiedlessonpaths/", fmt.Sprintf("%d", id)), 5*time.Second)
 	if err != nil {
 		log.Println("GetGLP", err.Error())
 		return nil, err

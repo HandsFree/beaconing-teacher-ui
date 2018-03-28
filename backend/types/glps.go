@@ -16,6 +16,7 @@ type GLP struct {
 	ReadOnly     bool      `json:"readOnly"`
 	Content      string    `json:"content"`
 	ExternConfig string    `json:"externConfig"`
+	PlayURL      string    `json:"playUrl"`
 }
 
 type GamifiedLessonPlans struct {
@@ -25,4 +26,9 @@ type GamifiedLessonPlans struct {
 type AssignPOST struct {
 	StudentID uint64 `json:"studentId"`
 	GlpID     uint64 `json:"gamifiedLessonPathId"`
+}
+
+type AssignGroupPOST struct {
+	GroupID uint64 `json:"studentGroupId"`
+	GlpID   uint64 `json:"gamifiedLessonPathId"`
 }

@@ -6,8 +6,6 @@ import { div, span } from '../../../../core/html';
 import { Component } from '../../../../core/component';
 import ActivePlanBox from './active_plan_box';
 
-/* eslint-disable no-restricted-syntax */
-
 class LoadActivePlans extends Component {
     async init() {
         const plans = await window.beaconingAPI.getActivePlansWidget();

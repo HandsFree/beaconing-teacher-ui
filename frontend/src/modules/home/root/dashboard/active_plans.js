@@ -7,7 +7,7 @@ import LoadActivePlans from './load_active_plans';
 class ActivePlans extends Component {
     async render() {
         return div(
-            '.tile.flex-column.flex-2',
+            '.draggable.tile.flex-column.flex-2',
             div(
                 '.title',
                 p('Active Lesson Plans'),
@@ -37,7 +37,7 @@ class ActivePlans extends Component {
         const activePlansEl = await activePlans.attach();
 
         const element = div(
-            '.tile.flex-column.flex-2',
+            '.draggable.tile.flex-column.flex-2',
             div(
                 '.title',
                 p('Active Lesson Plans'),

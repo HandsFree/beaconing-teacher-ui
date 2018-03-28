@@ -39,6 +39,50 @@ func GetStudentRequest() gin.HandlerFunc {
 	}
 }
 
+func PutStudentRequest() gin.HandlerFunc {
+	return func(s *gin.Context) {
+		studentIDParam := s.Param("id")
+		studentID, err := strconv.Atoi(studentIDParam)
+		if err != nil {
+			log.Println("PutStudentRequest", err.Error())
+			s.AbortWithError(http.StatusBadRequest, err)
+			return
+		}
+
+		resp, err := api.PutStudent(s, studentID)
+		if err != nil {
+			log.Println("PutStudentRequest", err.Error())
+			s.AbortWithError(http.StatusBadRequest, err)
+			return
+		}
+
+		s.Header("Content-Type", "application/json")
+		s.String(http.StatusOK, string(resp))
+	}
+}
+
+func DeleteStudentRequest() gin.HandlerFunc {
+	return func(s *gin.Context) {
+		studentIDParam := s.Param("id")
+		studentID, err := strconv.Atoi(studentIDParam)
+		if err != nil {
+			log.Println("DeleteStudentRequest", err.Error())
+			s.AbortWithError(http.StatusBadRequest, err)
+			return
+		}
+
+		resp, err := api.DeleteStudent(s, studentID)
+		if err != nil {
+			log.Println("DeleteStudentRequest", err.Error())
+			s.AbortWithError(http.StatusBadRequest, err)
+			return
+		}
+
+		s.Header("Content-Type", "application/json")
+		s.String(http.StatusOK, string(resp))
+	}
+}
+
 func PostStudentRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
 		resp, err := api.PostStudent(s)

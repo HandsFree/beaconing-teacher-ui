@@ -99,3 +99,17 @@
 		background: $bcn_light_orange;
 	}
 }
+
+.button-danger {
+	margin: 0.75em;
+	padding: 0.75em;
+	color: white;
+	background: #b71c1c;
+	text-shadow: 0 0 1px rgba($primary_font_colour, 0.15);
+	border: none;
+
+	&:hover {
+		cursor: pointer;
+		background: $bcn_light_orange;
+	}
+}

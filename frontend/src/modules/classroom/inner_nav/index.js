@@ -14,32 +14,18 @@ class InnerNav extends Component {
         return div(
             '.nav-group',
             a(
-                /^classroom\/?$/.test(path) ? '.item.active-white' : '.item',
+                /^classroom\/?$|^classroom\/student\/?$/.test(path) ? '.item.active-white' : '.item',
                 {
                     href: `//${window.location.host}/classroom/`,
                 },
                 span('Students'),
             ),
             a(
-                /^classroom\/groups\/?$/.test(path) ? '.item.active-white' : '.item',
+                /^classroom\/groups\/?$|^classroom\/group\/?/.test(path) ? '.item.active-white' : '.item',
                 {
                     href: `//${window.location.host}/classroom/groups`,
                 },
                 span('Groups'),
-            ),
-            a(
-                /^classroom\/classes\/?$/.test(path) ? '.item.active-white' : '.item',
-                {
-                    href: `//${window.location.host}/classroom/classes`,
-                },
-                span('Classes'),
-            ),
-            a(
-                /^classroom\/courses\/?$/.test(path) ? '.item.active-white' : '.item',
-                {
-                    href: `//${window.location.host}/classroom/courses`,
-                },
-                span('Courses'),
             ),
         );
     }

@@ -16,19 +16,25 @@ import (
 
 type SortingOrder uint
 
+// bolted on stem subjects for now, feel free to reorganise this
 const (
 	Ascending SortingOrder = iota
 	Descending
+	Sci
+	Tech
+	Eng
+	Maths
 )
 
 func sortByName(s *gin.Context, plans []*types.GLP, order SortingOrder) ([]*types.GLP, error) {
-	sort.Slice(plans, func(i, j int) bool {
+	sort.SliceStable(plans, func(i, j int) bool {
 		if order == Descending {
-			return plans[i].Name[0] > plans[j].Name[0]
+			return plans[i].Name > plans[j].Name
 		}
 
-		return plans[i].Name[0] < plans[j].Name[0]
+		return plans[i].Name < plans[j].Name
 	})
+
 	return plans, nil
 }
 
@@ -37,10 +43,21 @@ func sortBySTEM(s *gin.Context, plans []*types.GLP, order SortingOrder) ([]*type
 		name = strings.ToLower(name)
 		switch name {
 		case "science":
+			if order == Sci {
+				return true
+			}
 		case "technology":
+			if order == Tech {
+				return true
+			}
 		case "engineering":
+			if order == Eng {
+				return true
+			}
 		case "maths":
-			return true
+			if order == Maths {
+				return true
+			}
 		}
 		return false
 	}
@@ -49,11 +66,11 @@ func sortBySTEM(s *gin.Context, plans []*types.GLP, order SortingOrder) ([]*type
 
 	for _, plan := range plans {
 		if len(plan.Content) == 0 {
-			log.Println("Skipping GLP", plan.ID)
+			// log.Println("Skipping GLP", plan.ID)
 			continue
 		}
 
-		log.Println("Decoding ", plan.Content)
+		// log.Println("Decoding ", plan.Content)
 
 		type glpContent struct {
 			Domain string `json:"domain"`
@@ -67,12 +84,10 @@ func sortBySTEM(s *gin.Context, plans []*types.GLP, order SortingOrder) ([]*type
 		}
 
 		domain := data.Domain
-		log.Println("Sorting by stem! Domain is '" + domain + "'")
+		// log.Println("Sorting by stem! Domain is '" + domain + "'")
 		if isSTEM(domain) {
 			results = append(results, plan)
 		}
-
-		return nil, errors.New("unimplemented, we can't parse the contents of a GLP just yet")
 	}
 
 	return results, nil
@@ -111,7 +126,7 @@ func sortByRecentlyAssigned(s *gin.Context, plans []*types.GLP, order SortingOrd
 	// recently assigned
 	// i.e. this could be faster
 	glps, err := api.GetRecentlyAssignedGLPS(s)
-	if err == nil {
+	if err != nil {
 		log.Println("failed to get recently assigned glps")
 		return plans, err
 	}
@@ -160,16 +175,25 @@ func GetGLPSRequest() gin.HandlerFunc {
 		}
 
 		sortQuery := s.Query("sort")
+		sortOrderQuery := s.Query("order")
 
-		sortOrder := Ascending
-		{
-			// "asc" or "desc"
-			sortOrderQuery := s.Query("order")
-			if strings.ToLower(sortOrderQuery) == "desc" {
-				sortOrder = Descending
-			} else if strings.ToLower(sortOrderQuery) == "asc" {
-				sortOrder = Ascending
-			}
+		var sortOrder SortingOrder
+
+		switch strings.ToLower(sortOrderQuery) {
+		case "desc":
+			sortOrder = Descending
+		case "asc":
+			sortOrder = Ascending
+		case "science":
+			sortOrder = Sci
+		case "technology":
+			sortOrder = Tech
+		case "engineering":
+			sortOrder = Eng
+		case "maths":
+			sortOrder = Maths
+		default:
+			sortOrder = Ascending
 		}
 
 		plans := []*types.GLP{}
@@ -194,7 +218,7 @@ func GetGLPSRequest() gin.HandlerFunc {
 			numFails := 0
 
 			for i := index; len(plans) < int(step) && numFails < attempts; i++ {
-				obj, _ := api.GetGLP(s, i)
+				obj, _ := api.GetGLP(s, i, false)
 				if obj == nil {
 					log.Println(" - NO GAME PLAN AT INDEX ", i, " SKIPPING!")
 					numFails++

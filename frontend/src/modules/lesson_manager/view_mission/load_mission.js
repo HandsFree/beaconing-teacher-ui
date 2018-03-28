@@ -25,13 +25,20 @@ class LoadMission extends Component {
                 }
             }
 
-            const { content } = await window.beaconingAPI.getGLP(this.props.id);
+            const glpWrapper = await window.beaconingAPI.getGLP(this.props.id);
 
-            this.state.glp = JSON.parse(content);
-            window.sessionStorage.setItem(`glp_${this.props.id}`, JSON.stringify({
-                glp: this.state.glp,
-                time: Date.now(),
-            }));
+            if (glpWrapper) {
+                const { content } = glpWrapper;
+                const playUrl = glpWrapper.playUrl || null;
+
+                this.state.glp = JSON.parse(content);
+                this.state.glp.playUrl = playUrl;
+                console.log(glpWrapper);
+                window.sessionStorage.setItem(`glp_${this.props.id}`, JSON.stringify({
+                    glp: this.state.glp,
+                    time: Date.now(),
+                }));
+            }
         }
     }
 
