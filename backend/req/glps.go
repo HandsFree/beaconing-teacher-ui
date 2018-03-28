@@ -75,20 +75,13 @@ func sortBySTEM(s *gin.Context, plans []*types.GLP, order SortingOrder) ([]*type
 }
 
 func sortByCreationTime(s *gin.Context, plans []*types.GLP, order SortingOrder) ([]*types.GLP, error) {
-	// based of the assumption (see issue #45) that they
-	// are from the core API in order of creation if we
-	// are in ascending order, do nothing that is the most
-	// recently created.
-	// descending order we simply reverse the array.
-	if order == Ascending {
-		return plans, nil
-	}
-
-	sortedPlans := plans[:]
-	for i, j := 0, len(sortedPlans)-1; i < j; i, j = i+1, j-1 {
-		sortedPlans[i], sortedPlans[j] = sortedPlans[j], sortedPlans[i]
-	}
-	return sortedPlans, nil
+	sort.Slice(plans, func(i, j int) bool {
+		if order == Descending {
+			return plans[j].CreatedAt.Before(plans[i].CreatedAt)
+		}
+		return plans[i].CreatedAt.Before(plans[j].CreatedAt)
+	})
+	return plans, nil
 }
 
 func sortByRecentlyUpdated(s *gin.Context, plans []*types.GLP, order SortingOrder) ([]*types.GLP, error) {
