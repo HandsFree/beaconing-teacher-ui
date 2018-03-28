@@ -4,41 +4,27 @@ import { div, main, section } from '../../../../core/html';
 import { RootComponent } from '../../../../core/component';
 import Header from '../../../header/root';
 import MainNav from '../../../nav/main';
-import DashboardNav from './dashboard_nav';
-import QuerySearch from '../../../search/query';
-import RecentActivities from './recent_activities';
-import ActivePlans from './active_plans';
-import StudentOverview from './student_overview';
+// import DashboardNav from './dashboard_nav';
+import Widgets from './widgets';
 
 class Dashboard extends RootComponent {
     async render() {
         const header = new Header();
         const mainNav = new MainNav();
-        const dashboardNav = new DashboardNav();
-        const search = new QuerySearch();
-        const recentActivities = new RecentActivities();
-        const activePlans = new ActivePlans();
-        const studentOverview = new StudentOverview();
+        // const dashboardNav = new DashboardNav();
+        const widgets = new Widgets();
 
         return Promise.all([
             header.attach(),
             mainNav.attach(),
-            dashboardNav.attach(),
-            search.attach({
-                searchType: 'width-expand',
-            }),
-            recentActivities.attach(),
-            activePlans.attach(),
-            studentOverview.attach(),
+            // dashboardNav.attach(),
+            widgets.attach(),
         ]).then((values) => {
             const [
                 headerEl,
                 mainNavEl,
-                dashboardNavEl,
-                searchEl,
-                recentActivitiesEl,
-                activePlansEl,
-                studentOverviewEl,
+                // dashboardNavEl,
+                widgetsEl,
             ] = values;
 
             return div(
@@ -48,23 +34,13 @@ class Dashboard extends RootComponent {
                     '.flex-container.expand.margin-top-2',
                     mainNavEl,
                     main(
-                        section('.flex-column', dashboardNavEl),
-                        section('.flex-column', searchEl),
-                        section(
-                            '.flex-spacearound.mobile-collapse',
-                            recentActivitiesEl,
-                            activePlansEl,
-                        ),
-                        section('.flex-column', studentOverviewEl),
+                        // section('.flex-column', dashboardNavEl),
+                        widgetsEl,
                     ),
                 ),
             );
         });
     }
-
-    // async afterMount() {
-
-    // }
 }
 
 export default Dashboard;

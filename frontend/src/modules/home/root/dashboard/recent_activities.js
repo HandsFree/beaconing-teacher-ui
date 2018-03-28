@@ -6,7 +6,7 @@ import { Component } from '../../../../core/component';
 class RecentActivities extends Component {
     async render() {
         return div(
-            '.tile.flex-column.flex-2',
+            '.draggable.tile.flex-column.flex-2',
             div(
                 '.title',
                 p('Your Recent Activities'),

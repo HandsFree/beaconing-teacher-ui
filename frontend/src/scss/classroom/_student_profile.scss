@@ -20,3 +20,46 @@
 		}
 	}
 }
+
+#assigned-plans-container {
+	padding: 2em;
+
+	&.status {
+		justify-content: center;
+
+		p {
+			padding: 1em;
+			font-size: 1.4em;
+		}
+	}
+}
+
+.glp-assigned-box {
+	margin: 0.25em 0.5em;
+	padding: 1em 1.5em;
+	border: 1px solid $bcn_light_orange;
+
+	> .title {
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 0.25em;
+
+		h3 {
+			font-weight: 400;
+			font-size: 1.25em;
+			margin: 0.25em;
+		}
+	}
+
+	.toolbar {
+		justify-content: flex-end;
+
+		a.item {
+			@extend .link-underline;
+			padding: 0.1em;
+			margin: 0 0.15em;
+			font-weight: 400;
+			//font-size: 0.9em;
+		}
+	}
+}

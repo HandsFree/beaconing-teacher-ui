@@ -7,8 +7,6 @@ import { Component } from '../../../../core/component';
 import Loading from '../../../loading';
 import LoadStudents from './load_students';
 
-/* eslint-disable no-restricted-syntax */
-
 const listConfig = {
     valueNames: ['name'],
     indexAsync: true,
@@ -28,6 +26,8 @@ class StudentsContainer extends Component {
         const loadStudents = new LoadStudents();
 
         const loadStudentsEl = await loadStudents.attach();
+
+        // console.log(loadStudentsEl);
 
         const element = section('.flex-column', loadStudentsEl);
 

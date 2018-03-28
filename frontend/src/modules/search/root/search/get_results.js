@@ -4,8 +4,6 @@ import { div, h4 } from '../../../../core/html';
 import { Component } from '../../../../core/component';
 import ResultBox from './result_box';
 
-/* eslint-disable no-restricted-syntax */
-
 class SearchResults extends Component {
     async init() {
         const query = decodeURIComponent(this.props.query);
@@ -26,7 +24,7 @@ class SearchResults extends Component {
                 const resultBox = new ResultBox();
 
                 const resultBoxEl = resultBox.attach({
-                    title: student.Username,
+                    title: student.username,
                     link: `//${window.location.host}/classroom/`,
                 });
 
@@ -57,8 +55,8 @@ class SearchResults extends Component {
                 const resultBox = new ResultBox();
 
                 const resultBoxEl = resultBox.attach({
-                    title: glp.Name,
-                    link: `//${window.location.host}/lesson_manager/new_plan#view?id=${glp.Id}&prev=search`,
+                    title: glp.name,
+                    link: `//${window.location.host}/lesson_manager/new_plan#view?id=${glp.id}&prev=search`,
                 });
 
                 promArr.push(resultBoxEl);

@@ -5,15 +5,23 @@ import { Component } from '../../../../core/component';
 
 class GroupBox extends Component {
     async render() {
-        const { name } = this.props;
+        const {
+            id,
+            name,
+        } = this.props;
 
         return div(
-            '.class-box',
+            '.small-box',
             div(
                 '.title',
                 h4('.name', name),
             ),
-            a('View'),
+            a(
+                {
+                    href: `//${window.location.host}/classroom/group?id=${id}`,
+                },
+                'View',
+            ),
         );
     }
 }

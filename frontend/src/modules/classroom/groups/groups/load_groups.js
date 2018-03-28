@@ -4,8 +4,6 @@ import { section } from '../../../../core/html';
 import { Component } from '../../../../core/component';
 import GroupBox from './group_box';
 
-/* eslint-disable no-restricted-syntax */
-
 class LoadStudents extends Component {
     async init() {
         if (window.sessionStorage) {
@@ -36,11 +34,17 @@ class LoadStudents extends Component {
         const promArr = [];
 
         for (const group of groups) {
-            const { name } = group;
+            const { 
+                id,
+                name,
+            } = group;
 
             const groupBox = new GroupBox();
 
-            const groupBoxProm = groupBox.attach({ name });
+            const groupBoxProm = groupBox.attach({
+                id,
+                name,
+            });
 
             promArr.push(groupBoxProm);
         }

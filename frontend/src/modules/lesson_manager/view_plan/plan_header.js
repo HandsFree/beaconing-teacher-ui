@@ -15,6 +15,9 @@ class PlanHeader extends Component {
     }
 
     async render() {
+        const glpName = this.state.glp.name || 'Unnamed GLP';
+        const playUrl = this.state.glp.playUrl || `http://gameplots.beaconing.eu/game/?externs=http://core.beaconing.eu/api/gamifiedlessonpaths/${this.state.glp.id}/externconfig`;
+
         return div(
             '#plan-header',
             a(
@@ -25,12 +28,12 @@ class PlanHeader extends Component {
                 i('.icon-angle-left'),
                 'Go Back',
             ),
-            h1(this.state.glp.name),
+            h1(glpName),
             nav(
                 '.mini',
                 a(
                     {
-                        href: `http://gameplots.beaconing.eu/game/?externs=http://core.beaconing.eu/api/gamifiedlessonpaths/${this.state.glp.id}/externconfig`,
+                        href: playUrl,
                         target: '_blank',
                     },
                     'Play',

@@ -11,7 +11,7 @@ class QuerySearch extends Component {
         } = this.props;
 
         return div(
-            '.search.fuzzy-search',
+            '.draggable.search.fuzzy-search',
             i('.icon-search', { 'aria-hidden': true }),
             input(
                 `.${searchType}`,

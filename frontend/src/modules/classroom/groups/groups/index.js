@@ -8,7 +8,7 @@ import SecondNav from '../../../nav/second';
 import InnerNav from '../../inner_nav';
 import BasicSearch from '../../../search/basic';
 import GroupsContainer from './groups_container';
-import CreateGroup from './create_group';
+import CreateGroupButton from './create_group_button';
 
 class Groups extends RootComponent {
     async render() {
@@ -18,7 +18,7 @@ class Groups extends RootComponent {
         const innerNav = new InnerNav();
         const search = new BasicSearch();
         const groups = new GroupsContainer();
-        const createGroup = new CreateGroup();
+        const createGroupButton = new CreateGroupButton();
 
         return Promise.all([
             header.attach(),
@@ -31,7 +31,7 @@ class Groups extends RootComponent {
                 searchType: 'width-expand',
             }),
             groups.attach(),
-            createGroup.attach(),
+            createGroupButton.attach(),
         ]).then((values) => {
             const [
                 headerEl,
@@ -39,7 +39,7 @@ class Groups extends RootComponent {
                 secondNavEl,
                 searchEl,
                 groupsEL,
-                createGroupdEl,
+                createGroupButtonEl,
             ] = values;
 
             return div(
@@ -52,7 +52,7 @@ class Groups extends RootComponent {
                     main(
                         '#groups',
                         section(
-                            createGroupdEl,
+                            createGroupButtonEl,
                             searchEl,
                         ),
                         groupsEL,

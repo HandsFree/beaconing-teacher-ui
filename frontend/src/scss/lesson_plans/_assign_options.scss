@@ -1,7 +1,17 @@
 #assign-options {
-    @extend #plan-details;
+    flex-direction: column;
+
+    .title {
+        margin: 0.5em;
+
+        h4 {
+            margin: 0;
+            font-weight: 400;
+            font-size: 1.15em;
+        }
+    }
 }
 
-.students-container {
+.students-container, .groups-container {
     flex-wrap: wrap;
 }

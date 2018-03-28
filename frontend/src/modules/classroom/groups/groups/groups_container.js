@@ -7,8 +7,6 @@ import { Component } from '../../../../core/component';
 import Loading from '../../../loading';
 import LoadGroups from './load_groups';
 
-/* eslint-disable no-restricted-syntax */
-
 const listConfig = {
     valueNames: ['name'],
     indexAsync: true,

@@ -3,8 +3,7 @@ import { div, h4 } from '../../../core/html';
 
 import { Component } from '../../../core/component';
 import StudentBox from './student_box';
-
-/* eslint-disable no-restricted-syntax */
+import GroupBox from './group_box';
 
 class AssignOptions extends Component {
     async init() {
@@ -15,31 +14,57 @@ class AssignOptions extends Component {
 
         const students = await window.beaconingAPI.getStudents();
         this.state.students = students;
+
+        const groups = await window.beaconingAPI.getGroups();
+        this.state.groups = groups;
     }
 
     async render() {
         const studentsProm = [];
+        const groupsProm = [];
 
         for (const student of this.state.students) {
             const studentBox = new StudentBox();
             const studentBoxEl = studentBox.attach({
                 student,
-                id: this.props.id,
+                glpID: this.props.id,
             });
 
             studentsProm.push(studentBoxEl);
         }
 
-        return Promise.all(studentsProm).then((studentsEl) => {
-            return div(
-                '#assign-options',
+        for (const group of this.state.groups) {
+            const groupBox = new GroupBox();
+            const groupBoxEl = groupBox.attach({
+                group,
+                glpID: this.props.id,
+            });
+
+            groupsProm.push(groupBoxEl);
+        }
+
+        const studentsEl = await Promise.all(studentsProm).then(elements => elements);
+        const groupsEl = await Promise.all(groupsProm).then(elements => elements);
+
+        return div(
+            '#assign-options',
+            div(
+                '.flex-column',
                 div('.title', h4('Students:')),
                 div(
                     '.students-container',
                     studentsEl,
                 ),
-            );
-        });
+            ),
+            div(
+                '.flex-column',
+                div('.title', h4('Groups:')),
+                div(
+                    '.groups-container',
+                    groupsEl,
+                ),
+            ),
+        );
     }
 }
 

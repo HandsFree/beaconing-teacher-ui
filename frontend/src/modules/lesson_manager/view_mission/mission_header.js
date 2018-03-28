@@ -16,6 +16,9 @@ class MissionHeader extends Component {
     }
 
     async render() {
+        const glpName = this.state.glp.name || 'Unnamed GLP';
+        const playUrl = this.state.glp.playUrl || `http://gameplots.beaconing.eu/game/?externs=http://core.beaconing.eu/api/gamifiedlessonpaths/${this.state.glp.id}/externconfig`;
+
         return div(
             '#mission-header',
             a(
@@ -28,14 +31,14 @@ class MissionHeader extends Component {
             ),
             div(
                 '.name-group',
-                h1(this.state.glp.name),
+                h1(glpName),
                 h2(this.state.mission.name),
             ),
             nav(
                 '.mini',
                 a(
                     {
-                        href: `http://gameplots.beaconing.eu/game/?externs=http://core.beaconing.eu/api/gamifiedlessonpaths/${this.state.glp.id}/externconfig`,
+                        href: playUrl,
                         target: '_blank',
                     },
                     'Play',
