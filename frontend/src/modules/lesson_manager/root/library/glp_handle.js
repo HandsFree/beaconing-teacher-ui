@@ -25,6 +25,8 @@ class GLPHandle extends Component {
         STEMTechnologyClicked: this.startSTEMTechnologyGLPs,
         STEMEngineeringClicked: this.startSTEMEngineeringGLPs,
         STEMMathsClicked: this.startSTEMMathsGLPs,
+        SortRecentModAscGLPsClicked: this.startRecentlyModifiedAscGLPs,
+        SortRecentModDescGLPsClicked: this.startRecentlyModifiedDescGLPs,
     };
 
     startAddedDescendingGLPs() {
@@ -61,6 +63,14 @@ class GLPHandle extends Component {
 
     startActiveGLPs() {
         this.loadGLPs('assigned', null);
+    }
+
+    startRecentlyModifiedAscGLPs() {
+        this.loadGLPs('updated', 'asc');
+    }
+
+    startRecentlyModifiedDescGLPs() {
+        this.loadGLPs('updated', 'desc');
     }
 
     async startLoad() {
