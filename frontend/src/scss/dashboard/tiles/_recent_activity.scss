@@ -2,6 +2,16 @@
 	flex-direction: column;
 	flex-grow: 1;
 
+	.status {
+		align-items: center;
+		justify-content: center;
+
+		span {
+			font-size: 1.2em;
+			font-weight: 400;
+		}
+	}
+
 	.activity {
 		padding: 1em;
 		justify-content: space-between;

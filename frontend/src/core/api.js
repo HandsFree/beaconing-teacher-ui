@@ -119,6 +119,12 @@ class APICore {
         return activePlans;
     }
 
+    async getRecentActivitiesWidget() {
+        const recent = await this.get(`//${window.location.host}/widget/recent_activities`);
+
+        return recent;
+    }
+
     async getAuthToken() {
         const { token } = await this.get(`//${window.location.host}/auth/check`);
 
