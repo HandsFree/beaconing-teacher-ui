@@ -29,6 +29,7 @@
                 padding: 0.25em 0.4em;
                 margin: 0.1em 0;
                 border-bottom: 1.5px dashed $bcn_light_orange;
+                white-space: nowrap;
 
                 &.active {
                     border-bottom: 4px solid $bcn_light_orange;

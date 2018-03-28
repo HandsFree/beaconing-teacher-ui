@@ -130,6 +130,40 @@ class Sort extends Component {
                 '.sort-group',
                 div(
                     '.title',
+                    span('Recently Modified'),
+                ),
+                div(
+                    '.content',
+                    a(
+                        '.sort-option',
+                        {
+                            onclick: (event) => {
+                                const { target } = event;
+
+                                this.toggleActive(target);
+                                this.emit('SortRecentModAscGLPsClicked');
+                            },
+                        },
+                        'Ascending',
+                    ),
+                    a(
+                        '.sort-option',
+                        {
+                            onclick: (event) => {
+                                const { target } = event;
+
+                                this.toggleActive(target);
+                                this.emit('SortRecentModDescGLPsClicked');
+                            },
+                        },
+                        'Descending',
+                    ),
+                ),
+            ),
+            div(
+                '.sort-group',
+                div(
+                    '.title',
                     span('Name'),
                 ),
                 div(
