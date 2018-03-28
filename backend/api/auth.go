@@ -26,7 +26,7 @@ func GetRefreshToken(s *gin.Context) error {
 		Code:         accessToken,
 		ClientID:     cfg.Beaconing.Auth.ID,
 		ClientSecret: cfg.Beaconing.Auth.Secret,
-		RedirectURI:  RedirectBaseLink,
+		RedirectURI:  GetRedirectBaseLink(),
 	})
 
 	if err != nil {

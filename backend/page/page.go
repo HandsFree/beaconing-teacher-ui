@@ -21,6 +21,6 @@ func New(title string, script string) *Page {
 		Title:    title,
 		Script:   script,
 		Template: "index.html",
-		Host:     api.Protocol + api.BaseLink + "/",
+		Host:     api.GetProtocol() + api.GetBaseLink() + "/",
 	}
 }

@@ -42,21 +42,9 @@ import (
 // this performs any api requests necessary
 var API *CoreAPIManager
 
-// Protocol contains the server protocol (http or https)
-var Protocol = getProtocol()
-
-// BaseLink contains the server address
-var BaseLink = getBaseLink()
-
-// RedirectBaseLink contains the link core services redirects back to
-var RedirectBaseLink = getRedirectBaseLink()
-
-// LogOutLink is used to log out
-var LogOutLink = getProtocol() + BaseLink + "/"
-
 // ────────────────────────────────────────────────────────────────────────────────
 
-func getOutboundIP() net.IP {
+func GetOutboundIP() net.IP {
 	conn, err := net.Dial("udp", "8.8.8.8:80")
 	if err != nil {
 		log.Fatal(err)
@@ -68,7 +56,7 @@ func getOutboundIP() net.IP {
 	return localAddr.IP
 }
 
-func getProtocol() string {
+func GetProtocol() string {
 	if gin.IsDebugging() {
 		return "http://"
 	}
@@ -76,20 +64,33 @@ func getProtocol() string {
 	return "https://"
 }
 
-func getBaseLink() string {
+func GetBaseLink() string {
 	if gin.IsDebugging() {
 		// we have to slap the port on there
-		return getOutboundIP().String() + ":8081"
+		return GetOutboundIP().String() + ":8081"
 	}
-	return "teacher.beaconing.eu"
+
+	host := cfg.Beaconing.Server.Host
+
+	fmt.Println(fmt.Sprintf("%+v", cfg.Beaconing))
+
+	if host == "" {
+		log.Fatal("Server Host not defined in config!")
+	}
+
+	return cfg.Beaconing.Server.Host
 }
 
 func GetRootPath() string {
-	return getProtocol() + BaseLink
+	return GetProtocol() + GetBaseLink()
 }
 
-func getRedirectBaseLink() string {
+func GetRedirectBaseLink() string {
 	return GetRootPath() + "/intent/token/"
+}
+
+func GetLogOutLink() string {
+	return GetProtocol() + GetBaseLink() + "/"
 }
 
 // SetupAPIHelper sets up an instanceof the API manager

@@ -33,7 +33,7 @@ func TokenAuth() gin.HandlerFunc {
 			// token so lets ask for auth
 			authLink := fmt.Sprintf("https://core.beaconing.eu/auth/auth?response_type=code%s%s%s%s",
 				"&client_id=", cfg.Beaconing.Auth.ID,
-				"&redirect_uri=", api.RedirectBaseLink)
+				"&redirect_uri=", api.GetRedirectBaseLink())
 			c.Redirect(http.StatusTemporaryRedirect, authLink)
 			return
 		}

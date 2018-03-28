@@ -8,9 +8,10 @@ import (
 )
 
 type tomlConfig struct {
-	Title string
-	Auth  authInfo
-	DB    databaseInfo
+	Title  string
+	Auth   authInfo
+	DB     databaseInfo
+	Server serverInfo
 }
 
 type databaseInfo struct {
@@ -24,6 +25,10 @@ type databaseInfo struct {
 type authInfo struct {
 	ID     string
 	Secret string
+}
+
+type serverInfo struct {
+	Host string
 }
 
 // Beaconing is the instance of the main toml
