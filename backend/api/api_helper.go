@@ -72,8 +72,6 @@ func GetBaseLink() string {
 
 	host := cfg.Beaconing.Server.Host
 
-	fmt.Println(fmt.Sprintf("%+v", cfg.Beaconing))
-
 	if host == "" {
 		log.Fatal("Server Host not defined in config!")
 	}

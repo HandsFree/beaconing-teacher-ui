@@ -22,11 +22,26 @@ host = ""
 
 Place `config.toml` in `backend/cfg/`.
 
-By default the server requests to the API and scripts will be loaded from the external IP address. To provide a static URL enter one into the host variable under server without the protocol or trailing slash:
+By default the server requests to the API and scripts will be loaded from the external IP address. 
+
+To provide a static URL enter one into the host variable under server without the protocol or trailing slash:
 
 ```toml
 [server]
 host = "teacher.beaconing.eu"
+```
+
+Changes to the host configuration will only take place once gin is running in Release Mode.
+To change gin to Release mode the variable `GIN_MODE` must be exported with the value `release`:
+
+bash
+```
+$ export GIN_MODE=release
+```
+
+fish
+```
+$ set -x GIN_MODE release
 ```
 
 # Database configuration
