@@ -33,7 +33,7 @@ func processSearch(s *gin.Context, json SearchRequestQuery) (*SearchQueryRespons
 	glpData, glpsCached := api.Fetch("glps")
 	if !glpsCached {
 		var err error
-		glpData, err = api.GetGLPS(s)
+		glpData, err = api.GetGLPS(s, true)
 		if err != nil {
 			log.Println("processSearch", err.Error())
 			return nil, err

@@ -10,6 +10,10 @@ import (
 	jsoniter "github.com/json-iterator/go"
 )
 
+// retrieves the given student of the given student id
+//
+// input:
+// - student id
 func GetStudentRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
 		studentIDParam := s.Param("id")

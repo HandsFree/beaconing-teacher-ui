@@ -22,6 +22,10 @@ type GLPModel struct {
 	ExternConfig string `json:"externConfig"`
 }
 
+// deletes the given glp
+//
+// inputs:
+// - glp id
 func DeleteGLPRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
 		idParam := s.Param("id")
@@ -43,6 +47,12 @@ func DeleteGLPRequest() gin.HandlerFunc {
 	}
 }
 
+// retrieves the given glp
+//
+// inputs:
+// - glp id
+// - minify (bool, optional)
+//   whether the "contents" of the GLP is omitted or not
 func GetGLPRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
 		idParam := s.Param("id")
@@ -69,15 +79,8 @@ func GetGLPRequest() gin.HandlerFunc {
 			}
 		}
 
-		plan, err := api.GetGLP(s, id)
+		plan, err := api.GetGLP(s, id, shouldMinify)
 		if err != nil {
-			s.AbortWithError(http.StatusBadRequest, err)
-			return
-		}
-
-		planJSON, err := jsoniter.Marshal(&plan)
-		if err != nil {
-			log.Println("GetGLPRequest", err.Error())
 			s.AbortWithError(http.StatusBadRequest, err)
 			return
 		}
@@ -90,12 +93,7 @@ func GetGLPRequest() gin.HandlerFunc {
 			Category:     plan.Category,
 			GamePlotID:   plan.GamePlotID,
 			ExternConfig: plan.ExternConfig,
-		}
-
-		// only inject the content if we should
-		// not minify the model.
-		if !shouldMinify {
-			model.Content = string(planJSON)
+			Content:      plan.Content,
 		}
 
 		modelJSON, err := jsoniter.Marshal(model)

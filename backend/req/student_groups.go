@@ -25,12 +25,10 @@ func PostStudentGroupRequest() gin.HandlerFunc {
 
 func DeleteStudentGroupRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
-		// TODO sanitise
 		idString := s.Param("id")
 		id, err := strconv.ParseInt(idString, 10, 64)
 		if err != nil || id < 0 {
 			log.Println("StudentGroupRequest", err.Error())
-			// TODO handle this properly
 			s.Header("Content-Type", "application/json")
 			s.String(http.StatusOK, "Oh dear there was some error thing!")
 			return

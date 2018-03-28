@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"strconv"
 	"time"
 
 	"git.juddus.com/HFC/beaconing/backend/activities"
@@ -41,7 +42,7 @@ func GetRecentlyAssignedGLPS(s *gin.Context) ([]*types.GLP, error) {
 		var glpReq types.AssignPOST
 		jsoniter.Unmarshal(apiReq, &glpReq)
 
-		glp, err := GetGLP(s, glpReq.GlpID)
+		glp, err := GetGLP(s, glpReq.GlpID, true)
 		if err != nil {
 			log.Println("GetRecentlyAssigned", err.Error())
 			continue
@@ -55,8 +56,12 @@ func GetRecentlyAssignedGLPS(s *gin.Context) ([]*types.GLP, error) {
 
 // GetGLPS requests all of the GLPs from the core
 // API returned as a json string
-func GetGLPS(s *gin.Context) (string, error) {
-	resp, err := DoTimedRequest("GET", API.getPath(s, "gamifiedlessonpaths"), 10*time.Second)
+func GetGLPS(s *gin.Context, minify bool) (string, error) {
+	resp, err := DoTimedRequest(s, "GET",
+		API.getPath(s,
+			"gamifiedlessonpaths/",
+			fmt.Sprintf("?noContent=%s", strconv.FormatBool(minify))),
+		10*time.Second)
 	if err != nil {
 		log.Println("GetGLPS", err.Error())
 		return "", err
@@ -70,8 +75,13 @@ func GetGLPS(s *gin.Context) (string, error) {
 // GetGLP requests the GLP with the given id, this function returns
 // the string of json retrieved _as well as_ the parsed json object
 // see types.GLP
-func GetGLP(s *gin.Context, id uint64) (*types.GLP, error) {
-	resp, err := DoTimedRequest("GET", API.getPath(s, "gamifiedlessonpaths/", fmt.Sprintf("%d", id)), 5*time.Second)
+func GetGLP(s *gin.Context, id uint64, minify bool) (*types.GLP, error) {
+	resp, err := DoTimedRequest(s, "GET",
+		API.getPath(s,
+			"gamifiedlessonpaths/",
+			fmt.Sprintf("%d", id),
+			fmt.Sprintf("?noContent=%s"), strconv.FormatBool(minify)),
+		5*time.Second)
 	if err != nil {
 		log.Println("GetGLP", err.Error())
 		return nil, err
@@ -95,7 +105,7 @@ func GetGLP(s *gin.Context, id uint64) (*types.GLP, error) {
 // DeleteGLP deletes the given GLP of {id} from the
 // core database.
 func DeleteGLP(s *gin.Context, id uint64) (string, error) {
-	resp, err := DoTimedRequest("DELETE",
+	resp, err := DoTimedRequest(s, "DELETE",
 		API.getPath(s,
 			"gamifiedlessonpaths",
 			fmt.Sprintf("%d", id)),

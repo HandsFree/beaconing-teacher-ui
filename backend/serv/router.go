@@ -1,23 +1,23 @@
 package serv
 
 import (
-	"github.com/gin-gonic/gin"
-	"git.juddus.com/HFC/beaconing/backend/root"
-	"git.juddus.com/HFC/beaconing/backend/page"
-	"git.juddus.com/HFC/beaconing/backend/classroom"
-	"git.juddus.com/HFC/beaconing/backend/authoring_tool"
-	"git.juddus.com/HFC/beaconing/backend/lesson_manager"
-	"git.juddus.com/HFC/beaconing/backend/search"
-	"git.juddus.com/HFC/beaconing/backend/req"
 	"crypto/rand"
-	"net/http"
-	"github.com/gin-contrib/sessions"
 	"fmt"
-	"git.juddus.com/HFC/beaconing/backend/cfg"
-	"github.com/gin-contrib/gzip"
-	"git.juddus.com/HFC/beaconing/backend/api"
-)
+	"net/http"
 
+	"git.juddus.com/HFC/beaconing/backend/api"
+	"git.juddus.com/HFC/beaconing/backend/authoring_tool"
+	"git.juddus.com/HFC/beaconing/backend/cfg"
+	"git.juddus.com/HFC/beaconing/backend/classroom"
+	"git.juddus.com/HFC/beaconing/backend/lesson_manager"
+	"git.juddus.com/HFC/beaconing/backend/page"
+	"git.juddus.com/HFC/beaconing/backend/req"
+	"git.juddus.com/HFC/beaconing/backend/root"
+	"git.juddus.com/HFC/beaconing/backend/search"
+	"github.com/gin-contrib/gzip"
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-gonic/gin"
+)
 
 // TokenAuth ...
 // simple middleware to handle token auth
@@ -130,7 +130,7 @@ func GetRouterEngine() *gin.Engine {
 	student := v1.Group("student")
 	{
 		student.GET("/:id", req.GetStudentRequest())
-		student.POST("/:id", req.PostStudentRequest())
+		student.POST("/", req.PostStudentRequest())
 	}
 
 	students := v1.Group("students")
@@ -141,6 +141,8 @@ func GetRouterEngine() *gin.Engine {
 		students.DELETE("/:id/assignedglps/:glp", req.DeleteAssignedGLPsRequest())
 
 		// TODO!
+		// PUT
+		// POST id/assigned glps
 		// students.POST("/", req.PostStudentsRequest())
 	}
 

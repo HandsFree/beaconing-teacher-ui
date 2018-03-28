@@ -32,7 +32,7 @@ func PutProfile(s *gin.Context) (string, error) {
 		return "", err
 	}
 
-	resp, err := DoTimedRequestBody("PUT",
+	resp, err := DoTimedRequestBody(s, "PUT",
 		API.getPath(s, "currentuser"),
 		bytes.NewBuffer(profilePut),
 		5*time.Second)
