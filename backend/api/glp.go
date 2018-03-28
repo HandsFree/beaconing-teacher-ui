@@ -157,7 +157,7 @@ func GetGLP(s *gin.Context, id uint64, minify bool) (*types.GLP, error) {
 		API.getPath(s,
 			"gamifiedlessonpaths/",
 			fmt.Sprintf("%d", id),
-			fmt.Sprintf("?noContent=%s"), strconv.FormatBool(minify)),
+			fmt.Sprintf("?noContent=%s", strconv.FormatBool(minify))),
 		5*time.Second)
 	if err != nil {
 		log.Println("GetGLP", err.Error())
