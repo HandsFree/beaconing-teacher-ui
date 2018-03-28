@@ -7,7 +7,15 @@ class DashboardNav extends Component {
     async render() {
         return nav(
             '.mini.spaced.flex-justify-end',
-            a('.item', 'Edit Layout'),
+            a(
+                '.item',
+                {
+                    onclick: () => {
+                        this.emit('EditLayoutClicked');
+                    },
+                },
+                'Edit Layout',
+            ),
         );
     }
 }

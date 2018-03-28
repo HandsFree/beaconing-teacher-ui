@@ -8,6 +8,7 @@ import SecondNav from '../../../nav/second';
 import InnerNav from '../../inner_nav';
 import BasicSearch from '../../../search/basic';
 import StudentsContainer from './students_container';
+import CreateStudentButton from './create_student_button';
 
 class Students extends RootComponent {
     async render() {
@@ -17,6 +18,7 @@ class Students extends RootComponent {
         const innerNav = new InnerNav();
         const search = new BasicSearch();
         const students = new StudentsContainer();
+        const createStudentButton = new CreateStudentButton();
 
         return Promise.all([
             header.attach(),
@@ -29,6 +31,7 @@ class Students extends RootComponent {
                 searchType: 'width-expand',
             }),
             students.attach(),
+            createStudentButton.attach(),
         ]).then((values) => {
             const [
                 headerEl,
@@ -36,6 +39,7 @@ class Students extends RootComponent {
                 secondNavEl,
                 searchEl,
                 studentsEL,
+                createStudentButtonEl,
             ] = values;
 
             return div(
@@ -47,7 +51,10 @@ class Students extends RootComponent {
                     secondNavEl,
                     main(
                         '#students',
-                        section('.flex-column', searchEl),
+                        section(
+                            createStudentButtonEl,
+                            searchEl,
+                        ),
                         studentsEL,
                     ),
                 ),

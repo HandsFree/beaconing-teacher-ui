@@ -90,9 +90,9 @@ func GetRouterEngine() *gin.Engine {
 	classroomGroup := router.Group("/classroom")
 	{
 		classroomGroup.GET("/", classroom.Get(page.New("Classroom", "dist/beaconing/pages/classroom/page.js")))
-		classroomGroup.GET("/classes", classroom.GetClasses(page.New("Classroom", "dist/beaconing/pages/classroom/classes/page.js")))
 		classroomGroup.GET("/groups", classroom.GetGroups(page.New("Classroom", "dist/beaconing/pages/classroom/groups/page.js")))
-		classroomGroup.GET("/courses", classroom.GetCourses(page.New("Classroom", "dist/beaconing/pages/classroom/courses/page.js")))
+		classroomGroup.GET("/student", classroom.GetStudent(page.New("Classroom", "dist/beaconing/pages/classroom/student/page.js")))
+		classroomGroup.GET("/group", classroom.GetGroup(page.New("Classroom", "dist/beaconing/pages/classroom/group/page.js")))
 	}
 
 	router.GET("/authoring_tool", authoring_tool.Get(page.New("Authoring Tool", "dist/beaconing/pages/authoring_tool/page.js")))
@@ -100,7 +100,6 @@ func GetRouterEngine() *gin.Engine {
 	lessonManager := router.Group("/lesson_manager")
 	{
 		lessonManager.GET("/", lesson_manager.Get(page.New("Lesson Manager", "dist/beaconing/pages/lesson_manager/page.js")))
-		lessonManager.GET("/new_plan", lesson_manager.GetNewPlan(page.New("Lesson Manager", "dist/beaconing/pages/lesson_manager/new_plan/page.js")))
 	}
 
 	router.GET("/search", search.Get(page.New("Search", "dist/beaconing/pages/search/page.js")))
@@ -127,16 +126,24 @@ func GetRouterEngine() *gin.Engine {
 		assign.GET("/:student/to/:glp", req.GetAssignRequest())
 	}
 
+	assignGroup := v1.Group("assigngroup")
+	{
+		assignGroup.GET("/:group/to/:glp", req.GetGroupAssignRequest())
+	}
+
 	student := v1.Group("student")
 	{
 		student.GET("/:id", req.GetStudentRequest())
+		student.PUT("/:id", req.PutStudentRequest())
+		student.DELETE("/:id", req.DeleteStudentRequest())
 		student.POST("/", req.PostStudentRequest())
+		student.GET("/:id/assignedglps", req.GetAssignedGLPsRequest())
+		student.DELETE("/:id/assignedglps/:glp", req.DeleteAssignedGLPsRequest())
 	}
 
 	students := v1.Group("students")
 	{
 		students.GET("/", req.GetStudentsRequest())
-
 		students.GET("/:id/assignedglps", req.GetAssignedGLPsRequest())
 		students.DELETE("/:id/assignedglps/:glp", req.DeleteAssignedGLPsRequest())
 
@@ -152,14 +159,12 @@ func GetRouterEngine() *gin.Engine {
 		profile.PUT("/", req.PutProfileRequest())
 	}
 
-	v1.GET("active_lesson_plans", req.GetActiveLessonPlans())
-
 	glps := v1.Group("glps")
 	{
 		glps.GET("/", req.GetGLPSRequest())
 	}
 
-	glp := v1.Group("glps")
+	glp := v1.Group("glp")
 	{
 		glp.GET("/:id", req.GetGLPRequest())
 		glp.DELETE("/:id", req.DeleteGLPRequest())
@@ -167,9 +172,17 @@ func GetRouterEngine() *gin.Engine {
 
 	studentGroups := v1.Group("studentgroups")
 	{
-		studentGroups.GET("/", req.GetStudentGroupRequest())
-		studentGroups.POST("/", req.PostStudentGroupRequest())
-		studentGroups.DELETE("/", req.DeleteStudentGroupRequest())
+		studentGroups.GET("/", req.GetStudentGroupsRequest())
+	}
+
+	studentGroup := v1.Group("studentgroup")
+	{
+		studentGroup.GET("/:id", req.GetStudentGroupRequest())
+		studentGroup.PUT("/:id", req.PutStudentGroupRequest())
+		studentGroup.GET("/:id/assignedglps", req.GetStudentGroupAssignedRequest())
+		studentGroup.DELETE("/:id/assignedglps/:glp", req.DeleteGroupAssignedRequest())
+		studentGroup.POST("/", req.PostStudentGroupRequest())
+		studentGroup.DELETE("/:id", req.DeleteStudentGroupRequest())
 	}
 
 	v1.POST("search", req.PostSearchRequest())

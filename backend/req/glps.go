@@ -16,19 +16,25 @@ import (
 
 type SortingOrder uint
 
+// bolted on stem subjects for now, feel free to reorganise this
 const (
 	Ascending SortingOrder = iota
 	Descending
+	Sci
+	Tech
+	Eng
+	Maths
 )
 
 func sortByName(s *gin.Context, plans []*types.GLP, order SortingOrder) ([]*types.GLP, error) {
-	sort.Slice(plans, func(i, j int) bool {
+	sort.SliceStable(plans, func(i, j int) bool {
 		if order == Descending {
-			return plans[i].Name[0] > plans[j].Name[0]
+			return plans[i].Name > plans[j].Name
 		}
 
-		return plans[i].Name[0] < plans[j].Name[0]
+		return plans[i].Name < plans[j].Name
 	})
+
 	return plans, nil
 }
 
@@ -37,10 +43,21 @@ func sortBySTEM(s *gin.Context, plans []*types.GLP, order SortingOrder) ([]*type
 		name = strings.ToLower(name)
 		switch name {
 		case "science":
+			if order == Sci {
+				return true
+			}
 		case "technology":
+			if order == Tech {
+				return true
+			}
 		case "engineering":
+			if order == Eng {
+				return true
+			}
 		case "maths":
-			return true
+			if order == Maths {
+				return true
+			}
 		}
 		return false
 	}
@@ -90,7 +107,7 @@ func sortByRecentlyAssigned(s *gin.Context, plans []*types.GLP, order SortingOrd
 	// recently assigned
 	// i.e. this could be faster
 	glps, err := api.GetRecentlyAssignedGLPS(s)
-	if err == nil {
+	if err != nil {
 		log.Println("failed to get recently assigned glps")
 		return plans, err
 	}
@@ -165,16 +182,25 @@ func GetGLPSRequest() gin.HandlerFunc {
 		}
 
 		sortQuery := s.Query("sort")
+		sortOrderQuery := s.Query("order")
 
-		sortOrder := Ascending
-		{
-			// "asc" or "desc"
-			sortOrderQuery := s.Query("order")
-			if strings.ToLower(sortOrderQuery) == "desc" {
-				sortOrder = Descending
-			} else if strings.ToLower(sortOrderQuery) == "asc" {
-				sortOrder = Ascending
-			}
+		var sortOrder SortingOrder
+
+		switch strings.ToLower(sortOrderQuery) {
+		case "desc":
+			sortOrder = Descending
+		case "asc":
+			sortOrder = Ascending
+		case "science":
+			sortOrder = Sci
+		case "technology":
+			sortOrder = Tech
+		case "engineering":
+			sortOrder = Eng
+		case "maths":
+			sortOrder = Maths
+		default:
+			sortOrder = Ascending
 		}
 
 		plans := []*types.GLP{}

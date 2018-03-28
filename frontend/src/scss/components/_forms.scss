@@ -41,3 +41,91 @@
 		}
 	}
 }
+
+form.create-group, form.create-student {
+	display: flex;
+	flex-direction: column;
+
+	label {
+		display: flex;
+		flex-direction: column;
+		margin: 0.75em 0.5em;
+
+		span {
+			font-size: 0.9em;
+		}
+	}
+
+	small { 
+		font-size: 0.9em;
+		margin: 0.75em 0.5em 0 0.5em;
+	}
+
+	input.text-field {
+		margin: 0.1em 0;
+		padding: 0.5em;
+		font-size: 1.2em;
+		border: none;
+		outline: none;
+		border-bottom: 1px solid $bcn_light_orange;
+
+		&:focus {
+			box-shadow: 0 1.5px $bcn_light_orange;
+		}
+	}
+
+	.select {
+		position: relative;
+		width: 100%;
+
+		&:before {
+			font-family: "fontello";
+			content: '\f107';
+			position: absolute;
+			right: 0;
+			font-size: 1.6em;
+			padding: 0.8em;
+			pointer-events: none;
+		}
+
+		select {
+			width: 100%;
+			margin: 0.1em 0;
+			padding: 0.5em;
+			font-size: 1.2em;
+			background: none;
+			outline: none;
+			border: none;
+			border-bottom: 1px solid $bcn_light_orange;
+			-moz-appearance: none;
+			-webkit-appearance: none;
+			appearance: none;
+	
+			&:focus {
+				box-shadow: 0 1.5px $bcn_light_orange;
+			}
+		}
+	}
+}
+
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color: $placeholder_colour;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color: $placeholder_colour;
+   opacity: 1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color: $placeholder_colour;
+   opacity: 1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color: $placeholder_colour;
+}
+::-ms-input-placeholder { /* Microsoft Edge */
+   color: $placeholder_colour;
+}
+
+::placeholder { /* Most modern browsers support this now. */
+   color: $placeholder_colour;
+}

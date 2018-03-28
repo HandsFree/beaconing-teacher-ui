@@ -4,8 +4,6 @@ import { div, h4 } from '../../../core/html';
 import { Component } from '../../../core/component';
 import MissionDetail from './mission_detail';
 
-/* eslint-disable no-restricted-syntax */
-
 class MissionDetails extends Component {
     async init() {
         if (!this.props.id) {
@@ -20,26 +18,33 @@ class MissionDetails extends Component {
     async render() {
         const missionsProm = [];
 
-        for (const [index, missionObj] of this.state.glp.missions.entries()) {
-            const mission = new MissionDetail();
-            const missionEl = mission.attach({
-                mission: missionObj,
-                index,
-                ...this.props,
-            });
-
-            missionsProm.push(missionEl);
+        if (this.state.glp.missions) {
+            for (const [index, missionObj] of this.state.glp.missions.entries()) {
+                const mission = new MissionDetail();
+                const missionEl = mission.attach({
+                    mission: missionObj,
+                    index,
+                    ...this.props,
+                });
+    
+                missionsProm.push(missionEl);
+            }
+    
+            return Promise.all(missionsProm)
+                .then(missionsEl => div(
+                    '#missions-details',
+                    div('.title', h4('Missions:')),
+                    div(
+                        '.details-container',
+                        missionsEl,
+                    ),
+                ));
         }
 
-        return Promise.all(missionsProm)
-            .then(missionsEl => div(
-                '#missions-details',
-                div('.title', h4('Missions:')),
-                div(
-                    '.details-container',
-                    missionsEl,
-                ),
-            ));
+        return div(
+            '#missions-details',
+            div('.title', h4('Missions:')),
+        );
     }
 }
 

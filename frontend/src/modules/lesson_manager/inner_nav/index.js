@@ -18,14 +18,7 @@ class InnerNav extends Component {
                 {
                     href: `//${window.location.host}/lesson_manager/`,
                 },
-                span('Active Plans'),
-            ),
-            a(
-                /^lesson_manager\/new_plan\/?/.test(path) ? '.item.active-white' : '.item',
-                {
-                    href: `//${window.location.host}/lesson_manager/new_plan/`,
-                },
-                span('New Plan'),
+                span('Library'),
             ),
         );
     }

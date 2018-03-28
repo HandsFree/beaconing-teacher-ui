@@ -46,11 +46,53 @@ func DeleteStudentGroupRequest() gin.HandlerFunc {
 	}
 }
 
-func GetStudentGroupRequest() gin.HandlerFunc {
+func GetStudentGroupsRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
 		body, err := api.GetStudentGroups(s)
 		if err != nil {
+			log.Println("GetStudentGroupsRequest", err.Error())
+			s.AbortWithError(http.StatusBadRequest, err)
+			return
+		}
+
+		s.Header("Content-Type", "application/json")
+		s.String(http.StatusOK, body)
+	}
+}
+
+func GetStudentGroupRequest() gin.HandlerFunc {
+	return func(s *gin.Context) {
+		groupIDParam := s.Param("id")
+		groupID, err := strconv.Atoi(groupIDParam)
+		if err != nil {
+			s.String(http.StatusBadRequest, "Group ID Error!")
+			return
+		}
+
+		body, err := api.GetStudentGroup(s, groupID)
+		if err != nil {
 			log.Println("GetStudentGroupRequest", err.Error())
+			s.AbortWithError(http.StatusBadRequest, err)
+			return
+		}
+
+		s.Header("Content-Type", "application/json")
+		s.String(http.StatusOK, body)
+	}
+}
+
+func PutStudentGroupRequest() gin.HandlerFunc {
+	return func(s *gin.Context) {
+		groupIDParam := s.Param("id")
+		groupID, err := strconv.Atoi(groupIDParam)
+		if err != nil {
+			s.String(http.StatusBadRequest, "Group ID Error!")
+			return
+		}
+
+		body, err := api.PutStudentGroup(s, groupID)
+		if err != nil {
+			log.Println("PutStudentGroupRequest", err.Error())
 			s.AbortWithError(http.StatusBadRequest, err)
 			return
 		}

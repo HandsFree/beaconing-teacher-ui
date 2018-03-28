@@ -71,8 +71,8 @@ func GetGLPRequest() gin.HandlerFunc {
 		// then it is completely ignored in the request.
 		shouldMinify := false
 		if minify != "" {
-			minifyParam, err := strconv.Atoi(minify)
-			if err == nil {
+			minifyParam, errConv := strconv.Atoi(minify)
+			if errConv == nil {
 				shouldMinify = minifyParam == 1
 			} else {
 				log.Println("Note: failed to atoi minify param in glp.go", err.Error())
@@ -85,24 +85,13 @@ func GetGLPRequest() gin.HandlerFunc {
 			return
 		}
 
-		model := &GLPModel{
-			Id:           plan.ID,
-			Name:         plan.Name,
-			Desc:         plan.Desc,
-			Author:       plan.Author,
-			Category:     plan.Category,
-			GamePlotID:   plan.GamePlotID,
-			ExternConfig: plan.ExternConfig,
-			Content:      plan.Content,
-		}
-
-		modelJSON, err := jsoniter.Marshal(model)
+		planJSON, err := jsoniter.Marshal(plan)
 		if err != nil {
 			log.Println(err.Error())
 			return
 		}
 
 		s.Header("Content-Type", "application/json")
-		s.String(http.StatusOK, string(modelJSON))
+		s.String(http.StatusOK, string(planJSON))
 	}
 }

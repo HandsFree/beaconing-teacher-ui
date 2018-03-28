@@ -2,8 +2,6 @@
 
 import type { Component, Route } from './types';
 
-/* eslint-disable no-restricted-syntax */
-
 class Router {
     routes: Map<string, Component> = new Map();
     params: { [string]: string } = {};

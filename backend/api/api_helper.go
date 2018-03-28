@@ -169,6 +169,7 @@ func DoTimedRequestBody(s *gin.Context, method string, url string, reqBody io.Re
 // DoTimedRequest is the same as DoTimedRequestBody, however it does not have
 // a body passed to the request.
 func DoTimedRequest(s *gin.Context, method string, url string, timeout time.Duration) ([]byte, error) {
+	fmt.Printf("%s%s\n", "URL: ", url)
 	data, err := DoTimedRequestBody(s, method, url, nil, timeout)
 	return data, err
 }
@@ -200,6 +201,16 @@ func (a *CoreAPIManager) getPath(s *gin.Context, args ...string) string {
 		path += arg
 	}
 	return fmt.Sprintf("%s", path)
+}
+
+// getPathWithFlag is the same as getPath, except a GET variable can be added
+// TODO: Add multiple GET vars
+func (a *CoreAPIManager) getPathWithFlag(s *gin.Context, flag string, args ...string) string {
+	path := a.APIPath
+	for _, arg := range args {
+		path += arg
+	}
+	return fmt.Sprintf("%s?access_token=%s&%s", path, GetAccessToken(s), flag)
 }
 
 // GetCurrentUser returns an object with information about the current

@@ -57,6 +57,37 @@ func GetAssignRequest() gin.HandlerFunc {
 	}
 }
 
+func GetGroupAssignRequest() gin.HandlerFunc {
+	return func(s *gin.Context) {
+		groupID := s.Param("group")
+		groupIDValue, err := strconv.ParseUint(groupID, 10, 64)
+		if err != nil || groupIDValue < 0 {
+			s.String(http.StatusBadRequest, "Client Error: Invalid group ID")
+			return
+		}
+
+		glpID := s.Param("glp")
+		glpIDValue, err := strconv.ParseUint(glpID, 10, 64)
+		if err != nil || glpIDValue < 0 {
+			s.String(http.StatusBadRequest, "Client Error: Invalid GLP ID")
+			return
+		}
+
+		log.Println("THIS IS A GROUP ASSIGN REQUEST ! ", groupIDValue, glpIDValue)
+
+		registerGLP(s, glpIDValue)
+
+		resp, err := api.AssignGroupToGLP(s, groupIDValue, glpIDValue)
+		if err != nil {
+			s.String(http.StatusBadRequest, "Failed to assign group to glp")
+			return
+		}
+
+		s.Header("Content-Type", "application/json")
+		s.String(http.StatusOK, resp)
+	}
+}
+
 // registerGLP...
 // this is a temporary demo thing, basically when we assign
 // a glp, we store it in a hash set

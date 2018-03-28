@@ -26,7 +26,7 @@
             }
 
             .result {
-                @extend .class-box;
+                @extend .small-box;
                 flex: 25%;
             }
         }

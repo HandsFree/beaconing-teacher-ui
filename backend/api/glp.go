@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"os"
 	"strconv"
 	"time"
 
@@ -13,7 +14,18 @@ import (
 	"git.juddus.com/HFC/beaconing/backend/types"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
+	"github.com/olekukonko/tablewriter"
 )
+
+func containsGLP(glpID uint64, glpArr []*types.GLP) bool {
+	for _, glp := range glpArr {
+		if glp.ID == glpID {
+			return true
+		}
+	}
+
+	return false
+}
 
 func GetRecentlyAssignedGLPS(s *gin.Context) ([]*types.GLP, error) {
 	if API.db == nil {
@@ -39,7 +51,7 @@ func GetRecentlyAssignedGLPS(s *gin.Context) ([]*types.GLP, error) {
 			continue
 		}
 
-		var glpReq types.AssignPOST
+		var glpReq types.AssignActivity
 		jsoniter.Unmarshal(apiReq, &glpReq)
 
 		glp, err := GetGLP(s, glpReq.GlpID, true)
@@ -48,8 +60,25 @@ func GetRecentlyAssignedGLPS(s *gin.Context) ([]*types.GLP, error) {
 			continue
 		}
 
+		if glpReq.GlpID == 0 {
+			continue
+		}
+
+		// log.Println(glpReq.GlpID)
+		contains := containsGLP(glpReq.GlpID, recentlyAssigned)
+		if contains {
+			continue
+		}
+
 		recentlyAssigned = append(recentlyAssigned, glp)
 	}
+
+	table := tablewriter.NewWriter(os.Stdout)
+	table.SetHeader([]string{"Active GLPs"})
+	for _, glp := range recentlyAssigned {
+		table.Append([]string{fmt.Sprintf("%d", glp.ID)})
+	}
+	table.Render()
 
 	return recentlyAssigned, nil
 }

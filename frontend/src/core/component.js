@@ -7,6 +7,9 @@ class RootComponent {
     view: HTMLElement | Array<HTMLElement>;
     state: { [string]: any } = {};
     params: { [string]: string } = {};
+    loadEvent: Event = new Event('UILoaded');
+    loadDone: boolean = false;
+    updateHooks: { [string]: Function } = {};
 
     updateView(view: HTMLElement) {
         if (document.body) {
@@ -36,6 +39,25 @@ class RootComponent {
         }
     }
 
+    triggerLoadedEvent() {
+        // console.log(document.readyState);
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            window.dispatchEvent(this.loadEvent);
+
+            this.loadDone = true;
+            return;
+        }
+
+        // console.log('not complete');
+
+        const func = () => {
+            window.dispatchEvent(this.loadEvent);
+            this.loadDone = true;
+        };
+
+        document.addEventListener('DOMContentLoaded', func.bind(this));
+    }
+
     async doRender() {
         const element = await this.render();
 
@@ -48,7 +70,24 @@ class RootComponent {
         }
     }
 
+    emit(name: string) {
+        const ev = new Event(name);
+        window.dispatchEvent(ev);
+    }
+
+    async handleHooks() {
+        for (const [ev, func] of Object.entries(this.updateHooks)) {
+            window.addEventListener(ev, func.bind(this));
+        }
+    }
+
     async start() {
+        window.beaconingMainController = new Proxy(this, {});
+
+        if (this.updateHooks) {
+            this.handleHooks();
+        }
+
         if (this.init) {
             await this.init();
         }
@@ -59,6 +98,8 @@ class RootComponent {
             await this.afterMount();
         }
 
+        this.triggerLoadedEvent();
+
         console.log('[Beaconing] Root Component Started!');
     }
 }
@@ -67,21 +108,21 @@ class Component {
     state: { [string]: any } = {};
     view: HTMLElement;
     props: { [string]: any } = {};
+    updateHooks: { [string]: Function } = {};
 
     updateView(view: HTMLElement) {
-        let parent = this.view.parentElement || null;
-
-        if (Array.isArray(this.view)) {
-            parent = this.view[0].parentElement;
-        }
-
         const func = () => {
+            let parent = this.view.parentElement || null;
+
+            if (Array.isArray(this.view)) {
+                parent = this.view[0].parentElement;
+            }
+
             if (parent) {
                 if (Array.isArray(this.view)) {
                     for (const el of this.view) {
                         parent.removeChild(el);
                     }
-                    return;
                 }
 
                 if (!Array.isArray(this.view) && Array.isArray(view)) {
@@ -101,25 +142,32 @@ class Component {
                     return;
                 }
 
+                if (!Array.isArray(view) && Array.isArray(this.view)) {
+                    parent.insertAdjacentElement('afterbegin', view);
+
+                    this.view = view;
+                }
+
                 parent.replaceChild(view, this.view);
                 this.view = view;
             }
         };
 
-        if (document.readyState !== 'complete') {
-            document.body.onload = () => {
-                func();
-                if (this.afterViewUpdate) {
-                    this.afterViewUpdate();
-                }
-            };
+        if (window.beaconingMainController.loadDone) {
+            func();
+            if (this.afterViewUpdate) {
+                this.afterViewUpdate();
+            }
+
             return;
         }
 
-        func();
-        if (this.afterViewUpdate) {
-            this.afterViewUpdate();
-        }
+        window.addEventListener('UILoaded', () => {
+            func();
+            if (this.afterViewUpdate) {
+                this.afterViewUpdate();
+            }
+        });
     }
 
     appendView(view: HTMLElement) {
@@ -140,7 +188,38 @@ class Component {
         parent.appendChild(view);
     }
 
-    async attach(props: { [string]: any } = {}) {
+    removeSelf() {
+        let parent = this.view.parentElement || null;
+
+        if (Array.isArray(this.view)) {
+            parent = this.view[0].parentElement;
+
+            if (parent !== null) {
+                for (const view of this.view) {
+                    parent.removeChild(view);
+                }
+            }
+        }
+
+        if (parent !== null) {
+            parent.removeChild(this.view);
+        }
+    }
+
+    emit(name: string) {
+        const ev = new Event(name);
+        window.dispatchEvent(ev);
+    }
+
+    async handleAfterLoad() {
+        const func = () => {
+            Promise.resolve(this.afterLoad());
+        };
+
+        window.addEventListener('UILoaded', func);
+    }
+
+    async attach(props: { [string]: any } = {}): Promise<HTMLElement> {
         this.props = props;
 
         const func = this.start();
@@ -159,9 +238,19 @@ class Component {
         return this.view;
     }
 
+    async handleHooks() {
+        for (const [ev, func] of Object.entries(this.updateHooks)) {
+            window.addEventListener(ev, func.bind(this));
+        }
+    }
+
     // not sure how to do async generators in flow
     // ALSO this is pretty hacky right now
     async* start(): AsyncGenerator<> {
+        if (this.updateHooks) {
+            this.handleHooks();
+        }
+
         if (this.init) {
             await this.init();
         }
@@ -172,6 +261,10 @@ class Component {
 
         if (this.afterMount) {
             await this.afterMount();
+        }
+
+        if (this.afterLoad) {
+            this.handleAfterLoad();
         }
 
         return console.log(`[Beaconing] Started Component ${this.constructor.name}`);

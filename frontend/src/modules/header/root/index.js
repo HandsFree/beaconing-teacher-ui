@@ -1,21 +1,28 @@
 // @flow
 
-// import Identicon from 'identicon.js';
+import Identicon from 'identicon.js';
 import { div, header, a, img } from '../../../core/html';
 
 import { Component } from '../../../core/component';
 
-var Identicon = require('identicon.js');
-
 class Header extends Component {
     state = {
         teacherName: 'John Smith',
-        teacherIMG: `//${window.location.host}/dist/beaconing/images/profile.png`,
+        teacherIMG: '',
     };
 
     async render() {
         const currUser = await window.beaconingAPI.getCurrentUser();
-        const data = "";
+
+        const options = {
+            foreground: [61, 177, 51, 255],
+            background: [255, 255, 255, 255],
+            margin: 0.1,
+            size: 64,
+            format: 'svg',
+        };
+
+        this.state.teacherIMG = `data:image/svg+xml;base64,${new Identicon(currUser.identiconSha512, options).toString()}`;
 
         return header(
             '#main-header',
@@ -41,13 +48,10 @@ class Header extends Component {
                 )),
                 div(
                     '.profile-img',
-                    img(
-                        '.profile-blue',
-                        {
-                            src: `data:image/png;base64,${data}`,
-                            alt: this.state.teacherName,
-                        },
-                    ),
+                    img({
+                        src: this.state.teacherIMG,
+                        alt: this.state.teacherName,
+                    }),
                 ),
             ),
         );

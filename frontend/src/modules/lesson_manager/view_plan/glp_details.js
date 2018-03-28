@@ -15,7 +15,7 @@ class GLPDetails extends Component {
     }
 
     async render() {
-        console.log(this.state.glp);
+        // console.log(this.state.glp);
         return div(
             '#plan-details',
             div('.title', h4('GLP Details:')),

@@ -1,0 +1,47 @@
+.status-message {
+    position: fixed;
+    padding: 1em;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    text-align: center;
+    // text-shadow: 0 0 1px #353535;
+    color: white;
+    width: 15em;
+    max-width: 15em;
+
+    &.success {
+        border: 1px solid #a5d6a7;
+        border-top: none;
+        background: #43a047;
+    }
+
+    &.info {
+        border: 1px solid #90caf9;
+        border-top: none;
+        background: #1e88e5;
+    }
+
+    &.error {
+        border: 1px solid #ef9a9a;
+        border-top: none;
+        background: #e53935;
+    }
+
+    strong {
+        font-weight: 400;
+    }
+
+    i {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 0.1em;
+        font-size: 0.8em;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}
