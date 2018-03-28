@@ -41,32 +41,25 @@ func sortByName(s *gin.Context, plans []*types.GLP, order SortingOrder) ([]*type
 func sortBySTEM(s *gin.Context, plans []*types.GLP, order SortingOrder) ([]*types.GLP, error) {
 	isSTEM := func(name string) bool {
 		name = strings.ToLower(name)
-		switch name {
-		case "science":
-			if order == Sci {
-				return true
-			}
-		case "technology":
-			if order == Tech {
-				return true
-			}
-		case "engineering":
-			if order == Eng {
-				return true
-			}
-		case "maths":
-			if order == Maths {
-				return true
-			}
+		switch order {
+		case Sci:
+			return strings.Compare(name, "science") == 0
+		case Tech:
+			return strings.Compare(name, "technology") == 0
+		case Eng:
+			return strings.Compare(name, "engineering") == 0
+		case Maths:
+			return strings.Compare(name, "maths") == 0
+		default:
+			return false
 		}
-		return false
 	}
 
 	results := []*types.GLP{}
 
 	for _, plan := range plans {
-		log.Println("Sorting by stem! Domain is '" + plan.Domain + "'")
 		if isSTEM(plan.Domain) {
+			log.Println("Matched plan", plan.Name, " to stem ")
 			results = append(results, plan)
 		}
 	}

@@ -168,6 +168,7 @@ func GetRouterEngine() *gin.Engine {
 	{
 		glp.GET("/:id", req.GetGLPRequest())
 		glp.DELETE("/:id", req.DeleteGLPRequest())
+		glp.POST("/", req.PostGLPRequest())
 	}
 
 	studentGroups := v1.Group("studentgroups")
