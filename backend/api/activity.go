@@ -71,6 +71,8 @@ func GetActivities(teacherID uint64, count int) ([]activities.Activity, error) {
 			continue
 		}
 
+		result.SetExecutionTime(creationDate)
+
 		log.Println("-- Loaded activity", result)
 
 		loadedActivities = append(loadedActivities, result)

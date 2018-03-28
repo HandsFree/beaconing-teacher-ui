@@ -1,5 +1,7 @@
 package activities
 
+import "time"
+
 // ActivityType is a type of activity
 // that can be performed, for example
 // an assignment. These activities
@@ -28,14 +30,27 @@ const (
 type Activity interface {
 	GetMessage() string
 	SetMessage(s string)
+
+	// when the activity was executed
+	GetExecutionTime() time.Time
+	SetExecutionTime(t time.Time)
 }
 
 type SimpleActivity struct {
-	Message string
+	Message       string
+	ExecutionTime time.Time
 }
 
 func newSimpleActivity(msg string) SimpleActivity {
-	return SimpleActivity{msg}
+	return SimpleActivity{msg, time.Now()}
+}
+
+func (s SimpleActivity) SetExecutionTime(t time.Time) {
+	s.ExecutionTime = t
+}
+
+func (s SimpleActivity) GetExecutionTime() time.Time {
+	return s.ExecutionTime
 }
 
 func (s SimpleActivity) GetMessage() string {
