@@ -65,8 +65,8 @@ func sortBySTEM(s *gin.Context, plans []*types.GLP, order SortingOrder) ([]*type
 	results := []*types.GLP{}
 
 	for _, plan := range plans {
-		log.Println("Sorting by stem! Domain is '" + plan.Domain + "'")
 		if isSTEM(plan.Domain) {
+			log.Println("Matched plan", plan.Name, " to stem ")
 			results = append(results, plan)
 		}
 	}

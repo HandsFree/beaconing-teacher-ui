@@ -22,6 +22,19 @@ type GLPModel struct {
 	ExternConfig string `json:"externConfig"`
 }
 
+func PostGLPRequest() gin.HandlerFunc {
+	return func(s *gin.Context) {
+		resp, err := api.CreateGLP(s)
+		if err != nil {
+			s.AbortWithError(http.StatusBadRequest, err)
+			return
+		}
+
+		s.Header("Content-Type", "application/json")
+		s.String(http.StatusOK, string(resp))
+	}
+}
+
 // deletes the given glp
 //
 // inputs:

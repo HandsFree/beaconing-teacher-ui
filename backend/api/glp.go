@@ -27,6 +27,54 @@ func containsGLP(glpID uint64, glpArr []*types.GLP) bool {
 	return false
 }
 
+type glpPostJSON struct {
+	Name               string   `json:"name"`
+	Description        string   `json:"description"`
+	Author             string   `json:"author"`
+	Category           string   `json:"category"`
+	Domain             string   `json:"domain"`
+	Topic              string   `json:"topic"`
+	AgeGroup           string   `json:"ageGroup"`
+	Year               int      `json:"year"`
+	LearningObjectives []string `json:"learningObjectives"`
+	Competences        []string `json:"competences"`
+	Public             bool     `json:"public"`
+}
+
+func CreateGLP(s *gin.Context) (string, error) {
+	var json glpPostJSON
+	if err := s.ShouldBindJSON(&json); err != nil {
+		log.Println("CreateGLP", err.Error())
+		return "", err
+	}
+
+	glpPost, err := jsoniter.Marshal(json)
+	if err != nil {
+		log.Println("CreateGLP", err.Error())
+		return "", err
+	}
+
+	resp, err := DoTimedRequestBody(s, "POST",
+		API.getPath(s, "gamifiedlessonpaths"),
+		bytes.NewBuffer(glpPost),
+		5*time.Second)
+	if err != nil {
+		log.Println("CreateGLP", err.Error())
+		return "", err
+	}
+
+	id, err := GetUserID(s)
+	if err != nil {
+		log.Println("No such current user", err.Error())
+		return string(resp), err
+	}
+
+	// TODO write activity for glp request.
+	_ = id
+
+	return string(resp), nil
+}
+
 func GetRecentlyAssignedGLPS(s *gin.Context) ([]*types.GLP, error) {
 	if API.db == nil {
 		log.Println("-- No database connection has been established")
