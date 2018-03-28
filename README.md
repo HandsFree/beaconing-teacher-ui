@@ -45,7 +45,7 @@ $ set -x GIN_MODE release
 ```
 
 # Database configuration
-A schema for the PSQL DB is provided in `backend/`
+A schema for the PSQL DB is provided in the root of the repo.
 
 The user `beaconing_db_user` will be created with the default password of `123ABCCBA`
 
