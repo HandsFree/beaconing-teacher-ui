@@ -1,12 +1,12 @@
 package types
 
 type Address struct {
-	Line1    string
-	Line2    string
-	City     string
-	Country  string
-	County   string
-	PostCode string
+	Line1    string `json:"line1"`
+	Line2    string `json:"line2"`
+	City     string `json:"city"`
+	Country  string `json:"country"`
+	County   string `json:"county"`
+	PostCode string `json:"postcode"`
 }
 
 type Profile struct {
