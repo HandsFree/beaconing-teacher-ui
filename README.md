@@ -59,6 +59,7 @@ $ psql beaconing < beaconing.schema.sql
 # Wiki
 
 Javascript Style Guide: [https://git.juddus.com/HFC/beaconing/wiki/Javascript-Style-Guide](https://git.juddus.com/HFC/beaconing/wiki/Javascript-Style-Guide)
+
 Analytics Info: [https://git.juddus.com/HFC/beaconing/wiki/Javascript-Style-Guide](https://git.juddus.com/HFC/beaconing/wiki/Analytics)
 
 # General Notes
