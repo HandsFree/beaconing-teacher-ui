@@ -20,9 +20,7 @@ class AssignHeader extends Component {
             a(
                 '.back',
                 {
-                    onclick: () => {
-                        window.history.back();
-                    },
+                    href: `//${window.location.host}/lesson_manager`,
                 },
                 i('.icon-angle-left'),
                 'Go Back',
