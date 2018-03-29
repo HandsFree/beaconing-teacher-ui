@@ -60,7 +60,7 @@ $ psql beaconing < beaconing.schema.sql
 
 Javascript Style Guide: [https://git.juddus.com/HFC/beaconing/wiki/Javascript-Style-Guide](https://git.juddus.com/HFC/beaconing/wiki/Javascript-Style-Guide)
 
-Analytics Info: [https://git.juddus.com/HFC/beaconing/wiki/Javascript-Style-Guide](https://git.juddus.com/HFC/beaconing/wiki/Analytics)
+Analytics Info: [https://git.juddus.com/HFC/beaconing/wiki/Analytics](https://git.juddus.com/HFC/beaconing/wiki/Analytics)
 
 # General Notes
 The API layer is the bridge between the backend and the API services provided
