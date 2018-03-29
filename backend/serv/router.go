@@ -17,6 +17,7 @@ import (
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+	"github.com/thinkerou/favicon"
 )
 
 // TokenAuth ...
@@ -66,6 +67,9 @@ func GetRouterEngine() *gin.Engine {
 
 	// Resources will be gzipped
 	router.Use(gzip.Gzip(gzip.BestSpeed))
+
+	// Add favicon
+	router.Use(favicon.New("../frontend/public/favicon.ico"))
 
 	// token auth middleware
 	router.Use(TokenAuth())
