@@ -98,6 +98,12 @@ func GetGLPRequest() gin.HandlerFunc {
 			return
 		}
 
+		// log.Println("GLP Testing!")
+		// log.Println("-", plan.Analytics)
+		// log.Println("-", plan.Analytics.ActivityID)
+		// log.Println("-", plan.Analytics.Json.Analytics.TrackingCode)
+		// log.Println("-", plan.Analytics.Json.Analytics.Dashboard)
+
 		planJSON, err := jsoniter.Marshal(plan)
 		if err != nil {
 			log.Println(err.Error())

@@ -164,6 +164,8 @@ func GetRouterEngine() *gin.Engine {
 		glps.GET("/", req.GetGLPSRequest())
 	}
 
+	v1.GET("mglp/:id", req.GetMinifiedGLPRequest())
+
 	glp := v1.Group("glp")
 	{
 		glp.GET("/:id", req.GetGLPRequest())
