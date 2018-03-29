@@ -88,6 +88,8 @@ class StudentBox extends Component {
     async render() {
         const { student } = this.props;
 
+        const name = `${student.profile.firstName} ${student.profile.lastName}`;
+
         return div(
             '.student-box',
             figure(img({
@@ -97,7 +99,7 @@ class StudentBox extends Component {
                 '.info.flex-column',
                 div(
                     '.title',
-                    h4('.name', student.username),
+                    h4('.name', name),
                 ),
                 a(
                     {
