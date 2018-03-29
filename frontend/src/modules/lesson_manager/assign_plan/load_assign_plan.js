@@ -24,13 +24,16 @@ class LoadAssignPlan extends Component {
                 }
             }
 
-            const { content } = await window.beaconingAPI.getGLP(this.props.id);
+            const glp = await window.beaconingAPI.getGLP(this.props.id);
 
-            this.state.glp = JSON.parse(content);
-            window.sessionStorage.setItem(`glp_${this.props.id}`, JSON.stringify({
-                glp: this.state.glp,
-                time: Date.now(),
-            }));
+            if (glp) {
+                this.state.glp = glp;
+                this.state.glp.content = JSON.parse(glp.content);
+                window.sessionStorage.setItem(`glp_${this.props.id}`, JSON.stringify({
+                    glp: this.state.glp,
+                    time: Date.now(),
+                }));
+            }
         }
     }
 

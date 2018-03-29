@@ -9,35 +9,9 @@ class LoadGLPs extends Component {
         const sortQuery = this.props.sort || 'default';
         const orderQuery = this.props.order || 'default';
 
-        const glps = await window.beaconingAPI.getGLPs(sortQuery, orderQuery);
+        const glps = await window.beaconingAPI.getGLPs(sortQuery, orderQuery, true);
 
         this.state.glps = glps;
-
-        // Tends to exceed storage quota
-
-        // if (window.sessionStorage) {
-        //     const key = `glps_${sortQuery}_${orderQuery}`;
-        //     console.log(key);
-        //     let sessionGLPs = window.sessionStorage.getItem(key);
-
-        //     if (sessionGLPs) {
-        //         // console.log(sessionGLP);
-        //         sessionGLPs = JSON.parse(sessionGLPs);
-
-        //         if ((Date.now() / 1000) - (sessionGLPs.time / 1000) < 10) {
-        //             this.state.glps = sessionGLPs.glps;
-        //             return;
-        //         }
-        //     }
-
-        //     const glps = await window.beaconingAPI.getGLPs(sortQuery, orderQuery);
-
-        //     this.state.glps = glps;
-        //     window.sessionStorage.setItem(key, JSON.stringify({
-        //         glps: this.state.glps,
-        //         time: Date.now(),
-        //     }));
-        // }
     }
 
     async render() {
@@ -46,23 +20,15 @@ class LoadGLPs extends Component {
 
         for (const glp of values) {
             // console.log(glp);
-            if (glp.content) {
-                const {
-                    name,
-                    domain,
-                    topic,
-                    description,
-                    id,
-                } = JSON.parse(glp.content);
-
+            if (glp) {
                 const glpBox = new GLPBox();
 
                 const glpBoxProm = glpBox.attach({
-                    name,
-                    domain,
-                    topic,
-                    description,
-                    id,
+                    name: glp.name,
+                    domain: glp.domain,
+                    topic: glp.topic,
+                    description: glp.description,
+                    id: glp.id,
                 });
 
                 promArr.push(glpBoxProm);

@@ -52,7 +52,12 @@ class GLPDetails extends Component {
                 div(
                     '.detail',
                     strong('Learning Objectives:'),
-                    p(this.state.glp.learning_objectives),
+                    p(this.state.glp.learningObjectives ? this.state.glp.learningObjectives.join(', ') : ''),
+                ),
+                div(
+                    '.detail',
+                    strong('Competences:'),
+                    p(this.state.glp.competences ? this.state.glp.competences.join(', ') : ''),
                 ),
             ),
         );

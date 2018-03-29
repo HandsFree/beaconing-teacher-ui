@@ -137,10 +137,11 @@ class APICore {
         return false;
     }
 
-    async getGLPs(sortQuery: string, orderQuery: string) {
+    async getGLPs(sortQuery: string, orderQuery: string, minify: ?boolean) {
         const sort = sortQuery !== 'default' ? `?sort=${sortQuery}` : '';
         const order = orderQuery !== 'default' ? `&order=${orderQuery}` : '';
-        const glps = await this.get(`//${window.location.host}/intent/glps${sort}${order}`);
+        const url = minify ? `//${window.location.host}/intent/glps${sort}${order}&minify=1` : `//${window.location.host}/intent/glps${sort}${order}`;
+        const glps = await this.get(url);
 
         return glps;
     }

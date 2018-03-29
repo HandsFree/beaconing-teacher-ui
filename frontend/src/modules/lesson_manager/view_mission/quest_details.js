@@ -13,7 +13,7 @@ class QuestDetails extends Component {
 
         const sessionGLP = JSON.parse(window.sessionStorage.getItem(`glp_${this.props.id}`));
         this.state.glp = sessionGLP.glp;
-        this.state.quests = this.state.glp.missions[this.props.index].quests;
+        this.state.quests = this.state.glp.content.missions[this.props.index].quests;
     }
 
     async render() {

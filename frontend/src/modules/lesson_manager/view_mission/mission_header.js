@@ -12,7 +12,7 @@ class MissionHeader extends Component {
 
         const sessionGLP = JSON.parse(window.sessionStorage.getItem(`glp_${this.props.id}`));
         this.state.glp = sessionGLP.glp;
-        this.state.mission = this.state.glp.missions[this.props.index];
+        this.state.mission = this.state.glp.content.missions[this.props.index];
     }
 
     async render() {
