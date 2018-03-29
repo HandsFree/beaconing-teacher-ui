@@ -247,6 +247,7 @@ func getUserAvatar(s *gin.Context, id uint64) (string, error) {
 		return "", err
 	}
 
+	defer rows.Close()
 	for rows.Next() {
 		var avatarHash []byte
 
@@ -257,6 +258,11 @@ func getUserAvatar(s *gin.Context, id uint64) (string, error) {
 		}
 
 		return string(avatarHash), nil
+	}
+
+	if err := rows.Err(); err != nil {
+		log.Println("getUserAvatar DB Error", err.Error())
+		return "", err
 	}
 
 	return "", errors.New("Failed to get avatar_blob of user")

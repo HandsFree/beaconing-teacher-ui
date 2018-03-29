@@ -34,6 +34,7 @@ func GetActivities(teacherID uint64, count int) ([]activities.Activity, error) {
 
 	log.Println("--- Loading activities!")
 
+	defer rows.Close()
 	for rows.Next() {
 		var creationDate time.Time
 		var activityType int
@@ -76,6 +77,11 @@ func GetActivities(teacherID uint64, count int) ([]activities.Activity, error) {
 		log.Println("-- Loaded activity", result)
 
 		loadedActivities = append(loadedActivities, result)
+	}
+
+	if err := rows.Err(); err != nil {
+		log.Println("GetActivities DB Error", err.Error())
+		return []activities.Activity{}, err
 	}
 
 	return loadedActivities, nil

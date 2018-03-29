@@ -90,6 +90,7 @@ func GetRecentlyAssignedGLPS(s *gin.Context) ([]*types.GLP, error) {
 
 	recentlyAssigned := []*types.GLP{}
 
+	defer rows.Close()
 	for rows.Next() {
 		var apiReq []byte
 
@@ -119,6 +120,11 @@ func GetRecentlyAssignedGLPS(s *gin.Context) ([]*types.GLP, error) {
 		}
 
 		recentlyAssigned = append(recentlyAssigned, glp)
+	}
+
+	if err := rows.Err(); err != nil {
+		log.Println("GetRecentlyAssignedGLPS DB Error", err.Error())
+		return nil, err
 	}
 
 	table := tablewriter.NewWriter(os.Stdout)
