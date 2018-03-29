@@ -15,20 +15,22 @@ import (
 )
 
 type AnalyticsUser struct {
-	Id       uint64 `json:"_id"`
+	Id       string `json:"_id"`
 	Username string `json:"username"`
 	Email    string `json:"email"`
 	Token    string `json:"token"`
 }
 
-func GetAnalyticsToken(s *gin.Context) error {
+func DoAnalyticsAuth(s *gin.Context) error {
 	session := sessions.Default(s)
 
 	type analyticsTokenPost struct {
-		accessToken string
+		AccessToken string `json:"accessToken"`
 	}
 
 	accessTok := GetAccessToken(s)
+	log.Println("Doing analytics auth with access token '" + accessTok + "'")
+
 	if accessTok == "" {
 		return errors.New("No access token!")
 	}
@@ -40,10 +42,12 @@ func GetAnalyticsToken(s *gin.Context) error {
 		return err
 	}
 
-	const tokenRefreshLink = "https://analytics.beaconing.eu/api/login/beaconing"
-	resp, err := DoTimedRequestBody(s, "POST", tokenRefreshLink, bytes.NewBuffer(message), 15*time.Second)
+	const analyticsLink = "https://analytics.beaconing.eu/api/login/beaconing"
+	resp, err := DoTimedRequestBodyHeaders(s, "POST", analyticsLink, bytes.NewBuffer(message), 15*time.Second, map[string]string{
+		"accept": "application/json",
+	})
 	if err != nil {
-		log.Println("GetRefreshToken", err.Error())
+		log.Println("DoAnalyticsAuth", err.Error())
 		return err
 	}
 
@@ -59,15 +63,21 @@ func GetAnalyticsToken(s *gin.Context) error {
 		}
 	*/
 
-	var user AnalyticsUser
+	log.Println("RESPONSE WAS", string(resp))
+
+	var user struct {
+		Data AnalyticsUser `json:"user"`
+	}
 	if err := jsoniter.Unmarshal(resp, &user); err != nil {
 		log.Println(err.Error())
 		return err
 	}
 
-	session.Set("analytics_token", user.Token)
+	log.Println("ANALYTICS AUTH: Retrieved response!\n-", user.Data)
+
+	session.Set("analytics_token", user.Data.Token)
 	if err := session.Save(); err != nil {
-		log.Println("GetAnalyticsToken", err.Error())
+		log.Println("DoAnalyticsAuth", err.Error())
 		return err
 	}
 	return nil
@@ -115,7 +125,7 @@ func GetRefreshToken(s *gin.Context) error {
 		log.Println("GetRefreshToken", err.Error())
 	}
 
-	if err := GetAnalyticsToken(s); err != nil {
+	if err := DoAnalyticsAuth(s); err != nil {
 		log.Println("Failed to retrieve analytics token", err.Error())
 		return err
 	}
@@ -130,7 +140,18 @@ func GetAccessToken(s *gin.Context) string {
 	session := sessions.Default(s)
 	accessToken := session.Get("access_token")
 	if accessToken == nil {
-		s.String(http.StatusBadRequest, "Unauthorised access")
+		s.String(http.StatusBadRequest, "Unauthorised access: core")
+		// NOTE: no return here due to redirect
+		return ""
+	}
+	return accessToken.(string)
+}
+
+func GetAnalyticsToken(s *gin.Context) string {
+	session := sessions.Default(s)
+	accessToken := session.Get("analytics_token")
+	if accessToken == nil {
+		s.String(http.StatusBadRequest, "Unauthorised access: analytics")
 		// NOTE: no return here due to redirect
 		return ""
 	}

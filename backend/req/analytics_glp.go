@@ -11,18 +11,13 @@ import (
 	"strconv"
 )
 
-type minifiedGLPModel struct {
-	Id           uint64
-	Name         string
-	Desc         string
-	Author       string
-	Category     string
+type glpAnalytics struct {
 	TrackingCode string
 	ActivityID   string
 	Dashboard    string
 }
 
-func GetMinifiedGLPRequest() gin.HandlerFunc {
+func GetAnalyticsGLPRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
 		idParam := s.Param("id")
 		id, err := strconv.ParseUint(idParam, 10, 64)
@@ -37,12 +32,7 @@ func GetMinifiedGLPRequest() gin.HandlerFunc {
 			return
 		}
 
-		model := minifiedGLPModel{
-			Id:           plan.ID,
-			Name:         plan.Name,
-			Desc:         plan.Desc,
-			Author:       plan.Author,
-			Category:     plan.Category,
+		model := glpAnalytics{
 			TrackingCode: plan.Analytics.Json.Analytics.TrackingCode,
 			ActivityID:   plan.Analytics.Json.Analytics.ActivityID,
 			Dashboard:    plan.Analytics.Json.Analytics.Dashboard,

@@ -125,16 +125,24 @@ func formatRequest(r *http.Request) string {
 	return strings.Join(request, "\n")
 }
 
+func DoTimedRequestBody(s *gin.Context, method string, url string, reqBody io.Reader, timeout time.Duration) ([]byte, error) {
+	return DoTimedRequestBodyHeaders(s, method, url, reqBody, timeout, map[string]string{
+		"accept":        "application/json",
+		"authorization": fmt.Sprintf("Bearer %s", GetAccessToken(s)),
+	})
+}
+
 // DoTimedRequestBody does a timed request of type {method} to {url} with an optional {reqBody}, if
 // there is no body pass nil, as well as a timeout can be specified.
-func DoTimedRequestBody(s *gin.Context, method string, url string, reqBody io.Reader, timeout time.Duration) ([]byte, error) {
+func DoTimedRequestBodyHeaders(s *gin.Context, method string, url string, reqBody io.Reader, timeout time.Duration, headers map[string]string) ([]byte, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
 
 	req, err := http.NewRequest(method, url, reqBody)
 	{
-		req.Header.Add("accept", "application/json")
-		req.Header.Add("authorization", fmt.Sprintf("Bearer %s", GetAccessToken(s)))
+		for key, val := range headers {
+			req.Header.Add(key, val)
+		}
 	}
 
 	log.Println("Doing timed request of\n", formatRequest(req))

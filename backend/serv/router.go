@@ -113,6 +113,12 @@ func GetRouterEngine() *gin.Engine {
 		widgets.GET("active_lesson_plans", req.GetActiveLessonPlansWidget())
 	}
 
+	analytics := router.Group("analytics")
+	{
+		analytics.GET("/glp/:id", req.GetAnalyticsGLPRequest())
+		analytics.GET("/student/:id", req.GetAnalyticsStudentRequest())
+	}
+
 	// TODO change this from intent to /api/v1/
 	v1 := router.Group("/intent/")
 
@@ -163,8 +169,6 @@ func GetRouterEngine() *gin.Engine {
 	{
 		glps.GET("/", req.GetGLPSRequest())
 	}
-
-	v1.GET("mglp/:id", req.GetMinifiedGLPRequest())
 
 	glp := v1.Group("glp")
 	{
