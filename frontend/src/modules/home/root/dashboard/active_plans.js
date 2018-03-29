@@ -13,7 +13,9 @@ class ActivePlans extends Component {
                 p('Active Lesson Plans'),
                 a(
                     {
-                        href: `${window.location.host}/lesson_manager/`,
+                        onclick: () => {
+                            this.handleActivePlansClick();
+                        },
                     },
                     i(
                         '.icon-link-ext-alt',
@@ -43,7 +45,9 @@ class ActivePlans extends Component {
                 p('Active Lesson Plans'),
                 a(
                     {
-                        href: `//${window.location.host}/lesson_manager/`,
+                        onclick: () => {
+                            this.handleActivePlansClick();
+                        },
                     },
                     i(
                         '.icon-link-ext-alt',
@@ -64,6 +68,18 @@ class ActivePlans extends Component {
         );
 
         this.updateView(element);
+    }
+
+    handleActivePlansClick() {
+        // temp fix
+        if (window.sessionStorage) {
+            window.sessionStorage.setItem('library_init', 'active');
+            window.location.href = `//${window.location.host}/lesson_manager`;
+
+            return;
+        }
+
+        window.location.href = `//${window.location.host}/lesson_manager`;
     }
 }
 

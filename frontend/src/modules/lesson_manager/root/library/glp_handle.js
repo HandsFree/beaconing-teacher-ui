@@ -30,47 +30,47 @@ class GLPHandle extends Component {
     };
 
     startAddedDescendingGLPs() {
-        this.loadGLPs('created', 'desc');
+        this.loadGLPs('created', 'desc', true);
     }
 
     startAddedAscendingGLPs() {
-        this.loadGLPs('created', 'asc');
+        this.loadGLPs('created', 'asc', true);
     }
 
     startNameAscendingGLPs() {
-        this.loadGLPs('name', 'asc');
+        this.loadGLPs('name', 'asc', true);
     }
 
     startNameDescendingGLPs() {
-        this.loadGLPs('name', 'desc');
+        this.loadGLPs('name', 'desc', true);
     }
 
     startSTEMScienceGLPs() {
-        this.loadGLPs('stem', 'science');
+        this.loadGLPs('stem', 'science', true);
     }
 
     startSTEMTechnologyGLPs() {
-        this.loadGLPs('stem', 'technology');
+        this.loadGLPs('stem', 'technology', true);
     }
 
     startSTEMEngineeringGLPs() {
-        this.loadGLPs('stem', 'engineering');
+        this.loadGLPs('stem', 'engineering', true);
     }
 
     startSTEMMathsGLPs() {
-        this.loadGLPs('stem', 'maths');
+        this.loadGLPs('stem', 'maths', true);
     }
 
     startActiveGLPs() {
-        this.loadGLPs('assigned', null);
+        this.loadGLPs('assigned', null, true);
     }
 
     startRecentlyModifiedAscGLPs() {
-        this.loadGLPs('updated', 'asc');
+        this.loadGLPs('updated', 'asc', true);
     }
 
     startRecentlyModifiedDescGLPs() {
-        this.loadGLPs('updated', 'desc');
+        this.loadGLPs('updated', 'desc', true);
     }
 
     async startLoad() {
@@ -95,8 +95,10 @@ class GLPHandle extends Component {
     //     this.updateView(element);
     // }
 
-    async loadGLPs(sort: string, order: ?string) {
-        this.startLoad();
+    async loadGLPs(sort: string, order: ?string, withLoad: boolean) {
+        if (withLoad) {
+            this.startLoad();
+        }
 
         const glps = new LoadGLPs();
 
@@ -119,16 +121,54 @@ class GLPHandle extends Component {
     }
 
     async afterMount() {
-        const glps = new LoadGLPs();
+        if (window.sessionStorage) {
+            const page = window.sessionStorage.getItem('library_init');
 
-        const glpsEl = await glps.attach({
-            sort: 'created',
-            order: 'asc',
-        });
+            if (page) {
+                switch (page) {
+                case 'science':
+                    this.loadGLPs('stem', 'science', false);
+                    break;
+                case 'technology':
+                    this.loadGLPs('stem', 'technology', false);
+                    break;
+                case 'engineering':
+                    this.loadGLPs('stem', 'engineering', false);
+                    break;
+                case 'maths':
+                    this.loadGLPs('stem', 'maths', false);
+                    break;
+                case 'addedAsc':
+                    this.loadGLPs('created', 'asc', false);
+                    break;
+                case 'addedDesc':
+                    this.loadGLPs('created', 'desc', false);
+                    break;
+                case 'active':
+                    this.loadGLPs('assigned', null, false);
+                    break;
+                case 'recentModAsc':
+                    this.loadGLPs('updated', 'asc', false);
+                    break;
+                case 'recentModDesc':
+                    this.loadGLPs('updated', 'desc', false);
+                    break;
+                case 'nameAsc':
+                    this.loadGLPs('name', 'asc', false);
+                    break;
+                case 'nameDesc':
+                    this.loadGLPs('name', 'desc', false);
+                    break;
+                default:
+                    this.loadGLPs('created', 'desc', false);
+                    break;
+                }
 
-        const element = div('.plans.flex-column.flex-grow.margin-20', glpsEl);
+                return;
+            }
+        }
 
-        this.updateView(element);
+        this.loadGLPs('created', 'desc', false);
     }
 
     async afterViewUpdate() {

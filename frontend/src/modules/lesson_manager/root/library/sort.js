@@ -4,6 +4,57 @@ import { div, aside, span, a } from '../../../../core/html';
 import { Component } from '../../../../core/component';
 
 class Sort extends Component {
+    initPage: string = '';
+
+    async init() {
+        const page = window.sessionStorage.getItem('library_init');
+
+        if (page) {
+            switch (page) {
+            case 'science':
+                this.initPage = 'science';
+                break;
+            case 'technology':
+                this.initPage = 'technology';
+                break;
+            case 'engineering':
+                this.initPage = 'engineering';
+                break;
+            case 'maths':
+                this.initPage = 'maths';
+                break;
+            case 'addedAsc':
+                this.initPage = 'addedAsc';
+                break;
+            case 'addedDesc':
+                this.initPage = 'addedDesc';
+                break;
+            case 'active':
+                this.initPage = 'active';
+                break;
+            case 'recentModAsc':
+                this.initPage = 'recentModAsc';
+                break;
+            case 'recentModDesc':
+                this.initPage = 'recentModDesc';
+                break;
+            case 'nameAsc':
+                this.initPage = 'nameAsc';
+                break;
+            case 'nameDesc':
+                this.initPage = 'nameDesc';
+                break;
+            default:
+                this.initPage = 'addedAsc';
+                break;
+            }
+
+            return;
+        }
+
+        this.initPage = 'addedAsc';
+    }
+
     async render() {
         return aside(
             '#library-sort.sort.flex-column',
@@ -20,48 +71,48 @@ class Sort extends Component {
                 div(
                     '.content',
                     a(
-                        '.sort-option',
+                        this.initPage === 'science' ? '.sort-option.active' : '.sort-option',
                         {
                             onclick: (event) => {
                                 const { target } = event;
 
-                                this.toggleActive(target);
+                                this.toggleActive(target, 'science');
                                 this.emit('STEMScienceClicked');
                             },
                         },
                         'Science',
                     ),
                     a(
-                        '.sort-option',
+                        this.initPage === 'technology' ? '.sort-option.active' : '.sort-option',
                         {
                             onclick: (event) => {
                                 const { target } = event;
 
-                                this.toggleActive(target);
+                                this.toggleActive(target, 'technology');
                                 this.emit('STEMTechnologyClicked');
                             },
                         },
                         'Technology',
                     ),
                     a(
-                        '.sort-option',
+                        this.initPage === 'engineering' ? '.sort-option.active' : '.sort-option',
                         {
                             onclick: (event) => {
                                 const { target } = event;
 
-                                this.toggleActive(target);
+                                this.toggleActive(target, 'engineering');
                                 this.emit('STEMEngineeringClicked');
                             },
                         },
                         'Engineering',
                     ),
                     a(
-                        '.sort-option',
+                        this.initPage === 'maths' ? '.sort-option.active' : '.sort-option',
                         {
                             onclick: (event) => {
                                 const { target } = event;
 
-                                this.toggleActive(target);
+                                this.toggleActive(target, 'maths');
                                 this.emit('STEMMathsClicked');
                             },
                         },
@@ -78,24 +129,24 @@ class Sort extends Component {
                 div(
                     '.content',
                     a(
-                        '.sort-option.active',
+                        this.initPage === 'addedAsc' ? '.sort-option.active' : '.sort-option',
                         {
                             onclick: (event) => {
                                 const { target } = event;
 
-                                this.toggleActive(target);
+                                this.toggleActive(target, 'addedAsc');
                                 this.emit('RecentAscendingClicked');
                             },
                         },
                         'Ascending',
                     ),
                     a(
-                        '.sort-option',
+                        this.initPage === 'addedDesc' ? '.sort-option.active' : '.sort-option',
                         {
                             onclick: (event) => {
                                 const { target } = event;
 
-                                this.toggleActive(target);
+                                this.toggleActive(target, 'addedDesc');
                                 this.emit('RecentDescendingClicked');
                             },
                         },
@@ -112,12 +163,12 @@ class Sort extends Component {
                 div(
                     '.content',
                     a(
-                        '.sort-option',
+                        this.initPage === 'active' ? '.sort-option.active' : '.sort-option',
                         {
                             onclick: (event) => {
                                 const { target } = event;
 
-                                this.toggleActive(target);
+                                this.toggleActive(target, 'active');
                                 this.emit('SortActiveGLPsClicked');
                             },
                             title: 'Recently Assigned GLPs',
@@ -135,24 +186,24 @@ class Sort extends Component {
                 div(
                     '.content',
                     a(
-                        '.sort-option',
+                        this.initPage === 'recentModAsc' ? '.sort-option.active' : '.sort-option',
                         {
                             onclick: (event) => {
                                 const { target } = event;
 
-                                this.toggleActive(target);
+                                this.toggleActive(target, 'recentModAsc');
                                 this.emit('SortRecentModAscGLPsClicked');
                             },
                         },
                         'Ascending',
                     ),
                     a(
-                        '.sort-option',
+                        this.initPage === 'recentModDesc' ? '.sort-option.active' : '.sort-option',
                         {
                             onclick: (event) => {
                                 const { target } = event;
 
-                                this.toggleActive(target);
+                                this.toggleActive(target, 'recentModDesc');
                                 this.emit('SortRecentModDescGLPsClicked');
                             },
                         },
@@ -169,24 +220,24 @@ class Sort extends Component {
                 div(
                     '.content',
                     a(
-                        '.sort-option',
+                        this.initPage === 'nameAsc' ? '.sort-option.active' : '.sort-option',
                         {
                             onclick: (event) => {
                                 const { target } = event;
 
-                                this.toggleActive(target);
+                                this.toggleActive(target, 'nameAsc');
                                 this.emit('NameAscendingClicked');
                             },
                         },
                         'Ascending',
                     ),
                     a(
-                        '.sort-option',
+                        this.initPage === 'nameDesc' ? '.sort-option.active' : '.sort-option',
                         {
                             onclick: (event) => {
                                 const { target } = event;
 
-                                this.toggleActive(target);
+                                this.toggleActive(target, 'nameDesc');
                                 this.emit('NameDescendingClicked');
                             },
                         },
@@ -197,7 +248,7 @@ class Sort extends Component {
         );
     }
 
-    toggleActive(el: EventTarget) {
+    toggleActive(el: EventTarget, initPage: string) {
         const asideEl = document.getElementById('library-sort');
         const active = asideEl.querySelector('.active');
 
@@ -205,6 +256,10 @@ class Sort extends Component {
 
         if (el.classList.contains('sort-option')) {
             el.classList.add('active');
+
+            if (window.sessionStorage) {
+                window.sessionStorage.setItem('library_init', initPage);
+            }
         }
     }
 }

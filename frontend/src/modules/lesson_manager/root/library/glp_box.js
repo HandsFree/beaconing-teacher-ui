@@ -19,7 +19,7 @@ class GLPBox extends Component {
                 a(
                     '.item',
                     {
-                        href: `#view?id=${id}&prev=lesson_manager/new_plan`,
+                        href: `#view?id=${id}&prev=lesson_manager`,
                     },
                     'View',
                 ),
