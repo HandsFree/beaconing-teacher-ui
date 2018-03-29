@@ -10,9 +10,15 @@ fmt:
 	go fmt git.juddus.com/HFC/beaconing/backend...
 
 front:
-	cd frontend && yarn b
+	cd ../frontend && yarn b
+
+prodfront:
+	cd ../frontend && yarn bp
 
 $(OUT): $(GO_FILES)
 	go build -o $(OUT)
 
-.PHONY: all fmt front
+prodall: $(OUT)
+	make prodfront
+
+.PHONY: all fmt front prodall prodfront
