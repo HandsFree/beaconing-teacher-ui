@@ -2,6 +2,7 @@ package api
 
 import (
 	"bytes"
+	"errors"
 	"log"
 	"net/http"
 	"time"
@@ -12,6 +13,65 @@ import (
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 )
+
+type AnalyticsUser struct {
+	Id       uint64 `json:"_id"`
+	Username string `json:"username"`
+	Email    string `json:"email"`
+	Token    string `json:"token"`
+}
+
+func GetAnalyticsToken(s *gin.Context) error {
+	session := sessions.Default(s)
+
+	type analyticsTokenPost struct {
+		accessToken string
+	}
+
+	accessTok := GetAccessToken(s)
+	if accessTok == "" {
+		return errors.New("No access token!")
+	}
+
+	tokenReq := analyticsTokenPost{accessTok}
+	message, err := jsoniter.Marshal(&tokenReq)
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	const tokenRefreshLink = "https://analytics.beaconing.eu/api/login/beaconing"
+	resp, err := DoTimedRequestBody(s, "POST", tokenRefreshLink, bytes.NewBuffer(message), 15*time.Second)
+	if err != nil {
+		log.Println("GetRefreshToken", err.Error())
+		return err
+	}
+
+	// https://git.juddus.com/HFC/beaconing/wiki/Analytics
+	/*
+			{
+		    "user": {
+		        "_id": "<user id>",
+		        "username": "teacher",
+		        "email": "teacher@teacher.com",
+		        "token": "<new auth token for analytics>"
+		    }
+		}
+	*/
+
+	var user AnalyticsUser
+	if err := jsoniter.Unmarshal(resp, &user); err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	session.Set("analytics_token", user.Token)
+	if err := session.Save(); err != nil {
+		log.Println("GetAnalyticsToken", err.Error())
+		return err
+	}
+	return nil
+}
 
 // GetRefreshToken retrieves a refresh token from the beaconing
 // core api. If all is well, the token will be set in the
@@ -54,6 +114,12 @@ func GetRefreshToken(s *gin.Context) error {
 	if err := session.Save(); err != nil {
 		log.Println("GetRefreshToken", err.Error())
 	}
+
+	if err := GetAnalyticsToken(s); err != nil {
+		log.Println("Failed to retrieve analytics token", err.Error())
+		return err
+	}
+
 	return nil
 }
 
