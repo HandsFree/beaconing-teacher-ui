@@ -21,4 +21,7 @@ $(OUT): $(GO_FILES)
 prodall: $(OUT)
 	make prodfront
 
+clean:
+	rm beaconing
+
 .PHONY: all fmt front prodall prodfront
