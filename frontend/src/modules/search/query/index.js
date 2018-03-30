@@ -10,6 +10,14 @@ class QuerySearch extends Component {
             query,
         } = this.props;
 
+        const searchQuery = do {
+            if (query) {
+                decodeURIComponent(query);
+            } else {
+                '';
+            }
+        };
+
         return div(
             '.draggable.search.fuzzy-search',
             i('.icon-search', { 'aria-hidden': true }),
@@ -27,7 +35,7 @@ class QuerySearch extends Component {
                             window.location.href = `//${window.location.host}/search?query=${encodeURIComponent(target.value)}`;
                         }
                     },
-                    value: query ?? '',
+                    value: searchQuery,
                 },
             ),
         );
