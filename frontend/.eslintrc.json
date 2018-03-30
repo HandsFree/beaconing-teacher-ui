@@ -11,13 +11,13 @@
     ],
     "parserOptions": {
         "sourceType": "module",
-        "ecmaVersion": 8,
+        "ecmaVersion": 9,
         "ecmaFeatures": {
-            "modules": true,
-            "experimentalObjectRestSpread": true
+            "modules": true
         }
     },
     "rules": {
+        "strict": 0,
         "indent": [
             "error",
             4
@@ -38,11 +38,13 @@
         "class-methods-use-this": 0,
         "no-plusplus": 0,
         "no-restricted-syntax": 0,
-        "no-param-reassign": [2, { "props": false }]
+        "no-param-reassign": [2, { "props": false }],
+        "babel/semi": 1
     },
     "plugins": [
         "import",
-        "flowtype"
+        "flowtype",
+        "babel"
     ],
     "settings": {
         "flowtype": {
