@@ -1,8 +1,40 @@
 // @flow
+export interface RootComponentInterface {
+    // render(): Promise<HTMLElement>;
+    start(): void;
+    emit(name: string): void;
+    doRender(): Promise<void>;
+    triggerLoadedEvent(): void;
+    appendView(view: HTMLElement): void;
+    handleHooks(): Promise<void>;
+    updateView(view: HTMLElement): void;
+    params: { [string]: string };
+    containerID: string;
+    view: HTMLElement | Array<HTMLElement>;
+    state: { [string]: any };
+    loadEvent: Event;
+    loadDone: boolean;
+    updateHooks: { [string]: Function };
+}
 
-/* eslint-disable class-methods-use-this, no-restricted-syntax */
+export interface ComponentInterface {
+    // render(): Promise<HTMLElement>;
+    start(): AsyncGenerator<>;
+    attach(props: { [string]: any }): Promise<HTMLElement>;
+    handleAfterLoad(): Promise<void>;
+    removeSelf(): void;
+    emit(name: string): void;
+    doRender(): Promise<void>;
+    appendView(view: HTMLElement): void;
+    handleHooks(): Promise<void>;
+    updateView(view: HTMLElement): void;
+    state: { [string]: any };
+    view: HTMLElement;
+    props: { [string]: any };
+    updateHooks: { [string]: Function };
+}
 
-class RootComponent {
+class RootComponent implements RootComponentInterface {
     containerID: string = 'app';
     view: HTMLElement | Array<HTMLElement>;
     state: { [string]: any } = {};
@@ -104,7 +136,7 @@ class RootComponent {
     }
 }
 
-class Component {
+class Component implements ComponentInterface {
     state: { [string]: any } = {};
     view: HTMLElement;
     props: { [string]: any } = {};
@@ -112,7 +144,7 @@ class Component {
 
     updateView(view: HTMLElement) {
         const func = () => {
-            let parent = this.view.parentElement || null;
+            let parent = this.view.parentElement ?? null;
 
             if (Array.isArray(this.view)) {
                 parent = this.view[0].parentElement;
@@ -189,7 +221,7 @@ class Component {
     }
 
     removeSelf() {
-        let parent = this.view.parentElement || null;
+        let parent = this.view.parentElement ?? null;
 
         if (Array.isArray(this.view)) {
             parent = this.view[0].parentElement;

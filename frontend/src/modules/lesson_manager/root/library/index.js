@@ -9,6 +9,7 @@ import InnerNav from '../../inner_nav';
 import BasicSearch from '../../../search/basic';
 import Sort from './sort';
 import GLPHandle from './glp_handle';
+import CreatePlanButton from './create_plan_button';
 
 class Library extends RootComponent {
     async render() {
@@ -19,6 +20,7 @@ class Library extends RootComponent {
         const search = new BasicSearch();
         const sort = new Sort();
         const glpHandle = new GLPHandle();
+        const createPlanButton = new CreatePlanButton();
 
         return Promise.all([
             header.attach(),
@@ -32,6 +34,7 @@ class Library extends RootComponent {
             }),
             sort.attach(),
             glpHandle.attach(),
+            createPlanButton.attach(),
         ]).then((values) => {
             const [
                 headerEl,
@@ -40,6 +43,7 @@ class Library extends RootComponent {
                 searchEl,
                 sortEl,
                 glpHandleEl,
+                createPlanButtonEl,
             ] = values;
 
             return div(
@@ -51,7 +55,10 @@ class Library extends RootComponent {
                     secondNavEl,
                     main(
                         '#new-plans',
-                        section('.flex-column', searchEl),
+                        section(
+                            createPlanButtonEl,
+                            searchEl,
+                        ),
                         section(
                             '.flex-spacebetween',
                             glpHandleEl,

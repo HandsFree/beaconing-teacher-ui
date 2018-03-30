@@ -1,5 +1,5 @@
 // @flow
-import { div, h4, span, strong, p } from '../../../core/html';
+import { div, h4, span, strong, p, ul, li } from '../../../core/html';
 
 import { Component } from '../../../core/component';
 
@@ -15,7 +15,31 @@ class GLPDetails extends Component {
     }
 
     async render() {
-        // console.log(this.state.glp);
+        const listify = (arr) => {
+            const elArr = [];
+            for (const v of arr) {
+                elArr.push(li(v));
+            }
+
+            return elArr;
+        };
+
+        const learningObjectives = do {
+            if (this.state.glp.learningObjectives) {
+                ul(listify(this.state.glp.learningObjectives));
+            } else {
+                p('');
+            }
+        };
+
+        const competences = do {
+            if (this.state.glp.competences) {
+                ul(listify(this.state.glp.competences));
+            } else {
+                p('');
+            }
+        };
+
         return div(
             '#plan-details',
             div('.title', h4('GLP Details:')),
@@ -24,7 +48,7 @@ class GLPDetails extends Component {
                 div(
                     '.detail',
                     strong('Age: '),
-                    span(this.state.glp.age_group),
+                    span(this.state.glp.ageGroup),
                 ),
                 div(
                     '.detail',
@@ -52,12 +76,12 @@ class GLPDetails extends Component {
                 div(
                     '.detail',
                     strong('Learning Objectives:'),
-                    p(this.state.glp.learningObjectives ? this.state.glp.learningObjectives.join(', ') : ''),
+                    learningObjectives,
                 ),
                 div(
                     '.detail',
                     strong('Competences:'),
-                    p(this.state.glp.competences ? this.state.glp.competences.join(', ') : ''),
+                    competences,
                 ),
             ),
         );

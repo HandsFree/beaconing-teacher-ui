@@ -28,8 +28,10 @@ class LoadPlan extends Component {
             const glp = await window.beaconingAPI.getGLP(this.props.id);
 
             if (glp) {
+                const content = glp.content ? JSON.parse(glp.content) : null;
+
                 this.state.glp = glp;
-                this.state.glp.content = JSON.parse(glp.content);
+                this.state.glp.content = content;
                 window.sessionStorage.setItem(`glp_${this.props.id}`, JSON.stringify({
                     glp: this.state.glp,
                     time: Date.now(),

@@ -39,7 +39,7 @@ class LoadRecentActivities extends Component {
             const raBoxProm = recentActivityBox.attach({
                 Message,
                 ExecutionTime,
-                GroupName: activity.GroupName || null,
+                GroupName: activity.GroupName ?? null,
             });
 
             promArr.push(raBoxProm);

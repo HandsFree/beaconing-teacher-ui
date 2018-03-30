@@ -18,7 +18,7 @@ class MissionDetails extends Component {
     async render() {
         const missionsProm = [];
 
-        if (this.state.glp.content.missions) {
+        if (this.state.glp.content?.missions) {
             for (const [index, missionObj] of this.state.glp.content.missions.entries()) {
                 const mission = new MissionDetail();
                 const missionEl = mission.attach({

@@ -16,8 +16,8 @@ class MissionHeader extends Component {
     }
 
     async render() {
-        const glpName = this.state.glp.name || 'Unnamed GLP';
-        const playUrl = this.state.glp.playUrl || `http://gameplots.beaconing.eu/game/?externs=http://core.beaconing.eu/api/gamifiedlessonpaths/${this.state.glp.id}/externconfig`;
+        const glpName = this.state.glp.name ?? 'Unnamed GLP';
+        const playUrl = this.state.glp.playUrl ?? `http://gameplots.beaconing.eu/game/?externs=http://core.beaconing.eu/api/gamifiedlessonpaths/${this.state.glp.id}/externconfig`;
 
         return div(
             '#mission-header',

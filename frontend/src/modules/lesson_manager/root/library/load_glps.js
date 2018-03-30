@@ -6,8 +6,8 @@ import GLPBox from './glp_box';
 
 class LoadGLPs extends Component {
     async init() {
-        const sortQuery = this.props.sort || 'default';
-        const orderQuery = this.props.order || 'default';
+        const sortQuery = this.props.sort ?? 'default';
+        const orderQuery = this.props.order ?? 'default';
 
         const glps = await window.beaconingAPI.getGLPs(sortQuery, orderQuery, true);
 

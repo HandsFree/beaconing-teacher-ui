@@ -27,7 +27,7 @@ class QuerySearch extends Component {
                             window.location.href = `//${window.location.host}/search?query=${encodeURIComponent(target.value)}`;
                         }
                     },
-                    value: query || '',
+                    value: query ?? '',
                 },
             ),
         );

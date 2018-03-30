@@ -1,12 +1,16 @@
 // @flow
+import type { RootComponentInterface } from './component';
 
-import type { Component, Route } from './types';
+type Route = {
+    path: string,
+    controller: RootComponentInterface,
+};
 
 class Router {
-    routes: Map<string, Component> = new Map();
+    routes: Map<string, RootComponentInterface> = new Map();
     params: { [string]: string } = {};
 
-    initRoute(path: string, controller: Component) {
+    initRoute(path: string, controller: RootComponentInterface) {
         this.routes.set(path, controller);
     }
 

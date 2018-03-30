@@ -205,13 +205,13 @@ class APICore {
     async assignStudent(studentID: number, glpID: number) {
         const assignStatus = await this.get(`//${window.location.host}/intent/assign/${studentID}/to/${glpID}`);
 
-        return assignStatus.studentId || false;
+        return assignStatus.studentId ?? false;
     }
 
     async assignGroup(groupID: number, glpID: number) {
         const assignStatus = await this.get(`//${window.location.host}/intent/assigngroup/${groupID}/to/${glpID}`);
 
-        return assignStatus.studentGroupId || false;
+        return assignStatus.studentGroupId ?? false;
     }
 
     async unassignStudent(studentID: number, glpID: number) {
@@ -351,6 +351,22 @@ class APICore {
         console.log(results);
 
         return results;
+    }
+
+    async addGLP(data: { [string]: string }) {
+        const glpJSON = JSON.stringify(data);
+
+        let glpStatus = false;
+
+        const glp = await this.post(`//${window.location.host}/intent/glp`, glpJSON);
+
+        console.log(glp);
+
+        if (glp.name === data.name) {
+            glpStatus = true;
+        }
+
+        return glpStatus;
     }
 }
 
