@@ -5,112 +5,125 @@ class APICore {
         console.log('[API Core] Loaded!');
     }
 
-    async get(link: string): Promise<Object> {
-        const xhr = new XMLHttpRequest();
-
-        xhr.responseType = 'json';
-        xhr.open('GET', link);
-        xhr.send();
-
-        return new Promise((resolve, reject) => {
-            xhr.onreadystatechange = () => {
-                if (xhr.readyState === 4) {
-                    console.log(link, xhr.response);
-                    resolve(xhr.response);
-                }
-            };
-
-            xhr.onerror = () => {
-                const msg: string = `[API Core] Error: ${xhr.status}: ${xhr.statusText}`;
-
-                if (window.rollbar) {
-                    window.rollbar.error(msg);
-                }
-
-                reject(msg);
-            };
+    async doRequest(link: string, req: Object) {
+        return fetch(link, req).catch((err) => {
+            console.log('[API Core] Error: ', err);
         });
+    }
+
+    async get(link: string): Promise<Object> {
+        const req = {
+            method: 'GET',
+            mode: 'same-origin',
+            redirect: 'follow',
+            credentials: 'include',
+        };
+
+        const res = await this.doRequest(link, req);
+
+        const jsonObj = await res.json();
+
+        console.log(link, jsonObj);
+
+        return jsonObj;
+    }
+
+    async getWithAuth(link: string, token: string): Promise<Object> {
+        const req = {
+            method: 'GET',
+            mode: 'cors',
+            redirect: 'follow',
+            headers: new Headers({
+                Authorization: `Bearer ${token}`,
+            }),
+        };
+
+        const res = await this.doRequest(link, req);
+
+        const jsonObj = await res.json();
+
+        console.log(link, jsonObj);
+
+        return jsonObj;
     }
 
     async delete(link: string): Promise<Object> {
-        const xhr = new XMLHttpRequest();
+        const req = {
+            method: 'DELETE',
+            mode: 'same-origin',
+            redirect: 'follow',
+            credentials: 'include',
+        };
 
-        xhr.responseType = 'json';
-        xhr.open('DELETE', link);
-        xhr.send();
+        const res = await this.doRequest(link, req);
 
-        return new Promise((resolve, reject) => {
-            xhr.onreadystatechange = () => {
-                if (xhr.readyState === 4) {
-                    console.log(link, xhr.response);
-                    resolve(xhr.response);
-                }
-            };
+        const jsonObj = await res.json();
 
-            xhr.onerror = () => {
-                const msg: string = `[API Core] Error: ${xhr.status}: ${xhr.statusText}`;
+        console.log(link, jsonObj);
 
-                if (window.rollbar) {
-                    window.rollbar.error(msg);
-                }
+        return jsonObj;
+    }
 
-                reject(msg);
-            };
-        });
+    async postCORS(link: string, data: string): Promise<Object> {
+        const req = {
+            body: data,
+            method: 'POST',
+            mode: 'cors',
+            redirect: 'follow',
+            headers: new Headers({
+                'Content-Type': 'application/json',
+            }),
+        };
+
+        const res = await this.doRequest(link, req);
+
+        const jsonObj = await res.json();
+
+        console.log(link, jsonObj);
+
+        return jsonObj;
     }
 
     async post(link: string, data: string): Promise<Object> {
-        const xhr = new XMLHttpRequest();
+        const req = {
+            body: data,
+            method: 'POST',
+            mode: 'same-origin',
+            redirect: 'follow',
+            credentials: 'include',
+            headers: new Headers({
+                'Content-Type': 'application/json',
+            }),
+        };
 
-        xhr.responseType = 'json';
-        xhr.open('POST', link);
-        xhr.send(data);
+        const res = await this.doRequest(link, req);
 
-        return new Promise((resolve, reject) => {
-            xhr.onreadystatechange = () => {
-                if (xhr.readyState === 4) {
-                    console.log(link, xhr.response);
-                    resolve(xhr.response);
-                }
-            };
+        const jsonObj = await res.json();
 
-            xhr.onerror = () => {
-                const msg: string = `[API Core] Error: ${xhr.status}: ${xhr.statusText}`;
+        console.log(link, jsonObj);
 
-                if (window.rollbar) {
-                    window.rollbar.error(msg);
-                }
-
-                reject(msg);
-            };
-        });
+        return jsonObj;
     }
 
     async put(link: string, data: string): Promise<Object> {
-        const xhr = new XMLHttpRequest();
+        const req = {
+            body: data,
+            method: 'PUT',
+            mode: 'same-origin',
+            redirect: 'follow',
+            credentials: 'include',
+            headers: new Headers({
+                'Content-Type': 'application/json',
+            }),
+        };
 
-        xhr.responseType = 'json';
-        xhr.open('PUT', link);
-        xhr.send(data);
+        const res = await this.doRequest(link, req);
 
-        return new Promise((resolve, reject) => {
-            xhr.onreadystatechange = () => {
-                if (xhr.readyState === 4) {
-                    console.log(link, xhr.response);
-                    resolve(xhr.response);
-                }
-            };
+        const jsonObj = await res.json();
 
-            xhr.onerror = () => {
-                const msg: string = `[API Core] Error: ${xhr.status}: ${xhr.statusText}`;
+        console.log(link, jsonObj);
 
-                if (window.rollbar) {
-                    window.rollbar.error(msg);
-                }
-
-                reject(msg);
-            };
-        });
+        return jsonObj;
     }
 
     async getActivePlansWidget() {
@@ -368,6 +381,35 @@ class APICore {
 
         return glpStatus;
     }
+
+    async getAnalyticsToken() {
+        const token = await this.getAuthToken();
+
+        // console.log(token);
+
+        if (token) {
+            const postJSON = JSON.stringify({
+                accessToken: token,
+            });
+
+            const analyticsToken = await this.postCORS('https://analytics.beaconing.eu/api/login/beaconing', postJSON);
+
+            return analyticsToken?.user?.token ?? false;
+        }
+    }
+
+    async getStudentAnalytics(studentID: number) {
+        const token = await this.getAnalyticsToken();
+
+        // console.log(token);
+
+        if (token) {
+            const studentData = await this.getWithAuth(`https://analytics.beaconing.eu/api/proxy/gleaner/data/overall/${studentID}`, token);
+            // console.log(studentData);
+            return studentData ?? false;
+        }
+    }
 }
 
 export default APICore;
+
