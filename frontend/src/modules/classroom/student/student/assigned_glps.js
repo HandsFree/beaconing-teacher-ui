@@ -21,9 +21,7 @@ class AssignedGLPs extends Component {
         const { id } = this.props;
         const assignedGLPs = await window.beaconingAPI.getStudentAssigned(id);
 
-        console.log(assignedGLPs);
-
-        if (assignedGLPs) {
+        if (assignedGLPs && assignedGLPs.length >= 1) {
             const glps = [];
 
             for (const glp of assignedGLPs) {
