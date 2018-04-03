@@ -24,8 +24,8 @@ class SearchResults extends Component {
                 const resultBox = new ResultBox();
 
                 const resultBoxEl = resultBox.attach({
-                    title: student.username,
-                    link: `//${window.location.host}/classroom/`,
+                    title: `${student.profile?.firstName} ${student.profile?.lastName}`,
+                    link: `//${window.location.host}/classroom/student?id=${student.id}`,
                 });
 
                 promArr.push(resultBoxEl);
@@ -56,7 +56,7 @@ class SearchResults extends Component {
 
                 const resultBoxEl = resultBox.attach({
                     title: glp.name,
-                    link: `//${window.location.host}/lesson_manager/new_plan#view?id=${glp.id}&prev=search`,
+                    link: `//${window.location.host}/lesson_manager#view?id=${glp.id}&prev=search`,
                 });
 
                 promArr.push(resultBoxEl);
