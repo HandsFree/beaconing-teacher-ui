@@ -244,6 +244,11 @@ class Component implements ComponentInterface {
     }
 
     async handleAfterLoad() {
+        if (window.beaconingMainController.loadDone) {
+            await this.afterLoad();
+            return;
+        }
+
         const func = () => {
             Promise.resolve(this.afterLoad());
         };
