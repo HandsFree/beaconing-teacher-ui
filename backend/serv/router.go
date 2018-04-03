@@ -160,6 +160,7 @@ func GetRouterEngine() *gin.Engine {
 		student.PUT("/:id", req.PutStudentRequest())
 		student.DELETE("/:id", req.DeleteStudentRequest())
 		student.POST("/", req.PostStudentRequest())
+
 		student.GET("/:id/assignedglps", req.GetAssignedGLPsRequest())
 		student.DELETE("/:id/assignedglps/:glp", req.DeleteAssignedGLPsRequest())
 	}

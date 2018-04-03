@@ -248,7 +248,7 @@ func GetCurrentUser(s *gin.Context) (*types.CurrentUser, error) {
 }
 
 func getUserAvatar(s *gin.Context, id uint64) (string, error) {
-	query := "SELECT avatar_blob FROM student_avatars WHERE student_id = $1"
+	query := "SELECT avatar_blob FROM student_avatar WHERE student_id = $1"
 	rows, err := API.db.Query(query, id)
 	if err != nil {
 		log.Println("-- ", err.Error())
@@ -289,7 +289,7 @@ func setUserAvatar(s *gin.Context, id uint64, username string) (string, error) {
 	avatarHash := base64.StdEncoding.EncodeToString(hmac512.Sum(nil))
 	log.Println("Setting avatar hash for student ", id, username, " to ", avatarHash)
 
-	query := "INSERT INTO student_avatars (student_id, avatar_blob) VALUES($1, $2)"
+	query := "INSERT INTO student_avatar (student_id, avatar_blob) VALUES($1, $2)"
 	_, err := API.db.Exec(query, id, avatarHash)
 	if err != nil {
 		log.Println("-- ", err.Error())

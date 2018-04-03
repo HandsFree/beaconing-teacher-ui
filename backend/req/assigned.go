@@ -17,14 +17,14 @@ import (
 func DeleteAssignedGLPsRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
 		studentIDParam := s.Param("id")
-		studentID, err := strconv.Atoi(studentIDParam)
+		studentID, err := strconv.ParseUint(studentIDParam, 10, 64)
 		if err != nil {
 			s.String(http.StatusBadRequest, "No such ID thing!")
 			return
 		}
 
 		glpIDParam := s.Param("glp")
-		glpID, err := strconv.Atoi(glpIDParam)
+		glpID, err := strconv.ParseUint(glpIDParam, 10, 64)
 		if err != nil {
 			s.String(http.StatusBadRequest, "No such ID thing!")
 			return
@@ -39,7 +39,7 @@ func DeleteAssignedGLPsRequest() gin.HandlerFunc {
 func GetAssignedGLPsRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
 		studentIDParam := s.Param("id")
-		studentID, err := strconv.Atoi(studentIDParam)
+		studentID, err := strconv.ParseUint(studentIDParam, 10, 64)
 		if err != nil {
 			s.String(http.StatusBadRequest, "No such ID thing!")
 			return
@@ -54,14 +54,14 @@ func GetAssignedGLPsRequest() gin.HandlerFunc {
 func DeleteGroupAssignedRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
 		groupIDParam := s.Param("id")
-		groupID, err := strconv.Atoi(groupIDParam)
+		groupID, err := strconv.ParseUint(groupIDParam, 10, 64)
 		if err != nil {
 			s.String(http.StatusBadRequest, "No such ID thing!")
 			return
 		}
 
 		glpIDParam := s.Param("glp")
-		glpID, err := strconv.Atoi(glpIDParam)
+		glpID, err := strconv.ParseUint(glpIDParam, 10, 64)
 		if err != nil {
 			s.String(http.StatusBadRequest, "No such ID thing!")
 			return
@@ -76,7 +76,7 @@ func DeleteGroupAssignedRequest() gin.HandlerFunc {
 func GetStudentGroupAssignedRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
 		groupIDParam := s.Param("id")
-		groupID, err := strconv.Atoi(groupIDParam)
+		groupID, err := strconv.ParseUint(groupIDParam, 10, 64)
 		if err != nil {
 			s.String(http.StatusBadRequest, "No such ID thing!")
 			return

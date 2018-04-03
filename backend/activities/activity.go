@@ -19,7 +19,7 @@ const (
 	DeleteGLPActivity
 	CreateGLPActivity
 	AssignGLPActivity
-	// TODO: Unassign GLP activity
+	UnassignGLPActivity
 	// TODO: EditGLPActivity
 
 	// TODO: changes a setting
