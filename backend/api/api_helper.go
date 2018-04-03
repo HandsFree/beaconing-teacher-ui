@@ -84,7 +84,7 @@ func GetRootPath() string {
 }
 
 func GetRedirectBaseLink() string {
-	return GetRootPath() + "/intent/token/"
+	return GetRootPath() + "/api/v1/token/"
 }
 
 func GetLogOutLink() string {

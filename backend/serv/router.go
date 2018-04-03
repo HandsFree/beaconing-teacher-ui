@@ -87,7 +87,7 @@ func GetRouterEngine() *gin.Engine {
 	// Redirect trailing slashes
 	router.RedirectTrailingSlash = true
 
-	// Create Gin wrappers
+	// GIN WRAPPERS: Pages
 
 	router.GET("/", root.Get(page.New("Home", "dist/beaconing/pages/home/page.js")))
 
@@ -108,6 +108,13 @@ func GetRouterEngine() *gin.Engine {
 
 	router.GET("/search", search.Get(page.New("Search", "dist/beaconing/pages/search/page.js")))
 
+	authPage := router.Group("auth")
+	{
+		authPage.GET("logout", req.GetLogOutRequest())
+	}
+
+	// GIN WRAPPERS: Widgets
+
 	widgets := router.Group("/widget/")
 	{
 		widgets.GET("student_overview", req.GetStudentOverview())
@@ -117,14 +124,20 @@ func GetRouterEngine() *gin.Engine {
 		widgets.GET("active_lesson_plans", req.GetActiveLessonPlansWidget())
 	}
 
-	analytics := router.Group("analytics")
+	// GIN WRAPPERS: API
+
+	v1 := router.Group("/api/v1/")
+
+	authAPI := v1.Group("auth")
+	{
+		authAPI.GET("gettoken", req.GetCheckAuthRequest())
+	}
+
+	analytics := v1.Group("analytics")
 	{
 		analytics.GET("/glp/:id", req.GetAnalyticsGLPRequest())
 		analytics.GET("/student/:id", req.GetAnalyticsStudentRequest())
 	}
-
-	// TODO change this from intent to /api/v1/
-	v1 := router.Group("/intent/")
 
 	tokens := v1.Group("token")
 	{
@@ -197,12 +210,6 @@ func GetRouterEngine() *gin.Engine {
 	}
 
 	v1.POST("search", req.PostSearchRequest())
-
-	auth := router.Group("auth")
-	{
-		auth.GET("check", req.GetCheckAuthRequest())
-		auth.GET("logout", req.GetLogOutRequest())
-	}
 
 	return router
 }

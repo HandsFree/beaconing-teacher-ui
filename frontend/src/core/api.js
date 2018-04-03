@@ -139,7 +139,7 @@ class APICore {
     }
 
     async getAuthToken() {
-        const { token } = await this.get(`//${window.location.host}/auth/check`);
+        const { token } = await this.get(`//${window.location.host}/api/v1/auth/gettoken`);
 
         if (token) {
             return token;
@@ -153,88 +153,88 @@ class APICore {
     async getGLPs(sortQuery: string, orderQuery: string, minify: ?boolean) {
         const sort = sortQuery !== 'default' ? `?sort=${sortQuery}` : '';
         const order = orderQuery !== 'default' ? `&order=${orderQuery}` : '';
-        const url = minify ? `//${window.location.host}/intent/glps${sort}${order}&minify=1` : `//${window.location.host}/intent/glps${sort}${order}`;
+        const url = minify ? `//${window.location.host}/api/v1/glps${sort}${order}&minify=1` : `//${window.location.host}/api/v1/glps${sort}${order}`;
         const glps = await this.get(url);
 
         return glps;
     }
 
     async getCurrentUser() {
-        const profile = await this.get(`//${window.location.host}/intent/profile`);
+        const profile = await this.get(`//${window.location.host}/api/v1/profile`);
 
         return profile;
     }
 
     async getGLP(id: number, minify: boolean = false) {
         if (minify) {
-            const glp = await this.get(`//${window.location.host}/intent/glp/${id}?minify=1`);
+            const glp = await this.get(`//${window.location.host}/api/v1/glp/${id}?minify=1`);
 
             return glp;
         }
 
-        const glp = await this.get(`//${window.location.host}/intent/glp/${id}`);
+        const glp = await this.get(`//${window.location.host}/api/v1/glp/${id}`);
 
         return glp;
     }
 
     async getStudents() {
-        const students = await this.get(`//${window.location.host}/intent/students`);
+        const students = await this.get(`//${window.location.host}/api/v1/students`);
 
         return students;
     }
 
     async getStudent(id: number) {
-        const student = await this.get(`//${window.location.host}/intent/student/${id}`);
+        const student = await this.get(`//${window.location.host}/api/v1/student/${id}`);
 
         return student;
     }
 
     async getStudentAssigned(id: number) {
         // console.log(id);
-        const glps = await this.get(`//${window.location.host}/intent/student/${id}/assignedglps`);
+        const glps = await this.get(`//${window.location.host}/api/v1/student/${id}/assignedglps`);
 
         return glps;
     }
 
     async getGroupAssigned(id: number) {
         // console.log(id);
-        const glps = await this.get(`//${window.location.host}/intent/studentgroup/${id}/assignedglps`);
+        const glps = await this.get(`//${window.location.host}/api/v1/studentgroup/${id}/assignedglps`);
 
         return glps;
     }
 
     async getGroups() {
-        const groups = await this.get(`//${window.location.host}/intent/studentgroups`);
+        const groups = await this.get(`//${window.location.host}/api/v1/studentgroups`);
 
         return groups;
     }
 
     async getGroup(id: number) {
-        const group = await this.get(`//${window.location.host}/intent/studentgroup/${id}`);
+        const group = await this.get(`//${window.location.host}/api/v1/studentgroup/${id}`);
 
         return group;
     }
 
     async assignStudent(studentID: number, glpID: number) {
-        const assignStatus = await this.get(`//${window.location.host}/intent/assign/${studentID}/to/${glpID}`);
+        const assignStatus = await this.get(`//${window.location.host}/api/v1/assign/${studentID}/to/${glpID}`);
 
         return assignStatus.studentId ?? false;
     }
 
     async assignGroup(groupID: number, glpID: number) {
-        const assignStatus = await this.get(`//${window.location.host}/intent/assigngroup/${groupID}/to/${glpID}`);
+        const assignStatus = await this.get(`//${window.location.host}/api/v1/assigngroup/${groupID}/to/${glpID}`);
 
         return assignStatus.studentGroupId ?? false;
     }
 
     async unassignStudent(studentID: number, glpID: number) {
-        const assignStatus = await this.delete(`//${window.location.host}/intent/student/${studentID}/assignedglps/${glpID}`);
+        const assignStatus = await this.delete(`//${window.location.host}/api/v1/student/${studentID}/assignedglps/${glpID}`);
 
         return assignStatus.success === true;
     }
 
     async unassignGroup(groupID: number, glpID: number) {
-        const assignStatus = await this.delete(`//${window.location.host}/intent/studentgroup/${groupID}/assignedglps/${glpID}`);
+        const assignStatus = await this.delete(`//${window.location.host}/api/v1/studentgroup/${groupID}/assignedglps/${glpID}`);
 
         return assignStatus.success === true;
     }
@@ -267,7 +267,7 @@ class APICore {
 
         let groupStatus = false;
 
-        const group = await this.post(`//${window.location.host}/intent/studentgroup`, groupJSON);
+        const group = await this.post(`//${window.location.host}/api/v1/studentgroup`, groupJSON);
 
         if (typeof group === 'object' && group.id) {
             groupStatus = true;
@@ -281,7 +281,7 @@ class APICore {
 
         let groupStatus = false;
 
-        const group = await this.put(`//${window.location.host}/intent/studentgroup/${groupID}`, groupJSON);
+        const group = await this.put(`//${window.location.host}/api/v1/studentgroup/${groupID}`, groupJSON);
 
         if (typeof group === 'object' && group.success) {
             groupStatus = true;
@@ -293,7 +293,7 @@ class APICore {
     async deleteGroup(groupID: number) {
         let groupStatus = false;
 
-        const group = await this.delete(`//${window.location.host}/intent/studentgroup/${groupID}`);
+        const group = await this.delete(`//${window.location.host}/api/v1/studentgroup/${groupID}`);
 
         if (typeof group === 'object' && group.success) {
             groupStatus = true;
@@ -310,7 +310,7 @@ class APICore {
 
         let studentStatus = false;
 
-        const student = await this.post(`//${window.location.host}/intent/student`, studentJSON);
+        const student = await this.post(`//${window.location.host}/api/v1/student`, studentJSON);
 
         // console.log(student);
 
@@ -329,7 +329,7 @@ class APICore {
 
         let studentStatus = false;
 
-        const student = await this.put(`//${window.location.host}/intent/student/${studentID}`, studentJSON);
+        const student = await this.put(`//${window.location.host}/api/v1/student/${studentID}`, studentJSON);
 
         // console.log(student);
 
@@ -343,7 +343,7 @@ class APICore {
     async deleteStudent(studentID: number) {
         let studentStatus = false;
 
-        const student = await this.delete(`//${window.location.host}/intent/student/${studentID}`);
+        const student = await this.delete(`//${window.location.host}/api/v1/student/${studentID}`);
 
         // console.log(student);
 
@@ -359,7 +359,7 @@ class APICore {
             Query: query,
         });
 
-        const results = await this.post(`//${window.location.host}/intent/search`, searchJSON);
+        const results = await this.post(`//${window.location.host}/api/v1/search`, searchJSON);
 
         console.log(results);
 
@@ -371,7 +371,7 @@ class APICore {
 
         let glpStatus = false;
 
-        const glp = await this.post(`//${window.location.host}/intent/glp`, glpJSON);
+        const glp = await this.post(`//${window.location.host}/api/v1/glp`, glpJSON);
 
         console.log(glp);
 
