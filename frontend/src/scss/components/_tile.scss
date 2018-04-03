@@ -49,4 +49,12 @@
 			}
 		}
 	}
+
+	&.spacing {
+		margin: 0.5em;
+
+		@media screen and (max-width: 39.9375em) {
+			margin: 0.25em;
+		}
+	}
 }
