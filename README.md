@@ -63,9 +63,14 @@ Javascript Style Guide: [https://git.juddus.com/HFC/beaconing/wiki/Javascript-St
 Analytics Info: [https://git.juddus.com/HFC/beaconing/wiki/Analytics](https://git.juddus.com/HFC/beaconing/wiki/Analytics)
 
 # General Notes
+
+### Sanitisation
 The API layer is the bridge between the backend and the API services provided
 from the core beaconing API (and other relevant APIs). This should not handle
 sanitisation of data _inputs_. 
 
 The requests are the backend request handlers, these are in charge of taking
 in data, sanitising it, and invoking the api layer.
+
+### Browser plugins blocking functionality
+In some cases, the analytics section on the student profile may not work. This is due to a request to `analytics.beaconing.eu` which in some privacy tracker plugins/browser tracking protection implementations will be denied. In my case, the plugin `Privacy Badger` denied access to `analytics.beaconing.eu`.
