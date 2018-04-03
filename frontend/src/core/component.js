@@ -281,8 +281,7 @@ class Component implements ComponentInterface {
         }
     }
 
-    // not sure how to do async generators in flow
-    // ALSO this is pretty hacky right now
+    // TODO: refine 
     async* start(): AsyncGenerator<> {
         if (this.updateHooks) {
             this.handleHooks();
