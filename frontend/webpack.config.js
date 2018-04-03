@@ -135,6 +135,12 @@ const config = [
         },
         ...mainSettings,
     },
+    {
+        entry: {
+            'pages/profile/page': './modules/profile/root/',
+        },
+        ...mainSettings,
+    },
 ];
 
 module.exports = config;

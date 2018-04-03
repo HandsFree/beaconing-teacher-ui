@@ -6,6 +6,18 @@ nav.mini {
 		padding: 0.25em;
 	}
 
+	&.icon-menu {
+		a {
+			text-decoration: none;
+			margin: 0 0.2em;
+	
+			&:hover {
+				text-decoration: none;
+				cursor: pointer;
+			}
+		}
+	}
+
 	a {
 		text-decoration: none;
 		margin: 0 0.2em;

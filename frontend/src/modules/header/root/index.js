@@ -1,19 +1,25 @@
 // @flow
-
 import Identicon from 'identicon.js';
-import { div, header, a, img } from '../../../core/html';
+
+import { div, header, a, img, span } from '../../../core/html';
 
 import { Component } from '../../../core/component';
 
 class Header extends Component {
     state = {
-        teacherName: 'John Smith',
-        teacherIMG: '',
+        teacher: {},
     };
 
-    async render() {
+    async init() {
         const currUser = await window.beaconingAPI.getCurrentUser();
 
+        this.state.teacher = currUser;
+    }
+
+    async render() {
+        const { teacher } = this.state;
+        const teacherFirstName = teacher.teacherSettings.firstName;
+        const teacherFullName = `${teacher.teacherSettings.firstName} ${teacher.teacherSettings.lastName}`;
         const options = {
             foreground: [61, 177, 51, 255],
             background: [255, 255, 255, 255],
@@ -22,7 +28,7 @@ class Header extends Component {
             format: 'svg',
         };
 
-        this.state.teacherIMG = `data:image/svg+xml;base64,${new Identicon(currUser.identiconSha512, options).toString()}`;
+        const teacherIMG = `data:image/svg+xml;base64,${new Identicon(teacher.identiconSha512, options).toString()}`;
 
         return header(
             '#main-header',
@@ -40,18 +46,27 @@ class Header extends Component {
             ),
             div(
                 '.profile',
-                div('.logout', a(
-                    {
-                        href: `//${window.location.host}/auth/logout`,
-                    },
-                    'Log Out',
-                )),
+                div(
+                    '.logout',
+                    a(
+                        {
+                            href: `//${window.location.host}/auth/logout`,
+                        },
+                        'Logout',
+                    ),
+                ),
                 div(
                     '.profile-img',
-                    img({
-                        src: this.state.teacherIMG,
-                        alt: this.state.teacherName,
-                    }),
+                    a(
+                        {
+                            href: `//${window.location.host}/profile`,
+                        },
+                        img({
+                            src: teacherIMG,
+                            alt: teacherFullName,
+                        }),
+                        span(teacherFirstName),
+                    ),
                 ),
             ),
         );

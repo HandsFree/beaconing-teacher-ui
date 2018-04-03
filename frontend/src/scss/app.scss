@@ -11,6 +11,7 @@
 
 // helpers
 @import 'util/helper_classes';
+@import 'util/breakpoints';
 
 // components
 @import 'components/all';
@@ -32,3 +33,6 @@
 
 // search
 @import 'search/all';
+
+// profile
+@import 'profile/all';

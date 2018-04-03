@@ -165,6 +165,22 @@ class APICore {
         return profile;
     }
 
+    async editUser(data: { [string]: string | Object }) {
+        let editStatus = false;
+
+        let editJSON = JSON.stringify(data);
+
+        const status = await this.put(`//${window.location.host}/api/v1/profile`, editJSON);
+
+        // console.log(student);
+
+        if (typeof status === 'object' && status.success) {
+            editStatus = true;
+        }
+
+        return editStatus;
+    }
+
     async getGLP(id: number, minify: boolean = false) {
         if (minify) {
             const glp = await this.get(`//${window.location.host}/api/v1/glp/${id}?minify=1`);
