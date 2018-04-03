@@ -5,22 +5,13 @@ import (
 	"log"
 	"time"
 
+	"git.juddus.com/HFC/beaconing/backend/types"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 )
 
-type putProfileJSON struct {
-	Id              uint     `json:"id"`
-	Username        string   `json:"username"`
-	Email           string   `json:"email"`
-	Language        string   `json:"language"`
-	Roles           []string `json:"roles"`
-	Accessibility   string   `json:"accessibility"`
-	TeacherSettings string   `json:"teacherSettings"`
-}
-
 func PutProfile(s *gin.Context) (string, error) {
-	var json putProfileJSON
+	var json *types.CurrentUser
 	if err := s.ShouldBindJSON(&json); err != nil {
 		log.Println("PutProfile", err.Error())
 		return "", err

@@ -11,6 +11,7 @@ import (
 	"git.juddus.com/HFC/beaconing/backend/classroom"
 	"git.juddus.com/HFC/beaconing/backend/lesson_manager"
 	"git.juddus.com/HFC/beaconing/backend/page"
+	"git.juddus.com/HFC/beaconing/backend/profile"
 	"git.juddus.com/HFC/beaconing/backend/req"
 	"git.juddus.com/HFC/beaconing/backend/root"
 	"git.juddus.com/HFC/beaconing/backend/search"
@@ -87,7 +88,9 @@ func GetRouterEngine() *gin.Engine {
 	// Redirect trailing slashes
 	router.RedirectTrailingSlash = true
 
+	// ---
 	// GIN WRAPPERS: Pages
+	// ---
 
 	router.GET("/", root.Get(page.New("Home", "dist/beaconing/pages/home/page.js")))
 
@@ -108,12 +111,16 @@ func GetRouterEngine() *gin.Engine {
 
 	router.GET("/search", search.Get(page.New("Search", "dist/beaconing/pages/search/page.js")))
 
+	router.GET("/profile", profile.Get(page.New("Profile", "dist/beaconing/pages/profile/page.js")))
+
 	authPage := router.Group("auth")
 	{
 		authPage.GET("logout", req.GetLogOutRequest())
 	}
 
+	// ---
 	// GIN WRAPPERS: Widgets
+	// ---
 
 	widgets := router.Group("/widget/")
 	{
@@ -124,7 +131,9 @@ func GetRouterEngine() *gin.Engine {
 		widgets.GET("active_lesson_plans", req.GetActiveLessonPlansWidget())
 	}
 
+	// ---
 	// GIN WRAPPERS: API
+	// ---
 
 	v1 := router.Group("/api/v1/")
 

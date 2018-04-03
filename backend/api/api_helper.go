@@ -219,8 +219,8 @@ func GetCurrentUser(s *gin.Context) (*types.CurrentUser, error) {
 		return nil, err
 	}
 
-	student := &types.CurrentUser{}
-	if err := jsoniter.Unmarshal(resp, student); err != nil {
+	teacher := &types.CurrentUser{}
+	if err := jsoniter.Unmarshal(resp, teacher); err != nil {
 		log.Println("GetCurrentUser", err.Error())
 		return nil, err
 	}
@@ -232,19 +232,19 @@ func GetCurrentUser(s *gin.Context) (*types.CurrentUser, error) {
 	// and re-load it.
 	// TODO if we fail again return some error
 	// identicon and spit the error out in the logs
-	avatar, err := getUserAvatar(s, student.Id)
+	avatar, err := getUserAvatar(s, teacher.Id)
 	if err != nil {
 		log.Println("getUserAvatar", err.Error())
 
-		avatar, err = setUserAvatar(s, student.Id, student.Username)
+		avatar, err = setUserAvatar(s, teacher.Id, teacher.Username)
 		if err != nil {
 			log.Println("setUserAvatar", err.Error())
 			avatar = "TODO identicon fall back here"
 		}
 	}
-	student.IdenticonSha512 = avatar
+	teacher.IdenticonSha512 = avatar
 
-	return student, nil
+	return teacher, nil
 }
 
 func getUserAvatar(s *gin.Context, id uint64) (string, error) {
