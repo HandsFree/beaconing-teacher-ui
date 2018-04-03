@@ -10,7 +10,6 @@ import (
 	"strconv"
 	"time"
 
-	"git.juddus.com/HFC/beaconing/backend/activities"
 	"git.juddus.com/HFC/beaconing/backend/types"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
@@ -81,8 +80,17 @@ func GetRecentlyAssignedGLPS(s *gin.Context) ([]*types.GLP, error) {
 		return nil, errors.New("No database connection")
 	}
 
-	query := "SELECT api_req FROM activities WHERE activity_type = $1 ORDER BY creation_date ASC"
-	rows, err := API.db.Query(query, fmt.Sprintf("%d", int(activities.AssignGLPActivity)))
+	teacherId, err := GetUserID(s)
+	if err != nil {
+		log.Println("No such current user", err.Error())
+		return []*types.GLP{}, err
+	}
+
+	// we only want to select the plans that are active
+	// that have been created by the teacher that is currently
+	// active
+	query := "SELECT plan FROM active_plan WHERE teacher_id = $1 GROUP BY plan, creation_date ORDER BY creation_date ASC"
+	rows, err := API.db.Query(query, fmt.Sprintf("%d", teacherId))
 	if err != nil {
 		log.Println("-- ", err.Error())
 		return nil, err
@@ -92,30 +100,17 @@ func GetRecentlyAssignedGLPS(s *gin.Context) ([]*types.GLP, error) {
 
 	defer rows.Close()
 	for rows.Next() {
-		var apiReq []byte
+		var glpID uint64
 
-		err = rows.Scan(&apiReq)
+		err = rows.Scan(&glpID)
 		if err != nil {
-			log.Println("-- Failed to request row in GetActivities query!", err.Error())
+			log.Println("-- Failed to request row in GetRecentlyAssigned query!", err.Error())
 			continue
 		}
 
-		var glpReq types.AssignActivity
-		jsoniter.Unmarshal(apiReq, &glpReq)
-
-		glp, err := GetGLP(s, glpReq.GlpID, true)
+		glp, err := GetGLP(s, glpID, true)
 		if err != nil {
 			log.Println("GetRecentlyAssigned", err.Error())
-			continue
-		}
-
-		if glpReq.GlpID == 0 {
-			continue
-		}
-
-		// log.Println(glpReq.GlpID)
-		contains := containsGLP(glpReq.GlpID, recentlyAssigned)
-		if contains {
 			continue
 		}
 

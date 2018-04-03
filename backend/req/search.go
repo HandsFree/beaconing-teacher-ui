@@ -4,6 +4,7 @@ import (
 	"errors"
 	"log"
 	"net/http"
+	"fmt"
 
 	"github.com/felixangell/fuzzysearch/fuzzy"
 
@@ -60,16 +61,34 @@ func processSearch(s *gin.Context, json SearchRequestQuery) (*SearchQueryRespons
 	// TODO: optimize me!
 
 	// convert our json students array to
-	// a "SOA" like structure
+	// a "SOA" like structure for that sweet
+	// sweet cache performance
 
-	studentNames := []string{}
-	studentPtrs := []int{}
+	// basically we need to make it into a format
+	// that our searching library will accept so
+	// we convert it into a bunch of arrays
+	//
+	// one optimisation is that we know the length
+	// of students so we can allocate a chunk of memory
+	// rather than an empty array and keep resizing it
+	studentUsernames := make([]string, len(students))
+	studentFullNames := make([]string, len(students))
+	studentPtrs := make([]int, len(students))
 
-	glpNames := []string{}
-	glpPtrs := []int{}
+	// likewise we allocate a chunk of memory for the glps
+	glpNames := make([]string, len(glps))
+	glpPtrs := make([]int, len(glps))
 
+	// NOTE: we stored "ptrs"
+	// these are for index lookups because now that they
+	// are in this form we don't know their index
+
+	// Now we actually append all this data
+	// unfortunately there is no other way to do
+	// this than a linear scan over both of the students/glps
 	for idx, student := range students {
-		studentNames = append(studentNames, student.Username)
+		studentUsernames = append(studentUsernames, student.Username)
+		studentFullNames = append(studentFullNames, fmt.Sprintf("%s %s", student.Profile.FirstName, student.Profile.LastName))
 		studentPtrs = append(studentPtrs, idx)
 	}
 
@@ -78,11 +97,22 @@ func processSearch(s *gin.Context, json SearchRequestQuery) (*SearchQueryRespons
 		glpPtrs = append(glpPtrs, idx)
 	}
 
+	// we're probably only going to match a few
+	// students and glps here so there is no
+	// point over-allocating!
 	matchedStudents := []types.Student{}
 	matchedGLPS := []types.GLP{}
 
-	studentSearches := fuzzy.RankFindFold(json.Query, studentNames)
-	for _, studentRank := range studentSearches {
+	// now we invoke our fancy libraries to
+	// do the searches.
+	studentUsernameSearch := fuzzy.RankFindFold(json.Query, studentUsernames)
+	for _, studentRank := range studentUsernameSearch {
+		studentIndex := studentPtrs[studentRank.Index]
+		matchedStudents = append(matchedStudents, students[studentIndex])
+	}
+
+	studentFullNameSearch := fuzzy.RankFindFold(json.Query, studentFullNames)
+	for _, studentRank := range studentFullNameSearch {
 		studentIndex := studentPtrs[studentRank.Index]
 		matchedStudents = append(matchedStudents, students[studentIndex])
 	}

@@ -248,7 +248,7 @@ func GetCurrentUser(s *gin.Context) (*types.CurrentUser, error) {
 }
 
 func getUserAvatar(s *gin.Context, id uint64) (string, error) {
-	query := "SELECT avatar_blob FROM student_avatars WHERE student_id = $1"
+	query := "SELECT avatar_blob FROM student_avatar WHERE student_id = $1"
 	rows, err := API.db.Query(query, id)
 	if err != nil {
 		log.Println("-- ", err.Error())
@@ -289,7 +289,7 @@ func setUserAvatar(s *gin.Context, id uint64, username string) (string, error) {
 	avatarHash := base64.StdEncoding.EncodeToString(hmac512.Sum(nil))
 	log.Println("Setting avatar hash for student ", id, username, " to ", avatarHash)
 
-	query := "INSERT INTO student_avatars (student_id, avatar_blob) VALUES($1, $2)"
+	query := "INSERT INTO student_avatar (student_id, avatar_blob) VALUES($1, $2)"
 	_, err := API.db.Exec(query, id, avatarHash)
 	if err != nil {
 		log.Println("-- ", err.Error())
@@ -304,11 +304,11 @@ func setUserAvatar(s *gin.Context, id uint64, username string) (string, error) {
 // but for now it works.
 func newAPIHelper() *CoreAPIManager {
 	log.Println("-- Creating new API instance:")
-	log.Println("--- DB USER: ", cfg.Beaconing.DB.Username)
-	log.Println("--- DB PASS: ", cfg.Beaconing.DB.Password)
-	log.Println("--- DB NAME: ", cfg.Beaconing.DB.Name)
-	log.Println("--- DB TABLE: ", cfg.Beaconing.DB.Table)
-	log.Println("--- DB SSL ENABLED: ", cfg.Beaconing.DB.SSL)
+	log.Println("--- DB USER:", cfg.Beaconing.DB.Username)
+	log.Println("--- DB PASS:", cfg.Beaconing.DB.Password)
+	log.Println("--- DB NAME:", cfg.Beaconing.DB.Name)
+	log.Println("--- DB TABLE:", cfg.Beaconing.DB.Table)
+	log.Println("--- DB SSL ENABLED:", cfg.Beaconing.DB.SSL)
 
 	// TODO if we are in release mode use SSL!
 
@@ -317,10 +317,15 @@ func newAPIHelper() *CoreAPIManager {
 		sslMode = "disable"
 	}
 
-	connStr := "user=" + cfg.Beaconing.DB.Username + " dbname=" + cfg.Beaconing.DB.Name + " sslmode=" + sslMode
+	connStr := fmt.Sprintf("user=%s dbname=%s sslmode=%s",
+		cfg.Beaconing.DB.Username,
+		cfg.Beaconing.DB.Name,
+		sslMode)
+	log.Println("--- Attempting to connect to PSQL database: '" + connStr + "'")
+
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
-		log.Println("Failed to open db conn", err.Error())
+		log.Println("[FATAL] Failed to open db conn", err.Error())
 	}
 
 	log.Println("--- Database connection established.")

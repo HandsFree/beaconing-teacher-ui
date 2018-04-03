@@ -22,7 +22,7 @@ func GetActivities(teacherID uint64, count int) ([]activities.Activity, error) {
 		return []activities.Activity{}, errors.New("No database connection established")
 	}
 
-	query := "SELECT creation_date, activity_type, api_req FROM activities WHERE teacher_id = $2 LIMIT $1"
+	query := "SELECT creation_date, activity_type, api_req FROM activity WHERE teacher_id = $2 LIMIT $1"
 	rows, err := API.db.Query(query, count, teacherID)
 	if err != nil {
 		log.Println("GetActivities", err.Error())
@@ -63,6 +63,8 @@ func GetActivities(teacherID uint64, count int) ([]activities.Activity, error) {
 			result = activities.NewCreateGLPActivity(apiReq)
 		case activities.AssignGLPActivity:
 			result = activities.NewAssignedGLPActivity(apiReq)
+		case activities.UnassignGLPActivity:
+			result = activities.NewUnassignedGLPActivity(apiReq)		
 		default:
 			log.Println("-- Unhandled activity type", activities.ActivityType(activityType))
 		}
@@ -99,7 +101,7 @@ func (c *CoreAPIManager) WriteActivity(teacherID uint64, kind activities.Activit
 		return errors.New("No database connection")
 	}
 
-	query := "INSERT INTO activities (teacher_id, creation_date, activity_type, api_req) VALUES($1, $2, $3, $4)"
+	query := "INSERT INTO activity (teacher_id, creation_date, activity_type, api_req) VALUES($1, $2, $3, $4)"
 	_, err := c.db.Exec(query, teacherID, time.Now(), int(kind), jsonData)
 	if err != nil {
 		log.Println("-- ", err.Error())
