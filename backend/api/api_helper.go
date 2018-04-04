@@ -31,12 +31,6 @@ import (
 
 // ApiLayer is a layer which handles manipulation of
 // sending and retrieving data to the beaconing API
-//
-//
-// NOTE: all of these functions need a SessionContext
-// for the access token verification. maybe in the future
-// we should redo this to take just an access token because
-// that might make the api layer a bit more flexible.
 
 // API is the main instance to the api helper
 // this performs any api requests necessary
@@ -60,7 +54,6 @@ func GetProtocol() string {
 	if gin.IsDebugging() {
 		return "http://"
 	}
-
 	return "https://"
 }
 
