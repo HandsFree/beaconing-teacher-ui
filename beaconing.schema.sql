@@ -1,4 +1,7 @@
-CREATE ROLE beaconing_db_user WITH LOGIN PASSWORD '123ABCCBA';
+IF DATABASE_PRINCIPAL_ID('role') IS NULL
+BEGIN
+    CREATE ROLE beaconing_db_user WITH LOGIN PASSWORD '123ABCCBA';
+END
 
 \connect beaconing
 
