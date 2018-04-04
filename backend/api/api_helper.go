@@ -317,15 +317,22 @@ func newAPIHelper() *CoreAPIManager {
 		sslMode = "disable"
 	}
 
-	connStr := fmt.Sprintf("user=%s dbname=%s sslmode=%s",
+	connStr := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=%s",
 		cfg.Beaconing.DB.Username,
+		cfg.Beaconing.DB.Password,
 		cfg.Beaconing.DB.Name,
 		sslMode)
+
 	log.Println("--- Attempting to connect to PSQL database: '" + connStr + "'")
 
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
 		log.Println("[FATAL] Failed to open db conn", err.Error())
+	}
+
+	err = db.Ping()
+	if err != nil {
+		log.Println("Failed to open db conn", err.Error())
 	}
 
 	log.Println("--- Database connection established.")
