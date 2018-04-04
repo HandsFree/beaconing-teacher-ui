@@ -17,10 +17,10 @@ func GetActiveLessonPlansWidget() gin.HandlerFunc {
 	return func(s *gin.Context) {
 		log.Println("ACTIVE LESSON PLANS GET REQ")
 
-		limitParam := s.DefaultQuery("limit", "5")
+		limitParam := s.DefaultQuery("limit", "3")
 		limitParamValue, err := strconv.Atoi(limitParam)
 		if err != nil || limitParamValue <= 0 {
-			limitParamValue = 5 // NaN
+			limitParamValue = 3 // NaN
 			log.Println("warning ALP limit has illegal value, defaulting to 5")
 		}
 

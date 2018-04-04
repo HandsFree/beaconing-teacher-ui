@@ -40,7 +40,7 @@ func GetRecentActivities() gin.HandlerFunc {
 			then we look up all of the activities in the local
 			database with the ID of the current_user
 		*/
-		activities, err := getLastActivities(s, 6)
+		activities, err := getLastActivities(s, 4)
 		if err != nil {
 			log.Println("GetRecentActivities", err.Error())
 			s.AbortWithError(http.StatusBadRequest, err)
