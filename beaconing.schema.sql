@@ -1,7 +1,4 @@
-IF DATABASE_PRINCIPAL_ID('role') IS NULL
-BEGIN
-    CREATE ROLE beaconing_db_user WITH LOGIN PASSWORD '123ABCCBA';
-END
+CREATE ROLE beaconing_db_user WITH LOGIN PASSWORD '123ABCCBA';
 
 \connect beaconing
 
@@ -12,7 +9,6 @@ END
 -- entry.
 CREATE TABLE active_plan (
 	id serial PRIMARY KEY,
-
     creation_date date NOT NULL,
 
 	-- the person who assigned it
