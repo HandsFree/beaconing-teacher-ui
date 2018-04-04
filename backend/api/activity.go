@@ -102,12 +102,16 @@ func (c *CoreAPIManager) WriteActivity(teacherID uint64, kind activities.Activit
 		return errors.New("No database connection")
 	}
 
+	when := time.Now()
+
 	query := "INSERT INTO activity (teacher_id, creation_date, activity_type, api_req) VALUES($1, $2, $3, $4)"
-	_, err := c.db.Exec(query, teacherID, time.Now(), int(kind), jsonData)
+	_, err := c.db.Exec(query, teacherID, when, int(kind), jsonData)
 	if err != nil {
 		log.Println("-- ", err.Error())
 		return err
 	}
+
+	log.Println("- Wrote activity ", string(kind), " at ", when)
 
 	return nil
 }

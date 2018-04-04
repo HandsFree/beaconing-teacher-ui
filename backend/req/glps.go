@@ -87,6 +87,34 @@ func sortByRecentlyUpdated(s *gin.Context, plans []*types.GLP, order SortingOrde
 	return plans, nil
 }
 
+func sortByMostAssigned(s *gin.Context, plans []*types.GLP, order SortingOrder) ([]*types.GLP, error) {
+	glps, err := api.GetMostAssigned(s)
+	if err != nil {
+		log.Println("failed to get most assigned glps")
+		return plans, err
+	}
+	return glps, nil
+}
+
+func sortByAvailability(s *gin.Context, plans []*types.GLP, order SortingOrder) ([]*types.GLP, error) {
+	boolToInt := func(b bool) int8 {
+		if b {
+			return 1
+		}
+		return 0
+	}
+
+	sort.Slice(plans, func(i, j int) bool {
+		// easiest way to sort booleans
+		iPublic, jPublic := boolToInt(plans[i].Public), boolToInt(plans[j].Public)
+		if order == Descending {
+			return iPublic > jPublic
+		}
+		return iPublic < jPublic
+	})
+	return plans, nil
+}
+
 func sortByRecentlyAssigned(s *gin.Context, plans []*types.GLP, order SortingOrder) ([]*types.GLP, error) {
 	// TODO we do a load for the GLPS and basically
 	// throw them out to reload the ones that have been
@@ -120,9 +148,75 @@ func sortPlans(s *gin.Context, plans []*types.GLP, sortType string, order Sortin
 		return sortByRecentlyUpdated(s, plans[:], order)
 	case "assigned":
 		return sortByRecentlyAssigned(s, plans[:], order)
+	case "popular":
+		return sortByMostAssigned(s, plans[:], order)
+	case "public":
+		return sortByAvailability(s, plans[:], order)
 	default:
 		return nil, errors.New("No such sort type '" + sortType + "'")
 	}
+}
+
+// loads glps if
+// index and step are both -1 it will
+// load all of the GLPS.
+func loadPlans(s *gin.Context, index int, step int, shouldMinify bool) ([]*types.GLP, error) {
+	if index == -1 && step == -1 {
+		resp, err := api.GetGLPS(s, shouldMinify)
+		if err != nil {
+			log.Println("loadPlans", err.Error())
+			return []*types.GLP{}, err
+		}
+
+		var plans []*types.GLP
+		if err := jsoniter.Unmarshal([]byte(resp), &plans); err != nil {
+			log.Println(err.Error())
+			return []*types.GLP{}, err
+		}
+		return plans, nil
+	}
+
+	// SO BASICALLY because an id might be
+	// gone, i.e. say GLPs 52342, 52343, 52344 have been deleted
+	// we will keep iterating and trying go get glp's until
+	// we have at least {step} plans fetched.
+	// we should have a timeout here however
+	// because this will likely hang in the event that
+	// say we're at GLP 2343 and there are no more plans that exist
+	// and we've loaded 14 plans it will keep trying to load more.
+	// however i have added an attempt thing here but i think
+	// a literal timeout i.e. after 1 second would be preferable.
+	log.Println("/intent/glps, LOADING ", index, " PLANS!")
+
+	attempts := 128
+	numFails := 0
+
+	var plans []*types.GLP
+
+	for i := uint64(index); len(plans) < int(step) && numFails < attempts; i++ {
+		obj, _ := api.GetGLP(s, i, shouldMinify)
+		if obj == nil {
+			log.Println(" - NO GAME PLAN AT INDEX ", i, " SKIPPING!")
+			numFails++
+			continue
+		}
+
+		// we loaded a game plan, but the beaconing api
+		// seems to give back an "error" game plan, i.e.
+		// with an ID of 0
+		// it's easier to check that the id's dont compare
+		// rather than seeing if the content has an error message
+		if obj.ID != i {
+			log.Println(" - NO GAME PLAN AT INDEX ", i, " SKIPPING")
+			numFails++
+			continue
+		}
+
+		log.Println(" - LOADED GAME PLAN ", i)
+		plans = append(plans, obj)
+	}
+
+	return plans, nil
 }
 
 // retrieves multiple glps
@@ -137,20 +231,16 @@ func sortPlans(s *gin.Context, plans []*types.GLP, sortType string, order Sortin
 func GetGLPSRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
 		indexQuery := s.Query("index")
-		stepQuery := s.DefaultQuery("step", "15")
-		step, err := strconv.ParseUint(stepQuery, 10, 32)
+		stepQuery := s.Query("step")
+
+		// PARSE step
+		step, err := strconv.Atoi(stepQuery)
 		if err != nil {
 			log.Print("Invalid step", err.Error())
-			step = 15
 		}
 
+		// PARSE minify
 		minify := s.Query("minify")
-
-		// dont minify by default, however if
-		// we have a minify parameter with the value
-		// 1 then we will minify this glp request.
-		// NOTE: that if the parameter fails to parse, etc.
-		// then it is completely ignored in the request.
 		shouldMinify := false
 		if minify != "" {
 			minifyParam, err := strconv.Atoi(minify)
@@ -161,7 +251,8 @@ func GetGLPSRequest() gin.HandlerFunc {
 			}
 		}
 
-		index, err := strconv.ParseUint(indexQuery, 10, 64)
+		// PARSE index
+		index, err := strconv.Atoi(indexQuery)
 		if err != nil {
 			log.Println("GLPSRequest", err.Error())
 			index = 0
@@ -170,8 +261,8 @@ func GetGLPSRequest() gin.HandlerFunc {
 		sortQuery := s.Query("sort")
 		sortOrderQuery := s.Query("order")
 
+		// PARSE sortOrder
 		var sortOrder SortingOrder
-
 		switch strings.ToLower(sortOrderQuery) {
 		case "desc":
 			sortOrder = Descending
@@ -189,83 +280,25 @@ func GetGLPSRequest() gin.HandlerFunc {
 			sortOrder = Ascending
 		}
 
-		plans := []*types.GLP{}
-
-		// we have been given a positive index!
-		// return back the next {step} glps.
-		if indexQuery != "" {
-			// SO BASICALLY because an id might be
-			// gone, i.e. say GLPs 52342, 52343, 52344 have been deleted
-			// we will keep iterating and trying go get glp's until
-			// we have at least {step} plans fetched.
-			// we should have a timeout here however
-			// because this will likely hang in the event that
-			// say we're at GLP 2343 and there are no more plans that exist
-			// and we've loaded 14 plans it will keep trying to load more.
-			// however i have added an attempt thing here but i think
-			// a literal timeout i.e. after 1 second would be preferable.
-
-			log.Println("/intent/glps, LOADING ", index, " PLANS!")
-
-			attempts := 128
-			numFails := 0
-
-			for i := index; len(plans) < int(step) && numFails < attempts; i++ {
-				obj, _ := api.GetGLP(s, i, shouldMinify)
-				if obj == nil {
-					log.Println(" - NO GAME PLAN AT INDEX ", i, " SKIPPING!")
-					numFails++
-					continue
-				}
-
-				// we loaded a game plan, but the beaconing api
-				// seems to give back an "error" game plan, i.e.
-				// with an ID of 0
-				// it's easier to check that the id's dont compare
-				// rather than seeing if the content has an error message
-				if obj.ID != i {
-					log.Println(" - NO GAME PLAN AT INDEX ", i, " SKIPPING")
-					numFails++
-					continue
-				}
-
-				log.Println(" - LOADED GAME PLAN ", i)
-				plans = append(plans, obj)
-			}
-		} else {
-			result, err := api.GetGLPS(s, shouldMinify)
-			if err != nil {
-				log.Println("GetGLPSRequst", err.Error())
-				s.AbortWithError(http.StatusBadRequest, err)
-				return
-			}
-
-			// no sort query lets just return the
-			// string now.
-			if sortQuery == "" {
-				s.Header("Content-Type", "application/json")
-				s.String(http.StatusOK, result)
-				return
-			}
-
-			// convert the json string into an array of objects.
-			if err := jsoniter.Unmarshal([]byte(result), &plans); err != nil {
-				log.Println(err.Error())
-				s.AbortWithError(http.StatusBadRequest, err)
-				return
-			}
+		// No index query, set index and step to -1
+		if indexQuery == "" {
+			index, step = -1, -1
 		}
 
-		// in theory we should have a sort here.
+		plans, err := loadPlans(s, index, step, shouldMinify)
+		if err != nil {
+			log.Println("loadPlans failed", err.Error())
+			s.AbortWithError(http.StatusBadRequest, err)
+			return
+		}
+
 		if sortQuery != "" {
-			resultPlans, err := sortPlans(s, plans, sortQuery, sortOrder)
+			var err error
+			plans, err = sortPlans(s, plans, sortQuery, sortOrder)
 			if err != nil {
 				log.Println("Failed to sort GLPs by ", sortQuery, " in order ", sortOrder, "\n"+err.Error())
-				// the question is, do we throw an
-				// error or do we allow the unsorted
-				// glps to pass through anyway.
-			} else {
-				plans = resultPlans
+				s.AbortWithError(http.StatusBadRequest, err)
+				return
 			}
 		}
 
