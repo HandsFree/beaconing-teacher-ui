@@ -22,7 +22,7 @@ func GetActivities(teacherID uint64, count int) ([]activities.Activity, error) {
 		return []activities.Activity{}, errors.New("No database connection established")
 	}
 
-	query := "SELECT creation_date, activity_type, api_req FROM activity WHERE teacher_id = $2 LIMIT $1"
+	query := "SELECT * FROM (SELECT id, creation_date, activity_type, api_req FROM activity WHERE teacher_id = $2) AS activities ORDER BY activities.id DESC LIMIT $1"
 	rows, err := API.db.Query(query, count, teacherID)
 	if err != nil {
 		log.Println("GetActivities", err.Error())
@@ -36,11 +36,12 @@ func GetActivities(teacherID uint64, count int) ([]activities.Activity, error) {
 
 	defer rows.Close()
 	for rows.Next() {
+		var id int
 		var creationDate time.Time
 		var activityType int
 		var apiReq []byte
 
-		err = rows.Scan(&creationDate, &activityType, &apiReq)
+		err = rows.Scan(&id, &creationDate, &activityType, &apiReq)
 		if err != nil {
 			log.Println("-- Failed to request row in GetActivities query!", err.Error())
 			continue
@@ -64,7 +65,7 @@ func GetActivities(teacherID uint64, count int) ([]activities.Activity, error) {
 		case activities.AssignGLPActivity:
 			result = activities.NewAssignedGLPActivity(apiReq)
 		case activities.UnassignGLPActivity:
-			result = activities.NewUnassignedGLPActivity(apiReq)		
+			result = activities.NewUnassignedGLPActivity(apiReq)
 		default:
 			log.Println("-- Unhandled activity type", activities.ActivityType(activityType))
 		}
