@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -18,7 +19,7 @@ func main() {
 	api.SetupAPIHelper()
 
 	server := &http.Server{
-		Addr:    ":8081",
+		Addr:    ":" + fmt.Sprintf("%d", cfg.Beaconing.Server.Port),
 		Handler: serv.GetRouterEngine(),
 	}
 
@@ -37,7 +38,7 @@ func main() {
 		if err == http.ErrServerClosed {
 			log.Println("Server closed under request")
 		} else {
-			log.Fatal("Server closed unexpectedly")
+			log.Fatal("Server closed unexpectedly", err.Error())
 		}
 	}
 

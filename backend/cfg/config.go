@@ -29,6 +29,7 @@ type authInfo struct {
 
 type serverInfo struct {
 	Host string
+	Port uint16
 }
 
 // Beaconing is the instance of the main toml

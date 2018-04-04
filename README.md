@@ -18,6 +18,7 @@ secret = "UrqTSjfnaWsaJHCTfGeU6YyEVNa3c2QzE8GrTLcoK1kljsNB3HrG6jXAGI6q8wKR"
 
 [server]
 host = ""
+port = "8081"
 ```
 
 Place `config.toml` in `backend/cfg/`.
