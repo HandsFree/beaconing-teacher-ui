@@ -96,14 +96,14 @@ func sortByMostAssigned(s *gin.Context, plans []*types.GLP, order SortingOrder) 
 	return glps, nil
 }
 
-func sortByAvailability(s *gin.Context, plans []*types.GLP, order SortingOrder) ([]*types.GLP, error) {
-	boolToInt := func(b bool) int8 {
-		if b {
-			return 1
-		}
-		return 0
+func boolToInt(b bool) int8 {
+	if b {
+		return 1
 	}
+	return 0
+}
 
+func sortByAvailability(s *gin.Context, plans []*types.GLP, order SortingOrder) ([]*types.GLP, error) {
 	sort.Slice(plans, func(i, j int) bool {
 		// easiest way to sort booleans
 		iPublic, jPublic := boolToInt(plans[i].Public), boolToInt(plans[j].Public)
@@ -111,6 +111,18 @@ func sortByAvailability(s *gin.Context, plans []*types.GLP, order SortingOrder) 
 			return iPublic > jPublic
 		}
 		return iPublic < jPublic
+	})
+	return plans, nil
+}
+
+func sortByOwnedByMe(s *gin.Context, plans []*types.GLP, order SortingOrder) ([]*types.GLP, error) {
+	sort.Slice(plans, func(i, j int) bool {
+		// easiest way to sort booleans
+		iOwned, jOwned := boolToInt(plans[i].OwnedByMe), boolToInt(plans[j].OwnedByMe)
+		if order == Descending {
+			return iOwned > jOwned
+		}
+		return iOwned < jOwned
 	})
 	return plans, nil
 }
@@ -152,6 +164,8 @@ func sortPlans(s *gin.Context, plans []*types.GLP, sortType string, order Sortin
 		return sortByMostAssigned(s, plans[:], order)
 	case "public":
 		return sortByAvailability(s, plans[:], order)
+	case "owned":
+		return sortByOwnedByMe(s, plans[:], order)
 	default:
 		return nil, errors.New("No such sort type '" + sortType + "'")
 	}
