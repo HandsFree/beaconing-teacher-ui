@@ -9,7 +9,7 @@ CREATE ROLE beaconing_db_user WITH LOGIN PASSWORD '123ABCCBA';
 -- entry.
 CREATE TABLE active_plan (
 	id serial PRIMARY KEY,
-    creation_date date NOT NULL,
+    creation_date timestamp NOT NULL,
 
 	-- the person who assigned it
 	teacher_id integer NOT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE active_plan (
 CREATE TABLE activity (
     id serial PRIMARY KEY,
     teacher_id integer NOT NULL,
-    creation_date date NOT NULL,
+    creation_date timestamp NOT NULL,
     activity_type integer NOT NULL,
     api_req jsonb NOT NULL
 );
