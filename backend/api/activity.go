@@ -22,7 +22,8 @@ func GetActivities(teacherID uint64, count int) ([]activities.Activity, error) {
 		return []activities.Activity{}, errors.New("No database connection established")
 	}
 
-	query := "SELECT creation_date, activity_type, api_req FROM activity WHERE teacher_id = $2 ORDER BY creation_date ASC LIMIT $1"
+	// why does this not order properly?
+	query := "SELECT creation_date, activity_type, api_req FROM activity WHERE teacher_id = $2 ORDER BY creation_date DESC LIMIT $1"
 	rows, err := API.db.Query(query, count, teacherID)
 	if err != nil {
 		log.Println("GetActivities", err.Error())
@@ -101,12 +102,16 @@ func (c *CoreAPIManager) WriteActivity(teacherID uint64, kind activities.Activit
 		return errors.New("No database connection")
 	}
 
+	when := time.Now()
+
 	query := "INSERT INTO activity (teacher_id, creation_date, activity_type, api_req) VALUES($1, $2, $3, $4)"
-	_, err := c.db.Exec(query, teacherID, time.Now(), int(kind), jsonData)
+	_, err := c.db.Exec(query, teacherID, when, int(kind), jsonData)
 	if err != nil {
 		log.Println("-- ", err.Error())
 		return err
 	}
+
+	log.Println("- Wrote activity ", string(kind), " at ", when)
 
 	return nil
 }
