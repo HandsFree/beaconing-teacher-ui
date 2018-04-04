@@ -88,7 +88,12 @@ func sortByRecentlyUpdated(s *gin.Context, plans []*types.GLP, order SortingOrde
 }
 
 func sortByMostAssigned(s *gin.Context, plans []*types.GLP, order SortingOrder) ([]*types.GLP, error) {
-	return nil, nil
+	glps, err := api.GetMostAssigned(s)
+	if err != nil {
+		log.Println("failed to get most assigned glps")
+		return plans, err
+	}
+	return glps, nil
 }
 
 func sortByAvailability(s *gin.Context, plans []*types.GLP, order SortingOrder) ([]*types.GLP, error) {

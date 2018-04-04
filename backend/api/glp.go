@@ -74,6 +74,53 @@ func CreateGLP(s *gin.Context) (string, error) {
 	return string(resp), nil
 }
 
+// most assigned by the current user.
+func GetMostAssigned(s *gin.Context) ([]*types.GLP, error) {
+	if API.db == nil {
+		log.Println("-- No database connection has been established")
+		return nil, errors.New("No database connection")
+	}
+
+	teacherId, err := GetUserID(s)
+	if err != nil {
+		log.Println("No such current user", err.Error())
+		return []*types.GLP{}, err
+	}
+
+	// we only want to select the plans that are active
+	// that have been created by the teacher that is currently
+	// active
+	query := "SELECT plan, count(*) FROM active_plan WHERE teacher_id = $1 GROUP BY plan ORDER BY count(*) DESC"
+	rows, err := API.db.Query(query, fmt.Sprintf("%d", teacherId))
+	if err != nil {
+		log.Println("-- ", err.Error())
+		return nil, err
+	}
+
+	popular := []*types.GLP{}
+	defer rows.Close()
+	for rows.Next() {
+		var glpID uint64
+		var count uint64
+
+		err = rows.Scan(&glpID, &count)
+		if err != nil {
+			log.Println("-- Failed to request row in GetRecentlyAssigned query!", err.Error())
+			continue
+		}
+
+		glp, err := GetGLP(s, glpID, true)
+		if err != nil {
+			log.Println("GetRecentlyAssigned", err.Error())
+			continue
+		}
+
+		popular = append(popular, glp)
+	}
+
+	return popular, nil
+}
+
 func GetRecentlyAssignedGLPS(s *gin.Context) ([]*types.GLP, error) {
 	if API.db == nil {
 		log.Println("-- No database connection has been established")
