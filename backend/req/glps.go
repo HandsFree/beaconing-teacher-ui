@@ -92,7 +92,22 @@ func sortByMostAssigned(s *gin.Context, plans []*types.GLP, order SortingOrder) 
 }
 
 func sortByAvailability(s *gin.Context, plans []*types.GLP, order SortingOrder) ([]*types.GLP, error) {
-	return nil, nil
+	boolToInt := func(b bool) int8 {
+		if b {
+			return 1
+		}
+		return 0
+	}
+
+	sort.Slice(plans, func(i, j int) bool {
+		// easiest way to sort booleans
+		iPublic, jPublic := boolToInt(plans[i].Public), boolToInt(plans[j].Public)
+		if order == Descending {
+			return iPublic > jPublic
+		}
+		return iPublic < jPublic
+	})
+	return plans, nil
 }
 
 func sortByRecentlyAssigned(s *gin.Context, plans []*types.GLP, order SortingOrder) ([]*types.GLP, error) {
@@ -128,6 +143,10 @@ func sortPlans(s *gin.Context, plans []*types.GLP, sortType string, order Sortin
 		return sortByRecentlyUpdated(s, plans[:], order)
 	case "assigned":
 		return sortByRecentlyAssigned(s, plans[:], order)
+	case "popular":
+		return sortByMostAssigned(s, plans[:], order)
+	case "public":
+		return sortByAvailability(s, plans[:], order)
 	default:
 		return nil, errors.New("No such sort type '" + sortType + "'")
 	}
