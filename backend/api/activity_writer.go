@@ -54,7 +54,7 @@ func GetActivities(teacherID uint64, count int) ([]activities.Activity, error) {
 			result = activities.NewDeleteStudentGroupActivity(apiReq)
 
 		case activities.CreateStudentActivity:
-			result = activities.NewDeleteStudentActivity(apiReq)
+			result = activities.NewCreateStudentActivity(apiReq)
 		case activities.DeleteStudentActivity:
 			result = activities.NewDeleteStudentActivity(apiReq)
 
