@@ -50,6 +50,7 @@ class LoadStudents extends Component {
         for (const student of students) {
             const {
                 id,
+                username,
                 profile,
                 identiconSha512,
             } = student;
@@ -63,6 +64,7 @@ class LoadStudents extends Component {
 
             const studentBoxProm = studentBox.attach({
                 id,
+                username,
                 firstName,
                 lastName,
                 identiconSha512,

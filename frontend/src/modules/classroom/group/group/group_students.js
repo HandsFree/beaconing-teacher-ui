@@ -44,6 +44,7 @@ class GroupStudents extends Component {
                 const studentBoxProm = studentBox.attach({
                     studentID: studentObj.id,
                     groupID: id,
+                    username: studentObj.username,
                     firstName: studentObj.profile.firstName,
                     lastName: studentObj.profile.lastName,
                     identiconSha512: studentObj.identiconSha512,

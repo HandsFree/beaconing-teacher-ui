@@ -7,13 +7,20 @@ class StudentBox extends Component {
     async render() {
         const {
             id,
+            username,
             profile,
             checked,
         } = this.props;
 
         console.log(checked);
 
-        const name = `${profile.firstName} ${profile.lastName}`;
+        const name = do {
+            if (profile.firstName && profile.lastName) {
+                `${profile.firstName} ${profile.lastName}`;
+            } else {
+                username;
+            }
+        };
 
         return div(
             '.small-box',

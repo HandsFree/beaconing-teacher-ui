@@ -49,6 +49,7 @@ class StudentsList extends Component {
         for (const student of students) {
             const {
                 id,
+                username,
                 profile,
             } = student;
 
@@ -56,6 +57,7 @@ class StudentsList extends Component {
 
             const studentBoxProm = studentBox.attach({
                 id,
+                username,
                 profile,
                 checked: groupStudents.indexOf(id) !== -1,
             });

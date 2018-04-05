@@ -93,7 +93,13 @@ class StudentAside extends Component {
 
         if (student) {
             this.state.student = student;
-            this.state.studentName = `${student.profile.firstName} ${student.profile.lastName}`;
+            this.state.studentName = do {
+                if (student.profile.firstName && student.profile.lastName) {
+                    `${student.profile.firstName} ${student.profile.lastName}`;
+                } else {
+                    student.username;
+                }
+            };
         }
     }
 

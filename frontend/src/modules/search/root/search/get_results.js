@@ -22,9 +22,17 @@ class SearchResults extends Component {
 
             for (const student of MatchedStudents) {
                 const resultBox = new ResultBox();
+                const { profile } = student;
+                const studentName = do {
+                    if (profile.firstName && profile.lastName) {
+                        `${profile.firstName} ${profile.lastName}`;
+                    } else {
+                        student.username;
+                    }
+                };
 
                 const resultBoxEl = resultBox.attach({
-                    title: `${student.profile?.firstName} ${student.profile?.lastName}`,
+                    title: studentName,
                     link: `//${window.location.host}/classroom/student?id=${student.id}`,
                 });
 

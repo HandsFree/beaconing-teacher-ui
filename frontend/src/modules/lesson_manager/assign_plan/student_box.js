@@ -87,8 +87,15 @@ class StudentBox extends Component {
 
     async render() {
         const { student } = this.props;
+        const { profile } = student;
 
-        const name = `${student.profile.firstName} ${student.profile.lastName}`;
+        const name = do {
+            if (profile.firstName && profile.lastName) {
+                `${profile.firstName} ${profile.lastName}`;
+            } else {
+                student.username;
+            }
+        };
 
         return div(
             '.student-box',

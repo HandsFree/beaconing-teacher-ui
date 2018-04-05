@@ -10,10 +10,19 @@ class StudentBox extends Component {
     async render() {
         const {
             studentID,
+            username,
             firstName,
             lastName,
             identiconSha512,
         } = this.props;
+
+        const studentName = do {
+            if (firstName && lastName) {
+                `${firstName} ${lastName}`;
+            } else {
+                username;
+            }
+        };
 
         const randArray = () => {
             const arr = [];
@@ -47,7 +56,7 @@ class StudentBox extends Component {
                 '.info.flex-column',
                 div(
                     '.title',
-                    h4('.name', `${firstName} ${lastName}`),
+                    h4('.name', studentName),
                 ),
                 div(
                     a(
