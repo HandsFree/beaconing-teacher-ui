@@ -8,11 +8,16 @@ import Status from '../../../status';
 
 class StudentAside extends Component {
     editMode: boolean = false;
+
     updateHooks = {
         StudentNameUpdate: this.updateName,
         EditDoneClicked: this.toggleEditButton,
         AssignedGLPsClicked: this.resetEditButton,
         AnalyticsClicked: this.resetEditButton,
+    };
+
+    state = {
+        studentName: '',
     };
 
     async updateName() {
@@ -21,11 +26,17 @@ class StudentAside extends Component {
         if (student) {
             this.state.student = student;
 
-            this.state.studentName = `${student.profile.firstName} ${student.profile.lastName}`;
+            this.state.studentName = do {
+                if (student.profile.firstName && student.profile.lastName) {
+                    `${student.profile.firstName} ${student.profile.lastName}`;
+                } else {
+                    student.username;
+                }
+            };
 
             const studentNameEl = document.getElementById('student-name');
 
-            studentNameEl.textContent = student.studentName;
+            studentNameEl.textContent = this.state.studentName;
         }
     }
 
