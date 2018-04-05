@@ -14,6 +14,8 @@ type Profile struct {
 	LastName  string `json:"lastName"`
 	// DOB is YYYY-MM-DD
 	DOB     string  `json:"DOB"`
+	Gender  string  `json:"gender"`
+	School  string  `json:"school"`
 	Address Address `json:"address"`
 }
 
@@ -24,4 +26,12 @@ type Student struct {
 	Language        string  `json:"language"`
 	Profile         Profile `json:"profile"`
 	IdenticonSha512 string  `json:"identiconSha512"`
+}
+
+type StudentPost struct {
+	Id       uint64  `json:"id"`
+	Username string  `json:"username"`
+	Email    string  `json:"email"`
+	Language string  `json:"language"`
+	Profile  Profile `json:"profile"`
 }

@@ -10,20 +10,27 @@ class ProfileEditForm extends Component {
         teacherFirstName: null,
         teacherLastName: null,
         teacherEmail: null,
+        teacherGender: null,
+        teacherSchool: null,
+        teacherLang: null,
     };
 
     async init() {
         const currUser = await window.beaconingAPI.getCurrentUser();
 
         this.state.teacher = currUser;
+        this.state.teacherGender = currUser.teacherSettings?.gender ?? 'male';
     }
 
     async editTeacher(editButton: EventTarget) {
         const obj = {
             email: this.state.teacherEmail,
+            language: this.state.teacherLang ?? this.state.teacher.language,
             teacherSettings: {
                 firstName: this.state.teacherFirstName ?? this.state.teacher.teacherSettings.firstName,
                 lastName: this.state.teacherLastName ?? this.state.teacher.teacherSettings.lastName,
+                gender: this.state.teacherGender,
+                school: this.state.teacherSchool ?? this.state.teacher.teacherSettings.school,
             },
         };
 
@@ -125,6 +132,56 @@ class ProfileEditForm extends Component {
                             ),
                         ),
                         label(
+                            '.select',
+                            span('Teacher Gender'),
+                            select(
+                                '#teacher-gender',
+                                {
+                                    onchange: (event) => {
+                                        const { target } = event;
+
+                                        this.state.teacherGender = target.value;
+                                    },
+                                },
+                                option(
+                                    {
+                                        value: 'male',
+                                        selected: teacher.teacherSettings?.gender === 'male',
+                                    },
+                                    'Male',
+                                ),
+                                option(
+                                    {
+                                        value: 'female',
+                                        selected: teacher.teacherSettings?.gender === 'female',
+                                    },
+                                    'Female',
+                                ),
+                                option(
+                                    {
+                                        value: 'other',
+                                        selected: teacher.teacherSettings?.gender === 'other',
+                                    },
+                                    'Other',
+                                ),
+                            ),
+                        ),
+                        label(
+                            span('Teacher School'),
+                            input(
+                                '#teacher-school.text-field',
+                                {
+                                    type: 'text',
+                                    value: teacher.teacherSettings?.school,
+                                    oninput: (event) => {
+                                        const { target } = event;
+
+                                        this.state.teacherSchool = target.value;
+                                    },
+                                },
+                            ),
+                        ),
+                        label(
                             span('Teacher Email'),
                             input(
                                 '#teacher-email.text-field',
@@ -137,6 +194,27 @@ class ProfileEditForm extends Component {
                                         this.state.teacherEmail = target.value;
                                     },
                                 },
+                            ),
+                        ),
+                        label(
+                            '.select',
+                            span('Teacher Language'),
+                            select(
+                                '#teacher-language',
+                                {
+                                    onchange: (event) => {
+                                        const { target } = event;
+
+                                        this.state.teacherLang = target.value;
+                                    },
+                                },
+                                option(
+                                    {
+                                        value: 'en-US',
+                                        selected: teacher.language === 'english',
+                                    },
+                                    'English',
+                                ),
                             ),
                         ),
                         div(

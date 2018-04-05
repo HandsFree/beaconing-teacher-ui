@@ -7,6 +7,8 @@ package types
 type teacherSettings struct {
 	FirstName string `json:"firstName"`
 	LastName  string `json:"lastName"`
+	Gender    string `json:"gender"`
+	School    string `json:"school"`
 }
 
 type CurrentUser struct {

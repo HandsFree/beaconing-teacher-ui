@@ -82,31 +82,8 @@ func GetStudent(s *gin.Context, studentID int) (*types.Student, error) {
 	return student, nil
 }
 
-type studentAddress struct {
-	Line1    string `json:"line1"`
-	Line2    string `json:"line2"`
-	City     string `json:"city"`
-	Country  string `json:"country"`
-	County   string `json:"county"`
-	Postcode string `json:"postcode"`
-}
-
-type studentProfile struct {
-	FirstName string         `json:"firstName"`
-	LastName  string         `json:"lastName"`
-	DOB       string         `json:"DOB"`
-	Address   studentAddress `json:"address"`
-}
-
-type studentPost struct {
-	Id       uint           `json:"id"`
-	Username string         `json:"username"`
-	Email    string         `json:"email"`
-	Profile  studentProfile `json:"profile"`
-}
-
 func PostStudent(s *gin.Context) (string, error) {
-	var json studentPost
+	var json *types.StudentPost
 	if err := s.ShouldBindJSON(&json); err != nil {
 		log.Println("PostStudent", err.Error())
 		return "", err
@@ -140,7 +117,7 @@ func PostStudent(s *gin.Context) (string, error) {
 }
 
 func PutStudent(s *gin.Context, studentID int) (string, error) {
-	var json studentPost
+	var json *types.StudentPost
 	if err := s.ShouldBindJSON(&json); err != nil {
 		log.Println("PutStudent", err.Error())
 		return "", err

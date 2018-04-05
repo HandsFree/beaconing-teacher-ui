@@ -1,5 +1,5 @@
 // @flow
-import { section, div, form, p, button, input, label, span, a } from '../../../../core/html';
+import { section, div, form, p, input, label, span, select, option } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 import Status from '../../../status';
@@ -20,6 +20,9 @@ class StudentEdit extends Component {
             county: '',
             postcode: '',
         },
+        studentLang: 'en-US',
+        studentGender: '',
+        studentSchool: '',
     };
 
     async init() {
@@ -31,6 +34,7 @@ class StudentEdit extends Component {
 
         if (student) {
             this.state.student = student;
+            this.state.studentGender = student.profile?.gender ?? 'male';
 
             return;
         }
@@ -45,10 +49,13 @@ class StudentEdit extends Component {
             id: student.id,
             username: this.state.studentUsername === '' ? student.username : this.state.studentUsername,
             email: this.state.studentEmail === '' ? null : this.state.studentEmail,
+            language: this.state.studentLang,
             profile: {
                 firstName: this.state.studentFirstName === '' ? student.profile.firstName : this.state.studentFirstName,
                 lastName: this.state.studentLastName === '' ? student.profile.lastName : this.state.studentLastName,
                 DOB: this.state.studentDOB === '' ? student.profile.DOB : this.state.studentDOB,
+                gender: this.state.studentGender === '' ? student.profile.studentGender : this.state.studentGender,
+                school: this.state.studentSchool === '' ? student.profile.studentSchool : this.state.studentSchool,
                 address: {
                     line1: this.state.studentAddress.line1 === '' ? student.profile.address.line1 : this.state.studentAddress.line1,
                     line2: this.state.studentAddress.line2 === '' ? student.profile.address.line2 : this.state.studentAddress.line2,
@@ -162,6 +169,41 @@ class StudentEdit extends Component {
                             ),
                         ),
                         label(
+                            '.select',
+                            span('Student Gender'),
+                            select(
+                                '#student-gender',
+                                {
+                                    onchange: (event) => {
+                                        const { target } = event;
+
+                                        this.state.studentGender = target.value;
+                                    },
+                                },
+                                option(
+                                    {
+                                        value: 'male',
+                                        selected: student.profile.gender === 'male',
+                                    },
+                                    'Male',
+                                ),
+                                option(
+                                    {
+                                        value: 'female',
+                                        selected: student.profile.gender === 'female',
+                                    },
+                                    'Female',
+                                ),
+                                option(
+                                    {
+                                        value: 'other',
+                                        selected: student.profile.gender === 'other',
+                                    },
+                                    'Other',
+                                ),
+                            ),
+                        ),
+                        label(
                             span('Student Date of Birth'),
                             input(
                                 '#student-dob.text-field',
@@ -177,6 +219,27 @@ class StudentEdit extends Component {
                             ),
                         ),
                         label(
+                            '.select',
+                            span('Student Language'),
+                            select(
+                                '#student-lang',
+                                {
+                                    onchange: (event) => {
+                                        const { target } = event;
+
+                                        this.state.studentLang = target.value;
+                                    },
+                                },
+                                option(
+                                    {
+                                        value: 'en-US',
+                                        selected: student.language === 'en-US',
+                                    },
+                                    'English',
+                                ),
+                            ),
+                        ),
+                        label(
                             span('Student Email'),
                             input(
                                 '#student-email.text-field',
@@ -187,6 +250,21 @@ class StudentEdit extends Component {
                                         const { target } = event;
 
                                         this.state.studentEmail = target.value;
+                                    },
+                                },
+                            ),
+                        ),
+                        label(
+                            span('Student School'),
+                            input(
+                                '#student-school.text-field',
+                                {
+                                    type: 'text',
+                                    value: student.profile.school,
+                                    oninput: (event) => {
+                                        const { target } = event;
+
+                                        this.state.studentSchool = target.value;
                                     },
                                 },
                             ),

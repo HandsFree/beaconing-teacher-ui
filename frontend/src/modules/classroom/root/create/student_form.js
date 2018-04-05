@@ -1,5 +1,5 @@
 // @flow
-import { section, div, a, i, h1, form, input, p, label, span } from '../../../../core/html';
+import { section, div, a, i, h1, form, input, p, label, span, select, option } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 import Status from '../../../status';
@@ -19,16 +19,22 @@ class GroupForm extends Component {
             county: '',
             postcode: '',
         },
+        studentLang: 'en-US',
+        studentGender: '',
+        studentSchool: '',
     };
 
     async createStudent() {
         const obj = {
             username: this.state.studentUsername,
             email: this.state.studentEmail,
+            language: this.state.studentLang,
             profile: {
                 firstName: this.state.studentFirstName,
                 lastName: this.state.studentLastName,
                 DOB: this.state.studentDOB,
+                gender: this.state.studentGender,
+                school: this.state.studentSchool,
                 address: {
                     line1: this.state.studentAddress.line1,
                     line2: this.state.studentAddress.line2,
@@ -155,9 +161,26 @@ class GroupForm extends Component {
                             ),
                         ),
                         label(
+                            '.select',
+                            span('Student Gender'),
+                            select(
+                                '#student-gender',
+                                {
+                                    onchange: (event) => {
+                                        const { target } = event;
+
+                                        this.state.studentGender = target.value;
+                                    },
+                                },
+                                option({ value: 'male' }, 'Male'),
+                                option({ value: 'female' }, 'Female'),
+                                option({ value: 'other' }, 'Other'),
+                            ),
+                        ),
+                        label(
                             span('Student Date of Birth'),
                             input(
-                                '#student-dob.text-field',
+                                '#student-dossignedb.text-field',
                                 {
                                     type: 'date',
                                     placeholder: 'Enter DoB',
@@ -167,6 +190,21 @@ class GroupForm extends Component {
                                         this.state.studentDOB = target.value;
                                     },
                                 },
+                            ),
+                        ),
+                        label(
+                            '.select',
+                            span('Student Language'),
+                            select(
+                                '#student-lang',
+                                {
+                                    onchange: (event) => {
+                                        const { target } = event;
+
+                                        this.state.studentLang = target.value;
+                                    },
+                                },
+                                option({ value: 'en-US' }, 'English'),
                             ),
                         ),
                         label(
@@ -180,6 +218,21 @@ class GroupForm extends Component {
                                         const { target } = event;
 
                                         this.state.studentEmail = target.value;
+                                    },
+                                },
+                            ),
+                        ),
+                        label(
+                            span('Student School'),
+                            input(
+                                '#student-school.text-field',
+                                {
+                                    type: 'text',
+                                    placeholder: 'Enter School Name',
+                                    oninput: (event) => {
+                                        const { target } = event;
+
+                                        this.state.studentSchool = target.value;
                                     },
                                 },
                             ),
