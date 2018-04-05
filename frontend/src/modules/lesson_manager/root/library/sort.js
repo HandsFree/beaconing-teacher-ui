@@ -44,15 +44,30 @@ class Sort extends Component {
             case 'nameDesc':
                 this.initPage = 'nameDesc';
                 break;
+            case 'mostAssigned':
+                this.initPage = 'mostAssigned';
+                break;
+            case 'public':
+                this.initPage = 'public';
+                break;
+            case 'private':
+                this.initPage = 'private';
+                break;
+            case 'ownedAsc':
+                this.initPage = 'ownedAsc';
+                break;
+            case 'ownedDesc':
+                this.initPage = 'ownedDesc';
+                break;
             default:
-                this.initPage = 'addedAsc';
+                this.initPage = 'ownedDesc';
                 break;
             }
 
             return;
         }
 
-        this.initPage = 'addedAsc';
+        this.initPage = 'ownedDesc';
     }
 
     async render() {
@@ -61,6 +76,109 @@ class Sort extends Component {
             div(
                 '.header',
                 span('Sort By:'),
+            ),
+            div(
+                '.sort-group',
+                div(
+                    '.title',
+                    span('My Plans'),
+                ),
+                div(
+                    '.content',
+                    a(
+                        this.initPage === 'ownedAsc' ? '.sort-option.active' : '.sort-option',
+                        {
+                            onclick: (event) => {
+                                const { target } = event;
+
+                                this.toggleActive(target, 'ownedAsc');
+                                this.emit('SortOwnedAscClicked');
+                            },
+                        },
+                        'Ascending',
+                    ),
+                    a(
+                        this.initPage === 'ownedDesc' ? '.sort-option.active' : '.sort-option',
+                        {
+                            onclick: (event) => {
+                                const { target } = event;
+
+                                this.toggleActive(target, 'ownedDesc');
+                                this.emit('SortOwnedDescClicked');
+                            },
+                        },
+                        'Descending',
+                    ),
+                ),
+            ),
+            div(
+                '.sort-group',
+                div(
+                    '.title',
+                    span('Recently Modified'),
+                ),
+                div(
+                    '.content',
+                    a(
+                        this.initPage === 'recentModAsc' ? '.sort-option.active' : '.sort-option',
+                        {
+                            onclick: (event) => {
+                                const { target } = event;
+
+                                this.toggleActive(target, 'recentModAsc');
+                                this.emit('SortRecentModAscGLPsClicked');
+                            },
+                        },
+                        'Ascending',
+                    ),
+                    a(
+                        this.initPage === 'recentModDesc' ? '.sort-option.active' : '.sort-option',
+                        {
+                            onclick: (event) => {
+                                const { target } = event;
+
+                                this.toggleActive(target, 'recentModDesc');
+                                this.emit('SortRecentModDescGLPsClicked');
+                            },
+                        },
+                        'Descending',
+                    ),
+                ),
+            ),
+            div(
+                '.sort-group',
+                div(
+                    '.title',
+                    span('Status'),
+                ),
+                div(
+                    '.content',
+                    a(
+                        this.initPage === 'active' ? '.sort-option.active' : '.sort-option',
+                        {
+                            onclick: (event) => {
+                                const { target } = event;
+
+                                this.toggleActive(target, 'active');
+                                this.emit('SortActiveGLPsClicked');
+                            },
+                            title: 'Recently Assigned GLPs',
+                        },
+                        'Active',
+                    ),
+                    a(
+                        this.initPage === 'mostAssigned' ? '.sort-option.active' : '.sort-option',
+                        {
+                            onclick: (event) => {
+                                const { target } = event;
+
+                                this.toggleActive(target, 'active');
+                                this.emit('SortMostAssignedClicked');
+                            },
+                        },
+                        'Most Assigned',
+                    ),
+                ),
             ),
             div(
                 '.sort-group',
@@ -124,6 +242,40 @@ class Sort extends Component {
                 '.sort-group',
                 div(
                     '.title',
+                    span('Name'),
+                ),
+                div(
+                    '.content',
+                    a(
+                        this.initPage === 'nameAsc' ? '.sort-option.active' : '.sort-option',
+                        {
+                            onclick: (event) => {
+                                const { target } = event;
+
+                                this.toggleActive(target, 'nameAsc');
+                                this.emit('NameAscendingClicked');
+                            },
+                        },
+                        'Ascending',
+                    ),
+                    a(
+                        this.initPage === 'nameDesc' ? '.sort-option.active' : '.sort-option',
+                        {
+                            onclick: (event) => {
+                                const { target } = event;
+
+                                this.toggleActive(target, 'nameDesc');
+                                this.emit('NameDescendingClicked');
+                            },
+                        },
+                        'Descending',
+                    ),
+                ),
+            ),
+            div(
+                '.sort-group',
+                div(
+                    '.title',
                     span('Time Added'),
                 ),
                 div(
@@ -158,90 +310,33 @@ class Sort extends Component {
                 '.sort-group',
                 div(
                     '.title',
-                    span('Status'),
+                    span('Visibility'),
                 ),
                 div(
                     '.content',
                     a(
-                        this.initPage === 'active' ? '.sort-option.active' : '.sort-option',
+                        this.initPage === 'public' ? '.sort-option.active' : '.sort-option',
                         {
                             onclick: (event) => {
                                 const { target } = event;
 
-                                this.toggleActive(target, 'active');
-                                this.emit('SortActiveGLPsClicked');
-                            },
-                            title: 'Recently Assigned GLPs',
-                        },
-                        'Active',
-                    ),
-                ),
-            ),
-            div(
-                '.sort-group',
-                div(
-                    '.title',
-                    span('Recently Modified'),
-                ),
-                div(
-                    '.content',
-                    a(
-                        this.initPage === 'recentModAsc' ? '.sort-option.active' : '.sort-option',
-                        {
-                            onclick: (event) => {
-                                const { target } = event;
-
-                                this.toggleActive(target, 'recentModAsc');
-                                this.emit('SortRecentModAscGLPsClicked');
+                                this.toggleActive(target, 'public');
+                                this.emit('SortPublicClicked');
                             },
                         },
-                        'Ascending',
+                        'Public',
                     ),
                     a(
-                        this.initPage === 'recentModDesc' ? '.sort-option.active' : '.sort-option',
+                        this.initPage === 'private' ? '.sort-option.active' : '.sort-option',
                         {
                             onclick: (event) => {
                                 const { target } = event;
 
-                                this.toggleActive(target, 'recentModDesc');
-                                this.emit('SortRecentModDescGLPsClicked');
+                                this.toggleActive(target, 'private');
+                                this.emit('SortPrivateClicked');
                             },
                         },
-                        'Descending',
-                    ),
-                ),
-            ),
-            div(
-                '.sort-group',
-                div(
-                    '.title',
-                    span('Name'),
-                ),
-                div(
-                    '.content',
-                    a(
-                        this.initPage === 'nameAsc' ? '.sort-option.active' : '.sort-option',
-                        {
-                            onclick: (event) => {
-                                const { target } = event;
-
-                                this.toggleActive(target, 'nameAsc');
-                                this.emit('NameAscendingClicked');
-                            },
-                        },
-                        'Ascending',
-                    ),
-                    a(
-                        this.initPage === 'nameDesc' ? '.sort-option.active' : '.sort-option',
-                        {
-                            onclick: (event) => {
-                                const { target } = event;
-
-                                this.toggleActive(target, 'nameDesc');
-                                this.emit('NameDescendingClicked');
-                            },
-                        },
-                        'Descending',
+                        'Private',
                     ),
                 ),
             ),

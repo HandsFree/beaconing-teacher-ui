@@ -24,6 +24,8 @@ const (
 	Tech
 	Eng
 	Maths
+	Public
+	Private
 )
 
 func sortByName(s *gin.Context, plans []*types.GLP, order SortingOrder) ([]*types.GLP, error) {
@@ -104,15 +106,26 @@ func boolToInt(b bool) int8 {
 }
 
 func sortByAvailability(s *gin.Context, plans []*types.GLP, order SortingOrder) ([]*types.GLP, error) {
-	sort.Slice(plans, func(i, j int) bool {
-		// easiest way to sort booleans
-		iPublic, jPublic := boolToInt(plans[i].Public), boolToInt(plans[j].Public)
-		if order == Descending {
-			return iPublic > jPublic
+	results := []*types.GLP{}
+
+	switch order {
+	case Public:
+		for _, plan := range plans {
+			if plan.Public {
+				results = append(results, plan)
+			}
 		}
-		return iPublic < jPublic
-	})
-	return plans, nil
+	case Private:
+		for _, plan := range plans {
+			if !plan.Public {
+				results = append(results, plan)
+			}
+		}
+	default:
+		return results, nil
+	}
+
+	return results, nil
 }
 
 func sortByOwnedByMe(s *gin.Context, plans []*types.GLP, order SortingOrder) ([]*types.GLP, error) {
@@ -162,7 +175,7 @@ func sortPlans(s *gin.Context, plans []*types.GLP, sortType string, order Sortin
 		return sortByRecentlyAssigned(s, plans[:], order)
 	case "popular":
 		return sortByMostAssigned(s, plans[:], order)
-	case "public":
+	case "vis":
 		return sortByAvailability(s, plans[:], order)
 	case "owned":
 		return sortByOwnedByMe(s, plans[:], order)
@@ -290,6 +303,10 @@ func GetGLPSRequest() gin.HandlerFunc {
 			sortOrder = Eng
 		case "maths":
 			sortOrder = Maths
+		case "public":
+			sortOrder = Public
+		case "private":
+			sortOrder = Private
 		default:
 			sortOrder = Ascending
 		}

@@ -27,6 +27,11 @@ class GLPHandle extends Component {
         STEMMathsClicked: this.startSTEMMathsGLPs,
         SortRecentModAscGLPsClicked: this.startRecentlyModifiedAscGLPs,
         SortRecentModDescGLPsClicked: this.startRecentlyModifiedDescGLPs,
+        SortMostAssignedClicked: this.startMostAssignedGLPs,
+        SortPublicClicked: this.startPublicGLPs,
+        SortPrivateClicked: this.startPrivateGLPs,
+        SortOwnedAscClicked: this.startOwnedAscGLPs,
+        SortOwnedDescClicked: this.startOwnedDescGLPs,
     };
 
     startAddedDescendingGLPs() {
@@ -71,6 +76,26 @@ class GLPHandle extends Component {
 
     startRecentlyModifiedDescGLPs() {
         this.loadGLPs('updated', 'desc', true);
+    }
+
+    startMostAssignedGLPs() {
+        this.loadGLPs('popular', null, true);
+    }
+
+    startPublicGLPs() {
+        this.loadGLPs('vis', 'public', true);
+    }
+
+    startPrivateGLPs() {
+        this.loadGLPs('vis', 'private', true);
+    }
+
+    startOwnedAscGLPs() {
+        this.loadGLPs('owned', 'asc', true);
+    }
+
+    startOwnedDescGLPs() {
+        this.loadGLPs('owned', 'desc', true);
     }
 
     async startLoad() {
@@ -159,8 +184,23 @@ class GLPHandle extends Component {
                 case 'nameDesc':
                     this.loadGLPs('name', 'desc', false);
                     break;
+                case 'mostAssigned':
+                    this.loadGLPs('popular', null, false);
+                    break;
+                case 'public':
+                    this.loadGLPs('vis', 'public', false);
+                    break;
+                case 'private':
+                    this.loadGLPs('vis', 'private', false);
+                    break;
+                case 'ownedAsc':
+                    this.loadGLPs('owned', 'asc', false);
+                    break;
+                case 'ownedDesc':
+                    this.loadGLPs('owned', 'desc', false);
+                    break;
                 default:
-                    this.loadGLPs('created', 'desc', false);
+                    this.loadGLPs('owned', 'desc', false);
                     break;
                 }
 
@@ -168,7 +208,7 @@ class GLPHandle extends Component {
             }
         }
 
-        this.loadGLPs('created', 'desc', false);
+        this.loadGLPs('owned', 'desc', false);
     }
 
     async afterViewUpdate() {
