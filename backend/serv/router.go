@@ -9,6 +9,7 @@ import (
 	"git.juddus.com/HFC/beaconing/backend/authoring_tool"
 	"git.juddus.com/HFC/beaconing/backend/cfg"
 	"git.juddus.com/HFC/beaconing/backend/classroom"
+	"git.juddus.com/HFC/beaconing/backend/glpviewer"
 	"git.juddus.com/HFC/beaconing/backend/lesson_manager"
 	"git.juddus.com/HFC/beaconing/backend/page"
 	"git.juddus.com/HFC/beaconing/backend/profile"
@@ -116,6 +117,10 @@ func GetRouterEngine() *gin.Engine {
 	authPage := router.Group("auth")
 	{
 		authPage.GET("logout", req.GetLogOutRequest())
+	}
+
+	if gin.IsDebugging() {
+		router.GET("/glpviewer", glpviewer.Get(page.New("GLP Viewer", "dist/beaconing/pages/glpviewer/page.js")))
 	}
 
 	// ---

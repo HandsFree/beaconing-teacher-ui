@@ -143,4 +143,13 @@ const config = [
     },
 ];
 
+if (dev) {
+    config.push({
+        entry: {
+            'pages/glpviewer/page': './modules/glpviewer/root/',
+        },
+        ...mainSettings,
+    });
+}
+
 module.exports = config;
