@@ -184,10 +184,7 @@ func sortPlans(s *gin.Context, plans []*types.GLP, sortType string, order Sortin
 	}
 }
 
-// loads glps if
-// index and step are both -1 it will
-// load all of the GLPS.
-func loadPlans(s *gin.Context, index int, step int, shouldMinify bool) ([]*types.GLP, error) {
+func loadPlans(s *gin.Context, shouldMinify bool) ([]*types.GLP, error) {
 	resp, err := api.GetGLPS(s, shouldMinify)
 	if err != nil {
 		log.Println("loadPlans", err.Error())
@@ -200,10 +197,10 @@ func loadPlans(s *gin.Context, index int, step int, shouldMinify bool) ([]*types
 		return []*types.GLP{}, err
 	}
 
-	if index == -1 && step == -1 {
-		return plans, nil
-	}
+	return plans, nil
+}
 
+func slicePlans(plans []*types.GLP, index int, step int) ([]*types.GLP, error) {
 	plansLength := len(plans)
 
 	if index >= plansLength {
@@ -284,12 +281,7 @@ func GetGLPSRequest() gin.HandlerFunc {
 			sortOrder = Ascending
 		}
 
-		// No index query, set index and step to -1
-		if indexQuery == "" {
-			index, step = -1, -1
-		}
-
-		plans, err := loadPlans(s, index, step, shouldMinify)
+		plans, err := loadPlans(s, shouldMinify)
 		if err != nil {
 			log.Println("loadPlans failed", err.Error())
 			s.AbortWithError(http.StatusBadRequest, err)
@@ -297,10 +289,18 @@ func GetGLPSRequest() gin.HandlerFunc {
 		}
 
 		if sortQuery != "" {
-			var err error
 			plans, err = sortPlans(s, plans, sortQuery, sortOrder)
 			if err != nil {
 				log.Println("Failed to sort GLPs by ", sortQuery, " in order ", sortOrder, "\n"+err.Error())
+				s.AbortWithError(http.StatusBadRequest, err)
+				return
+			}
+		}
+
+		if indexQuery != "" && stepQuery != "" {
+			plans, err = slicePlans(plans, index, step)
+			if err != nil {
+				log.Println("Failed to slice GLPs \n", err.Error())
 				s.AbortWithError(http.StatusBadRequest, err)
 				return
 			}
