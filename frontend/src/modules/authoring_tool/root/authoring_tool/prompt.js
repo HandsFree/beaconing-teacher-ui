@@ -9,8 +9,7 @@ class Prompt extends Component {
             '#prompt',
             div(
                 '.title',
-                span('Editing GLP:'),
-                span('.name', decodeURIComponent(this.props.name)),
+                span('Editing GLP'),
             ),
             nav(
                 '.mini',

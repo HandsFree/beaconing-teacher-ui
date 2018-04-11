@@ -26,7 +26,7 @@ class GLPBox extends Component {
                 a(
                     '.item',
                     {
-                        href: `//${window.location.host}/authoring_tool?id=${encodeURIComponent(id)}&name=${encodeURIComponent(name)}&prev=lesson_manager`,
+                        href: `//${window.location.host}/authoring_tool?id=${encodeURIComponent(id)}&prev=lesson_manager`,
                     },
                     'Edit',
                 ),
