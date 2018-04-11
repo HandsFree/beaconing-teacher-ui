@@ -188,62 +188,35 @@ func sortPlans(s *gin.Context, plans []*types.GLP, sortType string, order Sortin
 // index and step are both -1 it will
 // load all of the GLPS.
 func loadPlans(s *gin.Context, index int, step int, shouldMinify bool) ([]*types.GLP, error) {
-	if index == -1 && step == -1 {
-		resp, err := api.GetGLPS(s, shouldMinify)
-		if err != nil {
-			log.Println("loadPlans", err.Error())
-			return []*types.GLP{}, err
-		}
+	resp, err := api.GetGLPS(s, shouldMinify)
+	if err != nil {
+		log.Println("loadPlans", err.Error())
+		return []*types.GLP{}, err
+	}
 
-		var plans []*types.GLP
-		if err := jsoniter.Unmarshal([]byte(resp), &plans); err != nil {
-			log.Println(err.Error())
-			return []*types.GLP{}, err
-		}
+	var plans []*types.GLP
+	if err := jsoniter.Unmarshal([]byte(resp), &plans); err != nil {
+		log.Println(err.Error())
+		return []*types.GLP{}, err
+	}
+
+	if index == -1 && step == -1 {
 		return plans, nil
 	}
 
-	// SO BASICALLY because an id might be
-	// gone, i.e. say GLPs 52342, 52343, 52344 have been deleted
-	// we will keep iterating and trying go get glp's until
-	// we have at least {step} plans fetched.
-	// we should have a timeout here however
-	// because this will likely hang in the event that
-	// say we're at GLP 2343 and there are no more plans that exist
-	// and we've loaded 14 plans it will keep trying to load more.
-	// however i have added an attempt thing here but i think
-	// a literal timeout i.e. after 1 second would be preferable.
-	log.Println("/intent/glps, LOADING ", index, " PLANS!")
+	plansLength := len(plans)
 
-	attempts := 128
-	numFails := 0
-
-	var plans []*types.GLP
-
-	for i := uint64(index); len(plans) < int(step) && numFails < attempts; i++ {
-		obj, _ := api.GetGLP(s, i, shouldMinify)
-		if obj == nil {
-			log.Println(" - NO GAME PLAN AT INDEX ", i, " SKIPPING!")
-			numFails++
-			continue
-		}
-
-		// we loaded a game plan, but the beaconing api
-		// seems to give back an "error" game plan, i.e.
-		// with an ID of 0
-		// it's easier to check that the id's dont compare
-		// rather than seeing if the content has an error message
-		if obj.ID != i {
-			log.Println(" - NO GAME PLAN AT INDEX ", i, " SKIPPING")
-			numFails++
-			continue
-		}
-
-		log.Println(" - LOADED GAME PLAN ", i)
-		plans = append(plans, obj)
+	if index >= plansLength {
+		return plans, nil
 	}
 
-	return plans, nil
+	stepIndex := index + step
+
+	if (index + stepIndex) > plansLength {
+		return plans[index:], nil
+	}
+
+	return plans[index:stepIndex], nil
 }
 
 // retrieves multiple glps
