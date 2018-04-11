@@ -18,7 +18,6 @@ type databaseInfo struct {
 	Username string
 	Password string
 	Name     string
-	Table    string
 	SSL      bool
 }
 

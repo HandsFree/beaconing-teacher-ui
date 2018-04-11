@@ -300,7 +300,6 @@ func newAPIHelper() *CoreAPIManager {
 	log.Println("--- DB USER:", cfg.Beaconing.DB.Username)
 	log.Println("--- DB PASS:", cfg.Beaconing.DB.Password)
 	log.Println("--- DB NAME:", cfg.Beaconing.DB.Name)
-	log.Println("--- DB TABLE:", cfg.Beaconing.DB.Table)
 	log.Println("--- DB SSL ENABLED:", cfg.Beaconing.DB.SSL)
 
 	// TODO if we are in release mode use SSL!

@@ -9,7 +9,6 @@ config.toml
 username = "beaconing_db_user"
 password = "123ABCCBA"
 name = "beaconing"
-table = "activities"
 ssl = false
 
 [auth]
