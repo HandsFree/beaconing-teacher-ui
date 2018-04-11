@@ -425,6 +425,18 @@ class APICore {
             return studentData ?? false;
         }
     }
+
+    async getStudentOverviewAnalytics(classID: number, scale: string) {
+        const token = await this.getAnalyticsToken();
+
+        // console.log(token);
+
+        if (token) {
+            const overviewData = await this.getWithAuth(`https://analytics.beaconing.eu/api/proxy/gleaner/data/performance/${classID}?scale=${scale}`, token);
+            // console.log(studentData);
+            return overviewData ?? false;
+        }
+    }
 }
 
 export default APICore;

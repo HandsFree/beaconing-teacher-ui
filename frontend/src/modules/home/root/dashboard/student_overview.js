@@ -1,12 +1,54 @@
 // @flow
-import { div, p, a, i, span, h3, img } from '../../../../core/html';
+import { div, p, a, i } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
+import LoadStudentOverview from './load_student_overview';
 
 class StudentOverview extends Component {
+    state = {
+        classID: null,
+        sortType: 'week',
+    };
+
+    updateHooks = {
+        StudentOverviewClassChange: this.updateClass,
+        StudentOverviewSortWeekClicked: this.sortWeek,
+        StudentOverviewSortMonthClicked: this.sortMonth,
+        StudentOverviewSortYearClicked: this.sortYear,
+    };
+
+    async updateClass() {
+        const soClassList = document.getElementById('so-class-list');
+
+        if (soClassList) {
+            this.state.classID = soClassList.value;
+        }
+
+        // console.log(this.state.classID);
+
+        const el = await this.loadOverview(this.state.classID, this.state.sortType);
+        this.updateView(el);
+    }
+
+    async sortWeek() {
+        this.state.sortType = 'week';
+        const el = await this.loadOverview(this.state.classID, this.state.sortType);
+        this.updateView(el);
+    }
+
+    async sortMonth() {
+        this.state.sortType = 'month';
+        const el = await this.loadOverview(this.state.classID, this.state.sortType);
+        this.updateView(el);
+    }
+
+    async sortYear() {
+        this.state.sortType = 'year';
+        const el = await this.loadOverview(this.state.classID, this.state.sortType);
+        this.updateView(el);
+    }
+
     async render() {
-        // TODO: way too beefy, need to split into other components
-        // (this component will become defunct depending on analytics changes)
         return div(
             '.draggable.tile.flex-column',
             div(
@@ -29,409 +71,49 @@ class StudentOverview extends Component {
                 '.content',
                 div(
                     '#student-overview',
-                    div(
-                        '.sorting',
-                        div(
-                            '.sort-menu',
-                            span('Class: '),
-                            a('.active', '11b'),
-                            a('13a'),
-                        ),
-                        div(
-                            '.sort-menu',
-                            span('Sort By: '),
-                            a('This Week'),
-                            a('.active', 'This Month'),
-                            a('This Year'),
-                        ),
-                    ),
-                    div(
-                        '.flex-container',
-                        div(
-                            '.student-section',
-                            div(
-                                '.title',
-                                h3('Best Performing'),
-                            ),
-                            div(
-                                '.students',
-                                div(
-                                    '.student',
-                                    div(
-                                        '.flex-container.tablet-hide',
-                                        div(
-                                            '.student-profile-image',
-                                            img(
-                                                '.profile-blue',
-                                                {
-                                                    src: `//${window.location.host}/dist/beaconing/images/profile.png`,
-                                                    alt: 'Example Student',
-                                                },
-                                            ),
-                                        ),
-                                    ),
-                                    div(
-                                        '.flex-container.flex-column.flex-spacearound.flex-grow',
-                                        div(
-                                            '.student-name',
-                                            p('Example Student'),
-                                        ),
-                                        div(
-                                            '.student-percentage',
-                                            p('Overall Percentage:'),
-                                            div(
-                                                '.progress-bar',
-                                                div(
-                                                    '.status-green',
-                                                    {
-                                                        style: {
-                                                            width: '96%',
-                                                        },
-                                                    },
-                                                    span('96%'),
-                                                ),
-                                            ),
-                                        ),
-                                    ),
-                                ),
-                                div(
-                                    '.student',
-                                    div(
-                                        '.flex-container.tablet-hide',
-                                        div(
-                                            '.student-profile-image',
-                                            img(
-                                                '.profile-blue',
-                                                {
-                                                    src: `//${window.location.host}/dist/beaconing/images/profile.png`,
-                                                    alt: 'Example Student',
-                                                },
-                                            ),
-                                        ),
-                                    ),
-                                    div(
-                                        '.flex-container.flex-column.flex-spacearound.flex-grow',
-                                        div(
-                                            '.student-name',
-                                            p('Example Student'),
-                                        ),
-                                        div(
-                                            '.student-percentage',
-                                            p('Overall Percentage:'),
-                                            div(
-                                                '.progress-bar',
-                                                div(
-                                                    '.status-green',
-                                                    {
-                                                        style: {
-                                                            width: '94%',
-                                                        },
-                                                    },
-                                                    span('94%'),
-                                                ),
-                                            ),
-                                        ),
-                                    ),
-                                ),
-                                div(
-                                    '.student',
-                                    div(
-                                        '.flex-container.tablet-hide',
-                                        div(
-                                            '.student-profile-image',
-                                            img(
-                                                '.profile-blue',
-                                                {
-                                                    src: `//${window.location.host}/dist/beaconing/images/profile.png`,
-                                                    alt: 'Example Student',
-                                                },
-                                            ),
-                                        ),
-                                    ),
-                                    div(
-                                        '.flex-container.flex-column.flex-spacearound.flex-grow',
-                                        div(
-                                            '.student-name',
-                                            p('Example Student'),
-                                        ),
-                                        div(
-                                            '.student-percentage',
-                                            p('Overall Percentage:'),
-                                            div(
-                                                '.progress-bar',
-                                                div(
-                                                    '.status-green',
-                                                    {
-                                                        style: {
-                                                            width: '91%',
-                                                        },
-                                                    },
-                                                    span('91%'),
-                                                ),
-                                            ),
-                                        ),
-                                    ),
-                                ),
-                            ),
-                        ),
-                        div(
-                            '.student-section',
-                            div(
-                                '.title',
-                                h3('Needs Attention'),
-                            ),
-                            div(
-                                '.students',
-                                div(
-                                    '.student',
-                                    div(
-                                        '.flex-container.tablet-hide',
-                                        div(
-                                            '.student-profile-image',
-                                            img(
-                                                '.profile-blue',
-                                                {
-                                                    src: `//${window.location.host}/dist/beaconing/images/profile.png`,
-                                                    alt: 'Example Student',
-                                                },
-                                            ),
-                                        ),
-                                    ),
-                                    div(
-                                        '.flex-container.flex-column.flex-spacearound.flex-grow',
-                                        div(
-                                            '.student-name',
-                                            p('Example Student'),
-                                        ),
-                                        div(
-                                            '.student-percentage',
-                                            p('Overall Percentage:'),
-                                            div(
-                                                '.progress-bar',
-                                                div(
-                                                    '.status-red',
-                                                    {
-                                                        style: {
-                                                            width: '30%',
-                                                        },
-                                                    },
-                                                    span('30%'),
-                                                ),
-                                            ),
-                                        ),
-                                    ),
-                                ),
-                                div(
-                                    '.student',
-                                    div(
-                                        '.flex-container.tablet-hide',
-                                        div(
-                                            '.student-profile-image',
-                                            img(
-                                                '.profile-blue',
-                                                {
-                                                    src: `//${window.location.host}/dist/beaconing/images/profile.png`,
-                                                    alt: 'Example Student',
-                                                },
-                                            ),
-                                        ),
-                                    ),
-                                    div(
-                                        '.flex-container.flex-column.flex-spacearound.flex-grow',
-                                        div(
-                                            '.student-name',
-                                            p('Example Student'),
-                                        ),
-                                        div(
-                                            '.student-percentage',
-                                            p('Overall Percentage:'),
-                                            div(
-                                                '.progress-bar',
-                                                div(
-                                                    '.status-red',
-                                                    {
-                                                        style: {
-                                                            width: '28%',
-                                                        },
-                                                    },
-                                                    span('28%'),
-                                                ),
-                                            ),
-                                        ),
-                                    ),
-                                ),
-                                div(
-                                    '.student',
-                                    div(
-                                        '.flex-container.tablet-hide',
-                                        div(
-                                            '.student-profile-image',
-                                            img(
-                                                '.profile-blue',
-                                                {
-                                                    src: `//${window.location.host}/dist/beaconing/images/profile.png`,
-                                                    alt: 'Example Student',
-                                                },
-                                            ),
-                                        ),
-                                    ),
-                                    div(
-                                        '.flex-container.flex-column.flex-spacearound.flex-grow',
-                                        div(
-                                            '.student-name',
-                                            p('Example Student'),
-                                        ),
-                                        div(
-                                            '.student-percentage',
-                                            p('Overall Percentage:'),
-                                            div(
-                                                '.progress-bar',
-                                                div(
-                                                    '.status-red',
-                                                    {
-                                                        style: {
-                                                            width: '25%',
-                                                        },
-                                                    },
-                                                    span('25%'),
-                                                ),
-                                            ),
-                                        ),
-                                    ),
-                                ),
-                            ),
-                        ),
-                        div(
-                            '.student-section',
-                            div(
-                                '.title',
-                                h3('Most Improvement'),
-                            ),
-                            div(
-                                '.students',
-                                div(
-                                    '.student',
-                                    div(
-                                        '.flex-container.tablet-hide',
-                                        div(
-                                            '.student-profile-image',
-                                            img(
-                                                '.profile-blue',
-                                                {
-                                                    src: `//${window.location.host}/dist/beaconing/images/profile.png`,
-                                                    alt: 'Example Student',
-                                                },
-                                            ),
-                                        ),
-                                    ),
-                                    div(
-                                        '.flex-container.flex-column.flex-spacearound.flex-grow',
-                                        div(
-                                            '.student-name',
-                                            p('Example Student'),
-                                        ),
-                                        div(
-                                            '.student-percentage',
-                                            p('Overall Percentage:'),
-                                            div(
-                                                '.progress-bar',
-                                                div(
-                                                    '.status-amber',
-                                                    {
-                                                        style: {
-                                                            width: '70%',
-                                                        },
-                                                    },
-                                                    span('70%'),
-                                                ),
-                                            ),
-                                        ),
-                                    ),
-                                ),
-                                div(
-                                    '.student',
-                                    div(
-                                        '.flex-container.tablet-hide',
-                                        div(
-                                            '.student-profile-image',
-                                            img(
-                                                '.profile-blue',
-                                                {
-                                                    src: `//${window.location.host}/dist/beaconing/images/profile.png`,
-                                                    alt: 'Example Student',
-                                                },
-                                            ),
-                                        ),
-                                    ),
-                                    div(
-                                        '.flex-container.flex-column.flex-spacearound.flex-grow',
-                                        div(
-                                            '.student-name',
-                                            p('Example Student'),
-                                        ),
-                                        div(
-                                            '.student-percentage',
-                                            p('Overall Percentage:'),
-                                            div(
-                                                '.progress-bar',
-                                                div(
-                                                    '.status-amber',
-                                                    {
-                                                        style: {
-                                                            width: '68%',
-                                                        },
-                                                    },
-                                                    span('68%'),
-                                                ),
-                                            ),
-                                        ),
-                                    ),
-                                ),
-                                div(
-                                    '.student',
-                                    div(
-                                        '.flex-container.tablet-hide',
-                                        div(
-                                            '.student-profile-image',
-                                            img(
-                                                '.profile-blue',
-                                                {
-                                                    src: `//${window.location.host}/dist/beaconing/images/profile.png`,
-                                                    alt: 'Example Student',
-                                                },
-                                            ),
-                                        ),
-                                    ),
-                                    div(
-                                        '.flex-container.flex-column.flex-spacearound.flex-grow',
-                                        div(
-                                            '.student-name',
-                                            p('Example Student'),
-                                        ),
-                                        div(
-                                            '.student-percentage',
-                                            p('Overall Percentage:'),
-                                            div(
-                                                '.progress-bar',
-                                                div(
-                                                    '.status-amber',
-                                                    {
-                                                        style: {
-                                                            width: '59%',
-                                                        },
-                                                    },
-                                                    span('59%'),
-                                                ),
-                                            ),
-                                        ),
-                                    ),
-                                ),
-                            ),
-                        ),
-                    ),
+                    p('Loading...'),
                 ),
             ),
         );
+    }
+
+    async loadOverview(classID: ?number, sort: string) {
+        const loadStudentOverview = new LoadStudentOverview();
+
+        const loadStudentOverviewEl = await loadStudentOverview.attach({
+            id: classID,
+            sort,
+        });
+
+        const el = div(
+            '.draggable.tile.flex-column',
+            div(
+                '.title',
+                p('Student Overview'),
+                a(
+                    {
+                        href: `//${window.location.host}/classroom/`,
+                    },
+                    i(
+                        '.icon-link-ext-alt',
+                        {
+                            title: 'View Students',
+                            'aria-hidden': true,
+                        },
+                    ),
+                ),
+            ),
+            div(
+                '.content',
+                loadStudentOverviewEl,
+            ),
+        );
+
+        return el;
+    }
+
+    async afterMount() {
+        this.sortWeek();
     }
 }
 
