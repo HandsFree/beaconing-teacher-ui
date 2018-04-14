@@ -74,8 +74,8 @@ func insertActivePlan(s *gin.Context, planId uint64) error {
 
 // AssignStudentToGLP assigns the given student (by id) to the given GLP (by id),
 // returns a string of the returned json from the core API as well as an error (if any).
-func AssignStudentToGLP(s *gin.Context, studentID uint64, glpID uint64) (string, error) {
-	assignJSON, err := jsoniter.Marshal(&types.AssignPOST{studentID, glpID})
+func AssignStudentToGLP(s *gin.Context, studentID uint64, glpID uint64, from, to time.Time) (string, error) {
+	assignJSON, err := jsoniter.Marshal(&types.AssignPOST{studentID, glpID, from, to})
 	if err != nil {
 		return "", err
 	}
@@ -104,8 +104,8 @@ func AssignStudentToGLP(s *gin.Context, studentID uint64, glpID uint64) (string,
 
 // AssignGroupToGLP assigns the given group (by id) to the given GLP (by id),
 // returns a string of the returned json from the core API as well as an error (if any).
-func AssignGroupToGLP(s *gin.Context, groupID uint64, glpID uint64) (string, error) {
-	assignJSON, err := jsoniter.Marshal(&types.AssignGroupPOST{groupID, glpID})
+func AssignGroupToGLP(s *gin.Context, groupID uint64, glpID uint64, from, to time.Time) (string, error) {
+	assignJSON, err := jsoniter.Marshal(&types.AssignGroupPOST{groupID, glpID, from, to})
 	if err != nil {
 		return "", err
 	}

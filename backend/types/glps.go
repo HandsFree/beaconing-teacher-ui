@@ -50,11 +50,15 @@ type GamifiedLessonPlans struct {
 }
 
 type AssignPOST struct {
-	StudentID uint64 `json:"studentId"`
-	GlpID     uint64 `json:"gamifiedLessonPathId"`
+	StudentID      uint64    `json:"studentId"`
+	GlpID          uint64    `json:"gamifiedLessonPathId"`
+	AvailableFrom  time.Time `json:"availableFrom"`
+	AvailableUntil time.Time `json:"availableUntil"`
 }
 
 type AssignGroupPOST struct {
-	GroupID uint64 `json:"studentGroupId"`
-	GlpID   uint64 `json:"gamifiedLessonPathId"`
+	GroupID        uint64    `json:"studentGroupId"`
+	GlpID          uint64    `json:"gamifiedLessonPathId"`
+	AvailableFrom  time.Time `json:"availableFrom"`
+	AvailableUntil time.Time `json:"availableUntil"`
 }
