@@ -2,9 +2,9 @@ package req
 
 import (
 	"errors"
+	"fmt"
 	"log"
 	"net/http"
-	"fmt"
 
 	"github.com/felixangell/fuzzysearch/fuzzy"
 
@@ -31,18 +31,14 @@ func processSearch(s *gin.Context, json SearchRequestQuery) (*SearchQueryRespons
 		// handle error!
 	}
 
-	glpData, glpsCached := api.Fetch("glps")
-	if !glpsCached {
-		var err error
-		glpData, err = api.GetGLPS(s, true)
-		if err != nil {
-			log.Println("processSearch", err.Error())
-			return nil, err
-		}
+	glpData, err := api.GetGLPS(s, true)
+	if err != nil {
+		log.Println("processSearch", err.Error())
+		return nil, err
 	}
 
-	if glpData == "" || studentsData == "" {
-		return nil, errors.New("No student/GLP data")
+	if studentsData == "" {
+		return nil, errors.New("No student data")
 	}
 
 	// conv json -> objects
