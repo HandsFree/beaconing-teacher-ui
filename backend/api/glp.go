@@ -10,6 +10,7 @@ import (
 	"strconv"
 	"time"
 
+	"git.juddus.com/HFC/beaconing/backend/activities"
 	"git.juddus.com/HFC/beaconing/backend/types"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
@@ -68,9 +69,7 @@ func CreateGLP(s *gin.Context) (string, error) {
 		return string(resp), err
 	}
 
-	// TODO write activity for glp request.
-	_ = id
-
+	API.WriteActivity(id, activities.CreateGLPActivity, resp)
 	return string(resp), nil
 }
 
@@ -239,5 +238,13 @@ func DeleteGLP(s *gin.Context, id uint64) (string, error) {
 		fmt.Println(err)
 		return "", err
 	}
+
+	teacherId, err := GetUserID(s)
+	if err != nil {
+		log.Println("No such current user", err.Error())
+		return string(resp), err
+	}
+
+	API.WriteActivity(teacherId, activities.DeleteGLPActivity, resp)
 	return string(resp), nil
 }
