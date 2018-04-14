@@ -98,7 +98,7 @@ func AssignStudentToGLP(s *gin.Context, studentID uint64, glpID uint64) (string,
 		return string(resp), nil
 	}
 
-	API.WriteActivity(id, activities.AssignGLPActivity, resp)
+	API.WriteActivity(id, activities.StudentAssignGLPActivity, resp)
 	return string(resp), nil
 }
 
@@ -128,9 +128,7 @@ func AssignGroupToGLP(s *gin.Context, groupID uint64, glpID uint64) (string, err
 		return string(resp), nil
 	}
 
-	// FIXME
-	// this should be a different activity.
-	API.WriteActivity(id, activities.AssignGLPActivity, resp)
+	API.WriteActivity(id, activities.GroupAssignGLPActivity, resp)
 	return string(resp), nil
 }
 
@@ -216,7 +214,7 @@ func DeleteAssignedGLP(s *gin.Context, studentID uint64, linkID uint64) string {
 		return string(resp)
 	}
 
-	API.WriteActivity(teacherId, activities.UnassignGLPActivity, resp)
+	API.WriteActivity(teacherId, activities.StudentUnassignGLPActivity, resp)
 	return string(resp)
 }
 
@@ -249,7 +247,6 @@ func DeleteGroupAssignedGLP(s *gin.Context, groupID uint64, glpID uint64) string
 		return string(resp)
 	}
 
-	// FIXME group un-assign should be a different activity.
-	API.WriteActivity(teacherId, activities.UnassignGLPActivity, resp)
+	API.WriteActivity(teacherId, activities.GroupUnassignGLPActivity, resp)
 	return string(resp)
 }

@@ -13,13 +13,17 @@ const (
 	CreateStudentGroupActivity ActivityType = iota
 	DeleteStudentGroupActivity
 
+	GroupAssignGLPActivity
+	GroupUnassignGLPActivity
+
 	CreateStudentActivity
 	DeleteStudentActivity
 
 	DeleteGLPActivity
 	CreateGLPActivity
-	AssignGLPActivity
-	UnassignGLPActivity
+
+	StudentAssignGLPActivity
+	StudentUnassignGLPActivity
 	// TODO: EditGLPActivity
 
 	// TODO: changes a setting

@@ -47,11 +47,17 @@ func GetActivities(teacherID uint64, count int) ([]activities.Activity, error) {
 			continue
 		}
 
+		// TODO felix clean this system up a whole lot more.
+
 		switch activities.ActivityType(activityType) {
 		case activities.CreateStudentGroupActivity:
 			result = activities.NewCreateStudentGroupActivity(apiReq)
 		case activities.DeleteStudentGroupActivity:
 			result = activities.NewDeleteStudentGroupActivity(apiReq)
+		case activities.GroupAssignGLPActivity:
+			result = activities.NewGroupAssignGLPActivity(apiReq)
+		case activities.GroupUnassignGLPActivity:
+			result = activities.NewGroupUnassignGLPActivity(apiReq)
 
 		case activities.CreateStudentActivity:
 			result = activities.NewCreateStudentActivity(apiReq)
@@ -62,12 +68,12 @@ func GetActivities(teacherID uint64, count int) ([]activities.Activity, error) {
 			result = activities.NewDeleteGLPActivity(apiReq)
 		case activities.CreateGLPActivity:
 			result = activities.NewCreateGLPActivity(apiReq)
-		case activities.AssignGLPActivity:
+		case activities.StudentAssignGLPActivity:
 			result = activities.NewAssignedGLPActivity(apiReq)
-		case activities.UnassignGLPActivity:
+		case activities.StudentUnassignGLPActivity:
 			result = activities.NewUnassignedGLPActivity(apiReq)
 		default:
-			log.Println("-- Unhandled activity type", activities.ActivityType(activityType))
+			log.Println("-- Unhandled activity type, tell the dashboard devs to get it together!", activities.ActivityType(activityType))
 		}
 
 		// shouldn't happen
