@@ -29,9 +29,20 @@ func TestNoAuth(t *testing.T) {
 	assert.Equal(t, http.StatusTemporaryRedirect, w.Code)
 }
 
+func TestAPI(t *testing.T) {
+	server := &http.Server{
+		Addr:    ":8083",
+		Handler: serv.GetRouterEngine(),
+	}
+	go server.ListenAndServe()
+
+	ctx, _ := gin.CreateTestContext(httptest.NewRecorder())
+
+	api.GetStudent(ctx, 1)
+}
+
 func makeServer() *gin.Engine {
 	cfg.LoadConfig()
 	api.SetupAPIHelper()
-
 	return serv.GetRouterEngine()
 }
