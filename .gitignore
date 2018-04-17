@@ -2,6 +2,10 @@
 
 backend/beaconing
 
+images/*.png
+images/*.jpg
+images/*.jpeg
+
 ### macOS ###
 *.DS_Store
 .AppleDouble

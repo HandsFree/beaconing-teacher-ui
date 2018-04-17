@@ -38,7 +38,8 @@ func TestAPI(t *testing.T) {
 
 	ctx, _ := gin.CreateTestContext(httptest.NewRecorder())
 
-	api.GetStudent(ctx, 1)
+	// todo set some kind of fake context up so
+	// we can invoke the api and run some tests.
 }
 
 func makeServer() *gin.Engine {
