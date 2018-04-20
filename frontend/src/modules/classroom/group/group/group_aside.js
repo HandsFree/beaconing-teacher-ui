@@ -146,18 +146,18 @@ class GroupAside extends Component {
                     },
                     span('Assigned GLPs'),
                 ),
-                a(
-                    '.item',
-                    {
-                        onclick: (event) => {
-                            const { target } = event;
+                // a(
+                //     '.item',
+                //     {
+                //         onclick: (event) => {
+                //             const { target } = event;
 
-                            this.toggleActive(target);
-                            this.emit('AnalyticsClicked');
-                        },
-                    },
-                    span('Analytics'),
-                ),
+                //             this.toggleActive(target);
+                //             this.emit('AnalyticsClicked');
+                //         },
+                //     },
+                //     span('Analytics'),
+                // ),
             ),
         );
     }
