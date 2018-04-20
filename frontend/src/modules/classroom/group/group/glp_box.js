@@ -9,7 +9,21 @@ class GLPBox extends Component {
         const {
             name,
             glpID,
+            dashboardLink,
         } = this.props;
+
+        const dashboardEl = do {
+            if (dashboardLink) {
+                a(
+                    '.item',
+                    {
+                        href: dashboardLink,
+                        target: '_blank',
+                    },
+                    'Analytics',
+                );
+            }
+        };
 
         return div(
             '.glp-assigned-box.flex-4.flex-column',
@@ -38,6 +52,7 @@ class GLPBox extends Component {
                     },
                     'Unassign',
                 ),
+                dashboardEl,
             ),
         );
     }

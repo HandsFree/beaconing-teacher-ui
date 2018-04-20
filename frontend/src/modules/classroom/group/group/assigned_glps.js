@@ -28,10 +28,12 @@ class AssignedGLPs extends Component {
 
             for (const glp of assignedGLPs) {
                 const glpObj = await window.beaconingAPI.getGLP(glp.gamifiedLessonPathId, true);
+                const dashboardLink = glp?.analyticsGlp?.analytics?.json?.analytics?.dashboard;
 
                 glps.push({
                     glp: glpObj,
                     assignedGLPID: glp.id,
+                    dashboardLink,
                 });
             }
 
@@ -45,6 +47,7 @@ class AssignedGLPs extends Component {
                     name: glpObj.glp.name,
                     groupID: id,
                     assignedGLPID: glpObj.assignedGLPID,
+                    dashboardLink: glpObj.dashboardLink,
                 });
 
                 promArr.push(glpBoxProm);
