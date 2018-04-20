@@ -1,6 +1,6 @@
 // @flow
 
-import { div, span, img, p, h3 } from '../../../../core/html';
+import { div, span, img, p, h3, a } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 
@@ -18,13 +18,14 @@ class Panel extends Component {
 
         for (const dataObj of data) {
             const {
-                student,
+                id,
+                username,
                 score,
             } = dataObj;
 
             const scoreNum = Math.floor(score * 100);
 
-            // console.log(student.username, scoreNum);
+            // console.log(dataObj);
 
             const colour = do {
                 if (scoreNum < 50) {
@@ -38,6 +39,28 @@ class Panel extends Component {
 
             const progress = `${scoreNum}%`;
 
+            const progressEl = do {
+                if (score <= 0) {
+                    div(
+                        '.progress-bar',
+                        span('No Data'),
+                    );
+                } else {
+                    div(
+                        '.progress-bar',
+                        div(
+                            colour,
+                            {
+                                style: {
+                                    width: progress,
+                                },
+                            },
+                            span(progress),
+                        ),
+                    );
+                }
+            };
+
             studentsEl.push(div(
                 '.student',
                 div(
@@ -48,7 +71,7 @@ class Panel extends Component {
                             '.profile-blue',
                             {
                                 src: `//${window.location.host}/dist/beaconing/images/profile.png`,
-                                alt: student?.username,
+                                alt: username,
                             },
                         ),
                     ),
@@ -57,23 +80,17 @@ class Panel extends Component {
                     '.flex-container.flex-column.flex-spacearound.flex-grow',
                     div(
                         '.student-name',
-                        p(student?.username),
+                        a(
+                            {
+                                href: `//${window.location.host}/classroom/student?id=${id}`,
+                            },
+                            username,
+                        ),
                     ),
                     div(
                         '.student-percentage',
                         p(`${msg}:`),
-                        div(
-                            '.progress-bar',
-                            div(
-                                colour,
-                                {
-                                    style: {
-                                        width: progress,
-                                    },
-                                },
-                                span(progress),
-                            ),
-                        ),
+                        progressEl,
                     ),
                 ),
             ));

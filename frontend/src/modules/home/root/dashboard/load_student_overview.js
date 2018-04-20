@@ -44,9 +44,15 @@ class LoadStudentOverview extends Component {
             students,
             improvement,
         } = this.state.overview;
+        const sort = new Sort();
+
+        const sortEl = await sort.attach({
+            classes: this.state.classes,
+            id: this.state.classID,
+            sort: this.state.sort,
+        });
 
         if (students.length >= 6 && improvement.length >= 3) {
-            const sort = new Sort();
             const bestPerforming = new Panel();
             const needsAttention = new Panel();
             const mostImprovement = new Panel();
@@ -55,11 +61,6 @@ class LoadStudentOverview extends Component {
             const naData = students.slice(-3).reverse();
             const miData = improvement.slice(0, 3);
 
-            const sortEl = await sort.attach({
-                classes: this.state.classes,
-                id: this.state.classID,
-                sort: this.state.sort,
-            });
             const bestPerformingEl = await bestPerforming.attach({
                 title: 'Best Performing',
                 msg: 'Overall Progress',
@@ -90,7 +91,11 @@ class LoadStudentOverview extends Component {
 
         return div(
             '#student-overview',
-            p('Not enough student data!'),
+            sortEl,
+            div(
+                '.flex-container',
+                p('This class has too few students! (needs 6 or more)'),
+            ),
         );
     }
 }
