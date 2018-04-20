@@ -39,18 +39,20 @@ class GroupStudents extends Component {
             const promArr = [];
 
             for (const studentObj of students) {
-                const studentBox = new StudentBox();
+                if (studentObj.username) {
+                    const studentBox = new StudentBox();
 
-                const studentBoxProm = studentBox.attach({
-                    studentID: studentObj.id,
-                    groupID: id,
-                    username: studentObj.username,
-                    firstName: studentObj.profile.firstName,
-                    lastName: studentObj.profile.lastName,
-                    identiconSha512: studentObj.identiconSha512,
-                });
+                    const studentBoxProm = studentBox.attach({
+                        studentID: studentObj.id,
+                        groupID: id,
+                        username: studentObj.username,
+                        firstName: studentObj.profile.firstName,
+                        lastName: studentObj.profile.lastName,
+                        identiconSha512: studentObj.identiconSha512,
+                    });
 
-                promArr.push(studentBoxProm);
+                    promArr.push(studentBoxProm);
+                }
             }
 
             Promise.all(promArr)
