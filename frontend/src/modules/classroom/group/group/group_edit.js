@@ -9,7 +9,7 @@ class StudentEdit extends Component {
     state = {
         group: {},
         groupName: '',
-        groupCategory: 'normal',
+        groupCategory: '',
     };
 
     studentList: Array<Object> = [];
