@@ -30,13 +30,10 @@ func TestNoAuth(t *testing.T) {
 }
 
 func TestAPI(t *testing.T) {
-	server := &http.Server{
-		Addr:    ":8083",
-		Handler: serv.GetRouterEngine(),
-	}
-	go server.ListenAndServe()
+	go http.ListenAndServe(":8083", serv.GetRouterEngine())
 
 	ctx, _ := gin.CreateTestContext(httptest.NewRecorder())
+	api.GetCurrentUser(ctx)
 
 	// todo set some kind of fake context up so
 	// we can invoke the api and run some tests.

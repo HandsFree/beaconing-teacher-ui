@@ -15,9 +15,12 @@ import (
 )
 
 func handleServe(c *gin.Context) {
-	// TODO
+
 }
 
+// TODO store this in the database
+// just an id, and the path? store the old filename too?
+// also allow for jpeg and jpg.
 func handleUpload(c *gin.Context) {
 	img, err := imageupload.Process(c.Request, "file")
 	if err != nil {
@@ -79,27 +82,19 @@ func handleUpload(c *gin.Context) {
 	})
 }
 
-func StartImageUploadServer(port uint16) *gin.Engine {
+func ImageUploadServerHandle() *gin.Engine {
 	r := gin.Default()
 	gin.SetMode(gin.DebugMode)
 
 	if gin.IsDebugging() {
 		// uploading route for testing
 		r.GET("/", func(c *gin.Context) {
-			log.Println("hello")
 			c.File("./img/index.html")
 		})
 	}
 
-	r.GET("/img/", handleServe)
+	r.Static("/img", "../image/")
+
 	r.POST("/upload", handleUpload)
-
-	log.Println("Running image uploader on port: " + fmt.Sprintf("%d", port))
-	r.Run(":" + fmt.Sprintf("%d", port))
-
 	return r
-}
-
-func main() {
-	StartImageUploadServer(5000)
 }

@@ -20,13 +20,15 @@ func main() {
 	api.SetupAPIHelper()
 
 	server := &http.Server{
-		Addr:    ":" + fmt.Sprintf("%d", cfg.Beaconing.Server.Port),
+		Addr:    fmt.Sprintf(":%d", cfg.Beaconing.Server.Port),
 		Handler: serv.GetRouterEngine(),
 	}
 
+	fmt.Println("Starting server on addr ", server.Addr)
+
 	imageUploadServer := &http.Server{
 		Addr:    ":5000",
-		Handler: img.StartImageUploadServer(5000),
+		Handler: img.ImageUploadServerHandle(),
 	}
 
 	quit := make(chan os.Signal)
@@ -45,8 +47,13 @@ func main() {
 		}
 	}()
 
+	// todo we can sep. this from the main
+	// server if we need to?
 	go func() {
-		if err := imageUploadServer.ListenAndServe(); err != nil {
+		log.Println("Running image upload server at ", imageUploadServer.Addr)
+
+		err := imageUploadServer.ListenAndServe()
+		if err != nil {
 			if err == http.ErrServerClosed {
 				log.Println("Server closed under request")
 			} else {
