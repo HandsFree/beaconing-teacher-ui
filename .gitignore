@@ -2,9 +2,9 @@
 
 backend/beaconing
 
-images/*.png
-images/*.jpg
-images/*.jpeg
+image/*.png
+image/*.jpg
+image/*.jpeg
 
 ### macOS ###
 *.DS_Store
