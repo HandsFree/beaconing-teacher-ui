@@ -31,22 +31,22 @@
 			}
 
 			img {
-				width: 10em;
-				height: 10em;
+				width: 6em;
+				height: 6em;
 
 				@media screen and (min-width: 64em) and (max-width: 104.9375em) {
-					width: 8em;
-					height: 8em;
+					width: 5em;
+					height: 5em;
 				}
 
 				@media screen and (min-width: 40em) and (max-width: 63.9375em) {
-					width: 6em;
-					height: 6em;
+					width: 4em;
+					height: 4em;
 				}
 
 				@media screen and (max-width: 39.9375em) {
-					width: 5em;
-					height: 5em;
+					width: 3em;
+					height: 3em;
 				}
 			}
 		}

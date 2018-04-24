@@ -440,4 +440,3 @@ class APICore {
 }
 
 export default APICore;
-
