@@ -141,6 +141,12 @@ let config = [
         },
         ...mainSettings,
     },
+    {
+        entry: {
+            'pages/calendar/page': './modules/calendar/root/',
+        },
+        ...mainSettings,
+    },
 ];
 
 if (dev) {
