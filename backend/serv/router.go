@@ -7,6 +7,7 @@ import (
 
 	"git.juddus.com/HFC/beaconing/backend/api"
 	"git.juddus.com/HFC/beaconing/backend/authoring_tool"
+	"git.juddus.com/HFC/beaconing/backend/calendar"
 	"git.juddus.com/HFC/beaconing/backend/cfg"
 	"git.juddus.com/HFC/beaconing/backend/classroom"
 	"git.juddus.com/HFC/beaconing/backend/glpviewer"
@@ -109,6 +110,8 @@ func GetRouterEngine() *gin.Engine {
 	{
 		lessonManager.GET("/", lesson_manager.Get(page.New("Lesson Manager", "dist/beaconing/pages/lesson_manager/page.js")))
 	}
+
+	router.GET("/calendar", calendar.Get(page.New("Calendar", "dist/beaconing/pages/calendar/page.js")))
 
 	router.GET("/search", search.Get(page.New("Search", "dist/beaconing/pages/search/page.js")))
 
