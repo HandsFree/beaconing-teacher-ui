@@ -1,7 +1,7 @@
 // @flow
-import Swappable from '@shopify/draggable/lib/swappable';
+// import Swappable from '@shopify/draggable/lib/swappable';
 
-import { section, p, div } from '../../../../core/html';
+import { section, div } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 import RecentActivities from './recent_activities';
@@ -10,9 +10,9 @@ import StudentOverview from './student_overview';
 import QuerySearch from '../../../search/query';
 
 class Widgets extends Component {
-    updateHooks = {
-        EditLayoutClicked: this.editMode,
-    };
+    // updateHooks = {
+    //     EditLayoutClicked: this.editMode,
+    // };
 
     async render() {
         const recentActivities = new RecentActivities();
@@ -37,12 +37,12 @@ class Widgets extends Component {
         );
     }
 
-    async editMode() {
-        const containers = document.querySelectorAll('.draggable-container');
-        const swap = new Swappable(containers, {
-            draggable: '.draggable',
-        });
-    }
+    // async editMode() {
+    //     const containers = document.querySelectorAll('.draggable-container');
+    //     const swap = new Swappable(containers, {
+    //         draggable: '.draggable',
+    //     });
+    // }
 }
 
 export default Widgets;
