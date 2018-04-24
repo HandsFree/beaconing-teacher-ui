@@ -2,9 +2,10 @@ const webpack = require('webpack');
 const { resolve } = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-// const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 const dev = process.env.NODE_ENV === 'development';
+const analyse = process.env.analyse === 'true';
 
 const prodBanner = `Beaconing Teacher UI
 ------------
@@ -58,7 +59,6 @@ const mainSettings = {
         new webpack.BannerPlugin({
             banner: devBanner,
         }),
-        // new BundleAnalyzerPlugin(),
     ] : [
         new webpack.NoEmitOnErrorsPlugin(),
         new webpack.optimize.UglifyJsPlugin({
@@ -80,7 +80,7 @@ const mainSettings = {
     devtool: dev ? 'inline-source-map' : false,
 };
 
-const config = [
+let config = [
     {
         entry: {
             core: './core/',
@@ -150,6 +150,19 @@ if (dev) {
         },
         ...mainSettings,
     });
+}
+
+if (analyse) {
+    config = {
+        entry: {
+            'pages/lesson_manager/page': './modules/lesson_manager/root/',
+        },
+        ...mainSettings,
+    };
+
+    config.plugins.push(new BundleAnalyzerPlugin({
+        openAnalyzer: false,
+    }));
 }
 
 module.exports = config;
