@@ -13,12 +13,24 @@
 	}
 
 	.activity {
-		padding: 1em;
+		padding: 0.75em;
 		justify-content: space-between;
+
+		@include for-tablet-portrait-up {
+			padding: 1em;
+		}
+
+		@mixin for-tablet-landscape-up {
+			padding: 1.5em;
+		}
 
 		a {
 			margin-left: 0.4em;
 			font-weight: 400;
+		}
+
+		p {
+			margin: 0;
 		}
 
 		.info {
