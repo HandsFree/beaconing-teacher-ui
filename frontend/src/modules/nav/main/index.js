@@ -41,9 +41,9 @@ class MainNav extends Component {
                 ),
                 a(
                     /^calendar/.test(path) ? '.item.active' : '.item',
-                    // {
-                    //     href: `//${window.location.host}/calendar/`,
-                    // },
+                    {
+                        href: `//${window.location.host}/calendar/`,
+                    },
                     i('.icon-calendar'),
                     span('Calendar'),
                 ),
