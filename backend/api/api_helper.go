@@ -128,6 +128,7 @@ func DoTimedRequestBody(s *gin.Context, method string, url string, reqBody io.Re
 // DoTimedRequestBody does a timed request of type {method} to {url} with an optional {reqBody}, if
 // there is no body pass nil, as well as a timeout can be specified.
 func DoTimedRequestBodyHeaders(s *gin.Context, method string, url string, reqBody io.Reader, timeout time.Duration, headers map[string]string) ([]byte, error) {
+	timeout = 120 * time.Second // temp fix for group assign timeout
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
 
@@ -169,6 +170,7 @@ func DoTimedRequestBodyHeaders(s *gin.Context, method string, url string, reqBod
 // DoTimedRequest is the same as DoTimedRequestBody, however it does not have
 // a body passed to the request.
 func DoTimedRequest(s *gin.Context, method string, url string, timeout time.Duration) ([]byte, error) {
+	timeout = 120 * time.Second // temp fix for group assign timeout
 	fmt.Printf("%s%s\n", "URL: ", url)
 	data, err := DoTimedRequestBody(s, method, url, nil, timeout)
 	return data, err
