@@ -69,6 +69,15 @@ class MainNav extends Component {
                 a(
                     '.item',
                     {
+                        href: 'https://hfc.gitbook.io/beaconing-teacher-ui/',
+                        target: '_blank',
+                    },
+                    i('.icon-help'),
+                    span('Help'),
+                ),
+                a(
+                    '.item',
+                    {
                         onclick: () => {
                             window.abarRuntime.open();
                         },
