@@ -24,7 +24,7 @@ class LoadStudentOverview extends Component {
 
         const groups = await window.beaconingAPI.getGroups();
 
-        this.state.classes = groups.filter(classObj => classObj?.category === 'class');
+        this.state.classes = groups; // groups.filter(classObj => classObj?.category === 'class');
 
         const classID = id ?? this.state.classes[0]?.id;
 
@@ -94,7 +94,7 @@ class LoadStudentOverview extends Component {
             sortEl,
             div(
                 '.flex-container',
-                p('This class has too few students! (needs 6 or more)'),
+                p('This group has too few students! (needs 6 or more)'),
             ),
         );
     }

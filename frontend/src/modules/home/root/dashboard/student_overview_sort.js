@@ -54,7 +54,7 @@ class Sort extends Component {
                 '.sort-menu',
                 label(
                     '.select',
-                    span('Class: '),
+                    span('Group: '),
                     this.createClassList(),
                 ),
             ),
