@@ -8,7 +8,7 @@ class IFrame extends Component {
         return iframe(
             '#authoring-tool',
             {
-                src: `https://authoring.beaconing.eu/glp/${decodeURIComponent(this.props.id)}`,
+                src: `https://authoring-qa.beaconing.eu/glp/${decodeURIComponent(this.props.id)}`,
             },
         );
     }
