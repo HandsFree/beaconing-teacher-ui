@@ -145,7 +145,7 @@ func sortByRecentlyAssigned(s *gin.Context, plans []*types.GLP, order SortingOrd
 	// throw them out to reload the ones that have been
 	// recently assigned
 	// i.e. this could be faster
-	glps, err := api.GetRecentlyAssignedGLPS(s)
+	glps, err := api.GetRecentlyAssignedGLPS(s, true)
 	if err != nil {
 		log.Println("failed to get recently assigned glps")
 		return plans, err

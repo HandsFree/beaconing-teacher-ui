@@ -26,7 +26,7 @@ func GetActiveLessonPlansWidget() gin.HandlerFunc {
 
 		lps := []types.LessonPlanWidget{}
 
-		assignedPlans, err := api.GetRecentlyAssignedGLPS(s)
+		assignedPlans, err := api.GetRecentlyAssignedGLPS(s, true)
 		if err != nil {
 			log.Println("GetActiveLessonPlansWidget: ", err.Error())
 			return
@@ -38,7 +38,8 @@ func GetActiveLessonPlansWidget() gin.HandlerFunc {
 			lps = append(lps, lessonPlan)
 		}
 
-		size := int(math.Min(float64(limitParamValue), float64(len(lps))))
+		lpsLen := len(lps)
+		size := int(math.Min(float64(limitParamValue), float64(lpsLen)))
 
 		json, err := jsoniter.Marshal(lps[0:size])
 		if err != nil {

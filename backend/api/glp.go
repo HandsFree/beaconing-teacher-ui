@@ -120,7 +120,7 @@ func GetMostAssigned(s *gin.Context) ([]*types.GLP, error) {
 	return popular, nil
 }
 
-func GetRecentlyAssignedGLPS(s *gin.Context) ([]*types.GLP, error) {
+func GetRecentlyAssignedGLPS(s *gin.Context, reverse bool) ([]*types.GLP, error) {
 	if API.db == nil {
 		log.Println("-- No database connection has been established")
 		return nil, errors.New("No database connection")
@@ -136,6 +136,10 @@ func GetRecentlyAssignedGLPS(s *gin.Context) ([]*types.GLP, error) {
 	// that have been created by the teacher that is currently
 	// active
 	query := "SELECT plan FROM active_plan WHERE teacher_id = $1 GROUP BY plan, creation_date ORDER BY creation_date ASC"
+	if reverse {
+		query = "SELECT plan FROM active_plan WHERE teacher_id = $1 GROUP BY plan, creation_date ORDER BY creation_date DESC"
+	}
+
 	rows, err := API.db.Query(query, fmt.Sprintf("%d", teacherId))
 	if err != nil {
 		log.Println("-- ", err.Error())
