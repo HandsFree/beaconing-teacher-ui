@@ -25,7 +25,7 @@ class MissionDetail extends Component {
                 strong(this.props.mission.name),
                 a(
                     {
-                        href: `#mission?id=${this.props.id}&index=${this.props.index}&prev=${this.props.prev}`,
+                        href: `#mission?id=${this.props.id}&index=${this.props.index}`,
                     },
                     'View',
                 ),

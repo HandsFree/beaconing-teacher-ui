@@ -40,6 +40,23 @@ class GLPDetails extends Component {
             }
         };
 
+        let dateCreatedText = 'Not recorded';
+        let timeCreatedText = '';
+        let dateUpdatedText = 'Never';
+        let timeUpdatedText = '';
+
+        if (this.state.glp.createdAt && this.state.glp.createdAt !== '0001-01-01T00:00:00Z') {
+            const dateObj = new Date(this.state.glp.createdAt);
+            dateCreatedText = dateObj.toDateString();
+            timeCreatedText = dateObj.toTimeString();
+        }
+
+        if (this.state.glp.updatedAt && this.state.glp.updatedAt !== '0001-01-01T00:00:00Z') {
+            const dateObj = new Date(this.state.glp.updatedAt);
+            dateUpdatedText = dateObj.toDateString();
+            timeUpdatedText = dateObj.toTimeString();
+        }
+
         return div(
             '#plan-details',
             div('.title', h4('GLP Details:')),
@@ -82,6 +99,26 @@ class GLPDetails extends Component {
                     '.detail',
                     strong('Competences:'),
                     competences,
+                ),
+                div(
+                    '.detail',
+                    strong('Created:'),
+                    p(
+                        {
+                            title: timeCreatedText,
+                        },
+                        dateCreatedText,
+                    ),
+                ),
+                div(
+                    '.detail',
+                    strong('Modified:'),
+                    p(
+                        {
+                            title: timeUpdatedText,
+                        },
+                        dateUpdatedText,
+                    ),
                 ),
             ),
         );

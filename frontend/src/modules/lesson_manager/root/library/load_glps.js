@@ -28,6 +28,8 @@ class LoadGLPs extends Component {
                     domain: glp.domain,
                     topic: glp.topic,
                     description: glp.description,
+                    creationDate: glp.createdAt,
+                    updateDate: glp.updatedAt,
                     id: glp.id,
                 });
 

@@ -9,8 +9,27 @@ class GLPBox extends Component {
             name,
             domain,
             topic,
+            creationDate,
+            updateDate,
             id,
         } = this.props;
+
+        let dateCreatedText = 'Not recorded';
+        let timeCreatedText = '';
+        let dateUpdatedText = 'Never';
+        let timeUpdatedText = '';
+
+        if (creationDate && creationDate !== '0001-01-01T00:00:00Z') {
+            const dateObj = new Date(creationDate);
+            dateCreatedText = dateObj.toDateString();
+            timeCreatedText = dateObj.toTimeString();
+        }
+
+        if (updateDate && updateDate !== '0001-01-01T00:00:00Z') {
+            const dateObj = new Date(updateDate);
+            dateUpdatedText = dateObj.toDateString();
+            timeUpdatedText = dateObj.toTimeString();
+        }
 
         return div(
             '.glp-box.flex-4.flex-column',
@@ -26,7 +45,7 @@ class GLPBox extends Component {
                 a(
                     '.item',
                     {
-                        href: `//${window.location.host}/authoring_tool?id=${encodeURIComponent(id)}&prev=lesson_manager`,
+                        href: `//${window.location.host}/authoring_tool?id=${encodeURIComponent(id)}`,
                     },
                     'Edit',
                 ),
@@ -49,6 +68,26 @@ class GLPBox extends Component {
                     '.topic',
                     strong('Topic:'),
                     p(topic),
+                ),
+                div(
+                    '.topic',
+                    strong('Created:'),
+                    p(
+                        {
+                            title: timeCreatedText,
+                        },
+                        dateCreatedText,
+                    ),
+                ),
+                div(
+                    '.topic',
+                    strong('Modified:'),
+                    p(
+                        {
+                            title: timeUpdatedText,
+                        },
+                        dateUpdatedText,
+                    ),
                 ),
             ),
         );
