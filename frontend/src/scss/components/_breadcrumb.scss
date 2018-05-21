@@ -1,16 +1,22 @@
 .breadcrumb {
 	align-items: center;
 	margin: 0.5em 0;
+	flex-wrap: wrap;
 
-	.item {
+	.current {
 		padding: 0.15em;
 		margin: 0 0.15em;
 		display: flex;
 		align-items: center;
+	}
+
+	.crumb {
+		@extend .current;
 
 		&:hover {
 			span {
 				text-decoration: underline;
+				cursor: pointer;
 			}
 		}
 

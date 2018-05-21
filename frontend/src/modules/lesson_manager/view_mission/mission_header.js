@@ -1,5 +1,5 @@
 // @flow
-import { div, a, i, h1, nav, h2 } from '../../../core/html';
+import { div, a, i, h1, nav, h2, span } from '../../../core/html';
 
 import { Component } from '../../../core/component';
 
@@ -21,13 +21,23 @@ class MissionHeader extends Component {
 
         return div(
             '#mission-header',
-            a(
-                '.back',
-                {
-                    href: `//${window.location.host}/${this.props.prev}`,
-                },
-                i('.icon-angle-left'),
-                'Go Back',
+            div(
+                '.breadcrumb',
+                a(
+                    '.crumb',
+                    {
+                        href: `//${window.location.host}/lesson_manager`,
+                    },
+                    span('Library'),
+                ),
+                a(
+                    '.crumb',
+                    {
+                       href: `//${window.location.host}/lesson_manager#view?id=${this.state.glp.id}`,
+                    },
+                    span('Plan Overview'),
+                ),
+                a('.current', 'Mission'),
             ),
             div(
                 '.name-group',

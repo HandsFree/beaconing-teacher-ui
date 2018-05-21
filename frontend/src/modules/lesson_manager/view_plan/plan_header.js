@@ -1,5 +1,5 @@
 // @flow
-import { div, a, i, h1, nav } from '../../../core/html';
+import { div, a, i, h1, nav, span } from '../../../core/html';
 
 import { Component } from '../../../core/component';
 
@@ -20,13 +20,16 @@ class PlanHeader extends Component {
 
         return div(
             '#plan-header',
-            a(
-                '.back',
-                {
-                    href: `//${window.location.host}/${this.props.prev}`,
-                },
-                i('.icon-angle-left'),
-                'Go Back',
+            div(
+                '.breadcrumb',
+                a(
+                    '.crumb',
+                    {
+                        href: `//${window.location.host}/lesson_manager`,
+                    },
+                    span('Library'),
+                ),
+                a('.current', 'Plan Overview'),
             ),
             h1(glpName),
             nav(
