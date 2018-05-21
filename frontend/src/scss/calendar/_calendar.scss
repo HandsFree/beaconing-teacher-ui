@@ -1,12 +1,10 @@
 table {
-	width: 100%;
-	display: grid;
-	grid-template-columns: repeat(7, 1fr);
+	table-layout: fixed;
 	border-collapse: collapse;
 	border: 1px solid #f5f5f5;
 }
 
-tr th {
+th {
 	text-alignment: center;
 	padding: 10px 6px;
 	background: #2d353e;
@@ -15,34 +13,39 @@ tr th {
 	border: none !important;
 }
 
-tr, tbody {
-	grid-column: 1 / -1;
-	display: grid;
-	grid-template-columns: repeat(7, 1fr);
-	width: 100%;
-}
-
 th, td {
-	padding: 5px;
-	box-sizing: border-box;
 	border: 1px solid #f5f5f5;
 }
 
 td {
-	display: flex;
-	min-height: 180px;
-	flex-direction: column;
-}
-
-td ul {
-	list-style: none;
-	margin: 0;
+	display: table-cell;
+    overflow: hidden;
 	padding: 0;
+	height: 180px;
+	width: 180px;
 }
 
-.event li {
+.events {
 	display: block;
-	background: red;
-	padding: 5px;
-	color: #fff;
+}
+
+.event {
+	display: block;
+	text-align: center;
+
+	border-radius: 4px;
+	margin-bottom: 5px;
+
+	background: #e4f2f2;
+	text-decoration: none;
+}
+
+.event-name, .event-desc {
+	width: 100%;
+}
+
+.event-desc {
+	color: #666;
+	margin: 3px 0 7px 0;
+	text-decoration: none;	
 }

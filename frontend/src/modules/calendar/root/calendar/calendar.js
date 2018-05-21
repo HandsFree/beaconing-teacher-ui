@@ -1,6 +1,6 @@
 // @flow
 
-import { h1, p, div, table, tr, th, td, ul, li } from '../../../../core/html';
+import { section, h1, p, div, table, tr, th, td, ul, li } from '../../../../core/html';
 import { Component } from '../../../../core/component';
 
 class CalendarView extends Component {
@@ -77,16 +77,18 @@ class CalendarView extends Component {
 				}
 
 				const cellDate = cells[i];
-				let eventList = ul();
+				let eventList = div('.events');
 
 				if (eventMap.has(cellDate)) {
 					const evt = eventMap.get(cellDate);
-					eventList = div('.event', ul(
-						evt.map((evt, _) => li(evt.name))
+					eventList = div('.events', 
+						evt.map((evt, _) => div('.event',
+							// div('.event-name', p(evt.name)),
+							div('.event-desc', p(evt.desc)))
 					));
 				}
 
-				rowBuffer.push(eventList);
+				rowBuffer.push([p(cellDate.getDay()), eventList]);
 			}
 		}
 
@@ -97,7 +99,12 @@ class CalendarView extends Component {
 		const dateHeaderNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 		const header = tr(dateHeaderNames.map((name, _) => th(name)));
 
-		return div(h1(`${monthName}, ${year}`), table(header, rows));
+		return [
+			section('.flex-column', div('#plan-header',
+				h1(`${monthName}, ${year}`)
+			)), 
+			section('.flex-column', table(header, rows))
+		];
 	}
 
 	// generates a calendar from the given
@@ -109,7 +116,7 @@ class CalendarView extends Component {
 
 	async render() {
 		const currDate = new Date();
-        return div('#calendar-view', this.genCalendar(currDate));
+        return this.genCalendar(currDate);
     }
 }
 
