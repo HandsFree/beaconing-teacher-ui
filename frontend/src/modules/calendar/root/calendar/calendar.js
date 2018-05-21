@@ -1,9 +1,5 @@
 // @flow
 
-// sorry!
-import $ from 'jquery';
-import 'fullcalendar';
-
 import { h1, p, div } from '../../../../core/html';
 import { Component } from '../../../../core/component';
 
