@@ -51,13 +51,9 @@ class CalendarView extends Component {
 				// testing!
 				eventMap.set(cellDate, [
 					{
-						name: "clean toilets",
-						desc: "clean the toilets you dumb dumb",
+						name: "Example Event 1",
+						desc: "Example Event desc",
 					},
-					{
-						name: "unclean toilets",
-						desc: "clean the toilets you dumb dumb",
-					}
 				]);
 			}
 
