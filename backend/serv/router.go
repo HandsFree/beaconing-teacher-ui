@@ -150,12 +150,6 @@ func GetRouterEngine() *gin.Engine {
 		authAPI.GET("gettoken", req.GetCheckAuthRequest())
 	}
 
-	analytics := v1.Group("analytics")
-	{
-		analytics.GET("/glp/:id", req.GetAnalyticsGLPRequest())
-		analytics.GET("/student/:id", req.GetAnalyticsStudentRequest())
-	}
-
 	tokens := v1.Group("token")
 	{
 		tokens.GET("/", req.GetTokenRequest())
