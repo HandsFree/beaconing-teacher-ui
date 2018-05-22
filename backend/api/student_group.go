@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"fmt"
 	"log"
-	"time"
 
 	"git.juddus.com/HFC/beaconing/backend/activities"
 	"github.com/gin-gonic/gin"
@@ -41,7 +40,7 @@ func CreateStudentGroup(s *gin.Context) (string, error) {
 	resp, err := DoTimedRequestBody(s, "POST",
 		API.getPath(s, "studentgroups"),
 		bytes.NewBuffer(studentGroupPost),
-		5*time.Second)
+	)
 	if err != nil {
 		log.Println("CreateStudentGroupPOST", err.Error())
 		return "", err
@@ -60,7 +59,7 @@ func CreateStudentGroup(s *gin.Context) (string, error) {
 // GetStudentGroups gets all of the student groups
 // currently registered.
 func GetStudentGroups(s *gin.Context) (string, error) {
-	resp, err := DoTimedRequest(s, "GET", API.getPath(s, "studentgroups"), 5*time.Second)
+	resp, err := DoTimedRequest(s, "GET", API.getPath(s, "studentgroups"))
 	if err != nil {
 		log.Println("GetStudentGroups", err.Error())
 		return "", err
@@ -73,7 +72,6 @@ func GetStudentGroups(s *gin.Context) (string, error) {
 func GetStudentGroup(s *gin.Context, groupID int) (string, error) {
 	resp, err := DoTimedRequest(s, "GET",
 		API.getPath(s, "studentgroups/", fmt.Sprintf("%d", groupID)),
-		5*time.Second,
 	)
 
 	if err != nil {
@@ -88,10 +86,8 @@ func GetStudentGroup(s *gin.Context, groupID int) (string, error) {
 // the given id {id}.
 func DeleteStudentGroup(s *gin.Context, id int64) (string, error) {
 	req, err := DoTimedRequest(s, "DELETE",
-		API.getPath(s,
-			"studentgroups/",
-			fmt.Sprintf("%d", id)),
-		5*time.Second)
+		API.getPath(s, "studentgroups/", fmt.Sprintf("%d", id)),
+	)
 	if err != nil {
 		log.Println("DeleteStudentGroup", err.Error())
 		return "", err
@@ -124,7 +120,6 @@ func PutStudentGroup(s *gin.Context, groupID int) (string, error) {
 	resp, err := DoTimedRequestBody(s, "PUT",
 		API.getPath(s, "studentgroups/", fmt.Sprintf("%d", groupID)),
 		bytes.NewBuffer(putJSON),
-		5*time.Second,
 	)
 
 	if err != nil {

@@ -3,7 +3,6 @@ package api
 import (
 	"bytes"
 	"log"
-	"time"
 
 	"git.juddus.com/HFC/beaconing/backend/types"
 	"github.com/gin-gonic/gin"
@@ -26,7 +25,7 @@ func PutProfile(s *gin.Context) (string, error) {
 	resp, err := DoTimedRequestBody(s, "PUT",
 		API.getPath(s, "currentuser"),
 		bytes.NewBuffer(profilePut),
-		5*time.Second)
+	)
 	if err != nil {
 		log.Println("PutProfile", err.Error())
 		return "", err

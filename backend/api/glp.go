@@ -8,7 +8,6 @@ import (
 	"log"
 	"os"
 	"strconv"
-	"time"
 
 	"git.juddus.com/HFC/beaconing/backend/activities"
 	"git.juddus.com/HFC/beaconing/backend/types"
@@ -57,7 +56,7 @@ func CreateGLP(s *gin.Context) (string, error) {
 	resp, err := DoTimedRequestBody(s, "POST",
 		API.getPath(s, "gamifiedlessonpaths"),
 		bytes.NewBuffer(glpPost),
-		5*time.Second)
+	)
 	if err != nil {
 		log.Println("CreateGLP", err.Error())
 		return "", err
@@ -186,10 +185,9 @@ func GetRecentlyAssignedGLPS(s *gin.Context, reverse bool) ([]*types.GLP, error)
 // API returned as a json string
 func GetGLPS(s *gin.Context, minify bool) (string, error) {
 	resp, err := DoTimedRequest(s, "GET",
-		API.getPath(s,
-			"gamifiedlessonpaths/",
-			fmt.Sprintf("?noContent=%s", strconv.FormatBool(minify))),
-		10*time.Second)
+		API.getPath(s, "gamifiedlessonpaths/", fmt.Sprintf("?noContent=%s", strconv.FormatBool(minify))),
+	)
+
 	if err != nil {
 		log.Println("GetGLPS", err.Error())
 		return "", err
@@ -205,11 +203,9 @@ func GetGLPS(s *gin.Context, minify bool) (string, error) {
 // see types.GLP
 func GetGLP(s *gin.Context, id uint64, minify bool) (*types.GLP, error) {
 	resp, err := DoTimedRequest(s, "GET",
-		API.getPath(s,
-			"gamifiedlessonpaths/",
-			fmt.Sprintf("%d", id),
-			fmt.Sprintf("?noContent=%s", strconv.FormatBool(minify))),
-		5*time.Second)
+		API.getPath(s, "gamifiedlessonpaths/", fmt.Sprintf("%d", id), fmt.Sprintf("?noContent=%s", strconv.FormatBool(minify))),
+	)
+
 	if err != nil {
 		log.Println("GetGLP", err.Error())
 		return nil, err
@@ -234,10 +230,9 @@ func GetGLP(s *gin.Context, id uint64, minify bool) (*types.GLP, error) {
 // core database.
 func DeleteGLP(s *gin.Context, id uint64) (string, error) {
 	resp, err := DoTimedRequest(s, "DELETE",
-		API.getPath(s,
-			"gamifiedlessonpaths",
-			fmt.Sprintf("%d", id)),
-		5*time.Second)
+		API.getPath(s, "gamifiedlessonpaths", fmt.Sprintf("%d", id)),
+	)
+
 	if err != nil {
 		fmt.Println(err)
 		return "", err

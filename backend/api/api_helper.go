@@ -36,6 +36,9 @@ import (
 // this performs any api requests necessary
 var API *CoreAPIManager
 
+// timeout for api requests (set to 120 seconds temporarily)
+const timeout = 120 * time.Second
+
 // ────────────────────────────────────────────────────────────────────────────────
 
 func GetOutboundIP() net.IP {
@@ -118,8 +121,8 @@ func formatRequest(r *http.Request) string {
 	return strings.Join(request, "\n")
 }
 
-func DoTimedRequestBody(s *gin.Context, method string, url string, reqBody io.Reader, timeout time.Duration) ([]byte, error) {
-	return DoTimedRequestBodyHeaders(s, method, url, reqBody, timeout, map[string]string{
+func DoTimedRequestBody(s *gin.Context, method string, url string, reqBody io.Reader) ([]byte, error) {
+	return DoTimedRequestBodyHeaders(s, method, url, reqBody, map[string]string{
 		"accept":        "application/json",
 		"authorization": fmt.Sprintf("Bearer %s", GetAccessToken(s)),
 	})
@@ -127,8 +130,7 @@ func DoTimedRequestBody(s *gin.Context, method string, url string, reqBody io.Re
 
 // DoTimedRequestBody does a timed request of type {method} to {url} with an optional {reqBody}, if
 // there is no body pass nil, as well as a timeout can be specified.
-func DoTimedRequestBodyHeaders(s *gin.Context, method string, url string, reqBody io.Reader, timeout time.Duration, headers map[string]string) ([]byte, error) {
-	timeout = 120 * time.Second // temp fix for group assign timeout
+func DoTimedRequestBodyHeaders(s *gin.Context, method string, url string, reqBody io.Reader, headers map[string]string) ([]byte, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
 
@@ -169,10 +171,9 @@ func DoTimedRequestBodyHeaders(s *gin.Context, method string, url string, reqBod
 
 // DoTimedRequest is the same as DoTimedRequestBody, however it does not have
 // a body passed to the request.
-func DoTimedRequest(s *gin.Context, method string, url string, timeout time.Duration) ([]byte, error) {
-	timeout = 120 * time.Second // temp fix for group assign timeout
+func DoTimedRequest(s *gin.Context, method string, url string) ([]byte, error) {
 	fmt.Printf("%s%s\n", "URL: ", url)
-	data, err := DoTimedRequestBody(s, method, url, nil, timeout)
+	data, err := DoTimedRequestBody(s, method, url, nil)
 	return data, err
 }
 
@@ -208,7 +209,7 @@ func (a *CoreAPIManager) getPath(s *gin.Context, args ...string) string {
 // GetCurrentUser returns an object with information about the current
 // user, as well as the JSON string decoded from the object.
 func GetCurrentUser(s *gin.Context) (*types.CurrentUser, error) {
-	resp, err := DoTimedRequest(s, "GET", API.getPath(s, "currentuser"), 5*time.Second)
+	resp, err := DoTimedRequest(s, "GET", API.getPath(s, "currentuser"))
 	if err != nil {
 		log.Println("GetCurrentUser", err.Error())
 		return nil, err

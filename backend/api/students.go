@@ -7,7 +7,6 @@ import (
 	"encoding/base64"
 	"fmt"
 	"log"
-	"time"
 
 	"git.juddus.com/HFC/beaconing/backend/activities"
 	"git.juddus.com/HFC/beaconing/backend/types"
@@ -18,7 +17,7 @@ import (
 // GetStudents requests a list of all students from the
 // core api, returned as a string of json
 func GetStudents(s *gin.Context) (string, error) {
-	resp, err := DoTimedRequest(s, "GET", API.getPath(s, "students"), 5*time.Second)
+	resp, err := DoTimedRequest(s, "GET", API.getPath(s, "students"))
 	if err != nil {
 		log.Println("GetStudents", err.Error())
 		return "", err
@@ -62,7 +61,7 @@ func GetStudents(s *gin.Context) (string, error) {
 // GetStudent returns a decoded object as well as the json response
 // of the given student of id {studentID}
 func GetStudent(s *gin.Context, studentID int) (*types.Student, error) {
-	data, err := DoTimedRequest(s, "GET", API.getPath(s, "students/", fmt.Sprintf("%d", studentID)), 5*time.Second)
+	data, err := DoTimedRequest(s, "GET", API.getPath(s, "students/", fmt.Sprintf("%d", studentID)))
 	if err != nil {
 		log.Println("GetStudent", err.Error())
 		return nil, err
@@ -100,7 +99,7 @@ func PostStudent(s *gin.Context) (string, error) {
 	resp, err := DoTimedRequestBody(s, "POST",
 		API.getPath(s, "students"),
 		bytes.NewBuffer(postStudent),
-		5*time.Second)
+	)
 	if err != nil {
 		log.Println("PostStudent", err.Error())
 		return "", err
@@ -132,7 +131,7 @@ func PutStudent(s *gin.Context, studentID int) (string, error) {
 	resp, err := DoTimedRequestBody(s, "PUT",
 		API.getPath(s, "students/", fmt.Sprintf("%d", studentID)),
 		bytes.NewBuffer(putStudent),
-		5*time.Second)
+	)
 	if err != nil {
 		log.Println("PutStudent", err.Error())
 		return "", err
@@ -146,7 +145,6 @@ func PutStudent(s *gin.Context, studentID int) (string, error) {
 func DeleteStudent(s *gin.Context, studentID int) (string, error) {
 	data, err := DoTimedRequest(s, "DELETE",
 		API.getPath(s, "students/", fmt.Sprintf("%d", studentID)),
-		5*time.Second,
 	)
 
 	if err != nil {
