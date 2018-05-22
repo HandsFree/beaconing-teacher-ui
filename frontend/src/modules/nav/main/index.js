@@ -66,15 +66,15 @@ class MainNav extends Component {
                     i('.icon-search'),
                     span('Search'),
                 ),
-                a(
-                    '.item',
-                    {
-                        href: 'https://hfc.gitbook.io/beaconing-teacher-ui/',
-                        target: '_blank',
-                    },
-                    i('.icon-help'),
-                    span('Help'),
-                ),
+                // a(
+                //     '.item',
+                //     {
+                //         href: 'https://hfc.gitbook.io/beaconing-teacher-ui/',
+                //         target: '_blank',
+                //     },
+                //     i('.icon-help'),
+                //     span('Help'),
+                // ),
                 a(
                     '.item',
                     {

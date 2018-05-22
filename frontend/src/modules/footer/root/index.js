@@ -10,12 +10,7 @@ class Footer extends Component {
             div(
                 '.content',
                 div(
-                    '.info',
-                    img({
-                        src: `//${window.location.host}/dist/beaconing/images/logo.png`,
-                        alt: 'Beaconing',
-                    }),
-                    p('Find out more about Beaconing:'),
+                    '.crv',
                     div(
                         '.social',
                         a(
@@ -23,7 +18,7 @@ class Footer extends Component {
                                 title: 'Visit Beaconing',
                                 href: 'http://beaconing.eu',
                             },
-                            i('.icon-link-ext-alt', { 'aria-hidden': true }),
+                            i('.icon-bcnlogo', { 'aria-hidden': true }),
                         ),
                         a(
                             {
@@ -47,91 +42,25 @@ class Footer extends Component {
                             i('.icon-youtube-play', { 'aria-hidden': true }),
                         ),
                     ),
-                ),
-                nav(
-                    '.links',
-                    div(
-                        '.link-group',
-                        span('.title', 'Pages'),
-                        a(
-                            '.item',
-                            {
-                                href: `//${window.location.host}/`,
-                            },
-                            'Home',
-                        ),
-                        a(
-                            '.item',
-                            {
-                                href: `//${window.location.host}/classroom/`,
-                            },
-                            'Students',
-                        ),
-                        a(
-                            '.item',
-                            {
-                                href: `//${window.location.host}/groups/`,
-                            },
-                            'Groups',
-                        ),
-                        a(
-                            '.item',
-                            {
-                                href: `//${window.location.host}/lesson_manager/`,
-                            },
-                            'Library',
-                        ),
-                        a(
-                            '.item',
-                            {
-                                href: `//${window.location.host}/calendar/`,
-                            },
-                            'Calendar',
-                        ),
-                        a(
-                            '.item',
-                            {
-                                href: '#',
-                            },
-                            'Forum',
-                        ),
-                        a(
-                            '.item',
-                            {
-                                href: `//${window.location.host}/search/`,
-                            },
-                            'Search',
-                        ),
-                    ),
-                    div(
-                        '.link-group',
-                        span('.title', 'Support'),
-                        a(
-                            '.item',
-                            {
-                                href: 'https://hfc.gitbook.io/beaconing-teacher-ui/',
-                            },
-                            'Documentation',
-                        ),
-                        a(
-                            '.item',
-                            {
-                                href: 'http://beaconing.eu/contact-us/',
-                            },
-                            'Contact Us',
-                        ),
-                    ),
-                ),
-            ),
-            div(
-                '.lower',
-                div(
-                    '.crv',
                     span('.cr', '© Beaconing 2018'),
                     span('.version', 'v0.5.4'),
                 ),
                 nav(
-                    '.legal',
+                    '.fmenu',
+                    a(
+                        '.item',
+                        {
+                            href: 'https://hfc.gitbook.io/beaconing-teacher-ui/',
+                        },
+                        'Support',
+                    ),
+                    a(
+                        '.item',
+                        {
+                            href: 'http://beaconing.eu/contact-us/',
+                        },
+                        'Contact Us',
+                    ),
                     a(
                         '.item',
                         {

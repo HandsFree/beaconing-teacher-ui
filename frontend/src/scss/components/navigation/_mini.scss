@@ -32,3 +32,38 @@ nav.mini {
 		text-decoration: underline;
 	}
 }
+
+nav.mini-wide {
+	color: #1e272d; // #52595e;
+	align-items: center;
+
+	&.spaced {
+		padding: 0.25em;
+	}
+
+	&.icon-menu {
+		a {
+			text-decoration: none;
+			margin: 0 0.2em;
+	
+			&:hover {
+				text-decoration: none;
+				cursor: pointer;
+			}
+		}
+	}
+
+	a {
+		text-decoration: none;
+		margin: 0 0.3em;
+
+		&:hover {
+			text-decoration: underline;
+			cursor: pointer;
+		}
+	}
+
+	a.active {
+		text-decoration: underline;
+	}
+}
