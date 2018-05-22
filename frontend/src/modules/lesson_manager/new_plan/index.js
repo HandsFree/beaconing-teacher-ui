@@ -3,6 +3,7 @@ import { div, main } from '../../../core/html';
 
 import { RootComponent } from '../../../core/component';
 import Header from '../../header/root';
+import Footer from '../../footer/root';
 import MainNav from '../../nav/main';
 import SecondNav from '../../nav/second';
 import InnerNav from '../inner_nav';
@@ -11,6 +12,7 @@ import NewPlanForm from './new_plan_form';
 class NewPlan extends RootComponent {
     async render() {
         const header = new Header();
+        const footer = new Footer();
         const mainNav = new MainNav();
         const secondNav = new SecondNav();
         const innerNav = new InnerNav();
@@ -18,6 +20,7 @@ class NewPlan extends RootComponent {
 
         return Promise.all([
             header.attach(),
+            footer.attach(),
             mainNav.attach(),
             secondNav.attach({
                 title: 'Lesson Manager',
@@ -27,6 +30,7 @@ class NewPlan extends RootComponent {
         ]).then((values) => {
             const [
                 headerEl,
+                footerEl,
                 mainNavEl,
                 secondNavEl,
                 newPlanFormEl,
@@ -44,6 +48,7 @@ class NewPlan extends RootComponent {
                         newPlanFormEl,
                     ),
                 ),
+                footerEl,
             );
         });
     }

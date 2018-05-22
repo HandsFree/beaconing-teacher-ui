@@ -3,6 +3,7 @@ import { div, main, strong } from '../../../../core/html';
 
 import { RootComponent } from '../../../../core/component';
 import Header from '../../../header/root';
+import Footer from '../../../footer/root';
 import MainNav from '../../../nav/main';
 import SecondNav from '../../../nav/second';
 import InnerNav from '../../inner_nav';
@@ -16,6 +17,7 @@ class Student extends RootComponent {
 
     async render() {
         const header = new Header();
+        const footer = new Footer();
         const mainNav = new MainNav();
         const secondNav = new SecondNav();
         const innerNav = new InnerNav();
@@ -24,6 +26,7 @@ class Student extends RootComponent {
 
         return Promise.all([
             header.attach(),
+            footer.attach(),
             mainNav.attach(),
             secondNav.attach({
                 title: 'Classroom',
@@ -34,6 +37,7 @@ class Student extends RootComponent {
         ]).then((values) => {
             const [
                 headerEl,
+                footerEl,
                 mainNavEl,
                 secondNavEl,
                 studentMainEl,
@@ -56,18 +60,21 @@ class Student extends RootComponent {
                         ),
                     ),
                 ),
+                footerEl,
             );
         });
     }
 
     async handleStudentDelete() {
         const header = new Header();
+        const footer = new Footer();
         const mainNav = new MainNav();
         const secondNav = new SecondNav();
         const innerNav = new InnerNav();
 
         const el = await Promise.all([
             header.attach(),
+            footer.attach(),
             mainNav.attach(),
             secondNav.attach({
                 title: 'Classroom',
@@ -76,6 +83,7 @@ class Student extends RootComponent {
         ]).then((values) => {
             const [
                 headerEl,
+                footerEl,
                 mainNavEl,
                 secondNavEl,
             ] = values;
@@ -95,6 +103,7 @@ class Student extends RootComponent {
                         ),
                     ),
                 ),
+                footerEl,
             );
         });
 

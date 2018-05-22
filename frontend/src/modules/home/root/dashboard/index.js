@@ -3,6 +3,7 @@ import { div, main, section } from '../../../../core/html';
 
 import { RootComponent } from '../../../../core/component';
 import Header from '../../../header/root';
+import Footer from '../../../footer/root';
 import MainNav from '../../../nav/main';
 // import DashboardNav from './dashboard_nav';
 import Widgets from './widgets';
@@ -10,18 +11,21 @@ import Widgets from './widgets';
 class Dashboard extends RootComponent {
     async render() {
         const header = new Header();
+        const footer = new Footer();
         const mainNav = new MainNav();
         // const dashboardNav = new DashboardNav();
         const widgets = new Widgets();
 
         return Promise.all([
             header.attach(),
+            footer.attach(),
             mainNav.attach(),
             // dashboardNav.attach(),
             widgets.attach(),
         ]).then((values) => {
             const [
                 headerEl,
+                footerEl,
                 mainNavEl,
                 // dashboardNavEl,
                 widgetsEl,
@@ -38,6 +42,7 @@ class Dashboard extends RootComponent {
                         widgetsEl,
                     ),
                 ),
+                footerEl,
             );
         });
     }
