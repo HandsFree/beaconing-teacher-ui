@@ -42,7 +42,7 @@ class MainNav extends Component {
                 a(
                     /^calendar/.test(path) ? '.item.active' : '.item',
                     {
-                        href: `//${window.location.host}/calendar/`,
+                        href: '#', // href: `//${window.location.host}/calendar/`,
                     },
                     i('.icon-calendar'),
                     span('Calendar'),
@@ -66,15 +66,6 @@ class MainNav extends Component {
                     i('.icon-search'),
                     span('Search'),
                 ),
-                // a(
-                //     '.item',
-                //     {
-                //         href: 'https://hfc.gitbook.io/beaconing-teacher-ui/',
-                //         target: '_blank',
-                //     },
-                //     i('.icon-help'),
-                //     span('Help'),
-                // ),
                 a(
                     '.item',
                     {
