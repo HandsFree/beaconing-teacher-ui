@@ -204,12 +204,14 @@ func slicePlans(plans []*types.GLP, index int, step int) ([]*types.GLP, error) {
 	plansLength := len(plans)
 
 	if index >= plansLength {
-		return plans, nil
+		return []*types.GLP{}, nil
 	}
 
 	stepIndex := index + step
 
-	if (index + stepIndex) > plansLength {
+	// fmt.Println(plansLength, stepIndex)
+
+	if (stepIndex) > plansLength {
 		return plans[index:], nil
 	}
 
