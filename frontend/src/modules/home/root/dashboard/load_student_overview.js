@@ -26,20 +26,35 @@ class LoadStudentOverview extends Component {
 
         this.state.classes = groups; // groups.filter(classObj => classObj?.category === 'class');
 
-        const classID = id ?? this.state.classes[0]?.id;
+        if (this.state.classes && this.state.classes.length > 0) {
+            const classID = id ?? this.state.classes[0]?.id;
 
-        // console.log(classID);
+            // console.log(classID);
 
-        this.state.classID = classID;
-        this.state.sort = sort;
+            this.state.classID = classID;
+            this.state.sort = sort;
 
-        const overview = await window.beaconingAPI.getStudentOverviewAnalytics(classID, sort);
+            const overview = await window.beaconingAPI.getStudentOverviewAnalytics(classID, sort);
 
-        this.state.overview = overview;
+            this.state.overview = overview;
+        }
     }
 
     async render() {
         const { classes } = this.state;
+
+        // console.log(classes);
+
+        if (!classes || classes.length < 1) {
+            return div(
+                '#student-overview',
+                div(
+                    '.flex-container',
+                    p('At least one group must exist to use Student Overview!'),
+                ),
+            );
+        }
+
         const {
             students,
             improvement,
