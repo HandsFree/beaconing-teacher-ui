@@ -17,11 +17,17 @@
 			margin-left: 1em;
 			flex-wrap: wrap;
 
-			.cr {
-				margin-left: 1em;
+			@include for-phone-only {
+				justify-content: center;
+			}
+
+			.cr, .version {
+				margin: 0 0.25em;
 			}
 
 			.social {
+				margin: 0 0.5em;
+
 				i:hover {
 					color: #b4bbc2;
 				}
@@ -29,10 +35,6 @@
 				i {
 					font-size: 1em;
 				}
-			}
-
-			span {
-				margin: 0 0.2em;
 			}
 		}
 
