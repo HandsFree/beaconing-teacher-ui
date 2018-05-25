@@ -1,7 +1,7 @@
 // @flow
 import List from 'list.js';
 
-import { div } from '../../../../core/html';
+import { div, a } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 import Loading from '../../../loading';
@@ -132,7 +132,22 @@ class GLPHandle extends Component {
             order,
         });
 
-        const element = div('.plans.flex-column.flex-grow.margin-20', glpsEl);
+        const element = div(
+            '.plans.flex-column.flex-grow.margin-20',
+            glpsEl,
+            div(
+                '#glpload.flex-justify-center',
+                a(
+                    '.button-action',
+                    {
+                        onclick: () => {
+                            this.emit('LoadMoreClicked');
+                        },
+                    },
+                    'Load More',
+                ),
+            ),
+        );
 
         this.updateView(element);
     }
