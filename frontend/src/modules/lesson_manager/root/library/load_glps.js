@@ -13,6 +13,7 @@ class LoadGLPs extends Component {
     };
     updateHooks = {
         LoadMoreClicked: this.loadMoreGLPs,
+        LoadAllClicked: this.loadAllGLPs,
     };
 
     async init() {
@@ -33,6 +34,15 @@ class LoadGLPs extends Component {
         this.state.glps = [...this.state.glps, ...glps];
     }
 
+    async updateAllGLPs() {
+        const sortQuery = this.props.sort ?? 'default';
+        const orderQuery = this.props.order ?? 'default';
+
+        const glps = await window.beaconingAPI.getGLPs(sortQuery, orderQuery, true);
+
+        this.state.glps = glps;
+    }
+
     async loadMoreGLPs() {
         this.state.index += this.step;
         await this.updateGLPs();
@@ -42,6 +52,18 @@ class LoadGLPs extends Component {
 
             loadMoreButton.parentElement.removeChild(loadMoreButton);
         }
+
+        await this.GLPList() |> this.updateView;
+    }
+
+    async loadAllGLPs() {
+        this.state.index = 0;
+        await this.updateAllGLPs();
+
+        this.state.endReached = true;
+
+        const loadMoreButton = document.getElementById('glpload');
+        loadMoreButton.parentElement.removeChild(loadMoreButton);
 
         await this.GLPList() |> this.updateView;
     }
