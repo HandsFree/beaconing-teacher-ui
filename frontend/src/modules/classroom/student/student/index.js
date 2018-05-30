@@ -11,9 +11,29 @@ import StudentMain from './student_main';
 import StudentAside from './student_aside';
 
 class Student extends RootComponent {
+    studentExists = true;
     updateHooks = {
         StudentDeleted: this.handleStudentDelete,
     };
+
+    async init() {
+        const id = this.params.id;
+
+        if (!id) {
+            console.log('[View Student] No Student ID provided!');
+            this.studentExists = false;
+            return;
+        }
+
+        const student = await window.beaconingAPI.getStudent(id);
+
+        console.log(student);
+
+        if (!student || student.id === 0) {
+            this.studentExists = false;
+            return;
+        }
+    }
 
     async render() {
         const header = new Header();
@@ -44,7 +64,7 @@ class Student extends RootComponent {
                 studentAsideEl,
             ] = values;
 
-            return div(
+            return this.studentExists ? div(
                 '#app',
                 headerEl,
                 div(
@@ -57,6 +77,22 @@ class Student extends RootComponent {
                             '.flex-spacebetween.flex-align-stretch.flex-grow',
                             studentMainEl,
                             studentAsideEl,
+                        ),
+                    ),
+                ),
+                footerEl,
+            ) : div(
+                '#app',
+                headerEl,
+                div(
+                    '.flex-container.expand.margin-top-2',
+                    mainNavEl,
+                    secondNavEl,
+                    main(
+                        '#student.no-padding',
+                        div(
+                            '.flex-grow.flex-align-center.flex-justify-center',
+                            strong('Student does not exist!'),
                         ),
                     ),
                 ),
