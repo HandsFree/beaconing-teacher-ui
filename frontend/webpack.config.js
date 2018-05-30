@@ -53,7 +53,9 @@ const mainSettings = {
         ],
     },
     plugins: dev ? [
-        new HardSourceWebpackPlugin(),
+        new HardSourceWebpackPlugin({
+            cacheDirectory: `${resolve(__dirname, 'node_modules', '.cache', 'hard-source')}/[confighash]`,
+        }),
         new webpack.NoEmitOnErrorsPlugin(),
         new webpack.optimize.OccurrenceOrderPlugin(),
         new ExtractTextPlugin('app.css'),
