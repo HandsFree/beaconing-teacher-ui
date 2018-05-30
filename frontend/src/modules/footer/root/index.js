@@ -17,6 +17,7 @@ class Footer extends Component {
                             {
                                 title: 'Visit Beaconing',
                                 href: 'http://beaconing.eu',
+                                target: '_blank',
                             },
                             i('.icon-bcnlogo', { 'aria-hidden': true }),
                         ),
@@ -24,6 +25,7 @@ class Footer extends Component {
                             {
                                 title: 'Facebook',
                                 href: 'https://www.facebook.com/beaconing/',
+                                target: '_blank',
                             },
                             i('.icon-facebook-official', { 'aria-hidden': true }),
                         ),
@@ -31,6 +33,7 @@ class Footer extends Component {
                             {
                                 title: 'Twitter',
                                 href: 'https://twitter.com/BeaconingEU',
+                                target: '_blank',
                             },
                             i('.icon-twitter', { 'aria-hidden': true }),
                         ),
@@ -38,6 +41,7 @@ class Footer extends Component {
                             {
                                 title: 'Youtube',
                                 href: 'https://www.youtube.com/c/beaconingeuproject',
+                                target: '_blank',
                             },
                             i('.icon-youtube-play', { 'aria-hidden': true }),
                         ),
@@ -51,6 +55,7 @@ class Footer extends Component {
                         '.item',
                         {
                             href: 'https://hfc.gitbook.io/beaconing-teacher-ui/',
+                            target: '_blank',
                         },
                         'Support',
                     ),
@@ -58,6 +63,7 @@ class Footer extends Component {
                         '.item',
                         {
                             href: 'http://beaconing.eu/contact-us/',
+                            target: '_blank',
                         },
                         'Contact Us',
                     ),
