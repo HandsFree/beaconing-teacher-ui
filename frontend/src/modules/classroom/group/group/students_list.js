@@ -6,35 +6,7 @@ import StudentBox from './student_box_edit';
 
 class StudentsList extends Component {
     async init() {
-        if (window.sessionStorage) {
-            let studentsSession = window.sessionStorage.getItem('students');
-
-            if (studentsSession) {
-                studentsSession = JSON.parse(studentsSession);
-
-                if ((Date.now() / 60000) - (studentsSession.time / 60000) < 1) {
-                    this.state.students = studentsSession.students;
-                    return;
-                }
-            }
-        }
-
-        if (!this.state.students) {
-            const students = await window.beaconingAPI.getStudents();
-            if (!students) {
-                console.log('Failed to load students!');
-
-                this.state.students = [];
-                return;
-            }
-
-            this.state.students = students;
-
-            window.sessionStorage.setItem('students', JSON.stringify({
-                students: this.state.students,
-                time: Date.now(),
-            }));
-        }
+        this.state.students = await window.beaconingAPI.getStudents() ?? [];
     }
 
     async render() {

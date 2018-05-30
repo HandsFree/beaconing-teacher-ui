@@ -7,40 +7,7 @@ import StudentBox from './student_box';
 class LoadStudents extends Component {
 
     async init() {
-        if (window.sessionStorage) {
-            let studentsSession = window.sessionStorage.getItem('students');
-
-            if (studentsSession) {
-                // console.log(sessionGLP);
-                studentsSession = JSON.parse(studentsSession);
-
-                if ((Date.now() / 60000) - (studentsSession.time / 60000) < 1) {
-                    this.state.students = studentsSession.students;
-                    return;
-                }
-            }
-        }
-
-        if (!this.state.students) {
-            const students = await window.beaconingAPI.getStudents();
-            // console.log(JSON.parse(students));
-            if (!students) {
-                console.log('Failed to load students!');
-
-                // set the students in the state to an
-                // empty array to avoid error later on.
-                this.state.students = [];
-                return;
-            }
-
-            this.state.students = students;
-            // console.log("Loaded students " + students);
-
-            window.sessionStorage.setItem('students', JSON.stringify({
-                students: this.state.students,
-                time: Date.now(),
-            }));
-        }
+        this.state.students = await window.beaconingAPI.getStudents() ?? [];
     }
 
     async render() {
