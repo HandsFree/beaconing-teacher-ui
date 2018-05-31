@@ -10,7 +10,7 @@ class ActivePlans extends Component {
             '.draggable.tile.flex-column.flex-2',
             div(
                 '.title',
-                p('Active Lesson Plans'),
+                p(await window.bcnI18n.getPhrase('widget_ap_title')),
                 a(
                     {
                         onclick: () => {
@@ -42,7 +42,7 @@ class ActivePlans extends Component {
             '.draggable.tile.flex-column.flex-2',
             div(
                 '.title',
-                p('Active Lesson Plans'),
+                p(await window.bcnI18n.getPhrase('widget_ap_title')),
                 a(
                     {
                         onclick: () => {

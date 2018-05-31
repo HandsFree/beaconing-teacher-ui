@@ -2,20 +2,26 @@ import i18nConfig from '../config/i18n.config.json5';
 
 class I18n {
     language = 'en-GB';
+    langFetched = false;
 
-    async init() {
+    async fetchLang() {
         const currUser = await window.beaconingAPI.getCurrentUser();
 
         const lang = currUser?.language ?? 'en-GB';
         this.language = lang;
+        this.langFetched = true;
     }
 
-    getPhrase(key: string) {
-        const keys = Object.keys(l18nConfig);
+    async getPhrase(key: string) {
+        if (!this.langFetched) {
+            await this.fetchLang();
+        }
+
+        const keys = Object.keys(i18nConfig);
         let langs = [];
 
         if (keys.indexOf(key) !== -1) {
-            langs = l18nConfig[key];
+            langs = i18nConfig[key];
         }
 
         const langsKeys = Object.keys(langs);

@@ -22,7 +22,7 @@ class LoadRecentActivities extends Component {
                 '.recent-activities-container.flex-column',
                 div(
                     '.status',
-                    span('No Recent Activities'),
+                    span(await window.bcnI18n.getPhrase('widget_ra_no_act')),
                 ),
             );
         }

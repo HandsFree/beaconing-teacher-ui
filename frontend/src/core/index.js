@@ -13,5 +13,4 @@ const accessabar = new window.Accessabar();
 
 window.beaconingAPI = apiCore;
 window.bcnI18n = i18n;
-window.bcnI18n.init();
 window.abarRuntime = accessabar; // temporary

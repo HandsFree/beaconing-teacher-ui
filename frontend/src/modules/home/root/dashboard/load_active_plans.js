@@ -22,7 +22,7 @@ class LoadActivePlans extends Component {
                 '.active-plans-container.flex-column',
                 div(
                     '.status',
-                    span('No Active Plans'),
+                    span(await window.bcnI18n.getPhrase('widget_ap_no_plans')),
                 ),
             );
         }

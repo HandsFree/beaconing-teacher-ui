@@ -215,6 +215,62 @@ class ProfileEditForm extends Component {
                                     },
                                     'English',
                                 ),
+                                option(
+                                    {
+                                        value: 'fr-FR',
+                                        selected: teacher.language === 'fr_FR',
+                                    },
+                                    'Français',
+                                ),
+                                option(
+                                    {
+                                        value: 'es-ES',
+                                        selected: teacher.language === 'es-ES',
+                                    },
+                                    'Español',
+                                ),
+                                option(
+                                    {
+                                        value: 'it-IT',
+                                        selected: teacher.language === 'it-IT',
+                                    },
+                                    'Italiano',
+                                ),
+                                option(
+                                    {
+                                        value: 'de-DE',
+                                        selected: teacher.language === 'de-DE',
+                                    },
+                                    'Deutsche',
+                                ),
+                                option(
+                                    {
+                                        value: 'ro-RO',
+                                        selected: teacher.language === 'ro-RO',
+                                    },
+                                    'Română',
+                                ),
+                                option(
+                                    {
+                                        value: 'pl-PL',
+                                        selected: teacher.language === 'pl-PL',
+                                    },
+                                    'Polskie',
+                                ),
+                                option(
+                                    {
+                                        value: 'tr-TR',
+                                        selected: teacher.language === 'tr-TR',
+                                    },
+                                    'Türk',
+                                ),
+                                option(
+                                    {
+                                        value: 'pt-PT',
+                                        selected: teacher.language === 'pt-PT',
+                                    },
+                                    'Português',
+                                ),
                             ),
                         ),
                         div(

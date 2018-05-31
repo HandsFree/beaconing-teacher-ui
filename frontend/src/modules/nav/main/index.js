@@ -22,7 +22,7 @@ class MainNav extends Component {
                         tabindex: '1',
                     },
                     i('.icon-home'),
-                    span('Home'),
+                    span(await window.bcnI18n.getPhrase('nav_home')),
                 ),
                 a(
                     /^classroom/.test(path) ? '.item.active-orange' : '.item',
@@ -31,7 +31,7 @@ class MainNav extends Component {
                         tabindex: 1,
                     },
                     i('.icon-graduation-cap'),
-                    span('Classroom'),
+                    span(await window.bcnI18n.getPhrase('nav_classroom')),
                 ),
                 a(
                     /^lesson_manager/.test(path) ? '.item.active-orange' : '.item',
@@ -40,7 +40,7 @@ class MainNav extends Component {
                         tabindex: 1,
                     },
                     i('.icon-authoring'),
-                    span('Lesson Manager'),
+                    span(await window.bcnI18n.getPhrase('nav_lesson_manager')),
                 ),
                 a(
                     /^calendar/.test(path) ? '.item.active' : '.item',
@@ -49,7 +49,7 @@ class MainNav extends Component {
                         tabindex: 1,
                     },
                     i('.icon-calendar'),
-                    span('Calendar'),
+                    span(await window.bcnI18n.getPhrase('nav_calendar')),
                 ),
                 a(
                     /^forum/.test(path) ? '.item.active-orange' : '.item',
@@ -58,7 +58,7 @@ class MainNav extends Component {
                         tabindex: 1,
                     },
                     i('.icon-chat'),
-                    span('Forum'),
+                    span(await window.bcnI18n.getPhrase('nav_forum')),
                 ),
             ),
             div(
@@ -70,7 +70,7 @@ class MainNav extends Component {
                         tabindex: 1,
                     },
                     i('.icon-search'),
-                    span('Search'),
+                    span(await window.bcnI18n.getPhrase('nav_search')),
                 ),
                 a(
                     '.item',
@@ -81,7 +81,7 @@ class MainNav extends Component {
                         tabindex: 1,
                     },
                     i('.icon-key-inv'),
-                    span('Accessibility'),
+                    span(await window.bcnI18n.getPhrase('nav_access')),
                 ),
             ),
         );
