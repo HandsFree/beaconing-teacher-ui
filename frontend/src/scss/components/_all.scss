@@ -1,15 +1,15 @@
-// headers
+// Headers
 @import 'header/main';
 
-// footers
+// Footers
 @import 'footer/main';
 
-// navigation
+// Navigation
 @import 'navigation/main';
 @import 'navigation/sub';
 @import 'navigation/mini';
 
-// sections
+// Sections
 //@import 'sections/bordered';
 @import 'sections/main';
 @import 'sections/header';
@@ -19,6 +19,30 @@
 @import 'addins/colours';
 @import 'addins/shapes';
 
+// Tiles
+@import 'tiles/active_plans';
+@import 'tiles/recent_activity';
+@import 'tiles/student_overview';
+
+// Student
+@import 'student/student_analytics';
+@import 'student/student_profile';
+
+// Lesson Manager
+@import 'lesson_manager/assign_options';
+@import 'lesson_manager/details';
+@import 'lesson_manager/headers';
+
+// Profile
+@import 'profile/info';
+
+// Calendar
+@import 'calendar/table';
+@import 'calendar/events';
+
+// Search
+@import 'search/search_results';
+
 
 @import 'breadcrumb';
 @import 'buttons';
@@ -26,7 +50,6 @@
 @import 'containers';
 @import 'dashed_list';
 @import 'tile';
-//@import 'canvas';
 @import 'chart';
 @import 'forms';
 @import 'graph';
@@ -39,3 +62,6 @@
 @import 'loading';
 @import 'info';
 @import 'status';
+@import 'iframe';
+@import 'prompt';
+@import 'asides';

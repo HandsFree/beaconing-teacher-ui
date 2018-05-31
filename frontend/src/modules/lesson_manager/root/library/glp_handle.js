@@ -1,7 +1,7 @@
 // @flow
 import List from 'list.js';
 
-import { div, a } from '../../../../core/html';
+import { div, a, small } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 import Loading from '../../../loading';
@@ -136,7 +136,7 @@ class GLPHandle extends Component {
             '.plans.flex-column.flex-grow.margin-20',
             glpsEl,
             div(
-                '#glpload.flex-justify-center',
+                '#glpload.flex-align-center.flex-column',
                 a(
                     '.button-action',
                     {
@@ -145,6 +145,15 @@ class GLPHandle extends Component {
                         },
                     },
                     'Load More',
+                ),
+                small(
+                    '.pointer-hover',
+                    {
+                        onclick: () => {
+                            this.emit('LoadAllClicked');
+                        },
+                    },
+                    'Load All',
                 ),
             ),
         );
