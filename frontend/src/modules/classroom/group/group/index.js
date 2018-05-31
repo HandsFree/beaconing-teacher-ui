@@ -11,9 +11,27 @@ import GroupMain from './group_main';
 import GroupAside from './group_aside';
 
 class Group extends RootComponent {
+    groupExists = true;
     updateHooks = {
         GroupDeleted: this.handleGroupDelete,
     };
+
+    async init() {
+        const id = this.params.id;
+
+        if (!id) {
+            console.log('[View Group] No Group ID provided!');
+            this.groupExists = false;
+            return;
+        }
+
+        const group = await window.beaconingAPI.getGroup(id);
+
+        if (!group || Object.keys(group).indexOf('error') !== -1) {
+            this.groupExists = false;
+            return;
+        }
+    }
 
     async render() {
         const header = new Header();
@@ -44,7 +62,7 @@ class Group extends RootComponent {
                 groupAsideEl,
             ] = values;
 
-            return div(
+            return this.groupExists ? div(
                 '#app',
                 headerEl,
                 div(
@@ -57,6 +75,22 @@ class Group extends RootComponent {
                             '.flex-spacebetween.flex-align-stretch.flex-grow',
                             groupMainEl,
                             groupAsideEl,
+                        ),
+                    ),
+                ),
+                footerEl,
+            ) : div(
+                '#app',
+                headerEl,
+                div(
+                    '.flex-container.expand.margin-top-2',
+                    mainNavEl,
+                    secondNavEl,
+                    main(
+                        '#group.no-padding',
+                        div(
+                            '.flex-grow.flex-align-center.flex-justify-center',
+                            strong('Group does not exist!'),
                         ),
                     ),
                 ),
