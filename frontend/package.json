@@ -37,7 +37,7 @@
     "hard-source-webpack-plugin": "^0.6.4",
     "json5-loader": "^1.0.1",
     "minimatch": "^3.0.4",
-    "node-sass": "^4.7.2",
+    "node-sass": "^4.9.0",
     "optimize-css-assets-webpack-plugin": "^2.0.0",
     "parallel-webpack": "^2.2.0",
     "sass-loader": "^6.0.6",

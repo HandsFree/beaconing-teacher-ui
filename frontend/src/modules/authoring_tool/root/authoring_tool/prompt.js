@@ -15,7 +15,7 @@ class Prompt extends Component {
                 '.mini',
                 a(
                     {
-                        href: `./${decodeURIComponent(this.props.prev)}`,
+                        href: `//${window.location.host}/lesson_manager`,
                     },
                     i(
                         '.icon-angle-left',
@@ -23,7 +23,7 @@ class Prompt extends Component {
                             'aria-hidden': true,
                         },
                     ),
-                    'Go Back',
+                    'Library',
                 ),
             ),
         );
