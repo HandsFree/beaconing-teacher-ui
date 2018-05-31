@@ -1,0 +1,13 @@
+{
+    edit_layout: {
+        'en-GB': 'Edit Layout',
+        'fr-FR': 'Modifer la disposition',
+        'es-ES': 'Editar organización',
+        'it-IT': 'Modifica il layout',
+        'de-DE': 'Bearbeite Layout',
+        'ro-RO': '',
+        'pl-PL': 'Edytuj Layout',
+        'tr-TR': 'Görünümü Düzenle',
+        'pt-PT': '',
+    },
+}

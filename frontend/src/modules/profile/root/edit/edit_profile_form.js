@@ -210,8 +210,8 @@ class ProfileEditForm extends Component {
                                 },
                                 option(
                                     {
-                                        value: 'en-US',
-                                        selected: teacher.language === 'english',
+                                        value: 'en-GB',
+                                        selected: teacher.language === 'en-GB',
                                     },
                                     'English',
                                 ),
