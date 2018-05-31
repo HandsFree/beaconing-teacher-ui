@@ -3,12 +3,9 @@ nav#main {
 	font-family: $secondary_font;
 	color: $secondary_font_colour;
 	background: $primary_element_background;
-	min-width: 14.25em;
+	// min-width: 14.25em;
 	box-shadow: $primary_element_box_shadow;
-
-	@media screen and (max-width: 78.125em) {
-		min-width: auto;
-	}
+	font-size: 0.9em;
 
 	.nav-group {
 		flex-direction: column;
@@ -17,10 +14,15 @@ nav#main {
 
 	a.item {
 		border-top: 1px solid #1d242a;
-		padding: 1.2em;
+		padding: 1em 0.5em;
 		text-decoration: none;
 		color: $secondary_font_colour;
 		box-shadow: $primary_element_box_shadow;
+		display: flex;
+
+		@media screen and (max-width: 78.125em) {
+			padding: 0.75em;
+		}
 
 		&:hover {
 			cursor: pointer;
@@ -42,6 +44,7 @@ nav#main {
 
 		span {
 			margin: 0 1em;
+			white-space: nowrap;
 
 			@media screen and (max-width: 78.125em) {
 				display: none;
@@ -65,12 +68,12 @@ nav#main {
 	    pointer-events: none;
 	    border-color: transparent;
 	    border-right-color: white;
-	    border-width: 12px;
-	    margin-top: -12px;
+	    border-width: 8px;
+	    margin-top: -8px;
 
 	    @media screen and (max-width: 78.125em) {
-			border-width: 8px;
-	    	margin-top: -8px;
+			border-width: 4px;
+	    	margin-top: -4px;
 		}
 	}
 
@@ -90,12 +93,12 @@ nav#main {
 	    pointer-events: none;
 	    border-color: transparent;
 	    border-right-color: #e87f62;
-	    border-width: 12px;
-	    margin-top: -12px;
+	    border-width: 8px;
+	    margin-top: -8px;
 
 	    @media screen and (max-width: 78.125em) {
-			border-width: 8px;
-	    	margin-top: -8px;
+			border-width: 4px;
+	    	margin-top: -4px;
 		}
 	}
 }
