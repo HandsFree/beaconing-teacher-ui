@@ -54,13 +54,13 @@ class Sort extends Component {
                 '.sort-menu',
                 label(
                     '.select',
-                    span('Group: '),
+                    span(`${await window.bcnI18n.getPhrase('group')}: `),
                     this.createClassList(),
                 ),
             ),
             div(
                 '#student-overview-sort.sort-menu',
-                span('Sort By: '),
+                span(`${await window.bcnI18n.getPhrase('sort_by')}: `),
                 a(
                     this.state.sort === 'week' ? '.active' : '',
                     {
@@ -68,7 +68,7 @@ class Sort extends Component {
                             this.emit('StudentOverviewSortWeekClicked');
                         },
                     },
-                    'Week',
+                    await window.bcnI18n.getPhrase('week'),
                 ),
                 a(
                     this.state.sort === 'month' ? '.active' : '',
@@ -77,7 +77,7 @@ class Sort extends Component {
                             this.emit('StudentOverviewSortMonthClicked');
                         },
                     },
-                    'Month',
+                    await window.bcnI18n.getPhrase('month'),
                 ),
                 a(
                     this.state.sort === 'year' ? '.active' : '',
@@ -86,7 +86,7 @@ class Sort extends Component {
                             this.emit('StudentOverviewSortYearClicked');
                         },
                     },
-                    'Year',
+                    await window.bcnI18n.getPhrase('year'),
                 ),
             ),
         );

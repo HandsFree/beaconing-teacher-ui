@@ -50,7 +50,7 @@ class LoadStudentOverview extends Component {
                 '#student-overview',
                 div(
                     '.flex-container',
-                    p('At least one group must exist to use Student Overview!'),
+                    p(await window.bcnI18n.getPhrase('widget_so_no_group')),
                 ),
             );
         }
@@ -67,7 +67,7 @@ class LoadStudentOverview extends Component {
             sort: this.state.sort,
         });
 
-        if (students.length >= 6 && improvement.length >= 3) {
+        if (students && (students.length >= 6 && improvement.length >= 3)) {
             const bestPerforming = new Panel();
             const needsAttention = new Panel();
             const mostImprovement = new Panel();
@@ -77,18 +77,18 @@ class LoadStudentOverview extends Component {
             const miData = improvement.slice(0, 3);
 
             const bestPerformingEl = await bestPerforming.attach({
-                title: 'Best Performing',
-                msg: 'Overall Progress',
+                title: await window.bcnI18n.getPhrase('widget_so_bp'),
+                msg: await window.bcnI18n.getPhrase('widget_so_no_group'),
                 data: bpData,
             });
             const needsAttentionEl = await needsAttention.attach({
-                title: 'Needs Attention',
-                msg: 'Overall Progress',
+                title: await window.bcnI18n.getPhrase('widget_so_na'),
+                msg: await window.bcnI18n.getPhrase('widget_so_no_group'),
                 data: naData,
             });
             const mostImprovementEl = await mostImprovement.attach({
-                title: 'Most Improvement',
-                msg: 'Overall Improvement',
+                title: await window.bcnI18n.getPhrase('widget_so_mi'),
+                msg: await window.bcnI18n.getPhrase('widget_so_oi'),
                 data: miData,
             });
 

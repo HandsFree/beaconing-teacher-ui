@@ -53,7 +53,7 @@ class StudentOverview extends Component {
             '.draggable.tile.flex-column',
             div(
                 '.title',
-                p('Student Overview'),
+                p(await window.bcnI18n.getPhrase('widget_so_title')),
                 a(
                     {
                         href: `//${window.location.host}/classroom/`,
@@ -61,7 +61,7 @@ class StudentOverview extends Component {
                     i(
                         '.icon-link-ext-alt',
                         {
-                            title: 'View Students',
+                            title: await window.bcnI18n.getPhrase('widget_so_link_title'),
                             'aria-hidden': true,
                         },
                     ),
@@ -71,7 +71,7 @@ class StudentOverview extends Component {
                 '.content',
                 div(
                     '#student-overview',
-                    p('Loading...'),
+                    p(`${await window.bcnI18n.getPhrase('loading')}...`),
                 ),
             ),
         );
@@ -89,7 +89,7 @@ class StudentOverview extends Component {
             '.draggable.tile.flex-column',
             div(
                 '.title',
-                p('Student Overview'),
+                p(await window.bcnI18n.getPhrase('widget_so_title')),
                 a(
                     {
                         href: `//${window.location.host}/classroom/`,
@@ -97,7 +97,7 @@ class StudentOverview extends Component {
                     i(
                         '.icon-link-ext-alt',
                         {
-                            title: 'View Students',
+                            title: await window.bcnI18n.getPhrase('widget_so_link_title'),
                             'aria-hidden': true,
                         },
                     ),

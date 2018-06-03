@@ -20,7 +20,7 @@ class ActivePlans extends Component {
                     i(
                         '.icon-link-ext-alt',
                         {
-                            title: 'View Active Lesson Plans',
+                            title: await window.bcnI18n.getPhrase('widget_ap_link_title'),
                             'aria-hidden': true,
                         },
                     ),
@@ -28,7 +28,7 @@ class ActivePlans extends Component {
             ),
             div(
                 '.content',
-                div('#active-plan-summary', 'Loading...'),
+                div('#active-plan-summary', `${await window.bcnI18n.getPhrase('loading')}...`),
             ),
         );
     }
@@ -52,7 +52,7 @@ class ActivePlans extends Component {
                     i(
                         '.icon-link-ext-alt',
                         {
-                            title: 'View Active Lesson Plans',
+                            title: await window.bcnI18n.getPhrase('widget_ap_link_title'),
                             'aria-hidden': true,
                         },
                     ),

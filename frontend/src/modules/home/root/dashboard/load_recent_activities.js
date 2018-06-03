@@ -1,6 +1,4 @@
 // @flow
-// import List from 'list.js';
-
 import { div, span } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';

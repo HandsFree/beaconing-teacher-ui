@@ -14,7 +14,7 @@ class DashboardNav extends Component {
                         this.emit('EditLayoutClicked');
                     },
                 },
-                'Edit Layout',
+                await window.bcnI18n.getPhrase('edit_layout'),
             ),
         );
     }
