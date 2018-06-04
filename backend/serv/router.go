@@ -19,6 +19,7 @@ import (
 	"git.juddus.com/HFC/beaconing/backend/search"
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 	"github.com/thinkerou/favicon"
 )
@@ -63,7 +64,7 @@ func GetRouterEngine() *gin.Engine {
 	router := gin.Default()
 
 	// Create the cookie store
-	store := sessions.NewCookieStore(createSessionSecret(32), createSessionSecret(16))
+	store := cookie.NewStore(createSessionSecret(32), createSessionSecret(16))
 
 	// Config the router to use sessions with cookie store
 	router.Use(sessions.Sessions("beaconing", store))
