@@ -1,6 +1,6 @@
 // @flow
 
-import { section, h1, p, div, table, tr, th, td, ul, li } from '../../../../core/html';
+import { section, h1, p, div, ul, li } from '../../../../core/html';
 import { Component } from '../../../../core/component';
 
 Date.prototype.withoutTime = function () {
@@ -98,6 +98,12 @@ class CalendarView extends Component {
 
 		let rows = [];
 
+		// add the first rows for the dates.
+		const dateHeaderNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+		dateHeaderNames.forEach(function(name) {
+			rows.push(div(".calendar-heading-cell", p(name)));
+		});
+
 		{
 			let rowBuffer = [];
 
@@ -130,7 +136,9 @@ class CalendarView extends Component {
 				// i do this manually at the bottom but it can probably
 				// be handled here too?
 				if ((i % 7 == 0 && i > 0)) {
-					rows.push(tr(".calendar-row", rowBuffer.map((row, _) => td(".calendar-cell", row))));
+					rowBuffer.forEach(function(row) {
+						rows.push(div(".calendar-cell", row));
+					});
 					rowBuffer = []; // reset buffer
 				}
 
@@ -153,8 +161,17 @@ class CalendarView extends Component {
 
 			// flush any remaining rowbuffer bits.
 			if (rowBuffer.length > 0) {
-				rows.push(tr(".calendar-row", rowBuffer.map((row, _) => td(".calendar-cell", row))));
-				rowBuffer = []; // reset
+				rowBuffer.forEach(function(row) {
+					rows.push(div(".calendar-cell", row));
+				});
+
+				// add empty divs to pad out the flex bow thing
+				const remain = dateHeaderNames.length - rowBuffer.length;
+				for (let i = 0; i < remain; i++) {
+					rows.push(div(".calendar-cell"));
+				}
+
+				rowBuffer = []; // reset buffer
 			}
 		}
 
@@ -162,14 +179,11 @@ class CalendarView extends Component {
 		const monthName = this.getMonthName(date);
 		const year = date.getFullYear();
 
-		const dateHeaderNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
-		const header = tr(dateHeaderNames.map((name, _) => th(".calendar-header", name)));
-
 		return [
 			section('.flex-column', div('#plan-header',
 				h1(`${monthName}, ${year}`)
 			)), 
-			section('.flex-column', table(".calendar", header, rows))
+			section('.flex-column', div(".calendar", rows))
 		];
 	}
 
