@@ -34,7 +34,7 @@
 	flex-grow: 1;
 	width: 14.28%;
 
-	padding: 0.8em 0.8em;
+	padding: 0 0.8em;
 	overflow: hidden;
 	list-style: none;
 }
@@ -63,20 +63,30 @@
 	border: 1px solid #f5f5f5;
 }
 
-/*
-.calendar-header {
-	text-alignment: center;
-	padding: 10px 6px;
-	background: #2d353e;
-	color: #fff;
-	font-size: 14pt;
-	border: none !important;
-}
-*/
-
 .calendar-day {
+	font-size: 14pt;
+	font-weight: bold;
 	align-self: flex-end;
 }
+
+.current-day {
+	/* hmm */
+	border-bottom: 2.5px solid #fc3d39;
+}
+
+/*
+.current-day {
+	background: #fc3d39;
+	color: #fff;
+	text-align: center;
+	border-radius: 55%;
+	padding: 0.8em;
+	box-sizing: border-box;
+	
+	margin-left: 0.4em;
+    margin-top: 0.4em;
+}
+*/
 
 .calendar {
 	display: flex;

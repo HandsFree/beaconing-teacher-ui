@@ -121,7 +121,7 @@ class CalendarView extends Component {
 				// TODO this should be greyed out
 				// events will not be fetched for previous month days
 				const dayNumber = (startDay + i)+1;
-				rowBuffer.push([p(".calendar-day", dayNumber), []]);
+				rowBuffer.push(div(".calendar-cell", [p(".calendar-day", dayNumber), []]));
 			}
 
 			const numDays = this.daysInMonth(date);
@@ -137,7 +137,7 @@ class CalendarView extends Component {
 				// be handled here too?
 				if ((i % 7 == 0 && i > 0)) {
 					rowBuffer.forEach(function(row) {
-						rows.push(div(".calendar-cell", row));
+						rows.push(row);
 					});
 					rowBuffer = []; // reset buffer
 				}
@@ -156,13 +156,19 @@ class CalendarView extends Component {
 					console.log(cellDate, " not in the calendar.");
 				}
 
-				rowBuffer.push([p(".calendar-day", dayNumber), eventList]);
+				// better way to do this?
+				let classList = ".calendar-cell";
+				if (new Date().withoutTime().getTime() === cellDate.getTime()) {
+					classList += " .current-day";
+				}
+
+				rowBuffer.push(div(classList, [p(".calendar-day", dayNumber), eventList]));
 			}
 
 			// flush any remaining rowbuffer bits.
 			if (rowBuffer.length > 0) {
 				rowBuffer.forEach(function(row) {
-					rows.push(div(".calendar-cell", row));
+					rows.push(row);
 				});
 
 				// add empty divs to pad out the flex bow thing
