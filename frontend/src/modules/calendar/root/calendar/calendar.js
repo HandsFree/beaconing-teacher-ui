@@ -42,16 +42,16 @@ class CalendarView extends Component {
     	// WITH the time included.
     	event.date = eventDate;
 
-    	const newDate = eventDate.withoutTime().getTime();
-    	console.log("writing ", event, " as date ", eventDate, " is ", newDate);
+    	const newDate = eventDate.withoutTime();
+    	console.log("writing ", event, " time ", newDate.getTime());
 
-    	let events = this.state.eventMap.get(newDate);
+    	let events = this.state.eventMap.get(newDate.getTime());
     	if (events) {
     		events.push(event);
     		// re-write into hashmap
-    		this.state.eventMap.set(newDate, events);
+    		this.state.eventMap.set(newDate.getTime(), events);
     	} else {
-    		this.state.eventMap.set(newDate, [event]);
+    		this.state.eventMap.set(newDate.getTime(), [event]);
     	}
     }
 
@@ -90,7 +90,9 @@ class CalendarView extends Component {
 	genCalendarData(date) {
 		const eventMap = this.state.eventMap;
 
-		const firstDay = new Date(date.getFullYear(), date.getMonth(), 0);
+		const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+		console.log("gen calendar date for ", date);
+		console.log("first day is ", firstDay);
 
 		// all the dates this month
 
@@ -99,11 +101,14 @@ class CalendarView extends Component {
 		{
 			let rowBuffer = [];
 
-			const offset = firstDay.getDay();
+			const offset = firstDay.getDay()-1;
 
 			// previous month
 			const prevMonth = new Date(firstDay - 1);
 			const prevMonthDays = this.daysInMonth(prevMonth);
+
+			console.log("previous month is ", prevMonth, " has ", prevMonthDays, " days");
+
 			const startDay = prevMonthDays - offset;
 
 			for (let i = 0; i < offset; i++) {
@@ -117,6 +122,7 @@ class CalendarView extends Component {
 			console.log(`day offset is ${offset}, num days is ${numDays}`);
 
 			for (var i = offset; i < offset + numDays; i++) {
+				const dayNumber = (i - offset) + 1;
 
 				// every 7 days. 
 				// TODO also flush the buffer if we have any remaining
@@ -128,7 +134,7 @@ class CalendarView extends Component {
 					rowBuffer = []; // reset buffer
 				}
 
-				const cellDate = new Date(firstDay.getYear(), firstDay.getMonth()+1, i);
+				const cellDate = new Date(firstDay.getFullYear(), firstDay.getMonth(), dayNumber).withoutTime();
 				let eventList = div('.events');
 
 				if (eventMap.has(cellDate.getTime())) {
@@ -139,10 +145,9 @@ class CalendarView extends Component {
 							div('.event-desc', p(evt.desc)))
 					));
 				} else {
-					console.log(cellDate, " is not in evetn map ", i);
+					console.log(cellDate, " not in the calendar.");
 				}
 
-				const dayNumber = (i - offset)+1;
 				rowBuffer.push([p(dayNumber), eventList]);
 			}
 
