@@ -14,23 +14,20 @@ class CalendarView extends Component {
         this.state.eventMap = new Map();
 
         // write some test events
-        this.writeEvent(new Date('June 5, 2018 03:24:00'),
-			{
-				name: "Foo",
-				desc: "Bar",	
-			});
+        this.writeEvent(new Date('June 5, 2018 03:24:00'), {
+			name: "Foo",
+			desc: "Bar",	
+		});
 
-		this.writeEvent(new Date('June 12, 2018 05:32:00'),
-			{
-				name: "Foo2",
-				desc: "Bar2",	
-			});
+		this.writeEvent(new Date('June 12, 2018 05:32:00'), {
+			name: "Foo2",
+			desc: "Bar2",	
+		});
 
-		this.writeEvent(new Date('June 19, 2018 06:12:00'),
-			{
-				name: "Foo3",
-				desc: "Bar3",	
-			});
+		this.writeEvent(new Date('June 19, 2018 06:12:00'), {
+			name: "Foo3",
+			desc: "Bar3",	
+		});
     }
 
     // the event map stores key => value
@@ -116,12 +113,19 @@ class CalendarView extends Component {
 				rowBuffer.push([p(dayNumber), []]);
 			}
 
-			for (var i = offset; i < offset + this.daysInMonth(date); i++) {
+			const numDays = this.daysInMonth(date);
+			console.log(`day offset is ${offset}, num days is ${numDays}`);
 
-				// every 7 days.
-				if (i % 7 == 0 && i > 0) {
+			for (var i = offset; i < offset + numDays; i++) {
+
+				// every 7 days. 
+				// TODO also flush the buffer if we have any remaining
+				// at the end of this for loop?
+				// i do this manually at the bottom but it can probably
+				// be handled here too?
+				if ((i % 7 == 0 && i > 0)) {
 					rows.push(tr(rowBuffer.map((row, _) => td(row))));
-					rowBuffer = []; // reset
+					rowBuffer = []; // reset buffer
 				}
 
 				const cellDate = new Date(firstDay.getYear(), firstDay.getMonth()+1, i);
@@ -135,11 +139,17 @@ class CalendarView extends Component {
 							div('.event-desc', p(evt.desc)))
 					));
 				} else {
-					console.log(cellDate, " is not in evetn map");
+					console.log(cellDate, " is not in evetn map ", i);
 				}
 
 				const dayNumber = (i - offset)+1;
 				rowBuffer.push([p(dayNumber), eventList]);
+			}
+
+			// flush any remaining rowbuffer bits.
+			if (rowBuffer.length > 0) {
+				rows.push(tr(rowBuffer.map((row, _) => td(row))));
+				rowBuffer = []; // reset
 			}
 		}
 
