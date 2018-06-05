@@ -115,7 +115,7 @@ class CalendarView extends Component {
 				// TODO this should be greyed out
 				// events will not be fetched for previous month days
 				const dayNumber = (startDay + i)+1;
-				rowBuffer.push([p(dayNumber), []]);
+				rowBuffer.push([p(".calendar-day", dayNumber), []]);
 			}
 
 			const numDays = this.daysInMonth(date);
@@ -130,7 +130,7 @@ class CalendarView extends Component {
 				// i do this manually at the bottom but it can probably
 				// be handled here too?
 				if ((i % 7 == 0 && i > 0)) {
-					rows.push(tr(rowBuffer.map((row, _) => td(row))));
+					rows.push(tr(".calendar-row", rowBuffer.map((row, _) => td(".calendar-cell", row))));
 					rowBuffer = []; // reset buffer
 				}
 
@@ -148,12 +148,12 @@ class CalendarView extends Component {
 					console.log(cellDate, " not in the calendar.");
 				}
 
-				rowBuffer.push([p(dayNumber), eventList]);
+				rowBuffer.push([p(".calendar-day", dayNumber), eventList]);
 			}
 
 			// flush any remaining rowbuffer bits.
 			if (rowBuffer.length > 0) {
-				rows.push(tr(rowBuffer.map((row, _) => td(row))));
+				rows.push(tr(".calendar-row", rowBuffer.map((row, _) => td(".calendar-cell", row))));
 				rowBuffer = []; // reset
 			}
 		}
@@ -163,13 +163,13 @@ class CalendarView extends Component {
 		const year = date.getFullYear();
 
 		const dateHeaderNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
-		const header = tr(dateHeaderNames.map((name, _) => th(name)));
+		const header = tr(dateHeaderNames.map((name, _) => th(".calendar-header", name)));
 
 		return [
 			section('.flex-column', div('#plan-header',
 				h1(`${monthName}, ${year}`)
 			)), 
-			section('.flex-column', table(header, rows))
+			section('.flex-column', table(".calendar", header, rows))
 		];
 	}
 

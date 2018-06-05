@@ -22,3 +22,40 @@
 	margin: 3px 0 7px 0;
 	text-decoration: none;	
 }
+
+.calendar-cell {
+	display: table-cell;
+    overflow: hidden;
+	padding: 0;
+	height: 180px;
+	width: 180px;
+}
+
+.calendar-row {
+	
+}
+
+.calendar-cell,
+.calendar-header {
+	border: 1px solid #f5f5f5;
+}
+
+.calendar-header {
+	text-alignment: center;
+	padding: 10px 6px;
+	background: #2d353e;
+	color: #fff;
+	font-size: 14pt;
+	border: none !important;
+}
+
+.calendar-day {
+	
+}
+
+.calendar {
+	table-layout: fixed;
+	border-collapse: collapse;
+	border: 1px solid #f5f5f5;
+}
+
