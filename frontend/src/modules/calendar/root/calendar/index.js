@@ -7,7 +7,14 @@ import MainNav from '../../../nav/main';
 import CalendarView from './calendar';
 
 class Calendar extends RootComponent {
+    state = {
+        id: 0,
+    };
+
     async init() {
+        if (this.params.id) {
+            this.state.id = this.params.id;
+        }
     }
 
     async render() {
@@ -18,7 +25,7 @@ class Calendar extends RootComponent {
         return Promise.all([
             header.attach(),
             mainNav.attach(),
-            calendarView.attach(),
+            calendarView.attach(this.state),
         ]).then((values) => {
             const [
                 headerEl,

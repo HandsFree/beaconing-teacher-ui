@@ -40,7 +40,7 @@
 }
 
 .calendar-cell {
-	height: 180px;
+	min-height: 90px;
 }
 
 .calendar-heading-cell {
@@ -96,3 +96,13 @@
 	border: 1px solid #f5f5f5;
 }
 
+.prev-month, .next-month {
+	color: #999;
+	background: #e5e5e5;
+}
+
+.outer-col {
+}
+
+.inner-col {
+}

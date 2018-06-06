@@ -1,6 +1,6 @@
 // @flow
 
-import { section, h1, p, div, ul, li } from '../../../../core/html';
+import { section, h1, h2, p, div, a, ul, li } from '../../../../core/html';
 import { Component } from '../../../../core/component';
 
 Date.prototype.withoutTime = function () {
@@ -10,24 +10,95 @@ Date.prototype.withoutTime = function () {
 }
 
 class CalendarView extends Component {
+	state = {
+		fromDate: new Date(),
+		id: 0,
+	};
+
+
+    updateHooks = {
+        PrevClicked: this.prevCalendarMonth,
+        NextClicked: this.nextCalendarMonth,
+    };
+
+    prevCalendarMonth() {
+    	const date = this.state.fromDate;
+		const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+    	this.state.fromDate = new Date(firstDay - 1);
+    	console.log("prev ", this.state.fromDate);
+    	this.updateView(this.genCalendar());
+    }
+
+    nextCalendarMonth() {
+    	const date = this.state.fromDate;
+		const lastDay = new Date(date.getFullYear(), date.getMonth(), this.daysInMonth(date)+1);
+		console.log("last day ", lastDay);
+    	this.state.fromDate = new Date(lastDay + 1);
+    	console.log("next ", this.state.fromDate);
+    	this.updateView(this.genCalendar());
+    }
+
+	async getStudentGLPS(id) {
+		const assigned = await window.beaconingAPI.getStudentAssigned(id);
+
+        if (assigned) { //  && assignedGLPs.length >= 1
+            const glps = [];
+
+            for (const glp of assigned) {
+                const glpObj = await window.beaconingAPI.getGLP(glp.gamifiedLessonPathId, true);
+
+                glps.push({
+                    glp: glpObj,
+                    assignedGLPID: glp.id,
+                    availableFrom: glp.availableFrom,
+                });
+            }
+
+            return glps;
+        }
+
+        return [];
+	}
+
 	async init() {
-        this.state.eventMap = new Map();
+		this.state.eventMap = new Map();
 
-        // write some test events
-        this.writeEvent(new Date('June 5, 2018 03:24:00'), {
-			name: "Foo",
-			desc: "Bar",	
-		});
+		if (this.props.id) {
+			this.state.id = this.props.id;
+		}
 
-		this.writeEvent(new Date('June 12, 2018 05:32:00'), {
-			name: "Foo2",
-			desc: "Bar2",	
-		});
+        const studentId = this.state.id;
 
-		this.writeEvent(new Date('June 19, 2018 06:12:00'), {
-			name: "Foo3",
-			desc: "Bar3",	
-		});
+        const glps = await this.getStudentGLPS(studentId);
+
+        for (const glpBox of glps) {
+        	const glp = glpBox.glp;
+
+        	if (glpBox.availableFrom) {
+	        	this.writeEvent(new Date(glpBox.availableFrom), {
+	        		name: glp.name,
+	        		desc: glp.description,
+	        	});
+        	}
+        }
+
+        if ("debug" == "foopa") {
+	        // write some test events
+	        this.writeEvent(new Date('June 5, 2018 03:24:00'), {
+				name: "Foo",
+				desc: "Bar",	
+			});
+
+			this.writeEvent(new Date('June 12, 2018 05:32:00'), {
+				name: "Foo2",
+				desc: "Bar2",	
+			});
+
+			this.writeEvent(new Date('June 19, 2018 06:12:00'), {
+				name: "Foo3",
+				desc: "Bar3",	
+			});
+        }
     }
 
     // the event map stores key => value
@@ -87,7 +158,12 @@ class CalendarView extends Component {
 		return monthNames[date.getMonth()];
 	}
 
-	genCalendarData(date) {
+	getStudentInfo() {
+		return [h2("Felix Angell")];
+	}
+
+	genCalendarData() {
+		let date = this.state.fromDate;
 		const eventMap = this.state.eventMap;
 
 		const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
@@ -121,7 +197,7 @@ class CalendarView extends Component {
 				// TODO this should be greyed out
 				// events will not be fetched for previous month days
 				const dayNumber = (startDay + i)+1;
-				rowBuffer.push(div(".calendar-cell", [p(".calendar-day", dayNumber), []]));
+				rowBuffer.push(div(".calendar-cell .prev-month", [p(".calendar-day", dayNumber), []]));
 			}
 
 			const numDays = this.daysInMonth(date);
@@ -152,8 +228,6 @@ class CalendarView extends Component {
 							// div('.event-name', p(evt.name)),
 							div('.event-desc', p(evt.desc)))
 					));
-				} else {
-					console.log(cellDate, " not in the calendar.");
 				}
 
 				// better way to do this?
@@ -171,10 +245,10 @@ class CalendarView extends Component {
 					rows.push(row);
 				});
 
-				// add empty divs to pad out the flex bow thing
+				// pad out the month with some more cells...
 				const remain = dateHeaderNames.length - rowBuffer.length;
 				for (let i = 0; i < remain; i++) {
-					rows.push(div(".calendar-cell"));
+					rows.push(div(".calendar-cell .next-month", [p(".calendar-day", (i + 1))]));
 				}
 
 				rowBuffer = []; // reset buffer
@@ -185,24 +259,33 @@ class CalendarView extends Component {
 		const monthName = this.getMonthName(date);
 		const year = date.getFullYear();
 
+		const studentInfo = this.getStudentInfo();
+
 		return [
 			section('.flex-column', div('#plan-header',
 				h1(`${monthName}, ${year}`)
-			)), 
-			section('.flex-column', div(".calendar", rows))
+			)),
+
+			section('.flex-column .outer-col',
+				
+				div(a({onclick: () => this.emit('PrevClicked')}, "prev"), 
+					a({onclick: () => this.emit('NextClicked')}, "next")),
+
+				section('.flex-column .inner-col', div(".student-calendar", studentInfo)),
+				section('.flex-column .inner-col', div(".calendar", rows))
+			)
 		];
 	}
 
 	// generates a calendar from the given
 	// date specified. this calendar is a view
 	// of the current month.
-	genCalendar(fromDate) {
-		return this.genCalendarData(fromDate);
+	genCalendar() {
+		return this.genCalendarData(this.state.fromDate);
 	}
 
 	async render() {
-		const currDate = new Date();
-        return this.genCalendar(currDate);
+        return this.genCalendar();
     }
 }
 
