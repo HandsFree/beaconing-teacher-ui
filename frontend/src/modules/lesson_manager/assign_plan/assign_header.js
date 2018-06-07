@@ -1,5 +1,5 @@
 // @flow
-import { div, a, i, h1, h2 } from '../../../core/html';
+import { div, a, i, h1, h2, span } from '../../../core/html';
 
 import { Component } from '../../../core/component';
 
@@ -17,13 +17,23 @@ class AssignHeader extends Component {
     async render() {
         return div(
             '#assign-header',
-            a(
-                '.back',
-                {
-                    href: `//${window.location.host}/lesson_manager`,
-                },
-                i('.icon-angle-left'),
-                'Go Back',
+            div(
+                '.breadcrumb',
+                a(
+                    '.crumb',
+                    {
+                        href: `//${window.location.host}/lesson_manager`,
+                    },
+                    span('Library'),
+                ),
+                a(
+                    '.crumb',
+                    {
+                       href: `//${window.location.host}/lesson_manager#view?id=${this.state.glp.id}`,
+                    },
+                    span('Plan Overview'),
+                ),
+                a('.current', 'Assign'),
             ),
             div(
                 '.name-group',
