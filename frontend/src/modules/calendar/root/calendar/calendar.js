@@ -105,7 +105,8 @@ class CalendarView extends Component {
 
         	if (glpBox.availableFrom) {
 	        	this.writeEvent(new Date(glpBox.availableFrom), {
-	        		name: glp.name,
+					name: glp.name,
+					id: glp.id,
 	        		desc: glp.description,
 	        	});
         	}
@@ -248,6 +249,7 @@ class CalendarView extends Component {
 		}
 
 		return div(".full-width",
+			h2("select group:"),	
 			select({onchange: (event) => {
 				const self = event.target;
 
@@ -327,7 +329,7 @@ class CalendarView extends Component {
 					const evt = eventMap.get(cellDate.getTime());
 					eventList = div('.events', 
 						evt.map((evt, _) => 
-							div('.event', div('.event-name', evt.name))
+							div('.event', a({href:`//${window.location.host}/lesson_manager/#view?id=${evt.id}&prev=calendar`},div('.event-name', evt.name)))
 					));
 				}
 
