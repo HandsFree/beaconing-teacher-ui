@@ -230,7 +230,7 @@ func GetGLP(s *gin.Context, id uint64, minify bool) (*types.GLP, error) {
 // core database.
 func DeleteGLP(s *gin.Context, id uint64) (string, error) {
 	resp, err := DoTimedRequest(s, "DELETE",
-		API.getPath(s, "gamifiedlessonpaths", fmt.Sprintf("%d", id)),
+		API.getPath(s, "gamifiedlessonpaths/", fmt.Sprintf("%d", id)),
 	)
 
 	if err != nil {

@@ -56,7 +56,7 @@ func DeleteGLPRequest() gin.HandlerFunc {
 		}
 
 		s.Header("Content-Type", "application/json")
-		s.JSON(http.StatusOK, gin.H{"status": string(body)})
+		s.String(http.StatusOK, string(body))
 	}
 }
 
