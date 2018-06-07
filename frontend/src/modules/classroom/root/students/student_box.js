@@ -63,6 +63,12 @@ class StudentBox extends Component {
                     },
                     'View Student',
                 ),
+                a(
+                    {
+                        href: `//${window.location.host}/calendar?id=${id}`,
+                    },
+                    'View Calendar',
+                ),
             ),
         );
     }

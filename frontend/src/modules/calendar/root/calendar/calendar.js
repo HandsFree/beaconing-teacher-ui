@@ -9,12 +9,21 @@ Date.prototype.withoutTime = function () {
     return d;
 }
 
+class CalendarCell extends Component {
+	async init() {
+
+	}
+
+	async render() {
+
+	}
+}
+
 class CalendarView extends Component {
 	state = {
 		fromDate: new Date(),
 		id: 0,
 	};
-
 
     updateHooks = {
         PrevClicked: this.prevCalendarMonth,
@@ -82,7 +91,6 @@ class CalendarView extends Component {
         	}
         }
 
-        if ("debug" == "foopa") {
 	        // write some test events
 	        this.writeEvent(new Date('June 5, 2018 03:24:00'), {
 				name: "Foo",
@@ -98,7 +106,6 @@ class CalendarView extends Component {
 				name: "Foo3",
 				desc: "Bar3",	
 			});
-        }
     }
 
     // the event map stores key => value
@@ -224,9 +231,8 @@ class CalendarView extends Component {
 				if (eventMap.has(cellDate.getTime())) {
 					const evt = eventMap.get(cellDate.getTime());
 					eventList = div('.events', 
-						evt.map((evt, _) => div('.event',
-							// div('.event-name', p(evt.name)),
-							div('.event-desc', p(evt.desc)))
+						evt.map((evt, _) => 
+							div('.event', div('.event-name', evt.name))
 					));
 				}
 
@@ -234,7 +240,7 @@ class CalendarView extends Component {
 				let classList = ".calendar-cell";
 				if (new Date().withoutTime().getTime() === cellDate.getTime()) {
 					classList += " .current-day";
-				}
+				}	
 
 				rowBuffer.push(div(classList, [p(".calendar-day", dayNumber), eventList]));
 			}
@@ -246,13 +252,14 @@ class CalendarView extends Component {
 				});
 
 				// pad out the month with some more cells...
-				const remain = dateHeaderNames.length - rowBuffer.length;
+				const remain = 7 - rowBuffer.length;
 				for (let i = 0; i < remain; i++) {
 					rows.push(div(".calendar-cell .next-month", [p(".calendar-day", (i + 1))]));
 				}
 
 				rowBuffer = []; // reset buffer
 			}
+
 		}
 
 		const currentDay = this.getDayName(date);
@@ -261,15 +268,25 @@ class CalendarView extends Component {
 
 		const studentInfo = this.getStudentInfo();
 
+		const student = window.beaconingAPI.getStudent(this.state.id);
+		const username = student.username;
+
 		return [
 			section('.flex-column', div('#plan-header',
-				h1(`${monthName}, ${year}`)
+				h1(`${username}'s calendar`)
 			)),
 
 			section('.flex-column .outer-col',
 				
-				div(a({onclick: () => this.emit('PrevClicked')}, "prev"), 
-					a({onclick: () => this.emit('NextClicked')}, "next")),
+				div(
+					h2(`${monthName}, ${year}`),
+					a({onclick: () => {
+						this.emit('PrevClicked');
+					}}, "prev"), 
+					a({onclick: () => {
+						this.emit('NextClicked');
+					}}, "next")
+				),
 
 				section('.flex-column .inner-col', div(".student-calendar", studentInfo)),
 				section('.flex-column .inner-col', div(".calendar", rows))
