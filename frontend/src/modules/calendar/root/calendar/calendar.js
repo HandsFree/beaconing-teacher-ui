@@ -210,9 +210,14 @@ class CalendarView extends Component {
 			);
 		}
 
+		let studentSet = p("no students for this group.");
+		if (studentLinks.length > 0) {
+			studentSet = ul(studentLinks);
+		}
+
 		return div(".full-width",
 			h2("inspect student:"),
-			ul(studentLinks));
+			studentSet);
 	}
 
 	async renderGroupList() {
