@@ -127,8 +127,12 @@
 		padding: 0.5em;
 		justify-content: space-between;
 
-		.description, .topic, .domain {
+		.topic, .domain, .created, .modified, .owner {
 			flex-direction: column;
+
+			p {
+				margin-left: 0.25em;
+			}
 		}
 
 		.link-underline {
