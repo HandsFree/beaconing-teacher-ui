@@ -1,6 +1,6 @@
 // @flow
 
-import { section, h1, h2, p, div, a, ul, li } from '../../../../core/html';
+import { section, h1, h2, p, div, a, ul, li, span, select, option } from '../../../../core/html';
 import { Component } from '../../../../core/component';
 
 Date.prototype.withoutTime = function () {
@@ -22,35 +22,58 @@ class CalendarCell extends Component {
 class CalendarView extends Component {
 	state = {
 		fromDate: new Date(),
+		eventMap: new Map(),
 		id: 0,
 	};
 
     updateHooks = {
-        PrevClicked: this.prevCalendarMonth,
-        NextClicked: this.nextCalendarMonth,
-    };
+		PrevClicked: this.prevCalendarMonth,
+		TodayClicked: this.currCalendarMonth,
+		NextClicked: this.nextCalendarMonth,
+		SetGroup: this.updateGroup,
+		UpdateCalendar: this.updateCalendar,
+	};
+	
+	async updateCalendar() {
+		this.updateView(await this.genCalendar());
+	}
 
-    prevCalendarMonth() {
+	async updateGroup() {
+		if (!this.state.groupId) {
+			return;
+		}
+
+		// FIXME
+		this.updateView(await this.genCalendar());
+	}
+
+	async currCalendarMonth() {
+		// today!
+		this.state.fromDate = new Date();
+    	this.updateView(await this.genCalendar());
+	}
+
+    async prevCalendarMonth() {
     	const date = this.state.fromDate;
 		const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
     	this.state.fromDate = new Date(firstDay - 1);
     	console.log("prev ", this.state.fromDate);
-    	this.updateView(this.genCalendar());
+    	this.updateView(await this.genCalendar());
     }
 
-    nextCalendarMonth() {
+    async nextCalendarMonth() {
     	const date = this.state.fromDate;
 		const lastDay = new Date(date.getFullYear(), date.getMonth(), this.daysInMonth(date)+1);
 		console.log("last day ", lastDay);
     	this.state.fromDate = new Date(lastDay + 1);
     	console.log("next ", this.state.fromDate);
-    	this.updateView(this.genCalendar());
+    	this.updateView(await this.genCalendar());
     }
 
 	async getStudentGLPS(id) {
 		const assigned = await window.beaconingAPI.getStudentAssigned(id);
 
-        if (assigned) { //  && assignedGLPs.length >= 1
+        if (assigned) {
             const glps = [];
 
             for (const glp of assigned) {
@@ -69,16 +92,13 @@ class CalendarView extends Component {
         return [];
 	}
 
-	async init() {
-		this.state.eventMap = new Map();
-
-		if (this.props.id) {
-			this.state.id = this.props.id;
+	async writeStudentGLPS(studentId) {
+		// clear out all the old events
+		if (this.state.eventMap) {
+			this.state.eventMap = new Map();
 		}
 
-        const studentId = this.state.id;
-
-        const glps = await this.getStudentGLPS(studentId);
+		const glps = await this.getStudentGLPS(studentId);
 
         for (const glpBox of glps) {
         	const glp = glpBox.glp;
@@ -90,22 +110,28 @@ class CalendarView extends Component {
 	        	});
         	}
         }
+	}
 
-	        // write some test events
-	        this.writeEvent(new Date('June 5, 2018 03:24:00'), {
-				name: "Foo",
-				desc: "Bar",	
-			});
+	async init() {
+		if (this.props.id) {
+			this.state.id = this.props.id;
+		}
 
-			this.writeEvent(new Date('June 12, 2018 05:32:00'), {
-				name: "Foo2",
-				desc: "Bar2",	
-			});
+		// write some test events
+		this.writeEvent(new Date('June 5, 2018 03:24:00'), {
+			name: "Foo",
+			desc: "Bar",	
+		});
 
-			this.writeEvent(new Date('June 19, 2018 06:12:00'), {
-				name: "Foo3",
-				desc: "Bar3",	
-			});
+		this.writeEvent(new Date('June 12, 2018 05:32:00'), {
+			name: "Foo2",
+			desc: "Bar2",	
+		});
+
+		this.writeEvent(new Date('June 19, 2018 06:12:00'), {
+			name: "Foo3",
+			desc: "Bar3",	
+		});
     }
 
     // the event map stores key => value
@@ -165,11 +191,91 @@ class CalendarView extends Component {
 		return monthNames[date.getMonth()];
 	}
 
-	getStudentInfo() {
-		return [h2("Felix Angell")];
+	async renderStudentList() {
+		const studentLinks = [];
+
+		const groupId = this.state.groupId;
+
+		// this is a superflous api req. if we
+		// re-architect the calendar... but it works for now
+		const group = await window.beaconingAPI.getGroup(groupId);
+
+		console.log("the group is ", group);
+
+		// oh boy what is this.
+		const students = [];
+		for (const studentObj of group.students) {
+			const studentId = studentObj.id;
+			students.push(await window.beaconingAPI.getStudent(studentId));
+		}
+
+		// loop thru students AGAIN
+		for (const student of students) {
+			console.log("student is ", student);
+
+			studentLinks.push(
+				li(span(".fake-link",
+					{
+						onclick: () => {
+							this.state.id = student.id;
+							this.emit('UpdateCalendar');
+						},
+					},
+					student.username
+				)),
+			);
+		}
+
+		return div(".full-width",
+			h2("inspect student:"),
+			ul(studentLinks));
 	}
 
-	genCalendarData() {
+	async renderGroupList() {
+		const options = [];
+
+		const groups = Object.values(await window.beaconingAPI.getGroups()) ?? [];
+		for (const group of groups) {
+			let isSelected = "";
+			if (this.state.groupId == group.id) {
+				isSelected = "selected";
+			}
+
+			options.push(
+				option(isSelected, {
+					value:`${group.id}`,
+				}, `${group.name}`)
+			);
+		}
+
+		// no group set so we wait for group selection
+		// before we can render the student list.
+		let studentList = [];
+
+		// group id is set, so we render the student list
+		if (this.state.groupId) {
+			const groupId = this.state.currGroupId;
+			studentList = await this.renderStudentList(groupId);
+		}
+
+		return div(".full-width",
+			select({onchange: (event) => {
+				const self = event.target;
+
+				const selectedOption = self.options[self.selectedIndex];
+				this.state.groupId = selectedOption.value;
+				this.emit('SetGroup');
+			}}, options),
+			studentList,
+		);
+	}
+	async genCalendarData() {		
+		// write the glps for the student if
+		// we have one selected.
+		if (this.state.id) {
+			await this.writeStudentGLPS(this.state.id);
+		}
+		
 		let date = this.state.fromDate;
 		const eventMap = this.state.eventMap;
 
@@ -266,38 +372,55 @@ class CalendarView extends Component {
 		const monthName = this.getMonthName(date);
 		const year = date.getFullYear();
 
-		const studentInfo = this.getStudentInfo();
+		const groupList = await this.renderGroupList();
 
-		const student = window.beaconingAPI.getStudent(this.state.id);
-		const username = student.username;
+		let studentGreet = "";
+		if (this.state.id) {
+			const student = await window.beaconingAPI.getStudent(this.state.id);
+			if (student) {
+				studentGreet = `${student.username}'s calendar, `;
+			}
+		}
 
-		return [
-			section('.flex-column', div('#plan-header',
-				h1(`${username}'s calendar`)
-			)),
+		return section('.outer-col',
+			section(".full-width", 
+				div(".group-select", 
+					groupList),
+			),
 
-			section('.flex-column .outer-col',
-				
-				div(
-					h2(`${monthName}, ${year}`),
-					a({onclick: () => {
-						this.emit('PrevClicked');
-					}}, "prev"), 
-					a({onclick: () => {
-						this.emit('NextClicked');
-					}}, "next")
+			section('.calendar-col', 
+				div('.calendar-control',
+					h2(".calendar-date", `${studentGreet} ${monthName}, ${year}`),
+
+					p(
+						span(".fake-link", {
+							onclick: () => this.emit('PrevClicked')
+						}, "prev"),
+
+						" ",
+
+						span(".fake-link", {
+							href: '',
+							onclick: () => this.emit('TodayClicked')
+						}, "today"),
+
+						" ",
+
+						span(".fake-link", {
+							href: '',
+							onclick: () => this.emit('NextClicked')
+						}, "next")
+					)
 				),
-
-				section('.flex-column .inner-col', div(".student-calendar", studentInfo)),
-				section('.flex-column .inner-col', div(".calendar", rows))
+				div(".calendar", rows)
 			)
-		];
+		);
 	}
 
 	// generates a calendar from the given
 	// date specified. this calendar is a view
 	// of the current month.
-	genCalendar() {
+	async genCalendar() {
 		return this.genCalendarData(this.state.fromDate);
 	}
 

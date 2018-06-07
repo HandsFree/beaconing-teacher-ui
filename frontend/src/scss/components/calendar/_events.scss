@@ -73,7 +73,7 @@
 	/* hmm */
 	// border-bottom: 2.5px solid #fc3d39;
 	color: #fff;
-	background: #f26c42;
+	background:rgba(242, 108, 66, 0.7);
 }
 
 /*
@@ -104,7 +104,46 @@
 }
 
 .outer-col {
+	display: grid;
+	grid-template-columns: 30% 70%;
 }
 
-.inner-col {
+.full-width {
+	display: block;
+}
+
+.student-list {
+	display: block;
+}
+
+.studentinfo-col {
+	display: block;
+}
+
+.calendar-col {
+	display: block;
+}
+
+.calendar-control {
+	display: block;
+}
+
+.calendar-date {
+	text-align: right;
+}
+
+.fake-link {
+    cursor: pointer;
+}
+
+.fake-link:hover {
+	text-decoration: underline;
+}
+
+.student-info {
+	display: block;
+}
+
+.group-select {
+	display: block;
 }
