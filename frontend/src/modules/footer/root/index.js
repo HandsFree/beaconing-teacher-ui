@@ -47,7 +47,7 @@ class Footer extends Component {
                         ),
                     ),
                     span('.cr', '© Beaconing 2018'),
-                    span('.version', 'v0.5.4'),
+                    span('.version', 'v0.6.0-pre'),
                 ),
                 nav(
                     '.fmenu',
@@ -57,7 +57,7 @@ class Footer extends Component {
                             href: 'https://hfc.gitbook.io/beaconing-teacher-ui/',
                             target: '_blank',
                         },
-                        'Support',
+                        await window.bcnI18n.getPhrase('ft_support'),
                     ),
                     a(
                         '.item',
@@ -65,21 +65,21 @@ class Footer extends Component {
                             href: 'http://beaconing.eu/contact-us/',
                             target: '_blank',
                         },
-                        'Contact Us',
+                        await window.bcnI18n.getPhrase('ft_cont_us'),
                     ),
                     a(
                         '.item',
                         {
                             href: '#',
                         },
-                        'Terms and Conditions',
+                        await window.bcnI18n.getPhrase('ft_tc'),
                     ),
                     a(
                         '.item',
                         {
                             href: '#',
                         },
-                        'Privacy Policy',
+                        await window.bcnI18n.getPhrase('ft_pp'),
                     ),
                 ),
             ),

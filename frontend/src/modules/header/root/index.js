@@ -40,7 +40,7 @@ class Header extends Component {
                     },
                     img({
                         src: `//${window.location.host}/dist/beaconing/images/logo.png`,
-                        alt: 'Click to go to Home',
+                        alt: await window.bcnI18n.getPhrase('logo_title'),
                     }),
                 ),
             ),
@@ -52,7 +52,7 @@ class Header extends Component {
                         {
                             href: `//${window.location.host}/auth/logout`,
                         },
-                        'Logout',
+                        await window.bcnI18n.getPhrase('log_out'),
                     ),
                 ),
                 div(

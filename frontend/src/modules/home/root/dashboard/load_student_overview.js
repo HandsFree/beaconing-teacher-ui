@@ -78,12 +78,12 @@ class LoadStudentOverview extends Component {
 
             const bestPerformingEl = await bestPerforming.attach({
                 title: await window.bcnI18n.getPhrase('widget_so_bp'),
-                msg: await window.bcnI18n.getPhrase('widget_so_no_group'),
+                msg: await window.bcnI18n.getPhrase('widget_so_op'),
                 data: bpData,
             });
             const needsAttentionEl = await needsAttention.attach({
                 title: await window.bcnI18n.getPhrase('widget_so_na'),
-                msg: await window.bcnI18n.getPhrase('widget_so_no_group'),
+                msg: await window.bcnI18n.getPhrase('widget_so_op'),
                 data: naData,
             });
             const mostImprovementEl = await mostImprovement.attach({
