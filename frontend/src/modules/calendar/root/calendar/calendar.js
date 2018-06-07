@@ -116,22 +116,6 @@ class CalendarView extends Component {
 		if (this.props.id) {
 			this.state.id = this.props.id;
 		}
-
-		// write some test events
-		this.writeEvent(new Date('June 5, 2018 03:24:00'), {
-			name: "Foo",
-			desc: "Bar",	
-		});
-
-		this.writeEvent(new Date('June 12, 2018 05:32:00'), {
-			name: "Foo2",
-			desc: "Bar2",	
-		});
-
-		this.writeEvent(new Date('June 19, 2018 06:12:00'), {
-			name: "Foo3",
-			desc: "Bar3",	
-		});
     }
 
     // the event map stores key => value
