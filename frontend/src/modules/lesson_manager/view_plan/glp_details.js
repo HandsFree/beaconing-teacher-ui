@@ -77,6 +77,11 @@ class GLPDetails extends Component {
                     strong('Year: '),
                     span(this.state.glp.year),
                 ),
+                div(
+                    '.detail',
+                    strong('Owner: '),
+                    span(this.state.glp.owner),
+                ),
             ),
             div(
                 '.large-details',

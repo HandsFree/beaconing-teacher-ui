@@ -195,6 +195,17 @@ class APICore {
         return glp;
     }
 
+    async deleteGLP(id: number) {
+        let glpStatus = false;
+        const msg = await this.delete(`//${window.location.host}/api/v1/glp/${id}`);
+        
+        if (typeof msg === 'object' && msg.success) {
+            glpStatus = true;
+        }
+
+        return glpStatus;
+    }
+
     async getStudents() {
         const students = await this.get(`//${window.location.host}/api/v1/students`);
 
