@@ -4,7 +4,7 @@ import { div, main } from '../../../../core/html';
 import { RootComponent } from '../../../../core/component';
 import Header from '../../../header/root';
 import MainNav from '../../../nav/main';
-import CalendarView from './calendar';
+import CalendarController from './calendar_view';
 
 class Calendar extends RootComponent {
     state = {
@@ -20,12 +20,14 @@ class Calendar extends RootComponent {
     async render() {
         const header = new Header();
         const mainNav = new MainNav();
-        const calendarView = new CalendarView();
+        const calendarView = new CalendarController();
+
+        console.log("calendar index");
 
         return Promise.all([
             header.attach(),
             mainNav.attach(),
-            calendarView.attach(this.state),
+            calendarView.attach(),
         ]).then((values) => {
             const [
                 headerEl,

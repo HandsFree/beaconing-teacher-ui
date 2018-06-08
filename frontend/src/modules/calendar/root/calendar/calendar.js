@@ -9,16 +9,6 @@ Date.prototype.withoutTime = function () {
     return d;
 }
 
-class CalendarCell extends Component {
-	async init() {
-
-	}
-
-	async render() {
-
-	}
-}
-
 class CalendarView extends Component {
 	state = {
 		fromDate: new Date(),
@@ -143,38 +133,6 @@ class CalendarView extends Component {
     		this.state.eventMap.set(newDate.getTime(), [event]);
     	}
     }
-
-	// returns how many days there are in the
-	// month d
-	daysInMonth(d) {
-		return new Date(d.getYear(), d.getMonth()+1, 0).getDate();
-	}
-
-	/*
-		<table>
-			<tr>
-				<th></th>
-			</tr>
-			<tr>
-				<td></td>
-			</tr>
-		</table>
-	*/
-
-	getDayName(date) {
-		const dayNames = [
-			"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
-		];
-		return dayNames[date.getDay()];
-	}
-
-	getMonthName(date) {
-		const monthNames = [
-			"January", "February", "March", "April", "May", "June", "July", "August",
-			"September", "October", "November", "December"
-		];
-		return monthNames[date.getMonth()];
-	}
 
 	async renderStudentList() {
 		const studentLinks = [];
