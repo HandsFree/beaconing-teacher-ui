@@ -4,7 +4,8 @@ import { div, main } from '../../../../core/html';
 import { RootComponent } from '../../../../core/component';
 import Header from '../../../header/root';
 import MainNav from '../../../nav/main';
-import CalendarController from './calendar_view';
+import CalendarView from './calendar_view';
+import CalendarController from './calendar_controller';
 
 class Calendar extends RootComponent {
     state = {
@@ -20,18 +21,22 @@ class Calendar extends RootComponent {
     async render() {
         const header = new Header();
         const mainNav = new MainNav();
-        const calendarView = new CalendarController();
+
+        const calendarController = new CalendarController(this.state.id);
+        const calendarView = new CalendarView();
 
         console.log("calendar index");
 
         return Promise.all([
             header.attach(),
             mainNav.attach(),
+            calendarController.attach(),
             calendarView.attach(),
         ]).then((values) => {
             const [
                 headerEl,
                 mainNavEl,
+                calendarController,
                 calendarView,
             ] = values;
 
@@ -41,7 +46,10 @@ class Calendar extends RootComponent {
                 div(
                     '.flex-container.expand.margin-top-2',
                     mainNavEl,
-                    main(calendarView),
+                    main(
+                        calendarController,
+                        calendarView
+                    ),
                 ),
             );
         });

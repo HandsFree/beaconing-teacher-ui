@@ -8,25 +8,50 @@ import component, { Component } from '../../../../core/component';
 // stuff and fetch events for each cell including prev
 // and next month ones.
 
+class CalendarEvent extends Component {
+    async render() {
+        const { eventName, eventDesc } = this.props;
+
+        return div(".calendar-event",
+            p(`${eventName}`),
+            p(`${eventDesc}`),
+        )
+    }
+}
+
+class CalendarEventList extends Component {
+    async render() {
+        const events = this.props.events;
+        if (!events) {
+            // no events
+            return div(".event-list");
+        }
+
+        return Promise.all(events).then((eventEls) => {
+            return div(".event-list", eventEls);
+        });
+    }
+}
+
 // an individual cell in the calendar
 class CalendarCell extends Component {
     async render() {
-        const dayNumber = this.props.dayNumber;
-        return div(".calendar-cell", [p(".calendar-day", dayNumber)]);
+        const { dayNumber, events } = this.props;
+        return div(".calendar-cell", p(".calendar-day", dayNumber), events);
     }
 }
 
 class CalendarNextMonthCell extends Component {
     async render() {
-        const dayNumber = this.props.dayNumber;
-        return div(".calendar-cell .next-month", [p(".calendar-day", dayNumber)]);
+        const { dayNumber } = this.props;
+        return div(".calendar-cell .next-month", p(".calendar-day", dayNumber));
     }
 }
 
 class CalendarPrevMonthCell extends Component {
     async render() {
-        const dayNumber = this.props.dayNumber;
-        return div(".calendar-cell .prev-month", [p(".calendar-day", dayNumber), []]);
+        const { dayNumber } = this.props;
+        return div(".calendar-cell .prev-month", p(".calendar-day", dayNumber));
     }
 }
 
@@ -43,15 +68,42 @@ class CalendarHeadingCell extends Component {
 
 // the actual calendar
 class CalendarView extends Component {    
+    updateHooks = {
+        PrevMonth: this.prevMonth,
+        NextMonth: this.nextMonth,
+        CurrMonth: this.currMonth,
+    }
+    
     // the date, specifically the month, this calendar
     // will bew a view of.
-    constructor(date) {
+    constructor() {
         super();
-        console.log("calendar view!");
 
         this.state = {
-            date: date,
-        };
+            currDate: new Date(),
+        }
+    }
+
+    async currMonth() {
+        this.state.currDate = new Date();
+    	this.updateView(await this.render());
+    }
+
+    async prevMonth() {
+        const date = this.state.currDate;
+		const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+    	this.state.currDate = new Date(firstDay - 1);
+    	console.log("prev ", this.state.currDate);
+        this.updateView(await this.render());
+    }
+
+    async nextMonth() {
+        const date = this.state.currDate;
+		const lastDay = new Date(date.getFullYear(), date.getMonth(), date.daysInMonth()+1);
+		console.log("last day ", lastDay);
+    	this.state.currDate = new Date(lastDay + 1);
+    	console.log("next ", this.state.currDate);
+    	this.updateView(await this.render());
     }
 
     async render() {
@@ -62,7 +114,7 @@ class CalendarView extends Component {
         // calculate how many cells to create
         // for this particular month
 
-        let calDate = this.state.date;
+        let calDate = this.state.currDate;
         const firstDay = calDate.firstDay();
 
         // rows of calendar cells in the calendar
@@ -110,8 +162,14 @@ class CalendarView extends Component {
 
             const cellDate = new Date(firstDay.getFullYear(), firstDay.getMonth(), dayNumber).withoutTime();
 
+            const events = [];
+
+
+            const eventListEl = new CalendarEventList().attach(events);
+            
             const cell = new CalendarCell().attach({
                 dayNumber: dayNumber,
+                events: eventListEl,
             });
             rowBuffer.push(cell);
         }
@@ -135,29 +193,6 @@ class CalendarView extends Component {
         // ?
         return Promise.all(rows).then((elements) => {
             return div(".calendar", elements);
-        });
-    }
-}
-
-// the controller options and the view
-class CalendarController extends Component {
-    async init() {
-        console.log("calendar controller!");
-    }
-
-    async render() {
-        console.log("calendar controller render!");
-        
-        const view = new CalendarView(new Date());
-
-        return Promise.all([
-            view.attach(),
-        ]).then((values) => {
-            const [
-                viewEl
-            ] = values;
-
-            return viewEl;
         });
     }
 }
@@ -197,4 +232,4 @@ Date.prototype.withoutTime = function () {
     return d;
 }
 
-export default CalendarController;
+export default CalendarView;
