@@ -21,9 +21,9 @@ class CalendarEvent extends Component {
 
 class CalendarEventList extends Component {
     async render() {
-        const events = this.props.events ?? [];
-        return Promise.all(events).then((eventEls) => {
-            return div(".event-list", eventEls);
+        const { events } = this.props;
+        return Promise.all(events).then((el) => {
+            return div(".event-list", el);
         });
     }
 }
@@ -32,15 +32,15 @@ class CalendarEventList extends Component {
 class CalendarCell extends Component {
     async render() {
         const { dayNumber, cellDate, eventList } = this.props;
-        const eventListEl = Promise.resolve(eventList).then((el) => {
-            return el;
-        });
 
         let classList = ".calendar-cell";
         if (new Date().withoutTime().getTime() === cellDate.getTime()) {
             classList += " .current-day";
         }	
-        return div(classList, p(".calendar-day", dayNumber), eventListEl);
+
+        return Promise.resolve(eventList).then((el) => {
+            return div(classList, p(".calendar-day", dayNumber), el);
+        });
     }
 }
 
@@ -111,10 +111,6 @@ class CalendarView extends Component {
     }
 
     async render() {
-        console.log("calendar view render!");
-
-        // write the events.
-
         // calculate how many cells to create
         // for this particular month
 
@@ -123,8 +119,6 @@ class CalendarView extends Component {
 
         // rows of calendar cells in the calendar
         let rows = [];
-
-        console.log("setting calendar days");
 
         const calendarDayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
         for (const dayName of calendarDayNames) {
