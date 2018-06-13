@@ -12,7 +12,7 @@ class CalendarEvent extends Component {
     async render() {
         const { eventName, eventDesc } = this.props;
 
-        return div(".calendar-event",
+        return div(".event",
             p(`${eventName}`),
             p(`${eventDesc}`),
         )
@@ -23,7 +23,7 @@ class CalendarEventList extends Component {
     async render() {
         const { events } = this.props;
         return Promise.all(events).then((el) => {
-            return div(".event-list", el);
+            return div(".events", el);
         });
     }
 }
