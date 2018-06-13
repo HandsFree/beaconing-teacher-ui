@@ -10,12 +10,13 @@ import component, { Component } from '../../../../core/component';
 
 class CalendarEvent extends Component {
     async render() {
-        const { eventName, eventDesc } = this.props;
+        const { name, desc, id } = this.props;
 
-        return div(".event",
-            p(`${eventName}`),
-            p(`${eventDesc}`),
-        )
+        return div('.event', 
+            a({
+                href:`//${window.location.host}/lesson_manager/#view?id=${id}&prev=calendar`
+            }, 
+            div('.event-name', name)));
     }
 }
 
@@ -164,12 +165,9 @@ class CalendarView extends Component {
 
             let events = [];
             events.push(new CalendarEvent().attach({
-                eventName: "foo",
-                eventDesc: "desc",
-            }));
-            events.push(new CalendarEvent().attach({
-                eventName: "foo br baz",
-                eventDesc: "desc",
+                name: "foo",
+                desc: "desc",
+                id: 13,
             }));
 
             const eventList = new CalendarEventList().attach({
