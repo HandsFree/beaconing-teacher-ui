@@ -3,72 +3,13 @@
 import { section, h1, h2, p, div, a, ul, li, span, select, option } from '../../../../core/html';
 import component, { Component } from '../../../../core/component';
 
+import { ClendarEventList, CalendarEvent, CalendarEventList } from './calendar_event';
+import { CalendarCell, CalendarHeadingCell, CalendarNextMonthCell, CalendarPrevMonthCell } from './calendar_cell';
+
 // NOTE
 // we could abstract cells to avoid the event list
 // stuff and fetch events for each cell including prev
 // and next month ones.
-
-class CalendarEvent extends Component {
-    async render() {
-        const { name, desc, id } = this.props;
-
-        return div('.event', 
-            a({
-                href:`//${window.location.host}/lesson_manager/#view?id=${id}&prev=calendar`
-            }, 
-            div('.event-name', name)));
-    }
-}
-
-class CalendarEventList extends Component {
-    async render() {
-        const { events } = this.props;
-        return Promise.all(events).then((el) => {
-            return div(".events", el);
-        });
-    }
-}
-
-// an individual cell in the calendar
-class CalendarCell extends Component {
-    async render() {
-        const { dayNumber, cellDate, eventList } = this.props;
-
-        let classList = ".calendar-cell";
-        if (new Date().withoutTime().getTime() === cellDate.getTime()) {
-            classList += " .current-day";
-        }	
-
-        return Promise.resolve(eventList).then((el) => {
-            return div(classList, p(".calendar-day", dayNumber), el);
-        });
-    }
-}
-
-class CalendarNextMonthCell extends Component {
-    async render() {
-        const { dayNumber } = this.props;
-        return div(".calendar-cell .next-month", p(".calendar-day", dayNumber));
-    }
-}
-
-class CalendarPrevMonthCell extends Component {
-    async render() {
-        const { dayNumber } = this.props;
-        return div(".calendar-cell .prev-month", p(".calendar-day", dayNumber));
-    }
-}
-
-class CalendarHeadingCell extends Component {
-    constructor(name) {
-        super();
-        this.name = name;
-    }
-
-    async render() {
-        return div(".calendar-heading-cell", p(this.name));
-    }
-}
 
 // the actual calendar
 class CalendarView extends Component {    
@@ -86,6 +27,32 @@ class CalendarView extends Component {
         this.state = {
             currDate: new Date(),
             studentId: 0,
+            eventMap: new Map(),
+        }
+    }
+
+    // the event map stores key => value
+    // where the key is the date the event is set
+    // specifically the MM/DD/YYYY, 
+    // the value is an array of events. we append to this
+    // array or we insert an array when writing an event.
+    // note that we strip the time from the date given
+    // so that we can index the hashmap just from mm/dd/yyyy
+    writeEvent(eventDate, event) {
+        // store the date in the event object
+        // WITH the time included.
+        event.date = eventDate;
+
+        const newDate = eventDate.withoutTime();
+        console.log("writing ", event, " time ", newDate.getTime());
+
+        let events = this.state.eventMap.get(newDate.getTime());
+        if (events) {
+            events.push(event);
+            // re-write into hashmap
+            this.state.eventMap.set(newDate.getTime(), events);
+        } else {
+            this.state.eventMap.set(newDate.getTime(), [event]);
         }
     }
 

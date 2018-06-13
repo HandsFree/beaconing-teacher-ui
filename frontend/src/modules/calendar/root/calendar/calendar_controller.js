@@ -1,3 +1,5 @@
+// @flow
+
 import { section, h1, h2, p, div, a, ul, li, span, select, option } from '../../../../core/html';
 import component, { Component } from '../../../../core/component';
 

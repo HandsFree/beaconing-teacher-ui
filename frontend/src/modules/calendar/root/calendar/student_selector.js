@@ -15,4 +15,7 @@ class StudentGroupSelector extends Component {
     }
 }
 
-export default StudentSelector;
+export default {
+    StudentSelector,
+    StudentGroupSelector,
+};
