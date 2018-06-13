@@ -7,6 +7,7 @@ import MainNav from '../../../nav/main';
 
 import CalendarView from './calendar_view';
 import CalendarController from './calendar_controller';
+import { StudentSelector, StudentGroupSelector, SelectorPanel } from './student_selector';
 
 class Calendar extends RootComponent {
     state = {
@@ -25,6 +26,7 @@ class Calendar extends RootComponent {
 
         const calendarController = new CalendarController(this.state.id);
         const calendarView = new CalendarView();
+        const studentSelector = new SelectorPanel(calendarView);
 
         console.log("calendar index");
 
@@ -33,12 +35,14 @@ class Calendar extends RootComponent {
             mainNav.attach(),
             calendarController.attach(),
             calendarView.attach(),
+            studentSelector.attach(),
         ]).then((values) => {
             const [
                 headerEl,
                 mainNavEl,
                 calendarController,
                 calendarView,
+                studentSelector,
             ] = values;
 
             return div(
@@ -48,6 +52,7 @@ class Calendar extends RootComponent {
                     '.flex-container.expand.margin-top-2',
                     mainNavEl,
                     main(
+                        studentSelector,
                         calendarController,
                         calendarView
                     ),

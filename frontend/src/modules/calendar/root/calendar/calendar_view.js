@@ -17,6 +17,7 @@ class CalendarView extends Component {
         PrevMonth: this.prevMonth,
         NextMonth: this.nextMonth,
         CurrMonth: this.currMonth,
+        RefreshGLPS: this.refreshGLPS,
     }
     
     // the date, specifically the month, this calendar
@@ -29,6 +30,12 @@ class CalendarView extends Component {
             eventMap: new Map(),
             studentId: 13,
         }
+    }
+
+    async refreshGLPS() {
+        this.loadEvents(this.state.studentId);
+        // hm?
+        this.updateView(await this.render());
     }
 
     // the event map stores key => value
@@ -72,13 +79,17 @@ class CalendarView extends Component {
     }
 
     async init() {
-        if (!this.state.studentId) {
-            return;   
+        if (this.state.studentId) {
+            this.loadEvents(this.state.studentId);
         }
+    }
 
-        console.log(`writing events for student ${this.state.studentId}`);
+    // loads all of the events from the glps
+    // of the given student id
+    async loadEvents(studentId) {
+        console.log(`writing events for student ${studentId}`);
 
-        const glpBoxes = await this.getStudentGLPS(this.state.studentId);
+        const glpBoxes = await this.getStudentGLPS(studentId);
         for (const glpBox of glpBoxes) {
             const glp = glpBox.glp;
 
