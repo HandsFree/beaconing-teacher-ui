@@ -26,8 +26,8 @@ class CalendarView extends Component {
 
         this.state = {
             currDate: new Date(),
-            studentId: 0,
             eventMap: new Map(),
+            studentId: 13,
         }
     }
 
@@ -53,6 +53,44 @@ class CalendarView extends Component {
             this.state.eventMap.set(newDate.getTime(), events);
         } else {
             this.state.eventMap.set(newDate.getTime(), [event]);
+        }
+    }
+
+    async getStudentGLPS(id) {
+        const assigned = await window.beaconingAPI.getStudentAssigned(id) ?? [];
+
+        let glps = [];
+        for (const glp of assigned) {
+            const glpObj = await window.beaconingAPI.getGLP(glp.gamifiedLessonPathId, true);
+            glps.push({
+                glp: glpObj,
+                assignedGLPID: glp.id,
+                availableFrom: glp.availableFrom,
+            });
+        }
+        return glps;
+    }
+
+    async init() {
+        if (!this.state.studentId) {
+            return;   
+        }
+
+        console.log(`writing events for student ${this.state.studentId}`);
+
+        const glpBoxes = await this.getStudentGLPS(this.state.studentId);
+        for (const glpBox of glpBoxes) {
+            const glp = glpBox.glp;
+
+            if (glpBox.availableFrom) {
+                console.log(`writing event ${glpBox.availableFrom}`);
+
+                this.writeEvent(new Date(glpBox.availableFrom), {
+                    name: glp.name,
+                    id: glp.id,
+                    desc: glp.description,
+                });
+            }
         }
     }
 
@@ -128,14 +166,19 @@ class CalendarView extends Component {
 
             const cellDate = new Date(firstDay.getFullYear(), firstDay.getMonth(), dayNumber).withoutTime();
 
-            const studentId = 13;
+            const eventMap = this.state.eventMap;
 
             let events = [];
-            events.push(new CalendarEvent().attach({
-                name: "foo",
-                desc: "desc",
-                id: 13,
-            }));
+            if (eventMap.has(cellDate.getTime())) {
+                const storedEvents = eventMap.get(cellDate.getTime());
+                for (const event of storedEvents) {
+                    events.push(new CalendarEvent().attach({
+                        name: event.name,
+                        desc: "",
+                        id: event.id,
+                    }));
+                }
+            }
 
             const eventList = new CalendarEventList().attach({
                 events: events,
