@@ -55,7 +55,7 @@ class CalendarController extends Component {
         const student = window.beaconingAPI.getStudent(this.state.studentId);
 
         let studentGreet = "";
-        if (student) {
+        if (this.state.studentId) {
             studentGreet = `${student.username}'s calendar`;
         }
 
