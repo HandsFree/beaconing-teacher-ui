@@ -21,12 +21,7 @@ class CalendarEvent extends Component {
 
 class CalendarEventList extends Component {
     async render() {
-        const events = this.props.events;
-        if (!events) {
-            // no events
-            return div(".event-list");
-        }
-
+        const events = this.props.events ?? [];
         return Promise.all(events).then((eventEls) => {
             return div(".event-list", eventEls);
         });
@@ -36,8 +31,16 @@ class CalendarEventList extends Component {
 // an individual cell in the calendar
 class CalendarCell extends Component {
     async render() {
-        const { dayNumber, events } = this.props;
-        return div(".calendar-cell", p(".calendar-day", dayNumber), events);
+        const { dayNumber, cellDate, eventList } = this.props;
+        const eventListEl = Promise.resolve(eventList).then((el) => {
+            return el;
+        });
+
+        let classList = ".calendar-cell";
+        if (new Date().withoutTime().getTime() === cellDate.getTime()) {
+            classList += " .current-day";
+        }	
+        return div(classList, p(".calendar-day", dayNumber), eventListEl);
     }
 }
 
@@ -81,6 +84,7 @@ class CalendarView extends Component {
 
         this.state = {
             currDate: new Date(),
+            studentId: 0,
         }
     }
 
@@ -162,14 +166,25 @@ class CalendarView extends Component {
 
             const cellDate = new Date(firstDay.getFullYear(), firstDay.getMonth(), dayNumber).withoutTime();
 
-            const events = [];
+            const studentId = 13;
 
+            let events = [];
+            events.push(new CalendarEvent().attach({
+                eventName: "foo",
+                eventDesc: "desc",
+            }));
+            events.push(new CalendarEvent().attach({
+                eventName: "foo br baz",
+                eventDesc: "desc",
+            }));
 
-            const eventListEl = new CalendarEventList().attach(events);
-            
+            const eventList = new CalendarEventList().attach({
+                events: events,
+            });
             const cell = new CalendarCell().attach({
                 dayNumber: dayNumber,
-                events: eventListEl,
+                cellDate: cellDate,
+                eventList: eventList,
             });
             rowBuffer.push(cell);
         }
