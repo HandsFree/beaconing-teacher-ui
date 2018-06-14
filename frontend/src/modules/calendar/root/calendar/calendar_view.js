@@ -28,11 +28,15 @@ class CalendarView extends Component {
         this.state = {
             currDate: new Date(),
             eventMap: new Map(),
-            studentId: 13,
+            studentId: -1,
         }
     }
 
     async refreshGLPS() {
+        // reset any of the previously loaded events before
+        // we refresh the glps.
+        this.state.eventMap = new Map();
+
         this.loadEvents(this.state.studentId);
         // hm?
         this.updateView(await this.render());
@@ -87,6 +91,8 @@ class CalendarView extends Component {
     // loads all of the events from the glps
     // of the given student id
     async loadEvents(studentId) {
+        if (studentId == -1) return;
+        
         console.log(`writing events for student ${studentId}`);
 
         const glpBoxes = await this.getStudentGLPS(studentId);

@@ -4,12 +4,42 @@ import { section, h1, h2, p, div, a, ul, li, span, select, option } from '../../
 import component, { Component } from '../../../../core/component';
 
 class StudentSelector extends Component {
+    constructor(calendarView) {
+        super();
+        this.state = {
+            calendarView: calendarView,
+        };
+    }
+
     async refresh(groupId, studentsList) {
+        const oldCalendarView = this.state.calendarView;
         this.state = {
             groupId: groupId,
             studentsList: studentsList ?? [],
-        }
+            calendarView: oldCalendarView, // set this again.
+        };
         this.updateView(await this.render());
+    }
+
+    async setStudent(id) {
+        console.log("setting student to", id);
+        const calendarView = this.state.calendarView;
+        calendarView.state.studentId = id;
+
+        // refresh glps in teh calendar view
+        calendarView.refreshGLPS();
+
+        // set the current month on the calendar
+        // comtroller, this updates the student greeting too
+        // the fact that we have to do this feels kind of messy
+        // like there is a flaw in how i implement the architecture
+        // for the calendar.. but hey ho. this will update
+        // the calendar controller view.
+        this.emit('RefreshCalendarController');
+
+        // refresh the calendar view with the updated
+        // student id set.
+        calendarView.updateView(await calendarView.render());
     }
 
     async render() {
@@ -30,13 +60,11 @@ class StudentSelector extends Component {
 
         const studentLinks = [];
         for (const student of students) {
-            console.log("student is ", student);
-
             studentLinks.push(
                 li(span(".fake-link",
                     {
                         onclick: () => {
-                            // TODO
+                            this.setStudent(student.id);
                         },
                     },
                     student.username
@@ -56,10 +84,11 @@ class StudentSelector extends Component {
 }
 
 class StudentGroupSelector extends Component {
-    constructor() {
+    constructor(calendarView) {
         super();
         this.state = {
             groupId: 0,
+            calendarView: calendarView,
         };
     }
     
@@ -83,7 +112,7 @@ class StudentGroupSelector extends Component {
             );
         }
 
-        const studentSel = new StudentSelector();
+        const studentSel = new StudentSelector(this.state.calendarView);
 
         return Promise.all([
             studentSel.attach(this.state),
@@ -116,7 +145,7 @@ export class SelectorPanel extends Component {
     }
 
     async render() {
-        const studentGroupSelector = new StudentGroupSelector();
+        const studentGroupSelector = new StudentGroupSelector(this.state.view);
 
         return Promise.all([
             studentGroupSelector.attach(),

@@ -11,13 +11,21 @@ class CalendarStudentSelector extends Component {
 
 // the top menu options above the calendar
 class CalendarController extends Component {    
-    constructor(studentId) {
+    updateHooks = {
+        RefreshCalendarController: this.refresh,
+    };
+    
+    constructor(view) {
         super();
         
         this.state = {
-            studentId: studentId,
+            calendarView: view,
             currDate: new Date(),
         }
+    }
+
+    async refresh() {
+        this.emitCurrMonth();
     }
 
     async emitPrevMonth() {
@@ -52,10 +60,17 @@ class CalendarController extends Component {
     }
 
     async render() {
-        const student = window.beaconingAPI.getStudent(this.state.studentId);
+        let studentId = -1;
+        if (this.state.calendarView) {
+            const view = this.state.calendarView;
+            // wewlad
+            studentId = view.state.studentId;
+        }
+
+        const student = await window.beaconingAPI.getStudent(studentId);
 
         let studentGreet = "";
-        if (this.state.studentId) {
+        if (studentId != -1) {
             studentGreet = `${student.username}'s calendar`;
         }
 

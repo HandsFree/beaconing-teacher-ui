@@ -24,10 +24,10 @@ class Calendar extends RootComponent {
         const header = new Header();
         const mainNav = new MainNav();
 
-        const calendarController = new CalendarController(this.state.id);
         const calendarView = new CalendarView();
         const studentSelector = new SelectorPanel(calendarView);
-
+        const calendarController = new CalendarController(calendarView);
+        
         console.log("calendar index");
 
         return Promise.all([
