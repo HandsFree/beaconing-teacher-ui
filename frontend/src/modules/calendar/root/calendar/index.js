@@ -1,5 +1,5 @@
 // @flow
-import { div, main } from '../../../../core/html';
+import { div, main, section } from '../../../../core/html';
 
 import { RootComponent } from '../../../../core/component';
 import Header from '../../../header/root';
@@ -52,9 +52,13 @@ class Calendar extends RootComponent {
                     '.flex-container.expand.margin-top-2',
                     mainNavEl,
                     main(
-                        studentSelector,
-                        calendarController,
-                        calendarView
+                        section('.outer-col', 
+                            studentSelector,
+                            section(".full-width", 
+                                calendarController,
+                                calendarView
+                            )
+                        )
                     ),
                 ),
             );

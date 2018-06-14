@@ -124,7 +124,7 @@ export class SelectorPanel extends Component {
             const [
                 studentGroupSelEl
             ] = values;
-            return section('.outer-col', section(".full-width", studentGroupSelEl));
+            return section(".full-width", studentGroupSelEl);
         }));
     }
 }
