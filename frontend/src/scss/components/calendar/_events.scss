@@ -69,10 +69,12 @@
 	align-self: flex-end;
 }
 
+.current-day .calendar-day {
+	color: #fff;
+}
 .current-day {
 	/* hmm */
 	// border-bottom: 2.5px solid #fc3d39;
-	color: #fff;
 	background:rgba(242, 108, 66, 0.7);
 }
 

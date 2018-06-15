@@ -1,10 +1,13 @@
 // @flow
-import { div, main } from '../../../../core/html';
+import { div, main, section } from '../../../../core/html';
 
 import { RootComponent } from '../../../../core/component';
 import Header from '../../../header/root';
 import MainNav from '../../../nav/main';
-import CalendarView from './calendar';
+
+import CalendarView from './calendar_view';
+import CalendarController from './calendar_controller';
+import { StudentSelector, StudentGroupSelector, SelectorPanel } from './student_selector';
 
 class Calendar extends RootComponent {
     state = {
@@ -20,17 +23,26 @@ class Calendar extends RootComponent {
     async render() {
         const header = new Header();
         const mainNav = new MainNav();
+
         const calendarView = new CalendarView();
+        const studentSelector = new SelectorPanel(calendarView);
+        const calendarController = new CalendarController(calendarView);
+        
+        console.log("calendar index");
 
         return Promise.all([
             header.attach(),
             mainNav.attach(),
-            calendarView.attach(this.state),
+            calendarController.attach(),
+            calendarView.attach(),
+            studentSelector.attach(),
         ]).then((values) => {
             const [
                 headerEl,
                 mainNavEl,
+                calendarController,
                 calendarView,
+                studentSelector,
             ] = values;
 
             return div(
@@ -39,7 +51,15 @@ class Calendar extends RootComponent {
                 div(
                     '.flex-container.expand.margin-top-2',
                     mainNavEl,
-                    main(calendarView),
+                    main(
+                        section('.outer-col', 
+                            studentSelector,
+                            section(".full-width", 
+                                calendarController,
+                                calendarView
+                            )
+                        )
+                    ),
                 ),
             );
         });

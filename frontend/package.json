@@ -58,6 +58,7 @@
     "@babel/runtime": "^7.0.0-beta.42",
     "@shopify/draggable": "^1.0.0-beta.5",
     "chart.js": "^2.7.0",
+    "flow-bin": "^0.74.0",
     "hyperscript": "^2.0.2",
     "hyperscript-helpers": "^3.0.3",
     "identicon.js": "^2.3.1",
