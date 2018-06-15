@@ -1,7 +1,11 @@
 package serv
 
 import (
+	"log"
+	"os"
+
 	"git.juddus.com/HFC/beaconing/backend/req"
+	"git.juddus.com/HFC/beaconing/backend/upload"
 	"github.com/gin-gonic/gin"
 )
 
@@ -11,6 +15,20 @@ func registerAPI(router *gin.Engine) {
 	// ---
 
 	v1 := router.Group("/api/v1/")
+
+	fileUpload := v1.Group("upload")
+	{
+		fileUpload.POST("/:id", upload.PostGLPFiles())
+
+		// test upload route
+		if gin.IsDebugging() {
+			fileUpload.GET("/", func(c *gin.Context) {
+				str, _ := os.Getwd()
+				log.Println(str)
+				c.File("./upload/index.html")
+			})
+		}
+	}
 
 	authAPI := v1.Group("auth")
 	{
@@ -69,6 +87,8 @@ func registerAPI(router *gin.Engine) {
 	glp := v1.Group("glp")
 	{
 		glp.GET("/:id", req.GetGLPRequest())
+		glp.GET("/:id/files/", req.GetGLPFilesRequest())
+
 		glp.DELETE("/:id", req.DeleteGLPRequest())
 		glp.POST("/", req.PostGLPRequest())
 	}

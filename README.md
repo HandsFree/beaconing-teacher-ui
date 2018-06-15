@@ -25,6 +25,7 @@ secret = "UrqTSjfnaWsaJHCTfGeU6YyEVNa3c2QzE8GrTLcoK1kljsNB3HrG6jXAGI6q8wKR"
 [server]
 host = ""
 port = 8081
+glp_files_path = "./../frontend/public/glp_files/"
 ```
 
 Place `config.toml` in `backend/cfg/`.

@@ -1,9 +1,12 @@
 package req
 
 import (
+	"io/ioutil"
 	"log"
+	"path/filepath"
 
 	"git.juddus.com/HFC/beaconing/backend/api"
+	"git.juddus.com/HFC/beaconing/backend/cfg"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 
@@ -57,6 +60,55 @@ func DeleteGLPRequest() gin.HandlerFunc {
 
 		s.Header("Content-Type", "application/json")
 		s.String(http.StatusOK, string(body))
+	}
+}
+
+func loadGLPFiles(folderName string) []string {
+	base, _ := filepath.Abs(cfg.Beaconing.Server.GlpFilesPath)
+
+	path := filepath.Join(base, folderName)
+
+	log.Println("Loading glp files from ", path)
+
+	fileList := []string{}
+	fileInfo, err := ioutil.ReadDir(path)
+	if err != nil {
+		log.Println("Failed to walk dir ", path, " because ", err.Error())
+		return []string{}
+	}
+
+	for _, file := range fileInfo {
+		fullPath := filepath.Join(folderName, file.Name())
+		fileList = append(fileList, fullPath)
+	}
+	return fileList
+}
+
+func GetGLPFilesRequest() gin.HandlerFunc {
+	return func(s *gin.Context) {
+		idParam := s.Param("id")
+		id, err := strconv.ParseUint(idParam, 10, 64)
+		if err != nil || id < 0 {
+			s.String(http.StatusBadRequest, "Client Error: Invalid GLP ID")
+			return
+		}
+
+		folderPath, err := api.GetGLPFilesFolderName(id)
+		if err != nil {
+			s.AbortWithError(http.StatusBadRequest, err)
+			return
+		}
+
+		files := loadGLPFiles(folderPath)
+
+		filesJSON, err := jsoniter.Marshal(files)
+		if err != nil {
+			s.AbortWithError(http.StatusInternalServerError, err)
+			return
+		}
+
+		s.Header("Content-Type", "application/json")
+		s.String(http.StatusOK, string(filesJSON))
 	}
 }
 

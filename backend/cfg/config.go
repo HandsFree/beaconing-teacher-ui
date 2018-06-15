@@ -15,20 +15,21 @@ type tomlConfig struct {
 }
 
 type databaseInfo struct {
-	Username string
-	Password string
-	Name     string
-	SSL      bool
+	Username string `toml:"username"`
+	Password string `toml:"password"`
+	Name     string `toml:"name"`
+	SSL      bool   `toml:"ssl"`
 }
 
 type authInfo struct {
-	ID     string
-	Secret string
+	ID     string `toml:"id"`
+	Secret string `toml:"secret"`
 }
 
 type serverInfo struct {
-	Host string
-	Port uint16
+	Host         string `toml:"host"`
+	Port         uint16 `toml:"port"`
+	GlpFilesPath string `toml:"glp_files_path"`
 }
 
 // Beaconing is the instance of the main toml
