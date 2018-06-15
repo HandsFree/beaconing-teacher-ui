@@ -1,3 +1,10 @@
+# Repository Notes
+## Branches
+
+* nightly - contains the latest code, this may be buggy
+* master - contains the latest stable release. any time a release is created nightly
+should be merged onto the master branch, a release is then made from the master branch.
+
 # Config
 Configuration files are stored in TOML.
 
