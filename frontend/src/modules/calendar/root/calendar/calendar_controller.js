@@ -110,7 +110,7 @@ class CalendarController extends Component {
 }
 
 Date.prototype.getMonthName = function() {
-    var d = new Date(this);
+    const d = new Date(this);
     const monthNames = [
         "January", "February", "March", "April", "May", "June", "July", "August",
         "September", "October", "November", "December"
