@@ -53,18 +53,22 @@ const mainSettings = {
         ],
     },
     plugins: dev ? [
-        new HardSourceWebpackPlugin({
-            cacheDirectory: `${resolve(__dirname, 'node_modules', '.cache', 'hard-source')}/[confighash]`,
-        }),
         new webpack.NoEmitOnErrorsPlugin(),
-        new webpack.optimize.OccurrenceOrderPlugin(),
-        new ExtractTextPlugin('app.css'),
         new webpack.NamedModulesPlugin(),
+        new webpack.NamedChunksPlugin(),
         new webpack.BannerPlugin({
             banner: devBanner,
         }),
+        new ExtractTextPlugin('app.css'),
+        new HardSourceWebpackPlugin({
+            cacheDirectory: `${resolve(__dirname, 'node_modules', '.cache', 'hard-source')}/[confighash]`,
+        }),
     ] : [
-        new webpack.NoEmitOnErrorsPlugin(),
+        new webpack.optimize.ModuleConcatenationPlugin(),
+        new webpack.optimize.FlagIncludedChunksPlugin(),
+        new webpack.optimize.FlagDependencyUsagePlugin(),
+        new webpack.optimize.SideEffectsFlagPlugin(),
+        new webpack.optimize.OccurrenceOrderPlugin(),
         new webpack.optimize.UglifyJsPlugin({
             parallel: true,
             sourceMap: false,
@@ -74,12 +78,12 @@ const mainSettings = {
                 ecma: 8,
             },
         }),
-        new webpack.optimize.OccurrenceOrderPlugin(),
-        new ExtractTextPlugin('app.css'),
-        new OptimizeCssAssetsPlugin(),
+        new webpack.NoEmitOnErrorsPlugin(),
         new webpack.BannerPlugin({
             banner: prodBanner,
         }),
+        new ExtractTextPlugin('app.css'),
+        new OptimizeCssAssetsPlugin(),
     ],
     devtool: dev ? 'inline-source-map' : false,
 };
