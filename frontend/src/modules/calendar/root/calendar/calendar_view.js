@@ -126,7 +126,7 @@ class CalendarView extends Component {
 
     async nextMonth() {
         const date = this.state.currDate;
-		const lastDay = new Date(date.getFullYear(), date.getMonth(), date.daysInMonth()+1);
+		const lastDay = new Date(date.getFullYear(), date.getMonth(), date.daysInMonth() + 1);
 		console.log("last day ", lastDay);
     	this.state.currDate = new Date(lastDay + 1);
     	console.log("next ", this.state.currDate);
@@ -234,17 +234,17 @@ class CalendarView extends Component {
 // date helper stuff
 
 Date.prototype.firstDay = function() {
-    var d = new Date(this);
+    const d = new Date(this);
     return new Date(d.getFullYear(), d.getMonth(), 1);
 }
 
 Date.prototype.daysInMonth = function() {
-    var d = new Date(this);
+    const d = new Date(this);
     return new Date(d.getYear(), d.getMonth()+1, 0).getDate();
 }
 
 Date.prototype.getDayName = function() {
-    var d = new Date(this);
+    const d = new Date(this);
     const dayNames = [
         "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
     ];
@@ -252,7 +252,7 @@ Date.prototype.getDayName = function() {
 }
 
 Date.prototype.getMonthName = function() {
-    var d = new Date(this);
+    const d = new Date(this);
     const monthNames = [
         "January", "February", "March", "April", "May", "June", "July", "August",
         "September", "October", "November", "December"
@@ -261,7 +261,7 @@ Date.prototype.getMonthName = function() {
 }
 
 Date.prototype.withoutTime = function () {
-    var d = new Date(this);
+    const d = new Date(this);
     d.setHours(0, 0, 0, 0);
     return d;
 }
