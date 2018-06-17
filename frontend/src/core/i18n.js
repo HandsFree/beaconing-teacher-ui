@@ -27,7 +27,7 @@ class I18n {
         const langsKeys = Object.keys(langs);
 
         if (langsKeys.indexOf(this.language) !== -1) {
-            return langs[this.language];
+            return langs[this.language]?.length > 0 ? langs[this.language] : langs['en-GB'];
         }
 
         return langs['en-GB'];
