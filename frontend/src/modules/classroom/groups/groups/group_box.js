@@ -20,7 +20,7 @@ class GroupBox extends Component {
                 {
                     href: `//${window.location.host}/classroom/group?id=${id}`,
                 },
-                'View',
+                await window.bcnI18n.getPhrase('view'),
             ),
         );
     }

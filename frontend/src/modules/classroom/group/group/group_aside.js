@@ -81,7 +81,7 @@ class GroupAside extends Component {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: 'group not deleted!',
+            message: await window.bcnI18n.getPhrase('group_nd'),
         });
 
         this.appendView(statusMessageEl);
@@ -107,7 +107,7 @@ class GroupAside extends Component {
                 a(
                     '#group-edit-button',
                     {
-                        title: 'Edit',
+                        title: await window.bcnI18n.getPhrase('edit'),
                         onclick: () => {
                             this.handleEditClick();
                         },
@@ -132,7 +132,7 @@ class GroupAside extends Component {
                             this.emit('GroupStudentsClicked');
                         },
                     },
-                    span('Students'),
+                    span(await window.bcnI18n.getPhrase('students')),
                 ),
                 a(
                     '.item',
@@ -144,7 +144,7 @@ class GroupAside extends Component {
                             this.emit('AssignedGLPsClicked');
                         },
                     },
-                    span('Assigned GLPs'),
+                    span(await window.bcnI18n.getPhrase('cr_assigned_glps')),
                 ),
                 // a(
                 //     '.item',

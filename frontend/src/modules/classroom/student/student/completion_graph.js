@@ -3,17 +3,17 @@ import { canvas } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 
-const config = (yours, others) => {
+const config = async (yours, others) => {
     return {
         type: 'polarArea',
         data: {
             labels: [
-                'Student Progress',
-                'Avg. Students Progress',
+                await window.bcnI18n.getPhrase('cr_analytics_sp'),
+                await window.bcnI18n.getPhrase('cr_analytics_asp'),
             ],
             datasets: [
                 {
-                    label: 'Progress',
+                    label: await window.bcnI18n.getPhrase('cr_analytics_p'),
                     data: [
                         (yours * 100),
                         (others * 100),
@@ -63,7 +63,7 @@ class CompletionGraph extends Component {
         const ctx: CanvasRenderingContext2D = this.view.getContext('2d');
 
         // console.log(ctx);
-        this.chartObj = new window.Chart(ctx, config(yours, others));
+        this.chartObj = new window.Chart(ctx, await config(yours, others));
     }
 }
 

@@ -44,12 +44,14 @@ class Student extends RootComponent {
         const studentMain = new StudentMain();
         const studentAside = new StudentAside();
 
+        const noStudentMsg = await window.bcnI18n.getPhrase('no_student');
+
         return Promise.all([
             header.attach(),
             footer.attach(),
             mainNav.attach(),
             secondNav.attach({
-                title: 'Classroom',
+                title: await window.bcnI18n.getPhrase('classroom'),
                 innerNav: innerNav.attach(),
             }),
             studentMain.attach(this.params),
@@ -92,7 +94,7 @@ class Student extends RootComponent {
                         '#student.no-padding',
                         div(
                             '.flex-grow.flex-align-center.flex-justify-center',
-                            strong('Student does not exist!'),
+                            strong(noStudentMsg),
                         ),
                     ),
                 ),
@@ -108,12 +110,14 @@ class Student extends RootComponent {
         const secondNav = new SecondNav();
         const innerNav = new InnerNav();
 
+        const studentDelMsg = await window.bcnI18n.getPhrase('student_del');
+
         const el = await Promise.all([
             header.attach(),
             footer.attach(),
             mainNav.attach(),
             secondNav.attach({
-                title: 'Classroom',
+                title: await window.bcnI18n.getPhrase('classroom'),
                 innerNav: innerNav.attach(),
             }),
         ]).then((values) => {
@@ -135,7 +139,7 @@ class Student extends RootComponent {
                         '#student.no-padding',
                         div(
                             '.flex-justify-center.flex-align-center.flex-grow',
-                            strong('Student Deleted!'),
+                            strong(studentDelMsg),
                         ),
                     ),
                 ),

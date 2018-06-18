@@ -3,13 +3,13 @@ import { canvas } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 
-const config = (correct, incorrect) => {
+const config = async (correct, incorrect) => {
     return {
         type: 'pie',
         data: {
             labels: [
-                'Right Answers',
-                'Wrong Answers',
+                await window.bcnI18n.getPhrase('cr_analytics_ra'),
+                await window.bcnI18n.getPhrase('cr_analytics_wa'),
             ],
             datasets: [
                 {
@@ -52,7 +52,7 @@ class AlternativesGraph extends Component {
         const ctx: CanvasRenderingContext2D = this.view.getContext('2d');
 
         // console.log(ctx);
-        this.chartObj = new window.Chart(ctx, config(correct, incorrect));
+        this.chartObj = new window.Chart(ctx, await config(correct, incorrect));
     }
 }
 

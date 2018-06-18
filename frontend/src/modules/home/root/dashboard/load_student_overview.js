@@ -109,7 +109,7 @@ class LoadStudentOverview extends Component {
             sortEl,
             div(
                 '.flex-container',
-                p('This group has too few students! (needs 6 or more)'),
+                p(await window.bcnI18n.getPhrase('widget_so_few')),
             ),
         );
     }

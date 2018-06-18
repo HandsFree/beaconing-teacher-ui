@@ -51,14 +51,14 @@ class GroupForm extends Component {
                 elementID: false,
                 heading: 'Success',
                 type: 'success',
-                message: `group '${this.state.groupName}' created`,
+                message: (await window.bcnI18n.getPhrase('group_created')).replace('%s', this.state.groupName),
             });
 
             this.appendView(statusMessageEl);
 
             const groupButton = document.getElementById('create-group-button');
 
-            groupButton.textContent = 'Create Group';
+            groupButton.textContent = await window.bcnI18n.getPhrase('cr_create_group');
 
             return;
         }
@@ -67,12 +67,12 @@ class GroupForm extends Component {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: 'group not created!',
+            message: await window.bcnI18n.getPhrase('group_nc'),
         });
 
         const groupButton = document.getElementById('create-group-button');
 
-        groupButton.textContent = 'Create Group';
+        groupButton.textContent = await window.bcnI18n.getPhrase('cr_create_group');
 
         this.appendView(statusMessageEl);
     }
@@ -81,6 +81,8 @@ class GroupForm extends Component {
         const studentsList = new StudentsList();
 
         const studentsListEl = await studentsList.attach();
+
+        const creatingText = await window.bcnI18n.getPhrase('creating');
 
         return div(
             '.flex-column',
@@ -94,9 +96,9 @@ class GroupForm extends Component {
                             href: `//${window.location.host}/classroom/groups`,
                         },
                         i('.icon-angle-left'),
-                        'Go Back',
+                        await window.bcnI18n.getPhrase('go_back'),
                     ),
-                    h1('Create Group'),
+                    h1(await window.bcnI18n.getPhrase('cr_create_group')),
                     div('.empty-spacer', ' '),
                 ),
             ),
@@ -106,17 +108,17 @@ class GroupForm extends Component {
                     '.margin-25.flex-column',
                     div(
                         '.general-info',
-                        p('Enter Group information:'),
+                        p(`${await window.bcnI18n.getPhrase('cr_group_info')}:`),
                     ),
                     form(
                         '.create-group',
                         label(
-                            span('Group Name'),
+                            span(await window.bcnI18n.getPhrase('cr_group_name')),
                             input(
                                 '#group-name.text-field',
                                 {
                                     type: 'text',
-                                    placeholder: 'Enter Name',
+                                    placeholder: await window.bcnI18n.getPhrase('cr_group_enter_name'),
                                     oninput: (event) => {
                                         const { target } = event;
 
@@ -127,7 +129,7 @@ class GroupForm extends Component {
                         ),
                         label(
                             '.select',
-                            span('Group Category'),
+                            span(await window.bcnI18n.getPhrase('cr_group_category')),
                             select(
                                 '#group-category',
                                 {
@@ -137,12 +139,12 @@ class GroupForm extends Component {
                                         this.state.groupCategory = target.value;
                                     },
                                 },
-                                option({ value: 'normal' }, 'Normal'),
-                                option({ value: 'class' }, 'Class'),
-                                option({ value: 'course' }, 'Course'),
+                                option({ value: 'normal' }, await window.bcnI18n.getPhrase('normal')),
+                                option({ value: 'class' }, await window.bcnI18n.getPhrase('class')),
+                                option({ value: 'course' }, await window.bcnI18n.getPhrase('course')),
                             ),
                         ),
-                        small('Students'),
+                        small(await window.bcnI18n.getPhrase('students')),
                         studentsListEl,
                         div(
                             '.flex-justify-end.margin-top-10',
@@ -153,10 +155,10 @@ class GroupForm extends Component {
                                         const { target } = event;
                                         this.createGroup();
 
-                                        target.textContent = 'Creating...';
+                                        target.textContent = `${creatingText}...`;
                                     },
                                 },
-                                'Create Group',
+                                await window.bcnI18n.getPhrase('cr_create_group'),
                             ),
                         ),
                     ),

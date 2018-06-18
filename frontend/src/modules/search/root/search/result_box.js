@@ -20,7 +20,7 @@ class ResultBox extends Component {
                 {
                     href: link,
                 },
-                'View',
+                await window.bcnI18n.getPhrase('view'),
             ),
         );
     }

@@ -10,7 +10,7 @@ class CreateGroupButton extends Component {
             {
                 href: '#create',
             },
-            span('Create Group'),
+            span(await window.bcnI18n.getPhrase('cr_create_group')),
         );
     }
 }
