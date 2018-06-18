@@ -28,12 +28,15 @@ class Calendar extends RootComponent {
         const studentSelector = new SelectorPanel();
         const calendarController = new CalendarController();
 
+        window.sessionStorage.setItem('calendarStudentID', -1);
+        window.sessionStorage.setItem('calendarDate', new Date());
+
         return Promise.all([
             header.attach(),
             mainNav.attach(),
-            calendarController.attach({ calendarView: calendarView}),
+            calendarController.attach(),
             calendarView.attach(),
-            studentSelector.attach({ calendarView: calendarView}),
+            studentSelector.attach(),
         ]).then((values) => {
             const [
                 headerEl,

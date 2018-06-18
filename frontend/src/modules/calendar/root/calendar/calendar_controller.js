@@ -18,7 +18,6 @@ class CalendarController extends Component {
         RefreshCalendarController: this.refresh,
     };
 
-    // fixme remove.
     async refresh() {
         this.updateCalendar('CurrMonth');
     }
@@ -29,17 +28,11 @@ class CalendarController extends Component {
     }
 
     async render() {
-        let studentId = -1;
-        if (this.props.calendarView) {
-            const view = this.props.calendarView;
-            // FIXME wewlad
-            studentId = view.state.studentId;
-        }
-
-        const student = await window.beaconingAPI.getStudent(studentId);
-
+        const studentId = window.sessionStorage.getItem('calendarStudentID') ?? -1;
+       
         let studentGreet = '';
         if (studentId != -1) {
+            const student = await window.beaconingAPI.getStudent(studentId);
             studentGreet = `${student.username}'s calendar`;
         }
 

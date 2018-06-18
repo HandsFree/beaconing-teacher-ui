@@ -13,24 +13,20 @@ class StudentSelector extends Component {
     }
 
     async setStudent(id) {
-        console.log('[Calendar] setting student to ', id);
-        const calendarView = this.props.calendarView;
-        calendarView.state.studentId = id;
+        if (window.sessionStorage) {
+            const storedId = window.sessionStorage.getItem('calendarStudentID') ?? -1;
 
-        // refresh glps in teh calendar view
-        calendarView.refreshGLPS();
+            // dont bother setting and refreshing everything
+            // if we've selected the same student.
+            if (storedId == id) {
+                return;
+            }
+        }
 
-        // set the current month on the calendar
-        // comtroller, this updates the student greeting too
-        // the fact that we have to do this feels kind of messy
-        // like there is a flaw in how i implement the architecture
-        // for the calendar.. but hey ho. this will update
-        // the calendar controller view.
+        window.sessionStorage.setItem('calendarStudentID', id);
+        
+        this.emit('RefreshCalendarView');
         this.emit('RefreshCalendarController');
-
-        // refresh the calendar view with the updated
-        // student id set.
-        calendarView.updateView(await calendarView.render());
     }
 
     async render() {
@@ -101,7 +97,7 @@ class StudentGroupSelector extends Component {
         const studentSel = new StudentSelector();
 
         return Promise.all([
-            studentSel.attach({calendarView: this.props.calendarView}),
+            studentSel.attach(),
         ]).then((values) => {
             const [
                 studentSelEl
@@ -127,7 +123,7 @@ export class SelectorPanel extends Component {
         const studentGroupSelector = new StudentGroupSelector();
 
         return Promise.all([
-            studentGroupSelector.attach({ calendarView: this.props.calendarView}),
+            studentGroupSelector.attach(),
         ]).then(((values) => {
             const [
                 studentGroupSelEl

@@ -17,7 +17,7 @@ class CalendarView extends Component {
         PrevMonth: this.prevMonth,
         NextMonth: this.nextMonth,
         CurrMonth: this.currMonth,
-        RefreshGLPS: this.refreshGLPS,
+        RefreshCalendarView: this.refreshCalendarView,
     }
     
     state = {
@@ -28,13 +28,14 @@ class CalendarView extends Component {
         studentId: -1,
     }
 
-    async refreshGLPS() {
+    async refreshCalendarView() {
         // reset any of the previously loaded events before
         // we refresh the glps.
         this.state.eventMap = new Map();
 
+        this.state.studentId = window.sessionStorage.getItem('calendarStudentID') ?? -1;
         this.loadEvents(this.state.studentId);
-        // hm?
+
         this.updateView(await this.render());
     }
 
@@ -79,7 +80,8 @@ class CalendarView extends Component {
     }
 
     async init() {
-        if (this.state.studentId) {
+        if (window.sessionStorage) {
+            this.state.studentId = window.sessionStorage.getItem("calendarStudentID") ?? -1;
             this.loadEvents(this.state.studentId);
         }
     }
