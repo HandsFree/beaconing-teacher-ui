@@ -243,7 +243,7 @@ class ProfileEditForm extends Component {
                                         value: 'de-DE',
                                         selected: teacher.language === 'de-DE',
                                     },
-                                    'Deutsche',
+                                    'Deutsch',
                                 ),
                                 option(
                                     {

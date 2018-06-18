@@ -234,7 +234,7 @@ class GroupForm extends Component {
                                     {
                                         value: 'de-DE',
                                     },
-                                    'Deutsche',
+                                    'Deutsch',
                                 ),
                                 option(
                                     {

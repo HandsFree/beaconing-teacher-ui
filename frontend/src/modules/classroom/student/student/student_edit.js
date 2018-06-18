@@ -265,7 +265,7 @@ class StudentEdit extends Component {
                                         value: 'de-DE',
                                         selected: student.language === 'de-DE',
                                     },
-                                    'Deutsche',
+                                    'Deutsch',
                                 ),
                                 option(
                                     {
