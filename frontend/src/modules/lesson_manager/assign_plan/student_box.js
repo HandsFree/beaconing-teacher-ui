@@ -49,7 +49,7 @@ class StudentBox extends Component {
             student,
         } = this.props;
 
-        assignButton.textContent = 'Assigning...';
+        assignButton.textContent = `${await window.bcnI18n.getPhrase('lm_assigning')}...`;
 
         const status = await window.beaconingAPI.assignStudent(student.id, glpID);
         const statusMessage = new Status();
@@ -63,7 +63,7 @@ class StudentBox extends Component {
                 elementID: false,
                 heading: 'Success',
                 type: 'success',
-                message: 'student assigned!',
+                message: await window.bcnI18n.getPhrase('student_asg'),
             });
 
             document.body.appendChild(statusMessageEl);
@@ -77,10 +77,10 @@ class StudentBox extends Component {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: 'student not assigned!',
+            message: await window.bcnI18n.getPhrase('student_na'),
         });
 
-        assignButton.textContent = 'Assign';
+        assignButton.textContent = await window.bcnI18n.getPhrase('lm_assign');
 
         document.body.appendChild(statusMessageEl);
     }
@@ -115,7 +115,7 @@ class StudentBox extends Component {
                             this.assign(target);
                         },
                     },
-                    'Assign',
+                    await window.bcnI18n.getPhrase('lm_assign'),
                 ),
             ),
         );

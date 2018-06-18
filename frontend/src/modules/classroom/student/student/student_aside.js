@@ -93,7 +93,7 @@ class StudentAside extends Component {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: 'student not deleted!',
+            message: await window.bcnI18n.getPhrase('student_nd'),
         });
 
         this.appendView(statusMessageEl);
@@ -150,7 +150,7 @@ class StudentAside extends Component {
                 a(
                     '#student-edit-button',
                     {
-                        title: 'Edit',
+                        title: await window.bcnI18n.getPhrase('edit'),
                         onclick: () => {
                             this.handleEditClick();
                         },
@@ -179,7 +179,7 @@ class StudentAside extends Component {
                             this.emit('AssignedGLPsClicked');
                         },
                     },
-                    span('Assigned GLPs'),
+                    span(await window.bcnI18n.getPhrase('cr_assigned_glps')),
                 ),
                 a(
                     '.item',
@@ -191,7 +191,7 @@ class StudentAside extends Component {
                             this.emit('AnalyticsClicked');
                         },
                     },
-                    span('Analytics'),
+                    span(await window.bcnI18n.getPhrase('analytics')),
                 ),
             ),
         );

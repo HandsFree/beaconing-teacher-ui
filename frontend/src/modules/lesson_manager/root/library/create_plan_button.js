@@ -10,7 +10,7 @@ class CreatePlanButton extends Component {
             {
                 href: '#new_plan',
             },
-            span('Create Plan'),
+            span(await window.bcnI18n.getPhrase('lm_create_plan')),
         );
     }
 }

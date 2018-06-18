@@ -9,7 +9,6 @@ class NewPlanForm extends Component {
         planName: '',
         planCategory: 'default',
         planDescription: '',
-        planAuthor: 'teacher', // TODO: add actual username from profile
         planDomain: '',
         planTopic: '',
         planAgeGroup: '',
@@ -24,7 +23,6 @@ class NewPlanForm extends Component {
             name: this.state.planName,
             category: this.state.planCategory,
             description: this.state.planDescription,
-            author: this.state.planAuthor,
             domain: this.state.planDomain,
             topic: this.state.planTopic,
             ageGroup: this.state.planAgeGroup,
@@ -48,12 +46,12 @@ class NewPlanForm extends Component {
                 elementID: false,
                 heading: 'Success',
                 type: 'success',
-                message: `Plan '${this.state.planName}' created`,
+                message: (await window.bcnI18n.getPhrase('plan_created')).replace('%s', this.state.planName),
             });
 
             this.appendView(statusMessageEl);
 
-            planButton.textContent = 'Create Plan';
+            planButton.textContent = await window.bcnI18n.getPhrase('lm_create_plan');
 
             return;
         }
@@ -62,15 +60,17 @@ class NewPlanForm extends Component {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: 'plan not created!',
+            message: await window.bcnI18n.getPhrase('plan_nc'),
         });
 
-        planButton.textContent = 'Create Plan';
+        planButton.textContent = await window.bcnI18n.getPhrase('lm_create_plan');
 
         this.appendView(statusMessageEl);
     }
 
     async render() {
+        const creatingText = await window.bcnI18n.getPhrase('creating');
+
         return div(
             '.flex-column',
             section(
@@ -83,9 +83,9 @@ class NewPlanForm extends Component {
                             href: `//${window.location.host}/lesson_manager`,
                         },
                         i('.icon-angle-left'),
-                        'Go Back',
+                        await window.bcnI18n.getPhrase('go_back'),
                     ),
-                    h1('Create New Plan'),
+                    h1(await window.bcnI18n.getPhrase('lm_create_new_plan')),
                     div('.empty-spacer', ' '),
                 ),
             ),
@@ -95,17 +95,17 @@ class NewPlanForm extends Component {
                     '.margin-25.flex-column',
                     div(
                         '.general-info',
-                        p('Enter New Plan information:'),
+                        p(await window.bcnI18n.getPhrase('lm_enter_plan_info')),
                     ),
                     form(
                         '.create-new-plan',
                         label(
-                            span('Plan Name'),
+                            span(await window.bcnI18n.getPhrase('lm_plan_name')),
                             input(
                                 '#plan-name.text-field',
                                 {
                                     type: 'text',
-                                    placeholder: 'Enter Name',
+                                    placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_name'),
                                     oninput: (event) => {
                                         const { target } = event;
 
@@ -115,11 +115,11 @@ class NewPlanForm extends Component {
                             ),
                         ),
                         label(
-                            span('Plan Description'),
+                            span(await window.bcnI18n.getPhrase('lm_plan_desc')),
                             textarea(
                                 '#plan-description',
                                 {
-                                    placeholder: 'Enter Description',
+                                    placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_desc'),
                                     oninput: (event) => {
                                         const { target } = event;
 
@@ -129,12 +129,12 @@ class NewPlanForm extends Component {
                             ),
                         ),
                         label(
-                            span('Plan Domain'),
+                            span(await window.bcnI18n.getPhrase('lm_plan_domain')),
                             input(
                                 '#plan-domain.text-field',
                                 {
                                     type: 'text',
-                                    placeholder: 'Enter Domain',
+                                    placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_domain'),
                                     oninput: (event) => {
                                         const { target } = event;
 
@@ -144,12 +144,12 @@ class NewPlanForm extends Component {
                             ),
                         ),
                         label(
-                            span('Plan Topic'),
+                            span(await window.bcnI18n.getPhrase('lm_plan_topic')),
                             input(
                                 '#plan-topic.text-field',
                                 {
                                     type: 'text',
-                                    placeholder: 'Enter Topic',
+                                    placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_topic'),
                                     oninput: (event) => {
                                         const { target } = event;
 
@@ -159,12 +159,12 @@ class NewPlanForm extends Component {
                             ),
                         ),
                         label(
-                            span('Plan Age Group'),
+                            span(await window.bcnI18n.getPhrase('lm_plan_ag')),
                             input(
                                 '#plan-age-group.text-field',
                                 {
                                     type: 'text',
-                                    placeholder: 'Enter Age Group',
+                                    placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_ag'),
                                     oninput: (event) => {
                                         const { target } = event;
 
@@ -174,12 +174,12 @@ class NewPlanForm extends Component {
                             ),
                         ),
                         label(
-                            span('Plan Year'),
+                            span(await window.bcnI18n.getPhrase('lm_plan_year')),
                             input(
                                 '#plan-year.text-field',
                                 {
                                     type: 'text',
-                                    placeholder: 'Enter Year',
+                                    placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_year'),
                                     pattern: '[0-9]{4}',
                                     oninput: (event) => {
                                         const { target } = event;
@@ -191,11 +191,11 @@ class NewPlanForm extends Component {
                         ),
                         // TODO: change to more user friendly solution
                         label(
-                            span('Plan Learning Objectives'),
+                            span(await window.bcnI18n.getPhrase('lm_plan_los')),
                             textarea(
                                 '#plan-learning-objectives',
                                 {
-                                    placeholder: 'Enter Learning Objectives (one per line)',
+                                    placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_los'),
                                     oninput: (event) => {
                                         const { target } = event;
                                         const values = target.value.split('\n');
@@ -206,11 +206,11 @@ class NewPlanForm extends Component {
                             ),
                         ),
                         label(
-                            span('Plan Competences'),
+                            span(await window.bcnI18n.getPhrase('lm_plan_comps')),
                             textarea(
                                 '#plan-competences',
                                 {
-                                    placeholder: 'Enter Competences (one per line)',
+                                    placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_comps'),
                                     oninput: (event) => {
                                         const { target } = event;
                                         const values = target.value.split('\n');
@@ -229,10 +229,10 @@ class NewPlanForm extends Component {
                                         const { target } = event;
                                         this.createPlan(target);
 
-                                        target.textContent = 'Creating...';
+                                        target.textContent = `${creatingText}...`;
                                     },
                                 },
-                                'Create Plan',
+                                await window.bcnI18n.getPhrase('lm_create_plan'),
                             ),
                         ),
                     ),

@@ -10,7 +10,7 @@ class CreateStudentButton extends Component {
             {
                 href: '#create',
             },
-            span('Create Student'),
+            span(await window.bcnI18n.getPhrase('cr_create_student')),
         );
     }
 }

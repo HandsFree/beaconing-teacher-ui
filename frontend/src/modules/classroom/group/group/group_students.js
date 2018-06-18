@@ -66,7 +66,7 @@ class GroupStudents extends Component {
 
         const el = div(
             '#group-students-container.status',
-            p('No Assigned Students!'),
+            p(await window.bcnI18n.getPhrase('no_students_assigned')),
         );
 
         this.updateView(el);

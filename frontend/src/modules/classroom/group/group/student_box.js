@@ -63,7 +63,7 @@ class StudentBox extends Component {
                         {
                             href: `//${window.location.host}/classroom/student?id=${studentID}`,
                         },
-                        'View Student',
+                        await window.bcnI18n.getPhrase('cr_view_student'),
                     ),
                     a(
                         {
@@ -71,7 +71,7 @@ class StudentBox extends Component {
                                 this.removeStudent();
                             },
                         },
-                        'Remove',
+                        await window.bcnI18n.getPhrase('cr_remove'),
                     ),
                 ),
             ),
@@ -96,7 +96,7 @@ class StudentBox extends Component {
                 elementID: false,
                 heading: 'Success',
                 type: 'success',
-                message: 'Unassigned!',
+                message: await window.bcnI18n.getPhrase('sa'),
             });
 
             document.body.appendChild(statusMessageEl);
@@ -110,7 +110,7 @@ class StudentBox extends Component {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: 'student not unassigned!',
+            message: await window.bcnI18n.getPhrase('student_una'),
         });
 
         document.body.appendChild(statusMessageEl);

@@ -20,14 +20,14 @@ class StudentEdit extends Component {
             county: '',
             postcode: '',
         },
-        studentLang: 'en-US',
+        studentLang: 'en-GB',
         studentGender: '',
         studentSchool: '',
     };
 
     async init() {
         if (!this.props.id) {
-            throw new Error('[Student Edit] no student id provided');
+            throw new Error('[Student Edit] No student ID provided');
         }
 
         const student = await window.beaconingAPI.getStudent(this.props.id);
@@ -39,7 +39,7 @@ class StudentEdit extends Component {
             return;
         }
 
-        throw new Error('[Student Edit] student not found!');
+        throw new Error('[Student Edit] Student not found!');
     }
 
     async updateStudent(studentButton: EventTarget) {
@@ -81,15 +81,15 @@ class StudentEdit extends Component {
                 elementID: false,
                 heading: 'Success',
                 type: 'success',
-                message: 'student updated',
+                message: await window.bcnI18n.getPhrase('student_up'),
             });
 
             this.appendView(statusMessageEl);
 
             const doneButton = document.getElementById('edit-student-done');
 
-            studentButton.textContent = 'Update Student';
-            doneButton.textContent = 'Done';
+            studentButton.textContent = await window.bcnI18n.getPhrase('cr_student_update');
+            doneButton.textContent = await window.bcnI18n.getPhrase('done');
 
             this.emit('StudentNameUpdate');
 
@@ -100,16 +100,18 @@ class StudentEdit extends Component {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: 'student not updated!',
+            message: await window.bcnI18n.getPhrase('student_nu'),
         });
 
-        studentButton.textContent = 'Update Student';
+        studentButton.textContent = await window.bcnI18n.getPhrase('cr_student_update');
 
         this.appendView(statusMessageEl);
     }
 
     async render() {
         const { student } = this.state;
+
+        const updatingText = await window.bcnI18n.getPhrase('updating');
 
         return div(
             '.flex-column',
@@ -119,12 +121,12 @@ class StudentEdit extends Component {
                     '.margin-25.flex-column',
                     div(
                         '.general-info',
-                        p('Edit Student information:'),
+                        p(`${await window.bcnI18n.getPhrase('cr_edit_student_info')}:`),
                     ),
                     form(
                         '.create-student',
                         label(
-                            span('Student Username'),
+                            span(await window.bcnI18n.getPhrase('cr_student_username')),
                             input(
                                 '#student-username.text-field',
                                 {
@@ -139,7 +141,7 @@ class StudentEdit extends Component {
                             ),
                         ),
                         label(
-                            span('Student First Name'),
+                            span(await window.bcnI18n.getPhrase('cr_student_fn')),
                             input(
                                 '#student-first-name.text-field',
                                 {
@@ -154,7 +156,7 @@ class StudentEdit extends Component {
                             ),
                         ),
                         label(
-                            span('Student Last Name'),
+                            span(await window.bcnI18n.getPhrase('cr_student_ln')),
                             input(
                                 '#student-last-name.text-field',
                                 {
@@ -170,7 +172,7 @@ class StudentEdit extends Component {
                         ),
                         label(
                             '.select',
-                            span('Student Gender'),
+                            span(await window.bcnI18n.getPhrase('cr_student_gender')),
                             select(
                                 '#student-gender',
                                 {
@@ -185,26 +187,26 @@ class StudentEdit extends Component {
                                         value: 'male',
                                         selected: student.profile.gender === 'male',
                                     },
-                                    'Male',
+                                    await window.bcnI18n.getPhrase('male'),
                                 ),
                                 option(
                                     {
                                         value: 'female',
                                         selected: student.profile.gender === 'female',
                                     },
-                                    'Female',
+                                    await window.bcnI18n.getPhrase('female'),
                                 ),
                                 option(
                                     {
                                         value: 'other',
                                         selected: student.profile.gender === 'other',
                                     },
-                                    'Other',
+                                    await window.bcnI18n.getPhrase('other'),
                                 ),
                             ),
                         ),
                         label(
-                            span('Student Date of Birth'),
+                            span(await window.bcnI18n.getPhrase('cr_student_dob')),
                             input(
                                 '#student-dob.text-field',
                                 {
@@ -220,7 +222,7 @@ class StudentEdit extends Component {
                         ),
                         label(
                             '.select',
-                            span('Student Language'),
+                            span(await window.bcnI18n.getPhrase('cr_student_lang')),
                             select(
                                 '#student-lang',
                                 {
@@ -232,20 +234,76 @@ class StudentEdit extends Component {
                                 },
                                 option(
                                     {
-                                        value: 'en-US',
-                                        selected: student.language === 'en-US',
+                                        value: 'en-GB',
+                                        selected: student.language === 'en-GB',
                                     },
                                     'English',
+                                ),
+                                option(
+                                    {
+                                        value: 'fr-FR',
+                                        selected: student.language === 'fr_FR',
+                                    },
+                                    'Français',
+                                ),
+                                option(
+                                    {
+                                        value: 'es-ES',
+                                        selected: student.language === 'es-ES',
+                                    },
+                                    'Español',
+                                ),
+                                option(
+                                    {
+                                        value: 'it-IT',
+                                        selected: student.language === 'it-IT',
+                                    },
+                                    'Italiano',
+                                ),
+                                option(
+                                    {
+                                        value: 'de-DE',
+                                        selected: student.language === 'de-DE',
+                                    },
+                                    'Deutsche',
+                                ),
+                                option(
+                                    {
+                                        value: 'ro-RO',
+                                        selected: student.language === 'ro-RO',
+                                    },
+                                    'Română',
+                                ),
+                                option(
+                                    {
+                                        value: 'pl-PL',
+                                        selected: student.language === 'pl-PL',
+                                    },
+                                    'Polskie',
+                                ),
+                                option(
+                                    {
+                                        value: 'tr-TR',
+                                        selected: student.language === 'tr-TR',
+                                    },
+                                    'Türk',
+                                ),
+                                option(
+                                    {
+                                        value: 'pt-PT',
+                                        selected: student.language === 'pt-PT',
+                                    },
+                                    'Português',
                                 ),
                             ),
                         ),
                         label(
-                            span('Student Email'),
+                            span(await window.bcnI18n.getPhrase('cr_student_email')),
                             input(
                                 '#student-email.text-field',
                                 {
                                     type: 'email',
-                                    placeholder: 'Enter New Email (or leave blank)',
+                                    placeholder: await window.bcnI18n.getPhrase('cr_enter_new_email'),
                                     oninput: (event) => {
                                         const { target } = event;
 
@@ -255,7 +313,7 @@ class StudentEdit extends Component {
                             ),
                         ),
                         label(
-                            span('Student School'),
+                            span(await window.bcnI18n.getPhrase('cr_student_school')),
                             input(
                                 '#student-school.text-field',
                                 {
@@ -270,7 +328,7 @@ class StudentEdit extends Component {
                             ),
                         ),
                         label(
-                            span('Student Address'),
+                            span(await window.bcnI18n.getPhrase('cr_student_address')),
                             input(
                                 '#student-address1.text-field',
                                 {
@@ -352,7 +410,7 @@ class StudentEdit extends Component {
                                             this.emit('EditDoneClicked');
                                         },
                                     },
-                                    'Cancel',
+                                    await window.bcnI18n.getPhrase('cancel'),
                                 ),
                                 div(
                                     '#update-student-button.button-action',
@@ -361,10 +419,10 @@ class StudentEdit extends Component {
                                             const { target } = event;
                                             this.updateStudent(target);
 
-                                            target.textContent = 'Updating...';
+                                            target.textContent = `${updatingText}...`;
                                         },
                                     },
-                                    'Update Student',
+                                    await window.bcnI18n.getPhrase('cr_student_update'),
                                 ),
                             ),
                         ),

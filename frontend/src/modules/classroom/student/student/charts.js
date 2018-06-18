@@ -28,6 +28,11 @@ class Charts extends Component {
         const scoresGraph = new ScoresGraph();
         const completionGraph = new CompletionGraph();
 
+        const rwText = await window.bcnI18n.getPhrase('cr_analytics_rw');
+        const sopText = await window.bcnI18n.getPhrase('cr_analytics_sop');
+        const mamText = await window.bcnI18n.getPhrase('cr_analytics_mam');
+        const aspText = await window.bcnI18n.getPhrase('cr_analytics_asp');
+
         const graphWrapper = (title, el) => div(
             '.tile.spacing.flex-column.flex-3',
             div(
@@ -63,10 +68,10 @@ class Charts extends Component {
 
             return div(
                 '.flex-wrap',
-                graphWrapper('Right and Wrong Answers', alternativesGraphEl),
-                graphWrapper('Student Overall Progress', progressGraphEl),
-                graphWrapper('Min, Average, Maximum Scores', scoresGraphEl),
-                graphWrapper('Average Completion Time', completionGraphEl),
+                graphWrapper(rwText, alternativesGraphEl),
+                graphWrapper(sopText, progressGraphEl),
+                graphWrapper(mamText, scoresGraphEl),
+                graphWrapper(aspText, completionGraphEl),
             );
         });
     }

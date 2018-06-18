@@ -23,7 +23,7 @@ class CreateGroup extends RootComponent {
             footer.attach(),
             mainNav.attach(),
             secondNav.attach({
-                title: 'Classroom',
+                title: await window.bcnI18n.getPhrase('classroom'),
                 innerNav: innerNav.attach(),
             }),
             groupForm.attach(),

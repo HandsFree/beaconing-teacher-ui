@@ -144,7 +144,7 @@ class GLPHandle extends Component {
                             this.emit('LoadMoreClicked');
                         },
                     },
-                    'Load More',
+                    await window.bcnI18n.getPhrase('lm_load_more'),
                 ),
                 small(
                     '.pointer-hover',
@@ -153,7 +153,7 @@ class GLPHandle extends Component {
                             this.emit('LoadAllClicked');
                         },
                     },
-                    'Load All',
+                    await window.bcnI18n.getPhrase('lm_load_all'),
                 ),
             ),
         );

@@ -15,7 +15,7 @@ class Footer extends Component {
                         '.social',
                         a(
                             {
-                                title: 'Visit Beaconing',
+                                title: await window.bcnI18n.getPhrase('ft_visit_beaconing'),
                                 href: 'http://beaconing.eu',
                                 target: '_blank',
                             },

@@ -73,15 +73,15 @@ class StudentEdit extends Component {
                 elementID: false,
                 heading: 'Success',
                 type: 'success',
-                message: 'group updated',
+                message: await window.bcnI18n.getPhrase('group_up'),
             });
 
             this.appendView(statusMessageEl);
 
             const doneButton = document.getElementById('edit-group-done');
 
-            groupButton.textContent = 'Update Group';
-            doneButton.textContent = 'Done';
+            groupButton.textContent = await window.bcnI18n.getPhrase('cr_update_group');
+            doneButton.textContent = await window.bcnI18n.getPhrase('done');
 
             this.emit('GroupNameUpdate');
 
@@ -92,10 +92,10 @@ class StudentEdit extends Component {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: 'group not updated!',
+            message: await window.bcnI18n.getPhrase('group_nu'),
         });
 
-        groupButton.textContent = 'Update Group';
+        groupButton.textContent = await window.bcnI18n.getPhrase('cr_update_group');
 
         this.appendView(statusMessageEl);
     }
@@ -115,6 +115,8 @@ class StudentEdit extends Component {
             groupStudents: studentsArr,
         });
 
+        const updatingText = await window.bcnI18n.getPhrase('updating');
+
         return div(
             '.flex-column',
             section(
@@ -123,12 +125,12 @@ class StudentEdit extends Component {
                     '.margin-25.flex-column',
                     div(
                         '.general-info',
-                        p('Edit Group information:'),
+                        p(`${await window.bcnI18n.getPhrase('cr_group_edit_info')}:`),
                     ),
                     form(
                         '.create-group',
                         label(
-                            span('Group Name'),
+                            span(await window.bcnI18n.getPhrase('cr_group_name')),
                             input(
                                 '#group-name.text-field',
                                 {
@@ -144,7 +146,7 @@ class StudentEdit extends Component {
                         ),
                         label(
                             '.select',
-                            span('Group Category'),
+                            span(await window.bcnI18n.getPhrase('cr_group_category')),
                             select(
                                 '#group-category',
                                 {
@@ -166,7 +168,7 @@ class StudentEdit extends Component {
                                         value: 'class',
                                         selected: group.category === 'class',
                                     },
-                                    'Class',
+                                    await window.bcnI18n.getPhrase('class'),
                                 ),
                                 option(
                                     {
@@ -177,7 +179,7 @@ class StudentEdit extends Component {
                                 ),
                             ),
                         ),
-                        small('Students'),
+                        small(await window.bcnI18n.getPhrase('students')),
                         studentsListEl,
                         div(
                             '.flex-justify-end.margin-top-10',
@@ -188,7 +190,7 @@ class StudentEdit extends Component {
                                         this.emit('EditDoneClicked');
                                     },
                                 },
-                                'Cancel',
+                                await window.bcnI18n.getPhrase('cancel'),
                             ),
                             div(
                                 '#create-group-button.button-action',
@@ -197,10 +199,10 @@ class StudentEdit extends Component {
                                         const { target } = event;
                                         this.updateGroup(target);
 
-                                        target.textContent = 'Updating...';
+                                        target.textContent = `${updatingText}...`;
                                     },
                                 },
-                                'Update Group',
+                                await window.bcnI18n.getPhrase('cr_group_update'),
                             ),
                         ),
                     ),

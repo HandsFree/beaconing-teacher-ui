@@ -3,14 +3,14 @@ import { canvas } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 
-const config = (min, avg, max) => {
+const config = async (min, avg, max) => {
     return {
         type: 'bar',
         data: {
             labels: [
-                'Min. Score',
-                'Avg. Score',
-                'Max. Score',
+                await window.bcnI18n.getPhrase('cr_analytics_min_s'),
+                await window.bcnI18n.getPhrase('cr_analytics_avg_s'),
+                await window.bcnI18n.getPhrase('cr_analytics_max_s'),
             ],
             datasets: [
                 {
@@ -66,7 +66,7 @@ class ScoresGraph extends Component {
         const ctx: CanvasRenderingContext2D = this.view.getContext('2d');
 
         // console.log(ctx);
-        this.chartObj = new window.Chart(ctx, config(min, avg, max));
+        this.chartObj = new window.Chart(ctx, await config(min, avg, max));
     }
 }
 
