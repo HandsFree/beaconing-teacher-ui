@@ -38,34 +38,34 @@ func unwrapStudentAssignObject(s *gin.Context, studentID uint64, assignID uint64
 	return 0, errors.New("No such GLP for assignID " + fmt.Sprintf("%d", assignID))
 }
 
-func removeActivePlan(s *gin.Context, planId uint64) error {
-	teacherId, err := GetUserID(s)
+func removeActivePlan(s *gin.Context, planID uint64) error {
+	teacherID, err := GetUserID(s)
 	if err != nil {
 		log.Println("No such current user (removeActivePlan)", err.Error())
 		return err
 	}
 
-	log.Println("! Removing active plan ", planId, " by ", teacherId)
+	log.Println("! Removing active plan ", planID, " by ", teacherID)
 
 	query := "DELETE FROM active_plan WHERE teacher_id = $1 AND plan = $2"
-	_, err = API.db.Exec(query, teacherId, planId)
+	_, err = API.db.Exec(query, teacherID, planID)
 	if err != nil {
 		log.Println("-- ", err.Error())
 	}
 	return err
 }
 
-func insertActivePlan(s *gin.Context, planId uint64) error {
-	teacherId, err := GetUserID(s)
+func insertActivePlan(s *gin.Context, planID uint64) error {
+	teacherID, err := GetUserID(s)
 	if err != nil {
 		log.Println("No such current user (insertActivePlan)", err.Error())
 		return err
 	}
 
-	log.Println("! Inserting active plan ", planId, " by ", teacherId)
+	log.Println("! Inserting active plan ", planID, " by ", teacherID)
 
 	query := "INSERT INTO active_plan (creation_date, teacher_id, plan) VALUES($1, $2, $3)"
-	_, err = API.db.Exec(query, time.Now(), teacherId, planId)
+	_, err = API.db.Exec(query, time.Now(), teacherID, planID)
 	if err != nil {
 		log.Println("-- ", err.Error())
 	}
@@ -75,7 +75,12 @@ func insertActivePlan(s *gin.Context, planId uint64) error {
 // AssignStudentToGLP assigns the given student (by id) to the given GLP (by id),
 // returns a string of the returned json from the core API as well as an error (if any).
 func AssignStudentToGLP(s *gin.Context, studentID uint64, glpID uint64, from, to time.Time) (string, error) {
-	assignJSON, err := jsoniter.Marshal(&types.AssignPOST{studentID, glpID, from, to})
+	assignJSON, err := jsoniter.Marshal(&types.AssignPOST{
+		StudentID:      studentID,
+		GlpID:          glpID,
+		AvailableFrom:  from,
+		AvailableUntil: to,
+	})
 	if err != nil {
 		return "", err
 	}
@@ -103,7 +108,12 @@ func AssignStudentToGLP(s *gin.Context, studentID uint64, glpID uint64, from, to
 // AssignGroupToGLP assigns the given group (by id) to the given GLP (by id),
 // returns a string of the returned json from the core API as well as an error (if any).
 func AssignGroupToGLP(s *gin.Context, groupID uint64, glpID uint64, from, to time.Time) (string, error) {
-	assignJSON, err := jsoniter.Marshal(&types.AssignGroupPOST{groupID, glpID, from, to})
+	assignJSON, err := jsoniter.Marshal(&types.AssignGroupPOST{
+		GroupID:        groupID,
+		GlpID:          glpID,
+		AvailableFrom:  from,
+		AvailableUntil: to,
+	})
 	if err != nil {
 		return "", err
 	}
@@ -142,6 +152,7 @@ func GetAssignedGLPS(s *gin.Context, studentID uint64) string {
 	return string(resp)
 }
 
+// GetStudentAssignedGLPS ...
 func GetStudentAssignedGLPS(s *gin.Context, studentID uint64) string {
 	resp, err := DoTimedRequest(s, "GET",
 		API.getPath(s, "students/", fmt.Sprintf("%d", studentID), "/assignedGlps"),
@@ -194,13 +205,13 @@ func DeleteAssignedGLP(s *gin.Context, studentID uint64, linkID uint64) string {
 		return ""
 	}
 
-	teacherId, err := GetUserID(s)
+	teacherID, err := GetUserID(s)
 	if err != nil {
 		log.Println("No such current user (removeActivePlan)", err.Error())
 		return string(resp)
 	}
 
-	API.WriteActivity(teacherId, activities.StudentUnassignGLPActivity, resp)
+	API.WriteActivity(teacherID, activities.StudentUnassignGLPActivity, resp)
 	return string(resp)
 }
 
@@ -223,12 +234,12 @@ func DeleteGroupAssignedGLP(s *gin.Context, groupID uint64, glpID uint64) string
 		return ""
 	}
 
-	teacherId, err := GetUserID(s)
+	teacherID, err := GetUserID(s)
 	if err != nil {
 		log.Println("No such current user (removeActivePlan)", err.Error())
 		return string(resp)
 	}
 
-	API.WriteActivity(teacherId, activities.GroupUnassignGLPActivity, resp)
+	API.WriteActivity(teacherID, activities.GroupUnassignGLPActivity, resp)
 	return string(resp)
 }

@@ -81,6 +81,7 @@ func GetStudent(s *gin.Context, studentID int) (*types.Student, error) {
 	return student, nil
 }
 
+// PostStudent handles the POST student request route.
 func PostStudent(s *gin.Context) (string, error) {
 	var json *types.StudentPost
 	if err := s.ShouldBindJSON(&json); err != nil {
@@ -105,16 +106,17 @@ func PostStudent(s *gin.Context) (string, error) {
 		return "", err
 	}
 
-	currUserId, err := GetUserID(s)
+	currUserID, err := GetUserID(s)
 	if err != nil {
 		log.Println("No such user", err.Error())
 		return string(resp), err
 	}
 
-	API.WriteActivity(currUserId, activities.CreateStudentActivity, resp)
+	API.WriteActivity(currUserID, activities.CreateStudentActivity, resp)
 	return string(resp), nil
 }
 
+// PutStudent handles the PUT student api route
 func PutStudent(s *gin.Context, studentID int) (string, error) {
 	var json *types.StudentPost
 	if err := s.ShouldBindJSON(&json); err != nil {
@@ -142,6 +144,7 @@ func PutStudent(s *gin.Context, studentID int) (string, error) {
 	return string(resp), nil
 }
 
+// DeleteStudent handles the delete student request
 func DeleteStudent(s *gin.Context, studentID int) (string, error) {
 	data, err := DoTimedRequest(s, "DELETE",
 		API.getPath(s, "students/", fmt.Sprintf("%d", studentID)),

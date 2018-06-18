@@ -2,7 +2,7 @@ package api
 
 import "log"
 
-// gets the name of the folder in which the glps files are
+// GetGLPFilesFolderName gets the name of the folder in which the glps files are
 // stored. this function will return an empty string and no
 // error if the key is not in the database
 func GetGLPFilesFolderName(glpID uint64) (string, error) {

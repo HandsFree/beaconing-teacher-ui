@@ -40,6 +40,7 @@ type glpPostJSON struct {
 	Public             bool     `json:"public"`
 }
 
+// CreateGLP handles the CreateGLP POST request.
 func CreateGLP(s *gin.Context) (string, error) {
 	var json glpPostJSON
 	if err := s.ShouldBindJSON(&json); err != nil {
@@ -72,14 +73,14 @@ func CreateGLP(s *gin.Context) (string, error) {
 	return string(resp), nil
 }
 
-// most assigned by the current user.
+// GetMostAssigned most assigned by the current user.
 func GetMostAssigned(s *gin.Context) ([]*types.GLP, error) {
 	if API.db == nil {
 		log.Println("-- No database connection has been established")
 		return nil, errors.New("No database connection")
 	}
 
-	teacherId, err := GetUserID(s)
+	teacherID, err := GetUserID(s)
 	if err != nil {
 		log.Println("No such current user", err.Error())
 		return []*types.GLP{}, err
@@ -89,7 +90,7 @@ func GetMostAssigned(s *gin.Context) ([]*types.GLP, error) {
 	// that have been created by the teacher that is currently
 	// active
 	query := "SELECT plan, count(*) FROM active_plan WHERE teacher_id = $1 GROUP BY plan ORDER BY count(*) DESC"
-	rows, err := API.db.Query(query, fmt.Sprintf("%d", teacherId))
+	rows, err := API.db.Query(query, fmt.Sprintf("%d", teacherID))
 	if err != nil {
 		log.Println("-- ", err.Error())
 		return nil, err
@@ -119,13 +120,14 @@ func GetMostAssigned(s *gin.Context) ([]*types.GLP, error) {
 	return popular, nil
 }
 
+// GetRecentlyAssignedGLPS ...
 func GetRecentlyAssignedGLPS(s *gin.Context, reverse bool) ([]*types.GLP, error) {
 	if API.db == nil {
 		log.Println("-- No database connection has been established")
 		return nil, errors.New("No database connection")
 	}
 
-	teacherId, err := GetUserID(s)
+	teacherID, err := GetUserID(s)
 	if err != nil {
 		log.Println("No such current user", err.Error())
 		return []*types.GLP{}, err
@@ -139,7 +141,7 @@ func GetRecentlyAssignedGLPS(s *gin.Context, reverse bool) ([]*types.GLP, error)
 		query = "SELECT plan FROM active_plan WHERE teacher_id = $1 GROUP BY plan, creation_date ORDER BY creation_date DESC"
 	}
 
-	rows, err := API.db.Query(query, fmt.Sprintf("%d", teacherId))
+	rows, err := API.db.Query(query, fmt.Sprintf("%d", teacherID))
 	if err != nil {
 		log.Println("-- ", err.Error())
 		return nil, err
@@ -238,12 +240,12 @@ func DeleteGLP(s *gin.Context, id uint64) (string, error) {
 		return "", err
 	}
 
-	teacherId, err := GetUserID(s)
+	teacherID, err := GetUserID(s)
 	if err != nil {
 		log.Println("No such current user", err.Error())
 		return string(resp), err
 	}
 
-	API.WriteActivity(teacherId, activities.DeleteGLPActivity, resp)
+	API.WriteActivity(teacherID, activities.DeleteGLPActivity, resp)
 	return string(resp), nil
 }

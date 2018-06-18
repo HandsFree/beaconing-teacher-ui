@@ -9,6 +9,7 @@ import (
 	jsoniter "github.com/json-iterator/go"
 )
 
+// PutProfile handles the put profile api request
 func PutProfile(s *gin.Context) (string, error) {
 	var json *types.CurrentUser
 	if err := s.ShouldBindJSON(&json); err != nil {

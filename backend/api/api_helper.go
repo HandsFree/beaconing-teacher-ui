@@ -41,18 +41,26 @@ const timeout = 120 * time.Second
 
 // ────────────────────────────────────────────────────────────────────────────────
 
+// GetOutboundIP is a helper function to get the
+// current computers outbound IP.
 func GetOutboundIP() net.IP {
 	conn, err := net.Dial("udp", "8.8.8.8:80")
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer conn.Close()
-
 	localAddr := conn.LocalAddr().(*net.UDPAddr)
-
 	return localAddr.IP
 }
 
+// GetProtocol returns the protocol in which
+// the server should run in. By default this is
+// https, unless gin is in debug mode, in which case
+// it will run in HTTP
+//
+// this assumption is made as debug mode will only be
+// run locally and not in production so https is not necessary
+// or easily configurable
 func GetProtocol() string {
 	if gin.IsDebugging() {
 		return "http://"
@@ -60,6 +68,10 @@ func GetProtocol() string {
 	return "https://"
 }
 
+// GetBaseLink returns the base server host
+// link, this is loaded from the configuration file
+// however, when gin is in debug mode this is
+// the computers ip with the port (loaded from the config file)
 func GetBaseLink() string {
 	if gin.IsDebugging() {
 		// we have to slap the port on there
@@ -75,14 +87,17 @@ func GetBaseLink() string {
 	return cfg.Beaconing.Server.Host
 }
 
-func GetRootPath() string {
+func getRootPath() string {
 	return GetProtocol() + GetBaseLink()
 }
 
+// GetRedirectBaseLink returns the link for
+// redirecting the api tokens
 func GetRedirectBaseLink() string {
-	return GetRootPath() + "/api/v1/token/"
+	return getRootPath() + "/api/v1/token/"
 }
 
+// GetLogOutLink ...
 func GetLogOutLink() string {
 	return GetProtocol() + GetBaseLink() + "/"
 }
@@ -121,6 +136,7 @@ func formatRequest(r *http.Request) string {
 	return strings.Join(request, "\n")
 }
 
+// DoTimedRequestBody ...
 func DoTimedRequestBody(s *gin.Context, method string, url string, reqBody io.Reader) ([]byte, error) {
 	return DoTimedRequestBodyHeaders(s, method, url, reqBody, map[string]string{
 		"accept":        "application/json",
@@ -128,7 +144,7 @@ func DoTimedRequestBody(s *gin.Context, method string, url string, reqBody io.Re
 	})
 }
 
-// DoTimedRequestBody does a timed request of type {method} to {url} with an optional {reqBody}, if
+// DoTimedRequestBodyHeaders does a timed request of type {method} to {url} with an optional {reqBody}, if
 // there is no body pass nil, as well as a timeout can be specified.
 func DoTimedRequestBodyHeaders(s *gin.Context, method string, url string, reqBody io.Reader, headers map[string]string) ([]byte, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
