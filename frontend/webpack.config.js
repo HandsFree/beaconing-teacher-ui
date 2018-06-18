@@ -84,6 +84,9 @@ const mainSettings = {
         }),
         new ExtractTextPlugin('app.css'),
         new OptimizeCssAssetsPlugin(),
+        new HardSourceWebpackPlugin({
+            cacheDirectory: `${resolve(__dirname, 'node_modules', '.cache', 'hard-source')}/[confighash]`,
+        }),
     ],
     devtool: dev ? 'inline-source-map' : false,
 };
