@@ -61,13 +61,13 @@ class StudentBox extends Component {
                     {
                         href: `//${window.location.host}/classroom/student?id=${id}`,
                     },
-                    'View Student',
+                    await window.bcnI18n.getPhrase('cr_view_student'),
                 ),
                 a(
                     {
                         href: `//${window.location.host}/calendar?id=${id}`,
                     },
-                    'View Calendar',
+                    await window.bcnI18n.getPhrase('cr_view_calendar'),
                 ),
             ),
         );

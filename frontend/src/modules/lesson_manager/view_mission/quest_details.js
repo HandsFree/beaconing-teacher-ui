@@ -28,11 +28,13 @@ class QuestDetails extends Component {
     
                 questsProm.push(questEl);
             }
+
+            const questsText = await window.bcnI18n.getPhrase('lm_quests');
     
             return Promise.all(questsProm)
                 .then(questsEl => div(
                     '#quests-details',
-                    div('.title', h4('Quests:')),
+                    div('.title', h4(`${questsText}:`)),
                     div(
                         '.details-container',
                         questsEl,
@@ -42,7 +44,7 @@ class QuestDetails extends Component {
 
         return div(
             '#quests-details',
-            div('.title', h4('Quests:')),
+            div('.title', h4(`${await window.bcnI18n.getPhrase('lm_quests')}:`)),
         );
     }
 }

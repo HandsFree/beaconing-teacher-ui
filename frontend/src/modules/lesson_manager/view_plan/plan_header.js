@@ -15,7 +15,7 @@ class PlanHeader extends Component {
     }
 
     async render() {
-        const glpName = this.state.glp.name ?? 'Unnamed GLP';
+        const glpName = this.state.glp.name ?? await window.bcnI18n.getPhrase('lm_unnamed_glp');
         const playUrl = this.state.glp.playUrl ?? `http://gameplots.beaconing.eu/game/?externs=http://core.beaconing.eu/api/gamifiedlessonpaths/${this.state.glp.id}/externconfig`;
 
         return div(
@@ -27,9 +27,9 @@ class PlanHeader extends Component {
                     {
                         href: `//${window.location.host}/lesson_manager`,
                     },
-                    span('Library'),
+                    span(await window.bcnI18n.getPhrase('lm_library')),
                 ),
-                a('.current', 'Plan Overview'),
+                a('.current', await window.bcnI18n.getPhrase('lm_plan_overview')),
             ),
             h1(glpName),
             nav(
@@ -39,13 +39,13 @@ class PlanHeader extends Component {
                         href: playUrl,
                         target: '_blank',
                     },
-                    'Play',
+                    await window.bcnI18n.getPhrase('lm_play'),
                 ),
                 a(
                     {
                         href: `#assign?id=${this.state.glp.id}`,
                     },
-                    'Assign',
+                    await window.bcnI18n.getPhrase('lm_assign'),
                 ),
             ),
         );

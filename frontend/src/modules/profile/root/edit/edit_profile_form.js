@@ -48,12 +48,12 @@ class ProfileEditForm extends Component {
                 elementID: false,
                 heading: 'Success',
                 type: 'success',
-                message: `teacher edited!`,
+                message: await window.bcnI18n.getPhrase('teacher_edited'),
             });
 
             this.appendView(statusMessageEl);
 
-            editButton.textContent = 'Update';
+            editButton.textContent = await window.bcnI18n.getPhrase('update');
 
             return;
         }
@@ -62,16 +62,18 @@ class ProfileEditForm extends Component {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: 'teacher not edited!',
+            message: await window.bcnI18n.getPhrase('teacher_ne'),
         });
 
-        planButton.textContent = 'Update';
+        planButton.textContent = await window.bcnI18n.getPhrase('update');
 
         this.appendView(statusMessageEl);
     }
 
     async render() {
         const { teacher } = this.state;
+
+        const updatingText = await window.bcnI18n.getPhrase('updating');
 
         return div(
             '.flex-column',
@@ -85,9 +87,9 @@ class ProfileEditForm extends Component {
                             href: `//${window.location.host}/profile`,
                         },
                         i('.icon-angle-left'),
-                        'Go Back',
+                        await window.bcnI18n.getPhrase('go_back'),
                     ),
-                    h1('Editing Profile'),
+                    h1(await window.bcnI18n.getPhrase('pf_editing_profile')),
                     div('.empty-spacer', ' '),
                 ),
             ),
@@ -97,12 +99,12 @@ class ProfileEditForm extends Component {
                     '.margin-25.flex-column',
                     div(
                         '.general-info',
-                        p('Enter New Teacher Information:'),
+                        p(await window.bcnI18n.getPhrase('pf_teacher_info')),
                     ),
                     form(
                         '.edit-teacher',
                         label(
-                            span('Teacher First Name'),
+                            span(await window.bcnI18n.getPhrase('pf_teacher_fn')),
                             input(
                                 '#teacher-first-name.text-field',
                                 {
@@ -117,7 +119,7 @@ class ProfileEditForm extends Component {
                             ),
                         ),
                         label(
-                            span('Teacher Last Name'),
+                            span(await window.bcnI18n.getPhrase('pf_teacher_ln')),
                             input(
                                 '#teacher-last-name.text-field',
                                 {
@@ -133,7 +135,7 @@ class ProfileEditForm extends Component {
                         ),
                         label(
                             '.select',
-                            span('Teacher Gender'),
+                            span(await window.bcnI18n.getPhrase('pf_teacher_gender')),
                             select(
                                 '#teacher-gender',
                                 {
@@ -148,26 +150,26 @@ class ProfileEditForm extends Component {
                                         value: 'male',
                                         selected: teacher.teacherSettings?.gender === 'male',
                                     },
-                                    'Male',
+                                    await window.bcnI18n.getPhrase('male'),
                                 ),
                                 option(
                                     {
                                         value: 'female',
                                         selected: teacher.teacherSettings?.gender === 'female',
                                     },
-                                    'Female',
+                                    await window.bcnI18n.getPhrase('female'),
                                 ),
                                 option(
                                     {
                                         value: 'other',
                                         selected: teacher.teacherSettings?.gender === 'other',
                                     },
-                                    'Other',
+                                    await window.bcnI18n.getPhrase('other'),
                                 ),
                             ),
                         ),
                         label(
-                            span('Teacher School'),
+                            span(await window.bcnI18n.getPhrase('pf_teacher_school')),
                             input(
                                 '#teacher-school.text-field',
                                 {
@@ -182,12 +184,12 @@ class ProfileEditForm extends Component {
                             ),
                         ),
                         label(
-                            span('Teacher Email'),
+                            span(await window.bcnI18n.getPhrase('pf_teacher_email')),
                             input(
                                 '#teacher-email.text-field',
                                 {
                                     type: 'email',
-                                    placeholder: 'Enter New Email (or leave blank)',
+                                    placeholder: await window.bcnI18n.getPhrase('pf_enter_new_email'),
                                     oninput: (event) => {
                                         const { target } = event;
 
@@ -198,7 +200,7 @@ class ProfileEditForm extends Component {
                         ),
                         label(
                             '.select',
-                            span('Teacher Language'),
+                            span(await window.bcnI18n.getPhrase('pf_teacher_language')),
                             select(
                                 '#teacher-language',
                                 {
@@ -282,10 +284,10 @@ class ProfileEditForm extends Component {
                                         const { target } = event;
                                         this.editTeacher(target);
 
-                                        target.textContent = 'Updating...';
+                                        target.textContent = `${updatingText}...`;
                                     },
                                 },
-                                'Update',
+                                await window.bcnI18n.getPhrase('update'),
                             ),
                         ),
                     ),

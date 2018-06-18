@@ -40,9 +40,9 @@ class GLPDetails extends Component {
             }
         };
 
-        let dateCreatedText = 'Not recorded';
+        let dateCreatedText = await window.bcnI18n.getPhrase('lm_not_rec');
         let timeCreatedText = '';
-        let dateUpdatedText = 'Never';
+        let dateUpdatedText = await window.bcnI18n.getPhrase('lm_never');
         let timeUpdatedText = '';
 
         if (this.state.glp.createdAt && this.state.glp.createdAt !== '0001-01-01T00:00:00Z') {
@@ -59,27 +59,27 @@ class GLPDetails extends Component {
 
         return div(
             '#plan-details',
-            div('.title', h4('GLP Details:')),
+            div('.title', h4(`${await window.bcnI18n.getPhrase('lm_glp_details')}:`)),
             div(
                 '.small-details',
                 div(
                     '.detail',
-                    strong('Age: '),
+                    strong(`${await window.bcnI18n.getPhrase('lm_age')}: `),
                     span(this.state.glp.ageGroup),
                 ),
                 div(
                     '.detail',
-                    strong('Domain: '),
+                    strong(`${await window.bcnI18n.getPhrase('lm_domain')}: `),
                     span(this.state.glp.domain),
                 ),
                 div(
                     '.detail',
-                    strong('Year: '),
+                    strong(`${await window.bcnI18n.getPhrase('lm_year')}: `),
                     span(this.state.glp.year),
                 ),
                 div(
                     '.detail',
-                    strong('Owner: '),
+                    strong(`${await window.bcnI18n.getPhrase('lm_owner')}: `),
                     span(this.state.glp.owner),
                 ),
             ),
@@ -87,27 +87,27 @@ class GLPDetails extends Component {
                 '.large-details',
                 div(
                     '.detail',
-                    strong('Description:'),
+                    strong(`${await window.bcnI18n.getPhrase('description')}:`),
                     p(this.state.glp.description),
                 ),
                 div(
                     '.detail',
-                    strong('Topic:'),
+                    strong(`${await window.bcnI18n.getPhrase('lm_topic')}:`),
                     p(this.state.glp.topic),
                 ),
                 div(
                     '.detail',
-                    strong('Learning Objectives:'),
+                    strong(`${await window.bcnI18n.getPhrase('lm_los')}:`),
                     learningObjectives,
                 ),
                 div(
                     '.detail',
-                    strong('Competences:'),
+                    strong(`${await window.bcnI18n.getPhrase('lm_comps')}:`),
                     competences,
                 ),
                 div(
                     '.detail',
-                    strong('Created:'),
+                    strong(`${await window.bcnI18n.getPhrase('lm_created')}:`),
                     p(
                         {
                             title: timeCreatedText,
@@ -117,7 +117,7 @@ class GLPDetails extends Component {
                 ),
                 div(
                     '.detail',
-                    strong('Modified:'),
+                    strong(`${await window.bcnI18n.getPhrase('lm_mod')}:`),
                     p(
                         {
                             title: timeUpdatedText,

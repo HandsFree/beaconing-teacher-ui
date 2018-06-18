@@ -3,12 +3,12 @@ import { canvas } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 
-const config = (progress) => {
+const config = async (progress) => {
     return {
         type: 'bar',
         data: {
             labels: [
-                'Student Progress',
+                await window.bcnI18n.getPhrase('cr_analytics_sp'),
             ],
             datasets: [
                 {
@@ -63,7 +63,7 @@ class ProgressGraph extends Component {
         const ctx: CanvasRenderingContext2D = this.view.getContext('2d');
 
         const progNum = progress * 100;
-        this.chartObj = new window.Chart(ctx, config(progNum));
+        this.chartObj = new window.Chart(ctx, await config(progNum));
     }
 }
 

@@ -20,7 +20,7 @@ class GLPBox extends Component {
                         href: dashboardLink,
                         target: '_blank',
                     },
-                    'Analytics',
+                    await window.bcnI18n.getPhrase('analytics'),
                 );
             }
         };
@@ -41,7 +41,7 @@ class GLPBox extends Component {
                     {
                         href: `//${window.location.host}/lesson_manager#view?id=${glpID}&prev=classroom/groups`,
                     },
-                    'View',
+                    await window.bcnI18n.getPhrase('view'),
                 ),
                 a(
                     '.item',
@@ -50,7 +50,7 @@ class GLPBox extends Component {
                             this.unassignPlan();
                         },
                     },
-                    'Unassign',
+                    await window.bcnI18n.getPhrase('cr_unassign'),
                 ),
                 dashboardEl,
             ),
@@ -75,7 +75,7 @@ class GLPBox extends Component {
                 elementID: false,
                 heading: 'Success',
                 type: 'success',
-                message: 'Unassigned!',
+                message: await window.bcnI18n.getPhrase('sa'),
             });
 
             document.body.appendChild(statusMessageEl);
@@ -89,7 +89,7 @@ class GLPBox extends Component {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: 'group not unassigned!',
+            message: await window.bcnI18n.getPhrase('group_una'),
         });
 
         document.body.appendChild(statusMessageEl);

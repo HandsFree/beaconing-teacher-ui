@@ -5,6 +5,15 @@
   "main": "webpack.config.js",
   "author": "elliott.judd@hands-free.co.uk",
   "license": "ISC",
+  "scripts": {
+    "build": "yarn bp",
+    "b": "export NODE_ENV=development && ./node_modules/.bin/parallel-webpack",
+    "server": "export NODE_ENV=development && ./node_modules/.bin/webpack-dev-server",
+    "build-production": "yarn bp",
+    "bp": "export NODE_ENV=production && ./node_modules/.bin/parallel-webpack",
+    "flow": "./node_modules/.bin/flow",
+    "analyse": "export NODE_ENV=development && export analyse=true && ./node_modules/.bin/webpack"
+  },
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.42",
     "@babel/plugin-proposal-async-generator-functions": "^7.0.0-beta.42",
@@ -28,12 +37,13 @@
     "color-convert": "^1.5.0",
     "css-loader": "^0.28.4",
     "cssnano": "^3.10.0",
+    "eslint": "^5.0.0-rc.0",
     "eslint-config-airbnb-base": "^12.0.0",
-    "eslint-nullish-coalescing": "^4.19.1",
     "eslint-plugin-babel": "^5.1.0",
     "eslint-plugin-flowtype": "^2.46.1",
-    "eslint-plugin-import": "^2.10.0",
+    "eslint-plugin-import": "^2.12.0",
     "extract-text-webpack-plugin": "^3.0.0",
+    "flow-bin": "^0.74.0",
     "hard-source-webpack-plugin": "^0.6.4",
     "json5-loader": "^1.0.1",
     "minimatch": "^3.0.4",
@@ -45,20 +55,10 @@
     "webpack-bundle-analyzer": "^2.11.1",
     "webpack-dev-server": "^2.7.1"
   },
-  "scripts": {
-    "build": "export NODE_ENV=development && ./node_modules/.bin/parallel-webpack",
-    "b": "export NODE_ENV=development && ./node_modules/.bin/parallel-webpack",
-    "server": "export NODE_ENV=development && ./node_modules/.bin/webpack-dev-server",
-    "build-production": "export NODE_ENV=production && ./node_modules/.bin/parallel-webpack",
-    "bp": "export NODE_ENV=production && ./node_modules/.bin/parallel-webpack",
-    "flow": "./node_modules/.bin/flow",
-    "analyse": "export NODE_ENV=development && export analyse=true && ./node_modules/.bin/webpack"
-  },
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.42",
     "@shopify/draggable": "^1.0.0-beta.5",
     "chart.js": "^2.7.0",
-    "flow-bin": "^0.74.0",
     "hyperscript": "^2.0.2",
     "hyperscript-helpers": "^3.0.3",
     "identicon.js": "^2.3.1",

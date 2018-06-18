@@ -18,14 +18,14 @@ class InnerNav extends Component {
                 {
                     href: `//${window.location.host}/classroom/`,
                 },
-                span('Students'),
+                span(await window.bcnI18n.getPhrase('students')),
             ),
             a(
                 /^classroom\/groups\/?$|^classroom\/group\/?/.test(path) ? '.item.active-white' : '.item',
                 {
                     href: `//${window.location.host}/classroom/groups`,
                 },
-                span('Groups'),
+                span(await window.bcnI18n.getPhrase('groups')),
             ),
         );
     }

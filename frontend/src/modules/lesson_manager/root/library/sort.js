@@ -75,13 +75,13 @@ class Sort extends Component {
             '#library-sort.sort.flex-column',
             div(
                 '.header',
-                span('Sort By:'),
+                span(await window.bcnI18n.getPhrase('sort_by')),
             ),
             div(
                 '.sort-group',
                 div(
                     '.title',
-                    span('My Plans'),
+                    span(await window.bcnI18n.getPhrase('lm_my_plans')),
                 ),
                 div(
                     '.content',
@@ -95,7 +95,7 @@ class Sort extends Component {
                                 this.emit('SortOwnedAscClicked');
                             },
                         },
-                        'Ascending',
+                        await window.bcnI18n.getPhrase('asc'),
                     ),
                     a(
                         this.initPage === 'ownedDesc' ? '.sort-option.active' : '.sort-option',
@@ -107,7 +107,7 @@ class Sort extends Component {
                                 this.emit('SortOwnedDescClicked');
                             },
                         },
-                        'Descending',
+                        await window.bcnI18n.getPhrase('desc'),
                     ),
                 ),
             ),
@@ -115,7 +115,7 @@ class Sort extends Component {
                 '.sort-group',
                 div(
                     '.title',
-                    span('Recently Modified'),
+                    span(await window.bcnI18n.getPhrase('lm_rm')),
                 ),
                 div(
                     '.content',
@@ -129,7 +129,7 @@ class Sort extends Component {
                                 this.emit('SortRecentModAscGLPsClicked');
                             },
                         },
-                        'Ascending',
+                        await window.bcnI18n.getPhrase('asc'),
                     ),
                     a(
                         this.initPage === 'recentModDesc' ? '.sort-option.active' : '.sort-option',
@@ -141,7 +141,7 @@ class Sort extends Component {
                                 this.emit('SortRecentModDescGLPsClicked');
                             },
                         },
-                        'Descending',
+                        await window.bcnI18n.getPhrase('desc'),
                     ),
                 ),
             ),
@@ -149,7 +149,7 @@ class Sort extends Component {
                 '.sort-group',
                 div(
                     '.title',
-                    span('Status'),
+                    span(await window.bcnI18n.getPhrase('lm_status')),
                 ),
                 div(
                     '.content',
@@ -162,9 +162,9 @@ class Sort extends Component {
                                 this.toggleActive(target, 'active');
                                 this.emit('SortActiveGLPsClicked');
                             },
-                            title: 'Recently Assigned GLPs',
+                            title: await window.bcnI18n.getPhrase('lm_status_active_title'),
                         },
-                        'Active',
+                        await window.bcnI18n.getPhrase('lm_status_active'),
                     ),
                     a(
                         this.initPage === 'mostAssigned' ? '.sort-option.active' : '.sort-option',
@@ -176,7 +176,7 @@ class Sort extends Component {
                                 this.emit('SortMostAssignedClicked');
                             },
                         },
-                        'Most Assigned',
+                        await window.bcnI18n.getPhrase('lm_status_ma'),
                     ),
                 ),
             ),
@@ -184,7 +184,7 @@ class Sort extends Component {
                 '.sort-group',
                 div(
                     '.title',
-                    span('STEM Subject'),
+                    span(await window.bcnI18n.getPhrase('lm_stem')),
                 ),
                 div(
                     '.content',
@@ -198,7 +198,7 @@ class Sort extends Component {
                                 this.emit('STEMScienceClicked');
                             },
                         },
-                        'Science',
+                        await window.bcnI18n.getPhrase('lm_science'),
                     ),
                     a(
                         this.initPage === 'technology' ? '.sort-option.active' : '.sort-option',
@@ -210,7 +210,7 @@ class Sort extends Component {
                                 this.emit('STEMTechnologyClicked');
                             },
                         },
-                        'Technology',
+                        await window.bcnI18n.getPhrase('lm_tech'),
                     ),
                     a(
                         this.initPage === 'engineering' ? '.sort-option.active' : '.sort-option',
@@ -222,7 +222,7 @@ class Sort extends Component {
                                 this.emit('STEMEngineeringClicked');
                             },
                         },
-                        'Engineering',
+                        await window.bcnI18n.getPhrase('lm_eng'),
                     ),
                     a(
                         this.initPage === 'maths' ? '.sort-option.active' : '.sort-option',
@@ -234,7 +234,7 @@ class Sort extends Component {
                                 this.emit('STEMMathsClicked');
                             },
                         },
-                        'Maths',
+                        await window.bcnI18n.getPhrase('lm_maths'),
                     ),
                 ),
             ),
@@ -242,7 +242,7 @@ class Sort extends Component {
                 '.sort-group',
                 div(
                     '.title',
-                    span('Name'),
+                    span(await window.bcnI18n.getPhrase('name')),
                 ),
                 div(
                     '.content',
@@ -256,7 +256,7 @@ class Sort extends Component {
                                 this.emit('NameAscendingClicked');
                             },
                         },
-                        'Ascending',
+                        await window.bcnI18n.getPhrase('asc'),
                     ),
                     a(
                         this.initPage === 'nameDesc' ? '.sort-option.active' : '.sort-option',
@@ -268,7 +268,7 @@ class Sort extends Component {
                                 this.emit('NameDescendingClicked');
                             },
                         },
-                        'Descending',
+                        await window.bcnI18n.getPhrase('desc'),
                     ),
                 ),
             ),
@@ -276,7 +276,7 @@ class Sort extends Component {
                 '.sort-group',
                 div(
                     '.title',
-                    span('Time Added'),
+                    span(await window.bcnI18n.getPhrase('lm_time_added')),
                 ),
                 div(
                     '.content',
@@ -290,7 +290,7 @@ class Sort extends Component {
                                 this.emit('RecentAscendingClicked');
                             },
                         },
-                        'Ascending',
+                        await window.bcnI18n.getPhrase('asc'),
                     ),
                     a(
                         this.initPage === 'addedDesc' ? '.sort-option.active' : '.sort-option',
@@ -302,7 +302,7 @@ class Sort extends Component {
                                 this.emit('RecentDescendingClicked');
                             },
                         },
-                        'Descending',
+                        await window.bcnI18n.getPhrase('desc'),
                     ),
                 ),
             ),
@@ -310,7 +310,7 @@ class Sort extends Component {
                 '.sort-group',
                 div(
                     '.title',
-                    span('Visibility'),
+                    span(await window.bcnI18n.getPhrase('lm_vis')),
                 ),
                 div(
                     '.content',
@@ -324,7 +324,7 @@ class Sort extends Component {
                                 this.emit('SortPublicClicked');
                             },
                         },
-                        'Public',
+                        await window.bcnI18n.getPhrase('lm_public'),
                     ),
                     a(
                         this.initPage === 'private' ? '.sort-option.active' : '.sort-option',
@@ -336,7 +336,7 @@ class Sort extends Component {
                                 this.emit('SortPrivateClicked');
                             },
                         },
-                        'Private',
+                        await window.bcnI18n.getPhrase('lm_private'),
                     ),
                 ),
             ),
