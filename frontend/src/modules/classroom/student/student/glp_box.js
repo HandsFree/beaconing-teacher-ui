@@ -25,7 +25,7 @@ class GLPBox extends Component {
                 a(
                     '.item',
                     {
-                        href: `//${window.location.host}/lesson_manager#view?id=${glpID}&prev=classroom`,
+                        href: `//${window.location.host}/lesson_manager#view?id=${glpID}`,
                     },
                     await window.bcnI18n.getPhrase('view'),
                 ),
