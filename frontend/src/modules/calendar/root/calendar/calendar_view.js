@@ -109,13 +109,15 @@ class CalendarView extends Component {
 
     async currMonth() {
         this.state.currDate = new Date();
+        window.sessionStorage.setItem('calendarDate', this.state.currDate);
     	this.updateView(await this.render());
     }
 
     async prevMonth() {
         const date = this.state.currDate;
 		const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
-    	this.state.currDate = new Date(firstDay - 1);
+        this.state.currDate = new Date(firstDay - 1);
+        window.sessionStorage.setItem('calendarDate', this.state.currDate);
     	console.log('[Calendar] prev ', this.state.currDate);
         this.updateView(await this.render());
     }
@@ -124,7 +126,8 @@ class CalendarView extends Component {
         const date = this.state.currDate;
 		const lastDay = new Date(date.getFullYear(), date.getMonth(), date.daysInMonth()+1);
 		console.log('[Calendar] last day ', lastDay);
-    	this.state.currDate = new Date(lastDay + 1);
+        this.state.currDate = new Date(lastDay + 1);
+        window.sessionStorage.setItem('calendarDate', this.state.currDate);
     	console.log('[Calendar] ', this.state.currDate);
     	this.updateView(await this.render());
     }

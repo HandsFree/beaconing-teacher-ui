@@ -1,7 +1,16 @@
-// @flow
+// sessionStorageflow
 
 import { section, h1, h2, p, div, a, ul, li, span, select, option } from '../../../../core/html';
 import component, { Component } from '../../../../core/component';
+
+Date.prototype.getMonthName = function() {
+    const d = new Date(this);
+    const monthNames = [
+        'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
+        'September', 'October', 'November', 'December'
+    ];
+    return monthNames[d.getMonth()];
+}
 
 // the top menu options above the calendar
 class CalendarController extends Component {    
@@ -9,42 +18,13 @@ class CalendarController extends Component {
         RefreshCalendarController: this.refresh,
     };
 
-    state = {
-        currDate: new Date(),
-    }
-
+    // fixme remove.
     async refresh() {
-        this.emitCurrMonth();
+        this.updateCalendar('CurrMonth');
     }
 
-    async emitPrevMonth() {
-        this.emit('PrevMonth');
-
-        // FIXME
-        // duplicate logic here but it will do for now.
-        // this is to keep track of the calendar dates, whatever
-        // we do in the calendar view we do here. there is likely
-        // a cleaner way to do this, e.g. passing a param to an emit call?
-        const date = this.state.currDate;
-		const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
-    	this.state.currDate = new Date(firstDay - 1);
-        
-        this.updateView(await this.render());
-    }
-
-    async emitCurrMonth() {
-        this.emit('CurrMonth');
-        this.state.currDate = new Date();
-        this.updateView(await this.render());
-    }
-
-    async emitNextMonth() {
-        this.emit('NextMonth');
-
-        const date = this.state.currDate;
-		const lastDay = new Date(date.getFullYear(), date.getMonth(), date.daysInMonth()+1);
-    	this.state.currDate = new Date(lastDay + 1);
-
+    async updateCalendar(updateHook) {
+        this.emit(updateHook);
         this.updateView(await this.render());
     }
 
@@ -63,48 +43,39 @@ class CalendarController extends Component {
             studentGreet = `${student.username}'s calendar`;
         }
 
-        let monthName = '';
-        let year = '';
-
-        if (this.state.currDate) {
-            const currDate = this.state.currDate;
-            monthName = currDate.getMonthName();            
-            year = currDate.getFullYear();
+        let currDate = new Date();
+        if (window.sessionStorage) {
+            currDate = new Date(window.sessionStorage.getItem('calendarDate'));
         }
 
+        const monthName = `${currDate.getMonthName()}`;
+        const year = `${currDate.getFullYear()}`;
+        studentGreet += ` ${monthName}, ${year}`;
+
         return div('.calendar-control',
-            h2('.calendar-date', `${studentGreet} ${monthName}, ${year}`),
+            h2('.calendar-date', `${studentGreet}`),
 
             p(
                 span('.fake-link', {
-                    onclick: () => this.emitPrevMonth()
+                    onclick: () => this.updateCalendar('PrevMonth')
                 }, 'prev'),
 
                 ' ',
 
                 span('.fake-link', {
                     href: '',
-                    onclick: () => this.emitCurrMonth()
+                    onclick: () => this.updateCalendar('CurrMonth')
                 }, 'today'),
 
                 ' ',
 
                 span('.fake-link', {
                     href: '',
-                    onclick: () => this.emitNextMonth()
+                    onclick: () => this.updateCalendar('NextMonth')
                 }, 'next')
             )
         );
     }
-}
-
-Date.prototype.getMonthName = function() {
-    const d = new Date(this);
-    const monthNames = [
-        'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
-        'September', 'October', 'November', 'December'
-    ];
-    return monthNames[d.getMonth()];
 }
 
 export default CalendarController;
