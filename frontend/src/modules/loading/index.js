@@ -11,9 +11,9 @@ class Loading extends Component {
                 '.loading',
                 img({
                     src: `//${window.location.host}/dist/beaconing/images/loading.gif`,
-                    alt: 'Loading',
+                    alt: await window.bcnI18n.getPhrase('loading'),
                 }),
-                span('Loading...'),
+                span(`${await window.bcnI18n.getPhrase('loading')}...`),
             ),
         );
     }
