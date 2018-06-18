@@ -20,9 +20,12 @@ class I18n {
         const keys = Object.keys(i18nConfig);
         let langs = [];
 
-        if (keys.indexOf(key) !== -1) {
-            langs = i18nConfig[key];
+        if (keys.indexOf(key) === -1) {
+            console.log(`[I18n] Translation not found for key: ${key}`);
+            return '';
         }
+
+        langs = i18nConfig[key];
 
         const langsKeys = Object.keys(langs);
 
