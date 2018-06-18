@@ -4,26 +4,17 @@ import { section, h1, h2, p, div, a, ul, li, span, select, option } from '../../
 import component, { Component } from '../../../../core/component';
 
 class StudentSelector extends Component {
-    constructor(calendarView) {
-        super();
-        this.state = {
-            calendarView: calendarView,
-        };
-    }
-
     async refresh(groupId, studentsList) {
-        const oldCalendarView = this.state.calendarView;
         this.state = {
             groupId: groupId,
             studentsList: studentsList ?? [],
-            calendarView: oldCalendarView, // set this again.
         };
         this.updateView(await this.render());
     }
 
     async setStudent(id) {
-        console.log("setting student to", id);
-        const calendarView = this.state.calendarView;
+        console.log('[Calendar] setting student to ', id);
+        const calendarView = this.props.calendarView;
         calendarView.state.studentId = id;
 
         // refresh glps in teh calendar view
@@ -45,7 +36,7 @@ class StudentSelector extends Component {
     async render() {
         const { groupId } = this.state;
         if (!groupId) {
-            return p("no group selected");
+            return p('no group selected');
         }
 
         const studentsList = this.state.studentsList;
@@ -61,7 +52,7 @@ class StudentSelector extends Component {
         const studentLinks = [];
         for (const student of students) {
             studentLinks.push(
-                li(span(".fake-link",
+                li(span('.fake-link',
                     {
                         onclick: () => {
                             this.setStudent(student.id);
@@ -72,36 +63,31 @@ class StudentSelector extends Component {
             );
         }
 
-        let studentSet = p("no students for this group.");
+        let studentSet = p('no students for this group.');
         if (studentLinks.length > 0) {
             studentSet = ul(studentLinks);
         }
 
-        return div(".full-width",
-            h2("Inspect student:"),
+        return div('.full-width',
+            h2('Inspect student:'),
             studentSet);
     }
 }
 
 class StudentGroupSelector extends Component {
-    constructor(calendarView) {
-        super();
-        this.state = {
-            groupId: 0,
-            calendarView: calendarView,
-        };
-    }
+    state = {
+        groupId: 0,
+    };
     
     async render() {
         let options = [];
         
         const groups = Object.values(await window.beaconingAPI.getGroups()) ?? [];
-        console.log("hi we're just debugging ", groups);
 
         for (const group of groups) {
-            let isSelected = "";
+            let isSelected = '';
             if (this.state.groupId == group.id) {
-                isSelected = "selected";
+                isSelected = 'selected';
             }
             
             options.push(
@@ -112,17 +98,17 @@ class StudentGroupSelector extends Component {
             );
         }
 
-        const studentSel = new StudentSelector(this.state.calendarView);
+        const studentSel = new StudentSelector();
 
         return Promise.all([
-            studentSel.attach(this.state),
+            studentSel.attach({calendarView: this.props.calendarView}),
         ]).then((values) => {
             const [
                 studentSelEl
             ] = values;
 
-            return div(".group-select", 
-                h2("Select group:"),
+            return div('.group-select', 
+                h2('Select group:'),
                 select({
                     onchange: (event) => {
                         const self = event.target;
@@ -137,23 +123,16 @@ class StudentGroupSelector extends Component {
 }
 
 export class SelectorPanel extends Component {
-    constructor(view) {
-        super();
-        this.state = {
-            view: view,
-        }
-    }
-
     async render() {
-        const studentGroupSelector = new StudentGroupSelector(this.state.view);
+        const studentGroupSelector = new StudentGroupSelector();
 
         return Promise.all([
-            studentGroupSelector.attach(),
+            studentGroupSelector.attach({ calendarView: this.props.calendarView}),
         ]).then(((values) => {
             const [
                 studentGroupSelEl
             ] = values;
-            return section(".full-width", studentGroupSelEl);
+            return section('.full-width', studentGroupSelEl);
         }));
     }
 }

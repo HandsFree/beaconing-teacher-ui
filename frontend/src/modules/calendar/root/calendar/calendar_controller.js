@@ -3,25 +3,14 @@
 import { section, h1, h2, p, div, a, ul, li, span, select, option } from '../../../../core/html';
 import component, { Component } from '../../../../core/component';
 
-// the left pane which has the controls for the calendar
-// regarding students/groups
-class CalendarStudentSelector extends Component {
-
-}
-
 // the top menu options above the calendar
 class CalendarController extends Component {    
     updateHooks = {
         RefreshCalendarController: this.refresh,
     };
-    
-    constructor(view) {
-        super();
-        
-        this.state = {
-            calendarView: view,
-            currDate: new Date(),
-        }
+
+    state = {
+        currDate: new Date(),
     }
 
     async refresh() {
@@ -61,21 +50,21 @@ class CalendarController extends Component {
 
     async render() {
         let studentId = -1;
-        if (this.state.calendarView) {
-            const view = this.state.calendarView;
-            // wewlad
+        if (this.props.calendarView) {
+            const view = this.props.calendarView;
+            // FIXME wewlad
             studentId = view.state.studentId;
         }
 
         const student = await window.beaconingAPI.getStudent(studentId);
 
-        let studentGreet = "";
+        let studentGreet = '';
         if (studentId != -1) {
             studentGreet = `${student.username}'s calendar`;
         }
 
-        let monthName = "";
-        let year = "";
+        let monthName = '';
+        let year = '';
 
         if (this.state.currDate) {
             const currDate = this.state.currDate;
@@ -84,26 +73,26 @@ class CalendarController extends Component {
         }
 
         return div('.calendar-control',
-            h2(".calendar-date", `${studentGreet} ${monthName}, ${year}`),
+            h2('.calendar-date', `${studentGreet} ${monthName}, ${year}`),
 
             p(
-                span(".fake-link", {
+                span('.fake-link', {
                     onclick: () => this.emitPrevMonth()
-                }, "prev"),
+                }, 'prev'),
 
-                " ",
+                ' ',
 
-                span(".fake-link", {
+                span('.fake-link', {
                     href: '',
                     onclick: () => this.emitCurrMonth()
-                }, "today"),
+                }, 'today'),
 
-                " ",
+                ' ',
 
-                span(".fake-link", {
+                span('.fake-link', {
                     href: '',
                     onclick: () => this.emitNextMonth()
-                }, "next")
+                }, 'next')
             )
         );
     }
@@ -112,8 +101,8 @@ class CalendarController extends Component {
 Date.prototype.getMonthName = function() {
     var d = new Date(this);
     const monthNames = [
-        "January", "February", "March", "April", "May", "June", "July", "August",
-        "September", "October", "November", "December"
+        'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
+        'September', 'October', 'November', 'December'
     ];
     return monthNames[d.getMonth()];
 }

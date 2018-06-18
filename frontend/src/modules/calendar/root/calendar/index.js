@@ -25,17 +25,15 @@ class Calendar extends RootComponent {
         const mainNav = new MainNav();
 
         const calendarView = new CalendarView();
-        const studentSelector = new SelectorPanel(calendarView);
-        const calendarController = new CalendarController(calendarView);
-        
-        console.log("calendar index");
+        const studentSelector = new SelectorPanel();
+        const calendarController = new CalendarController();
 
         return Promise.all([
             header.attach(),
             mainNav.attach(),
-            calendarController.attach(),
+            calendarController.attach({ calendarView: calendarView}),
             calendarView.attach(),
-            studentSelector.attach(),
+            studentSelector.attach({ calendarView: calendarView}),
         ]).then((values) => {
             const [
                 headerEl,
@@ -54,7 +52,7 @@ class Calendar extends RootComponent {
                     main(
                         section('.outer-col', 
                             studentSelector,
-                            section(".full-width", 
+                            section('.full-width', 
                                 calendarController,
                                 calendarView
                             )

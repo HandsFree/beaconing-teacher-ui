@@ -20,16 +20,12 @@ class CalendarView extends Component {
         RefreshGLPS: this.refreshGLPS,
     }
     
-    // the date, specifically the month, this calendar
-    // will bew a view of.
-    constructor() {
-        super();
-
-        this.state = {
-            currDate: new Date(),
-            eventMap: new Map(),
-            studentId: -1,
-        }
+    state = {
+        // the date, specifically the month, this calendar
+        // will bew a view of.
+        currDate: new Date(),
+        eventMap: new Map(),
+        studentId: -1,
     }
 
     async refreshGLPS() {
@@ -55,7 +51,7 @@ class CalendarView extends Component {
         event.date = eventDate;
 
         const newDate = eventDate.withoutTime();
-        console.log("writing ", event, " time ", newDate.getTime());
+        console.log('[Calendar] writing ', event, ' time ', newDate.getTime());
 
         let events = this.state.eventMap.get(newDate.getTime());
         if (events) {
@@ -93,14 +89,14 @@ class CalendarView extends Component {
     async loadEvents(studentId) {
         if (studentId == -1) return;
         
-        console.log(`writing events for student ${studentId}`);
+        console.log(`[Calendar] writing events for student ${studentId}`);
 
         const glpBoxes = await this.getStudentGLPS(studentId);
         for (const glpBox of glpBoxes) {
             const glp = glpBox.glp;
 
             if (glpBox.availableFrom) {
-                console.log(`writing event ${glpBox.availableFrom}`);
+                console.log(`[Calendar] writing event ${glpBox.availableFrom}`);
 
                 this.writeEvent(new Date(glpBox.availableFrom), {
                     name: glp.name,
@@ -120,16 +116,16 @@ class CalendarView extends Component {
         const date = this.state.currDate;
 		const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
     	this.state.currDate = new Date(firstDay - 1);
-    	console.log("prev ", this.state.currDate);
+    	console.log('[Calendar] prev ', this.state.currDate);
         this.updateView(await this.render());
     }
 
     async nextMonth() {
         const date = this.state.currDate;
 		const lastDay = new Date(date.getFullYear(), date.getMonth(), date.daysInMonth()+1);
-		console.log("last day ", lastDay);
+		console.log('[Calendar] last day ', lastDay);
     	this.state.currDate = new Date(lastDay + 1);
-    	console.log("next ", this.state.currDate);
+    	console.log('[Calendar] ', this.state.currDate);
     	this.updateView(await this.render());
     }
 
@@ -143,10 +139,9 @@ class CalendarView extends Component {
         // rows of calendar cells in the calendar
         let rows = [];
 
-        const calendarDayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+        const calendarDayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
         for (const dayName of calendarDayNames) {
-            console.log("day name set yo!");
-            const cellProm = new CalendarHeadingCell(dayName).attach();
+            const cellProm = new CalendarHeadingCell().attach({ dayName: dayName });
             rows.push(cellProm);
         }
 
@@ -191,7 +186,7 @@ class CalendarView extends Component {
                 for (const event of storedEvents) {
                     events.push(new CalendarEvent().attach({
                         name: event.name,
-                        desc: "",
+                        desc: '',
                         id: event.id,
                     }));
                 }
@@ -226,7 +221,7 @@ class CalendarView extends Component {
 
         // ?
         return Promise.all(rows).then((elements) => {
-            return div(".calendar", elements);
+            return div('.calendar', elements);
         });
     }
 }
@@ -246,7 +241,7 @@ Date.prototype.daysInMonth = function() {
 Date.prototype.getDayName = function() {
     var d = new Date(this);
     const dayNames = [
-        "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
+        'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
     ];
     return dayNames[d.getDay()];
 }
@@ -254,8 +249,8 @@ Date.prototype.getDayName = function() {
 Date.prototype.getMonthName = function() {
     var d = new Date(this);
     const monthNames = [
-        "January", "February", "March", "April", "May", "June", "July", "August",
-        "September", "October", "November", "December"
+        'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
+        'September', 'October', 'November', 'December'
     ];
     return monthNames[d.getMonth()];
 }

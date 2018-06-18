@@ -16,14 +16,10 @@ class CalendarEvent extends Component {
 }
 
 class CalendarEventList extends Component {
-    constructor() {
-        super();
-    }
-
     async render() {
         const { events } = this.props;
         return Promise.all(events).then((el) => {
-            return div(".events", el);
+            return div('.events', el);
         });
     }
 }

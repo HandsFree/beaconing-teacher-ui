@@ -21,8 +21,6 @@ class AssignedGLPs extends Component {
         const { id } = this.props;
         const assignedGLPs = await window.beaconingAPI.getGroupAssigned(id);
 
-        console.log(assignedGLPs);
-
         if (assignedGLPs) {
             const glps = [];
 
