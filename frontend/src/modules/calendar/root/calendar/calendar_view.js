@@ -153,10 +153,6 @@ class CalendarView extends Component {
         const prevMonth = new Date(firstDay - 1);
         const prevMonthDays = prevMonth.daysInMonth();
 
-        // this is a buffer that is cleared every 7
-        // cells.
-        let rowBuffer = [];
-
         // calculates how many cells to create for the
         // previous month offset.
         for (let i = 0; i < offset; i++) {
@@ -164,7 +160,7 @@ class CalendarView extends Component {
             const cell = new CalendarPrevMonthCell().attach({
                 dayNumber: dayNum,
             });
-            rowBuffer.push(cell);
+            rows.push(cell);
         }
 
         // work out days in current month
@@ -172,18 +168,12 @@ class CalendarView extends Component {
         for (let i = offset; i < offset + numDays; i++) {
             const dayNumber = (i - offset) + 1;
 
-            // flush buffer every 7 days.
-            if ((i % 7 == 0 && i > 0)) {
-                for (const cell of rowBuffer) {
-                    rows.push(cell);
-                }
-                rowBuffer = [];
-            }
-
             const cellDate = new Date(firstDay.getFullYear(), firstDay.getMonth(), dayNumber).withoutTime();
 
             const eventMap = this.state.eventMap;
 
+            // here we attach the event components
+            // if there are any events for this day.
             let events = [];
             if (eventMap.has(cellDate.getTime())) {
                 const storedEvents = eventMap.get(cellDate.getTime());
@@ -204,26 +194,15 @@ class CalendarView extends Component {
                 cellDate: cellDate,
                 eventList: eventList,
             });
-            rowBuffer.push(cell);
+            rows.push(cell);
         }
 
-        if (rowBuffer.length > 0) {
-            for (const row of rowBuffer) {
-                rows.push(row);
-            }
-
-            const remain = 7 - rowBuffer.length;
-            for (let i = 0; i < remain; i++) {
-                const cell = new CalendarNextMonthCell().attach();
-                rows.push(cell);
-            }
-
-            rowBuffer = [];
+        const remain = 7 - (rows.length % 7);
+        for (let i = 0; i < remain; i++) {
+            const cell = new CalendarNextMonthCell().attach();
+            rows.push(cell);
         }
 
-        // work out padding of days for next months
-
-        // ?
         return Promise.all(rows).then((elements) => {
             return div('.calendar', elements);
         });
