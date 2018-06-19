@@ -5,6 +5,7 @@ import component, { Component } from '../../../../core/component';
 
 import { ClendarEventList, CalendarEvent, CalendarEventList } from './calendar_event';
 import { CalendarCell, CalendarHeadingCell, CalendarNextMonthCell, CalendarPrevMonthCell } from './calendar_cell';
+import './date_helper';
 
 // NOTE
 // we could abstract cells to avoid the event list
@@ -143,8 +144,11 @@ class CalendarView extends Component {
         // rows of calendar cells in the calendar
         let rows = [];
 
-        const calendarDayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-        for (const dayName of calendarDayNames) {
+        const calendarDayTranslKeys = ['cal_sunday', 'cal_monday', 'cal_tuesday', 'cal_wednesday', 'cal_thursday', 'cal_friday', 'cal_saturday'];
+
+        for (const key of calendarDayTranslKeys) {
+            const dayName = await window.bcnI18n.getPhrase(key);
+
             const cellProm = new CalendarHeadingCell().attach({ dayName: dayName });
             rows.push(cellProm);
         }
@@ -207,41 +211,6 @@ class CalendarView extends Component {
             return div('.calendar', elements);
         });
     }
-}
-
-// date helper stuff
-
-Date.prototype.firstDay = function() {
-    const d = new Date(this);
-    return new Date(d.getFullYear(), d.getMonth(), 1);
-}
-
-Date.prototype.daysInMonth = function() {
-    const d = new Date(this);
-    return new Date(d.getYear(), d.getMonth()+1, 0).getDate();
-}
-
-Date.prototype.getDayName = function() {
-    const d = new Date(this);
-    const dayNames = [
-        'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
-    ];
-    return dayNames[d.getDay()];
-}
-
-Date.prototype.getMonthName = function() {
-    const d = new Date(this);
-    const monthNames = [
-        'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
-        'September', 'October', 'November', 'December'
-    ];
-    return monthNames[d.getMonth()];
-}
-
-Date.prototype.withoutTime = function () {
-    const d = new Date(this);
-    d.setHours(0, 0, 0, 0);
-    return d;
 }
 
 export default CalendarView;

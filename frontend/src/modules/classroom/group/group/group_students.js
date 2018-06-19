@@ -4,7 +4,6 @@ import { section, div, p } from '../../../../core/html';
 import { Component } from '../../../../core/component';
 import Loading from '../../../loading';
 import StudentBox from './student_box';
-
 class GroupStudents extends Component {
     async render() {
         const loading = new Loading();

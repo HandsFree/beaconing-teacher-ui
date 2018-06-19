@@ -1,16 +1,8 @@
-// sessionStorageflow
+// @flow
 
 import { section, h1, h2, p, div, a, ul, li, span, select, option } from '../../../../core/html';
 import component, { Component } from '../../../../core/component';
-
-Date.prototype.getMonthName = function() {
-    const d = new Date(this);
-    const monthNames = [
-        'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
-        'September', 'October', 'November', 'December'
-    ];
-    return monthNames[d.getMonth()];
-}
+import './date_helper';
 
 // the top menu options above the calendar
 class CalendarController extends Component {    
@@ -34,7 +26,7 @@ class CalendarController extends Component {
         if (studentId != -1) {
             const student = await window.beaconingAPI.getStudent(studentId);
             
-            const calTranslation = await window.bcnI18n.getPhrase('cr_calendar');
+            const calTranslation = await window.bcnI18n.getPhrase('calendar');
 
             const profile = student.profile;
             if (!profile.firstName) {
@@ -49,8 +41,9 @@ class CalendarController extends Component {
             currDate = new Date(window.sessionStorage.getItem('calendarDate'));
         }
 
-        const monthName = `${currDate.getMonthName()}`;
-        const year = `${currDate.getFullYear()}`;
+        const monthName = await currDate.getMonthName();
+
+        const year = currDate.getFullYear();
 
         return div('.calendar-control',
             div('.calendar-meta-info',

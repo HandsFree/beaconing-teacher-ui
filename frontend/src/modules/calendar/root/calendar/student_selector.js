@@ -2,7 +2,6 @@
 
 import { section, h1, h2, p, div, a, ul, li, span, select, option } from '../../../../core/html';
 import component, { Component } from '../../../../core/component';
-
 class StudentSelector extends Component {
     async refresh(groupId, studentsList) {
         this.state = {
@@ -32,7 +31,7 @@ class StudentSelector extends Component {
     async render() {
         const { groupId } = this.state;
         if (!groupId) {
-            return p(await window.bcnI18n.getPhrase('cr_no_group_selected'));
+            return p(await window.bcnI18n.getPhrase('cal_no_group_selected'));
         }
 
         const studentsList = this.state.studentsList;
@@ -64,15 +63,17 @@ class StudentSelector extends Component {
             );
         }
 
-        let studentSet = p(await window.bcnI18n.getPhrase('cr_no_students_for_this_group'));
+        const no_students_transl = await window.bcnI18n.getPhrase('cal_no_students_for_this_group');
+
+        let studentSet = p(no_students_transl);
         if (studentLinks.length > 0) {
             studentSet = ul(studentLinks);
         }
 
-        const cr_inspect_student = await window.bcnI18n.getPhrase('cr_inspect_student');
+        const cal_inspect_student = await window.bcnI18n.getPhrase('cal_inspect_student');
 
         return div('.full-width',
-            h2(`${cr_inspect_student}:`),
+            h2(`${cal_inspect_student}:`),
             studentSet);
     }
 }
