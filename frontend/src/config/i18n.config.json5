@@ -1,4 +1,22 @@
 {
+    // TO BE TRANSLATED: //
+
+    cr_calendar: {
+        'en-GB': 'calendar',
+    },
+
+    cr_inspect_student: {
+		'en-GB': 'Inspect Student',
+	},
+
+    cr_no_group_selected: {
+        'en-GB': 'No group selected',
+    },
+
+    cr_no_students_for_this_group: {
+        'en-GB': 'No students for this group',
+    },
+
     // Main Navigation //
 
     nav_home: {

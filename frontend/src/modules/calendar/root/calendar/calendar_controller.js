@@ -34,11 +34,13 @@ class CalendarController extends Component {
         if (studentId != -1) {
             const student = await window.beaconingAPI.getStudent(studentId);
             
+            const calTranslation = await window.bcnI18n.getPhrase('cr_calendar');
+
             const profile = student.profile;
             if (!profile.firstName) {
-                studentGreet = `${student.username}'s calendar`;
+                studentGreet = `${student.username}'s ${calTranslation}`;
             } else {
-                studentGreet = `${profile.firstName} ${profile.lastName}'s calendar`;
+                studentGreet = `${profile.firstName} ${profile.lastName}'s ${calTranslation}`;
             }
         }
 

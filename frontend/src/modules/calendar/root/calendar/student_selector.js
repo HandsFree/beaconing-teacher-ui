@@ -32,7 +32,7 @@ class StudentSelector extends Component {
     async render() {
         const { groupId } = this.state;
         if (!groupId) {
-            return p('no group selected');
+            return p(await window.bcnI18n.getPhrase('cr_no_group_selected'));
         }
 
         const studentsList = this.state.studentsList;
@@ -47,6 +47,11 @@ class StudentSelector extends Component {
 
         const studentLinks = [];
         for (const student of students) {
+            let studentName = student.username;
+            if (student.profile.firstName) {
+                studentName += `, ${student.profile.firstName} ${student.profile.lastName}`;
+            }
+
             studentLinks.push(
                 li(span('.fake-link',
                     {
@@ -54,18 +59,20 @@ class StudentSelector extends Component {
                             this.setStudent(student.id);
                         },
                     },
-                    student.username
+                    studentName,
                 )),
             );
         }
 
-        let studentSet = p('no students for this group.');
+        let studentSet = p(await window.bcnI18n.getPhrase('cr_no_students_for_this_group'));
         if (studentLinks.length > 0) {
             studentSet = ul(studentLinks);
         }
 
+        const cr_inspect_student = await window.bcnI18n.getPhrase('cr_inspect_student');
+
         return div('.full-width',
-            h2('Inspect student:'),
+            h2(`${cr_inspect_student}:`),
             studentSet);
     }
 }
