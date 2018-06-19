@@ -29,6 +29,7 @@ type authInfo struct {
 type serverInfo struct {
 	Host         string `toml:"host"`
 	Port         uint16 `toml:"port"`
+	RootPath     string `toml:"root_path"`
 	GlpFilesPath string `toml:"glp_files_path"`
 }
 
