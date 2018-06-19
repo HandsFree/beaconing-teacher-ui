@@ -205,7 +205,9 @@ func GetGLPS(s *gin.Context, minify bool) (string, error) {
 // see types.GLP
 func GetGLP(s *gin.Context, id uint64, minify bool) (*types.GLP, error) {
 	resp, err := DoTimedRequest(s, "GET",
-		API.getPath(s, "gamifiedlessonpaths/", fmt.Sprintf("%d", id), fmt.Sprintf("?noContent=%s", strconv.FormatBool(minify))),
+		API.getPath(s, "gamifiedlessonpaths/",
+			fmt.Sprintf("%d", id),
+			fmt.Sprintf("?noContent=%s", strconv.FormatBool(minify))),
 	)
 
 	if err != nil {

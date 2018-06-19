@@ -83,7 +83,7 @@ func PostGLPFiles() gin.HandlerFunc {
 		// try and create the glp folder
 		// in which the files reside.
 		// --------------
-		base, _ := filepath.Abs(cfg.Beaconing.Server.GlpFilesPath)
+		base, _ := filepath.Abs(filepath.Join(cfg.Beaconing.Server.RootPath, cfg.Beaconing.Server.GlpFilesPath))
 		fileDirPath := filepath.Join(base, glpFolderName)
 
 		// create the glp folder if it doesn't exist.
