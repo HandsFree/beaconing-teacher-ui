@@ -10,14 +10,14 @@ import CalendarController from './calendar_controller';
 import { StudentSelector, StudentGroupSelector, SelectorPanel } from './student_selector';
 
 class Calendar extends RootComponent {
-    state = {
-        id: 0,
-    };
-
     async init() {
+        let studentID = -1;
         if (this.params.id) {
-            this.state.id = this.params.id;
+            studentID = this.params.id;
         }
+
+        window.sessionStorage.setItem('calendarStudentID', studentID);
+        window.sessionStorage.setItem('calendarDate', new Date());
     }
 
     async render() {
@@ -27,9 +27,6 @@ class Calendar extends RootComponent {
         const calendarView = new CalendarView();
         const studentSelector = new SelectorPanel();
         const calendarController = new CalendarController();
-
-        window.sessionStorage.setItem('calendarStudentID', -1);
-        window.sessionStorage.setItem('calendarDate', new Date());
 
         return Promise.all([
             header.attach(),
