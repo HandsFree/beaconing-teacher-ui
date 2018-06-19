@@ -33,7 +33,13 @@ class CalendarController extends Component {
         let studentGreet = '';
         if (studentId != -1) {
             const student = await window.beaconingAPI.getStudent(studentId);
-            studentGreet = `${student.username}'s calendar`;
+            
+            const profile = student.profile;
+            if (!profile.firstName) {
+                studentGreet = `${student.username}'s calendar`;
+            } else {
+                studentGreet = `${profile.firstName} ${profile.lastName}'s calendar`;
+            }
         }
 
         let currDate = new Date();
@@ -43,10 +49,12 @@ class CalendarController extends Component {
 
         const monthName = `${currDate.getMonthName()}`;
         const year = `${currDate.getFullYear()}`;
-        studentGreet += ` ${monthName}, ${year}`;
 
         return div('.calendar-control',
-            h2('.calendar-date', `${studentGreet}`),
+            div('.calendar-meta-info',
+                h2('.calendar-name', `${studentGreet}`),
+                h2('.calendar-date', `${monthName} ${year}`),
+            ),
 
             p(
                 span('.fake-link', {

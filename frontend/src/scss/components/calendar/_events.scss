@@ -130,10 +130,6 @@
 	display: block;
 }
 
-.calendar-date {
-	text-align: right;
-}
-
 .fake-link {
     cursor: pointer;
 }
@@ -148,4 +144,8 @@
 
 .group-select {
 	display: block;
+}
+
+.calendar-meta-info {
+	justify-content: space-between;
 }
