@@ -1,14 +1,12 @@
-# Repository Notes
-## Branches
+# beaconing-teacher-ui
+The user interface for the beaconing teachers' dashboard
 
-* nightly - contains the latest code, this may be buggy
-* master - contains the latest stable release. any time a release is created nightly
-should be merged onto the master branch, a release is then made from the master branch.
+## License
+Licensed under MIT. See the `LICENSE.md` file for the full license.
 
-# Config
-Configuration files are stored in TOML.
-
-A toml file needs to be created in the following format:
+## Config
+The ui configuration file is stored in cfg/config.toml. Below is an example of simple
+configuration file:
 
 config.toml
 ```toml
@@ -53,7 +51,7 @@ fish
 $ set -x GIN_MODE release
 ```
 
-# Database configuration
+## Database configuration
 A schema for the PSQL DB is provided in the root of the repo.
 
 The user `beaconing_db_user` will be created with the default password of `123ABCCBA`
@@ -65,21 +63,12 @@ $ createdb beaconing
 $ psql beaconing < beaconing.schema.sql
 ```
 
-# Wiki
+## General Notes
 
-Javascript Style Guide: [https://git.juddus.com/HFC/beaconing/wiki/Javascript-Style-Guide](https://git.juddus.com/HFC/beaconing/wiki/Javascript-Style-Guide)
-
-Analytics Info: [https://git.juddus.com/HFC/beaconing/wiki/Analytics](https://git.juddus.com/HFC/beaconing/wiki/Analytics)
-
-# General Notes
-
-### Sanitisation
-The API layer is the bridge between the backend and the API services provided
-from the core beaconing API (and other relevant APIs). This should not handle
-sanitisation of data _inputs_. 
-
-The requests are the backend request handlers, these are in charge of taking
-in data, sanitising it, and invoking the api layer.
+### Branches
+* nightly - contains the latest code, this may be buggy
+* master - contains the latest stable release. any time a release is created nightly
+should be merged onto the master branch, a release is then made from the master branch.
 
 ### Browser plugins blocking functionality
 In some cases, the analytics section on the student profile may not work. This is due to a request to `analytics.beaconing.eu` which in some privacy tracker plugins/browser tracking protection implementations will be denied. In my case, the plugin `Privacy Badger` denied access to `analytics.beaconing.eu`.
