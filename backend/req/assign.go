@@ -9,6 +9,8 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/lib/pq"
+
 	"github.com/HandsFree/beaconing-teacher-ui/backend/api"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -40,30 +42,38 @@ func GetAssignRequest() gin.HandlerFunc {
 			return
 		}
 
-		fromParam := s.Param("from")
-		from, err := time.Parse(time.RFC3339, fromParam)
-		if err != nil {
-			log.Println("assign from time is bad", err.Error())
-			from = time.Now()
+		// FIXME clean this up.
 
-			// we aren't going to error here since we can
-			// just say it's been assigned from the current
-			// time.
+		fromParam := s.Param("from")
+
+		var from pq.NullTime
+		if fromParam != "" {
+			fromTime, err := time.Parse(time.RFC3339, fromParam)
+			if err != nil {
+				log.Println("assign from time is bad", err.Error())
+				fromTime = time.Now()
+
+				// we aren't going to error here since we can
+				// just say it's been assigned from the current
+				// time.
+			}
+			from = pq.NullTime{Time: fromTime, Valid: true}
+		} else {
+			from = pq.NullTime{Time: time.Now(), Valid: true}
 		}
 
 		toParam := s.Param("to")
-		var to time.Time
+
+		var to pq.NullTime
 		if toParam != "" {
-			var err error
-			to, err = time.Parse(time.RFC3339, toParam)
+			toTime, err := time.Parse(time.RFC3339, toParam)
 			if err != nil {
 				log.Println("assign to time is bad", err.Error())
 				s.AbortWithError(http.StatusBadRequest, err)
 				return
 			}
+			to = pq.NullTime{toTime, true}
 		}
-
-		log.Println("THIS IS AN ASSIGN REQUEST ! ", studentIDValue, glpIDValue)
 
 		// register the GLP in the session
 		registerGLP(s, glpIDValue)

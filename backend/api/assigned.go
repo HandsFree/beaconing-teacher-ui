@@ -7,6 +7,8 @@ import (
 	"log"
 	"time"
 
+	"github.com/lib/pq"
+
 	activities "github.com/HandsFree/beaconing-teacher-ui/backend/activities"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/types"
 	"github.com/gin-gonic/gin"
@@ -74,13 +76,17 @@ func insertActivePlan(s *gin.Context, planID uint64) error {
 
 // AssignStudentToGLP assigns the given student (by id) to the given GLP (by id),
 // returns a string of the returned json from the core API as well as an error (if any).
-func AssignStudentToGLP(s *gin.Context, studentID uint64, glpID uint64, from, to time.Time) (string, error) {
-	assignJSON, err := jsoniter.Marshal(&types.AssignPOST{
-		StudentID:      studentID,
-		GlpID:          glpID,
-		AvailableFrom:  from,
-		AvailableUntil: to,
-	})
+func AssignStudentToGLP(s *gin.Context, studentID uint64, glpID uint64, from, to pq.NullTime) (string, error) {
+	assign := &types.AssignPOST{
+		StudentID:     studentID,
+		GlpID:         glpID,
+		AvailableFrom: from.Time,
+	}
+	if to.Valid {
+		assign.AvailableUntil = to.Time
+	}
+
+	assignJSON, err := jsoniter.Marshal(assign)
 	if err != nil {
 		return "", err
 	}
