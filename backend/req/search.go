@@ -1,75 +1,70 @@
 package req
 
 import (
-	"errors"
 	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/felixangell/fuzzysearch/fuzzy"
 
-	"github.com/HandsFree/beaconing-teacher-ui/backend/api"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/parse"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/types"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 )
 
-type SearchRequestQuery struct {
-	Query string
+type searchRequestQuery struct {
+	Query  string
+	Filter string
+	Sort   map[string]string
 }
 
-type SearchQueryResponse struct {
-	MatchedStudents []types.Student
-	MatchedGLPS     []types.GLP
+type searchQueryResponse struct {
+	MatchedStudents []*types.Student
+	MatchedGLPS     []*types.GLP
 }
 
-func processSearch(s *gin.Context, json SearchRequestQuery) (*SearchQueryResponse, error) {
-	studentsData, studentsCached := api.Fetch("students")
-	if !studentsCached {
-		// cache miss, force a fetch to cache students
-		studentsData, _ = api.GetStudents(s)
-		// handle error!
-	}
+func searchEverything(s *gin.Context, json searchRequestQuery) (*searchQueryResponse, error) {
+	studSet := make(chan []*types.Student, 1)
+	glpSet := make(chan []*types.GLP, 1)
 
-	glpData, err := api.GetGLPS(s, true)
+	go func() {
+		studs, _ := searchStudents(s, json)
+		studSet <- studs
+	}()
+	go func() {
+		glps, _ := searchGLPS(s, json)
+		glpSet <- glps
+	}()
+
+	return &searchQueryResponse{
+		MatchedStudents: <-studSet,
+		MatchedGLPS:     <-glpSet,
+	}, nil
+}
+
+func searchGLPS(s *gin.Context, query searchRequestQuery) ([]*types.GLP, error) {
+	glps, err := parse.GLPS(s, true)
 	if err != nil {
-		log.Println("processSearch", err.Error())
+		log.Println("searchGLPS")
 		return nil, err
 	}
 
-	if studentsData == "" {
-		return nil, errors.New("No student data")
+	sortOrder := parse.Ascending
+	if sortOrderType, exists := query.Sort["order"]; exists {
+		sortOrder = parse.SortOrder(sortOrderType)
 	}
 
-	// conv json -> objects
-	var students []types.Student
-	if err := jsoniter.Unmarshal([]byte(studentsData), &students); err != nil {
-		log.Println("processSearch", err)
-		return nil, err
+	// apply any sort options to the glps
+	// _before_ we do the search:
+	if sortType, exists := query.Sort["type"]; exists {
+		sortedGlps, err := parse.SortGLPS(s, glps, sortType, sortOrder)
+		if err != nil {
+			log.Println("Failed to sort GLPS in searchGLPS query")
+			return []*types.GLP{}, err
+		}
+		glps = sortedGlps
 	}
-
-	var glps []types.GLP
-	if err := jsoniter.Unmarshal([]byte(glpData), &glps); err != nil {
-		log.Println("processSearch", err)
-		return nil, err
-	}
-
-	// TODO: optimize me!
-
-	// convert our json students array to
-	// a "SOA" like structure for that sweet
-	// sweet cache performance
-
-	// basically we need to make it into a format
-	// that our searching library will accept so
-	// we convert it into a bunch of arrays
-	//
-	// one optimisation is that we know the length
-	// of students so we can allocate a chunk of memory
-	// rather than an empty array and keep resizing it
-	studentUsernames := make([]string, len(students))
-	studentFullNames := make([]string, len(students))
-	studentPtrs := make([]int, len(students))
 
 	// likewise we allocate a chunk of memory for the glps
 	glpNames := make([]string, len(glps))
@@ -78,6 +73,33 @@ func processSearch(s *gin.Context, json SearchRequestQuery) (*SearchQueryRespons
 	// NOTE: we stored "ptrs"
 	// these are for index lookups because now that they
 	// are in this form we don't know their index
+
+	for idx, glp := range glps {
+		glpNames = append(glpNames, glp.Name)
+		glpPtrs = append(glpPtrs, idx)
+	}
+
+	matchedGLPS := []*types.GLP{}
+
+	glpsSearches := fuzzy.RankFindFold(query.Query, glpNames)
+	for _, glpRank := range glpsSearches {
+		glpIndex := glpPtrs[glpRank.Index]
+		matchedGLPS = append(matchedGLPS, glps[glpIndex])
+	}
+
+	return matchedGLPS, nil
+}
+
+func searchStudents(s *gin.Context, query searchRequestQuery) ([]*types.Student, error) {
+	students, err := parse.Students(s)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	studentUsernames := make([]string, len(students))
+	studentFullNames := make([]string, len(students))
+	studentPtrs := make([]int, len(students))
 
 	// Now we actually append all this data
 	// unfortunately there is no other way to do
@@ -88,43 +110,46 @@ func processSearch(s *gin.Context, json SearchRequestQuery) (*SearchQueryRespons
 		studentPtrs = append(studentPtrs, idx)
 	}
 
-	for idx, glp := range glps {
-		glpNames = append(glpNames, glp.Name)
-		glpPtrs = append(glpPtrs, idx)
-	}
-
 	// we're probably only going to match a few
 	// students and glps here so there is no
 	// point over-allocating!
-	matchedStudents := []types.Student{}
-	matchedGLPS := []types.GLP{}
+	matchedStudents := []*types.Student{}
 
 	// now we invoke our fancy libraries to
 	// do the searches.
-	studentUsernameSearch := fuzzy.RankFindFold(json.Query, studentUsernames)
+	studentUsernameSearch := fuzzy.RankFindFold(query.Query, studentUsernames)
 	for _, studentRank := range studentUsernameSearch {
 		studentIndex := studentPtrs[studentRank.Index]
 		matchedStudents = append(matchedStudents, students[studentIndex])
 	}
 
-	studentFullNameSearch := fuzzy.RankFindFold(json.Query, studentFullNames)
+	studentFullNameSearch := fuzzy.RankFindFold(query.Query, studentFullNames)
 	for _, studentRank := range studentFullNameSearch {
 		studentIndex := studentPtrs[studentRank.Index]
 		matchedStudents = append(matchedStudents, students[studentIndex])
 	}
 
-	glpsSearches := fuzzy.RankFindFold(json.Query, glpNames)
-	for _, glpRank := range glpsSearches {
-		glpIndex := glpPtrs[glpRank.Index]
-		matchedGLPS = append(matchedGLPS, glps[glpIndex])
-	}
+	return matchedStudents, nil
+}
 
-	return &SearchQueryResponse{matchedStudents, matchedGLPS}, nil
+func processSearch(s *gin.Context, query searchRequestQuery) (*searchQueryResponse, error) {
+	resp := &searchQueryResponse{}
+
+	switch query.Filter {
+	case "glp":
+		resp.MatchedGLPS, _ = searchGLPS(s, query)
+		return resp, nil
+	case "student":
+		resp.MatchedStudents, _ = searchStudents(s, query)
+		return resp, nil
+	default:
+		return searchEverything(s, query)
+	}
 }
 
 func PostSearchRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
-		var json SearchRequestQuery
+		var json searchRequestQuery
 		if err := s.ShouldBindJSON(&json); err != nil {
 			log.Println("SearchRequest", err.Error())
 			s.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
