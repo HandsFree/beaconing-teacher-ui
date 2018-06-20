@@ -7,14 +7,14 @@ import (
 	"log"
 	"time"
 
-	activities "git.juddus.com/HFC/beaconing/backend/activities"
-	"git.juddus.com/HFC/beaconing/backend/types"
+	activities "github.com/HandsFree/beaconing-teacher-ui/backend/activities"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/types"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 )
 
 // this is a little funky.
-// https://git.juddus.com/HFC/beaconing/issues/120
+// https://github.com/HandsFree/beaconing-teacher-ui/issues/120
 func unwrapStudentAssignObject(s *gin.Context, studentID uint64, assignID uint64) (uint64, error) {
 	type Assignment struct {
 		ID        uint64 `json:"id"`

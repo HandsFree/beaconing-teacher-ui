@@ -3,7 +3,7 @@ package root
 import (
 	"net/http"
 
-	"git.juddus.com/HFC/beaconing/backend/page"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/page"
 	"github.com/gin-gonic/gin"
 )
 

@@ -14,8 +14,8 @@ import (
 	"time"
 	"unicode"
 
-	"git.juddus.com/HFC/beaconing/backend/api"
-	"git.juddus.com/HFC/beaconing/backend/cfg"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/api"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/cfg"
 	"github.com/gin-gonic/gin"
 )
 

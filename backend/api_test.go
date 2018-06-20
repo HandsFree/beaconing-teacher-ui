@@ -5,9 +5,9 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"git.juddus.com/HFC/beaconing/backend/api"
-	"git.juddus.com/HFC/beaconing/backend/cfg"
-	"git.juddus.com/HFC/beaconing/backend/serv"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/api"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/cfg"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/serv"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 )

@@ -4,8 +4,8 @@ import (
 	"log"
 	"os"
 
-	"git.juddus.com/HFC/beaconing/backend/req"
-	"git.juddus.com/HFC/beaconing/backend/upload"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/req"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/upload"
 	"github.com/gin-gonic/gin"
 )
 

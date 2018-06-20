@@ -5,7 +5,7 @@ import (
 	"log"
 	"time"
 
-	"git.juddus.com/HFC/beaconing/backend/activities"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/activities"
 )
 
 // GetActivities looks up in the local PSQL database

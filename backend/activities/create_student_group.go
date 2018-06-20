@@ -3,7 +3,7 @@ package activities
 import (
 	"log"
 
-	"git.juddus.com/HFC/beaconing/backend/types"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/types"
 	"github.com/json-iterator/go"
 )
 

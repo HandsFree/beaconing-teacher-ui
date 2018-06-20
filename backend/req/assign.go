@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"time"
 
-	"git.juddus.com/HFC/beaconing/backend/api"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/api"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/olekukonko/tablewriter"

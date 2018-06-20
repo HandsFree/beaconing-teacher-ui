@@ -1,16 +1,16 @@
 package serv
 
 import (
-	"git.juddus.com/HFC/beaconing/backend/authoring_tool"
-	"git.juddus.com/HFC/beaconing/backend/calendar"
-	"git.juddus.com/HFC/beaconing/backend/classroom"
-	"git.juddus.com/HFC/beaconing/backend/glpviewer"
-	"git.juddus.com/HFC/beaconing/backend/lesson_manager"
-	"git.juddus.com/HFC/beaconing/backend/page"
-	"git.juddus.com/HFC/beaconing/backend/profile"
-	"git.juddus.com/HFC/beaconing/backend/req"
-	"git.juddus.com/HFC/beaconing/backend/root"
-	"git.juddus.com/HFC/beaconing/backend/search"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/authoring_tool"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/calendar"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/classroom"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/glpviewer"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/lesson_manager"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/page"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/profile"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/req"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/root"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/search"
 	"github.com/gin-gonic/gin"
 )
 

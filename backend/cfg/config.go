@@ -48,7 +48,7 @@ func LoadConfig() {
 
 	configFileData, fileReadErr := ioutil.ReadFile(filePath)
 	if fileReadErr != nil {
-		log.Fatal("Failed to read file", filePath, "\n", fileReadErr.Error())
+		log.Fatal("Failed to read file ", filePath, "\n- error: ", fileReadErr.Error())
 		return
 	}
 

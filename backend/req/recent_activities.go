@@ -5,8 +5,8 @@ import (
 	"net/http"
 	_ "time"
 
-	"git.juddus.com/HFC/beaconing/backend/activities"
-	"git.juddus.com/HFC/beaconing/backend/api"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/activities"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/api"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 )

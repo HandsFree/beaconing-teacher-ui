@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	"git.juddus.com/HFC/beaconing/backend/activities"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/activities"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 )

@@ -25,8 +25,8 @@ import (
 
 	"net"
 
-	"git.juddus.com/HFC/beaconing/backend/cfg"
-	"git.juddus.com/HFC/beaconing/backend/types"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/cfg"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/types"
 )
 
 // ApiLayer is a layer which handles manipulation of

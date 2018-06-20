@@ -1,7 +1,7 @@
 package serv
 
 import (
-	"git.juddus.com/HFC/beaconing/backend/req"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/req"
 	"github.com/gin-gonic/gin"
 )
 

@@ -8,8 +8,8 @@ import (
 
 	"gopkg.in/h2non/filetype.v1"
 
-	"git.juddus.com/HFC/beaconing/backend/api"
-	"git.juddus.com/HFC/beaconing/backend/cfg"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/api"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/cfg"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 
