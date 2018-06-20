@@ -174,15 +174,13 @@ func SortByAvailability(s *gin.Context, plans []*types.GLP, order SortingOption)
 }
 
 func SortByOwnedByMe(s *gin.Context, plans []*types.GLP, order SortingOption) ([]*types.GLP, error) {
-	sort.Slice(plans, func(i, j int) bool {
-		// easiest way to sort booleans
-		iOwned, jOwned := boolToInt(plans[i].OwnedByMe), boolToInt(plans[j].OwnedByMe)
-		if order == Descending {
-			return iOwned < jOwned
+	result := []*types.GLP{}
+	for _, pl := range plans {
+		if pl.OwnedByMe {
+			result = append(result, pl)
 		}
-		return iOwned > jOwned
-	})
-	return plans, nil
+	}
+	return result, nil
 }
 
 func SortByRecentlyAssigned(s *gin.Context, plans []*types.GLP, order SortingOption) ([]*types.GLP, error) {

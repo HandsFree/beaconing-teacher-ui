@@ -40,32 +40,33 @@ func slicePlans(plans []*types.GLP, index int, step int) ([]*types.GLP, error) {
 //   defaults to ascending
 func GetGLPSRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
-		indexQuery := s.Query("index")
-		stepQuery := s.Query("step")
-
-		// PARSE step
-		step, err := strconv.Atoi(stepQuery)
-		if err != nil {
-			log.Print("Invalid step", err.Error())
+		var index int
+		if indexQuery := s.Query("index"); indexQuery != "" {
+			var err error
+			index, err = strconv.Atoi(indexQuery)
+			if err != nil {
+				log.Println("GLPSRequest", err.Error())
+				index = 0
+			}
 		}
 
-		// PARSE minify
-		minify := s.Query("minify")
+		var step int
+		if stepQuery := s.Query("step"); stepQuery != "" {
+			var err error
+			step, err = strconv.Atoi(stepQuery)
+			if err != nil {
+				log.Print("Invalid step", err.Error())
+			}
+		}
+
 		shouldMinify := false
-		if minify != "" {
+		if minify := s.Query("minify"); minify != "" {
 			minifyParam, err := strconv.Atoi(minify)
 			if err == nil {
 				shouldMinify = minifyParam == 1
 			} else {
 				log.Println("Note: failed to atoi minify param in glps.go", err.Error())
 			}
-		}
-
-		// PARSE index
-		index, err := strconv.Atoi(indexQuery)
-		if err != nil {
-			log.Println("GLPSRequest", err.Error())
-			index = 0
 		}
 
 		// defaults to Ascending order.
@@ -90,7 +91,7 @@ func GetGLPSRequest() gin.HandlerFunc {
 			}
 		}
 
-		if indexQuery != "" && stepQuery != "" {
+		if index != 0 || step != 0 {
 			plans, err = slicePlans(plans, index, step)
 			if err != nil {
 				log.Println("Failed to slice GLPs \n", err.Error())
