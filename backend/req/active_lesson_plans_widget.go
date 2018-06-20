@@ -15,8 +15,6 @@ import (
 
 func GetActiveLessonPlansWidget() gin.HandlerFunc {
 	return func(s *gin.Context) {
-		log.Println("ACTIVE LESSON PLANS GET REQ")
-
 		limitParam := s.DefaultQuery("limit", "3")
 		limitParamValue, err := strconv.Atoi(limitParam)
 		if err != nil || limitParamValue <= 0 {

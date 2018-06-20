@@ -46,7 +46,6 @@ func GetRefreshToken(s *gin.Context) error {
 		return err
 	}
 
-	log.Println("Auth: Set access token!")
 	session.Set("access_token", respToken.AccessToken)
 	session.Set("refresh_token", respToken.RefreshToken)
 	session.Set("token_type", respToken.TokenType)

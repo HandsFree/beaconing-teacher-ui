@@ -6,14 +6,12 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"os"
 	"strconv"
 
 	"github.com/HandsFree/beaconing-teacher-ui/backend/activities"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/types"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
-	"github.com/olekukonko/tablewriter"
 )
 
 func containsGLP(glpID uint64, glpArr []*types.GLP) bool {
@@ -173,12 +171,14 @@ func GetRecentlyAssignedGLPS(s *gin.Context, reverse bool) ([]*types.GLP, error)
 		return nil, err
 	}
 
-	table := tablewriter.NewWriter(os.Stdout)
-	table.SetHeader([]string{"Active GLPs"})
-	for _, glp := range recentlyAssigned {
-		table.Append([]string{fmt.Sprintf("%d", glp.ID)})
-	}
-	table.Render()
+	/*
+		table := tablewriter.NewWriter(os.Stdout)
+		table.SetHeader([]string{"Active GLPs"})
+		for _, glp := range recentlyAssigned {
+			table.Append([]string{fmt.Sprintf("%d", glp.ID)})
+		}
+		table.Render()
+	*/
 
 	return recentlyAssigned, nil
 }

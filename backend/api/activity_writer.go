@@ -32,8 +32,6 @@ func GetActivities(teacherID uint64, count int) ([]activities.Activity, error) {
 	loadedActivities := []activities.Activity{}
 	var result activities.Activity
 
-	log.Println("--- Loading activities!")
-
 	defer rows.Close()
 	for rows.Next() {
 		var id int

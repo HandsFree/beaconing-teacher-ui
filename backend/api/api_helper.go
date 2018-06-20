@@ -157,8 +157,7 @@ func DoTimedRequestBodyHeaders(s *gin.Context, method string, url string, reqBod
 		}
 	}
 
-	log.Println("Doing timed request of\n", formatRequest(req))
-
+	// HACK FIXME
 	// sort of hacky but it should work fine.
 	if method == "POST" || method == "PUT" {
 		req.Header.Set("Content-Type", "application/json")
@@ -188,7 +187,6 @@ func DoTimedRequestBodyHeaders(s *gin.Context, method string, url string, reqBod
 // DoTimedRequest is the same as DoTimedRequestBody, however it does not have
 // a body passed to the request.
 func DoTimedRequest(s *gin.Context, method string, url string) ([]byte, error) {
-	fmt.Printf("%s%s\n", "URL: ", url)
 	data, err := DoTimedRequestBody(s, method, url, nil)
 	return data, err
 }

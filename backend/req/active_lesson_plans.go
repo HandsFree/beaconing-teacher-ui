@@ -18,8 +18,6 @@ import (
 // to the beaconing core api. It will spit out the json requested.
 func GetActiveLessonPlans() gin.HandlerFunc {
 	return func(s *gin.Context) {
-		log.Println("ACTIVE LESSON PLANS GET REQ")
-
 		var lps []types.LessonPlan
 
 		session := sessions.Default(s)
