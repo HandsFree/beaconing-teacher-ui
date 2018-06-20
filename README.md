@@ -2,7 +2,7 @@
 The user interface for the beaconing teachers' dashboard
 
 ## License
-Licensed under _. See the `LICENSE.md` file for the full license.
+Licensed under GNU AGPLv3. See the `LICENSE.md` file for the full license.
 
 ## Config
 The ui configuration file is stored in cfg/config.toml. Below is an example of simple
