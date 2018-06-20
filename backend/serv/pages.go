@@ -1,16 +1,16 @@
 package serv
 
 import (
-	"github.com/HandsFree/beaconing-teacher-ui/backend/authoring_tool"
-	"github.com/HandsFree/beaconing-teacher-ui/backend/calendar"
-	"github.com/HandsFree/beaconing-teacher-ui/backend/classroom"
-	"github.com/HandsFree/beaconing-teacher-ui/backend/glpviewer"
-	"github.com/HandsFree/beaconing-teacher-ui/backend/lesson_manager"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/page"
-	"github.com/HandsFree/beaconing-teacher-ui/backend/profile"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/page/authoring_tool"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/page/calendar"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/page/classroom"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/page/glpviewer"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/page/lesson_manager"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/page/profile"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/page/search"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/req"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/root"
-	"github.com/HandsFree/beaconing-teacher-ui/backend/search"
 	"github.com/gin-gonic/gin"
 )
 
