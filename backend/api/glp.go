@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"strconv"
+	"time"
 
 	"github.com/HandsFree/beaconing-teacher-ui/backend/activities"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/types"
@@ -24,6 +25,29 @@ func containsGLP(glpID uint64, glpArr []*types.GLP) bool {
 	return false
 }
 
+type glpPutJSON struct {
+	Id                 uint64    `json:"id"`
+	Name               string    `json:"name"`
+	Desc               string    `json:"description"`
+	Author             string    `json:"author"`
+	Category           string    `json:"category"`
+	Domain             string    `json:"domain"`
+	Topic              string    `json:"topic"`
+	AgeGroup           string    `json:"ageGroup"`
+	Year               int       `json:"year"`
+	LearningObjectives []string  `json:"learningObjectives"`
+	Competences        []string  `json:"competences"`
+	Content            string    `json:"content"`
+	Public             bool      `json:"public"`
+	GamePlotID         int       `json:"gamePlotId"`
+	ExternConfig       string    `json:"externConfig"`
+	CreatedAt          time.Time `json:"createdAt"`
+	UpdatedAt          time.Time `json:"updatedAt"`
+	Owner              string    `json:"owner"`
+	OwnedByMe          bool      `json:"ownedByMe"`
+	ReadOnly           bool      `json:"readOnly"`
+}
+
 type glpPostJSON struct {
 	Name               string   `json:"name"`
 	Description        string   `json:"description"`
@@ -36,6 +60,39 @@ type glpPostJSON struct {
 	LearningObjectives []string `json:"learningObjectives"`
 	Competences        []string `json:"competences"`
 	Public             bool     `json:"public"`
+}
+
+// PutGLP ...
+func PutGLP(s *gin.Context) (string, error) {
+	var json glpPutJSON
+	if err := s.ShouldBindJSON(&json); err != nil {
+		log.Println("PutGLP", err.Error())
+		return "", err
+	}
+
+	glpPut, err := jsoniter.Marshal(json)
+	if err != nil {
+		log.Println("PutGLP", err.Error())
+		return "", err
+	}
+
+	resp, err := DoTimedRequestBody(s, "PUT",
+		API.getPath(s, "gamifiedlessonpaths"),
+		bytes.NewBuffer(glpPut),
+	)
+	if err != nil {
+		log.Println("PutGLP", err.Error())
+		return "", err
+	}
+
+	id, err := GetUserID(s)
+	if err != nil {
+		log.Println("No such current user", err.Error())
+		return string(resp), err
+	}
+
+	API.WriteActivity(id, activities.PutGLPActivity, resp)
+	return string(resp), nil
 }
 
 // CreateGLP handles the CreateGLP POST request.

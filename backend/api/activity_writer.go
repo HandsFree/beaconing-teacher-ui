@@ -64,6 +64,8 @@ func GetActivities(teacherID uint64, count int) ([]activities.Activity, error) {
 
 		case activities.DeleteGLPActivity:
 			result = activities.NewDeleteGLPActivity(apiReq)
+		case activities.PutGLPActivity:
+			result = activities.NewPutGLPActivity(apiReq)
 		case activities.CreateGLPActivity:
 			result = activities.NewCreateGLPActivity(apiReq)
 		case activities.StudentAssignGLPActivity:

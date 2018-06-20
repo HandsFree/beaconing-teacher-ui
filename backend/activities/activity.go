@@ -21,6 +21,7 @@ const (
 
 	DeleteGLPActivity
 	CreateGLPActivity
+	PutGLPActivity
 
 	StudentAssignGLPActivity
 	StudentUnassignGLPActivity
