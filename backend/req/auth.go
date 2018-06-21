@@ -12,6 +12,11 @@ import (
 func GetCheckAuthRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
 		accessToken := api.GetAccessToken(s)
+		if accessToken == "" {
+			// header redirect in the GAT function
+			// so return here to avoid header re-writes
+			return
+		}
 
 		json, err := jsoniter.Marshal(&CheckAuthJSON{
 			Token: accessToken,
