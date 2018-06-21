@@ -18,7 +18,7 @@
     "build": "yarn bp",
     "b": "export NODE_ENV=development && ./node_modules/.bin/parallel-webpack",
     "server": "export NODE_ENV=development && ./node_modules/.bin/webpack-dev-server",
-    "build-production": "yarn bp",
+    "build:production": "yarn bp",
     "bp": "export NODE_ENV=production && ./node_modules/.bin/parallel-webpack",
     "flow": "./node_modules/.bin/flow",
     "analyse": "export NODE_ENV=development && export analyse=true && ./node_modules/.bin/webpack"
