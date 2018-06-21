@@ -50,16 +50,13 @@ func createSessionSecret(size int) []byte {
 }
 
 func GetRouterEngine() *gin.Engine {
-	// Create the main router
 	router := gin.Default()
 
-	// Create the cookie store
+	// use ssessions with cookie store
 	store := cookie.NewStore(createSessionSecret(32), createSessionSecret(16))
-
-	// Config the router to use sessions with cookie store
 	router.Use(sessions.Sessions("beaconing", store))
 
-	// Resources will be gzipped
+	// gzip resources
 	router.Use(gzip.Gzip(gzip.BestSpeed))
 
 	// Add favicon
@@ -79,7 +76,6 @@ func GetRouterEngine() *gin.Engine {
 	// Serve all static files
 	router.Static("/dist", "./../frontend/public/dist")
 
-	// Redirect trailing slashes
 	router.RedirectTrailingSlash = true
 
 	registerPages(router)

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/HandsFree/beaconing-teacher-ui/backend/activities"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/activity"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 )
@@ -52,7 +52,7 @@ func CreateStudentGroup(s *gin.Context) (string, error) {
 		return string(resp), err
 	}
 
-	API.WriteActivity(id, activities.CreateStudentGroupActivity, resp)
+	API.WriteActivity(id, activity.CreateStudentGroupActivity, resp)
 	return string(resp), nil
 }
 
@@ -99,7 +99,7 @@ func DeleteStudentGroup(s *gin.Context, id int64) (string, error) {
 		return string(req), err
 	}
 
-	API.WriteActivity(currUserID, activities.DeleteStudentGroupActivity, req)
+	API.WriteActivity(currUserID, activity.DeleteStudentGroupActivity, req)
 	return string(req), nil
 }
 

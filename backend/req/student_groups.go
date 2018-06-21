@@ -7,18 +7,15 @@ import (
 	"strings"
 
 	"github.com/HandsFree/beaconing-teacher-ui/backend/api"
-	"github.com/HandsFree/beaconing-teacher-ui/backend/types"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 )
 
-func sortStudentGroups(groups []*types.StudentGroup, filterBy string, match string) []*types.StudentGroup {
-	// we are over allocating here but
-	// it doesnt hurt anyone
-
+func sortStudentGroups(groups []*entity.StudentGroup, filterBy string, match string) []*entity.StudentGroup {
 	switch filterBy {
 	case "category":
-		result := []*types.StudentGroup{}
+		result := []*entity.StudentGroup{}
 		for _, grp := range groups {
 			if strings.Compare(grp.Category, match) == 0 {
 				result = append(result, grp)
@@ -48,8 +45,7 @@ func PostStudentGroupRequest() gin.HandlerFunc {
 
 func DeleteStudentGroupRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
-		idString := s.Param("id")
-		id, err := strconv.ParseInt(idString, 10, 64)
+		id, err := strconv.ParseInt(s.Param("id"), 10, 64)
 		if err != nil || id < 0 {
 			log.Println("StudentGroupRequest", err.Error())
 			s.Header("Content-Type", "application/json")
@@ -94,7 +90,7 @@ func GetStudentGroupsRequest() gin.HandlerFunc {
 			return
 		}
 
-		var groups []*types.StudentGroup
+		var groups []*entity.StudentGroup
 		err = jsoniter.Unmarshal([]byte(body), &groups)
 		if err != nil {
 			log.Println(err.Error())
@@ -117,8 +113,7 @@ func GetStudentGroupsRequest() gin.HandlerFunc {
 
 func GetStudentGroupRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
-		groupIDParam := s.Param("id")
-		groupID, err := strconv.Atoi(groupIDParam)
+		groupID, err := strconv.Atoi(s.Param("id"))
 		if err != nil {
 			s.String(http.StatusBadRequest, "Group ID Error!")
 			return
@@ -138,8 +133,7 @@ func GetStudentGroupRequest() gin.HandlerFunc {
 
 func PutStudentGroupRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
-		groupIDParam := s.Param("id")
-		groupID, err := strconv.Atoi(groupIDParam)
+		groupID, err := strconv.Atoi(s.Param("id"))
 		if err != nil {
 			s.String(http.StatusBadRequest, "Group ID Error!")
 			return

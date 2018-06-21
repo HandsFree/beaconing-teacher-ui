@@ -1,24 +1,21 @@
 package req
 
 import (
-	"fmt"
 	"log"
 	"net/http"
-	"os"
 
 	"github.com/HandsFree/beaconing-teacher-ui/backend/api"
-	"github.com/HandsFree/beaconing-teacher-ui/backend/types"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
-	"github.com/olekukonko/tablewriter"
 )
 
 // ActiveLessonPlans handles an active lesson plan request
 // to the beaconing core api. It will spit out the json requested.
 func GetActiveLessonPlans() gin.HandlerFunc {
 	return func(s *gin.Context) {
-		var lps []types.LessonPlan
+		var lps []entity.LessonPlan
 
 		session := sessions.Default(s)
 		assignedPlans := session.Get("assigned_plans")
@@ -31,12 +28,14 @@ func GetActiveLessonPlans() gin.HandlerFunc {
 			log.Println("No assigned plans in the session!")
 		}
 
-		table := tablewriter.NewWriter(os.Stdout)
-		table.SetHeader([]string{"GLP"})
-		for id := range assigned {
-			table.Append([]string{fmt.Sprintf("%d", id)})
-		}
-		table.Render()
+		/*
+			table := tablewriter.NewWriter(os.Stdout)
+			table.SetHeader([]string{"GLP"})
+			for id := range assigned {
+				table.Append([]string{fmt.Sprintf("%d", id)})
+			}
+			table.Render()
+		*/
 
 		for glpID := range assigned {
 			glp, _ := api.GetGLP(s, glpID, true)
@@ -63,8 +62,8 @@ func GetActiveLessonPlans() gin.HandlerFunc {
 	}
 }
 
-func NewLessonPlan(glpID uint64, glp *types.GLP) types.LessonPlan {
-	return types.LessonPlan{
+func NewLessonPlan(glpID uint64, glp *entity.GLP) entity.LessonPlan {
+	return entity.LessonPlan{
 		ID:  glpID,
 		GLP: glp,
 	}

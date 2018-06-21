@@ -9,13 +9,13 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/HandsFree/beaconing-teacher-ui/backend/activities"
-	"github.com/HandsFree/beaconing-teacher-ui/backend/types"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/activity"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 )
 
-func containsGLP(glpID uint64, glpArr []*types.GLP) bool {
+func containsGLP(glpID uint64, glpArr []*entity.GLP) bool {
 	for _, glp := range glpArr {
 		if glp.ID == glpID {
 			return true
@@ -26,7 +26,7 @@ func containsGLP(glpID uint64, glpArr []*types.GLP) bool {
 }
 
 type glpPutJSON struct {
-	Id                 uint64    `json:"id"`
+	ID                 uint64    `json:"id"`
 	Name               string    `json:"name"`
 	Desc               string    `json:"description"`
 	Author             string    `json:"author"`
@@ -91,7 +91,7 @@ func PutGLP(s *gin.Context) (string, error) {
 		return string(resp), err
 	}
 
-	API.WriteActivity(id, activities.PutGLPActivity, resp)
+	API.WriteActivity(id, activity.PutGLPActivity, resp)
 	return string(resp), nil
 }
 
@@ -124,12 +124,12 @@ func CreateGLP(s *gin.Context) (string, error) {
 		return string(resp), err
 	}
 
-	API.WriteActivity(id, activities.CreateGLPActivity, resp)
+	API.WriteActivity(id, activity.CreateGLPActivity, resp)
 	return string(resp), nil
 }
 
 // GetMostAssigned most assigned by the current user.
-func GetMostAssigned(s *gin.Context) ([]*types.GLP, error) {
+func GetMostAssigned(s *gin.Context) ([]*entity.GLP, error) {
 	if API.db == nil {
 		log.Println("-- No database connection has been established")
 		return nil, errors.New("No database connection")
@@ -138,7 +138,7 @@ func GetMostAssigned(s *gin.Context) ([]*types.GLP, error) {
 	teacherID, err := GetUserID(s)
 	if err != nil {
 		log.Println("No such current user", err.Error())
-		return []*types.GLP{}, err
+		return []*entity.GLP{}, err
 	}
 
 	// we only want to select the plans that are active
@@ -151,7 +151,7 @@ func GetMostAssigned(s *gin.Context) ([]*types.GLP, error) {
 		return nil, err
 	}
 
-	popular := []*types.GLP{}
+	popular := []*entity.GLP{}
 	defer rows.Close()
 	for rows.Next() {
 		var glpID uint64
@@ -176,7 +176,7 @@ func GetMostAssigned(s *gin.Context) ([]*types.GLP, error) {
 }
 
 // GetRecentlyAssignedGLPS ...
-func GetRecentlyAssignedGLPS(s *gin.Context, reverse bool) ([]*types.GLP, error) {
+func GetRecentlyAssignedGLPS(s *gin.Context, reverse bool) ([]*entity.GLP, error) {
 	if API.db == nil {
 		log.Println("-- No database connection has been established")
 		return nil, errors.New("No database connection")
@@ -185,7 +185,7 @@ func GetRecentlyAssignedGLPS(s *gin.Context, reverse bool) ([]*types.GLP, error)
 	teacherID, err := GetUserID(s)
 	if err != nil {
 		log.Println("No such current user", err.Error())
-		return []*types.GLP{}, err
+		return []*entity.GLP{}, err
 	}
 
 	// we only want to select the plans that are active
@@ -202,7 +202,7 @@ func GetRecentlyAssignedGLPS(s *gin.Context, reverse bool) ([]*types.GLP, error)
 		return nil, err
 	}
 
-	recentlyAssigned := []*types.GLP{}
+	recentlyAssigned := []*entity.GLP{}
 
 	defer rows.Close()
 	for rows.Next() {
@@ -259,8 +259,8 @@ func GetGLPS(s *gin.Context, minify bool) (string, error) {
 
 // GetGLP requests the GLP with the given id, this function returns
 // the string of json retrieved _as well as_ the parsed json object
-// see types.GLP
-func GetGLP(s *gin.Context, id uint64, minify bool) (*types.GLP, error) {
+// see entity.GLP
+func GetGLP(s *gin.Context, id uint64, minify bool) (*entity.GLP, error) {
 	resp, err := DoTimedRequest(s, "GET",
 		API.getPath(s, "gamifiedlessonpaths/",
 			fmt.Sprintf("%d", id),
@@ -272,7 +272,7 @@ func GetGLP(s *gin.Context, id uint64, minify bool) (*types.GLP, error) {
 		return nil, err
 	}
 
-	data := &types.GLP{}
+	data := &entity.GLP{}
 	if err := jsoniter.Unmarshal(resp, data); err != nil {
 		log.Println("GetGLP", err.Error())
 	}
@@ -305,6 +305,6 @@ func DeleteGLP(s *gin.Context, id uint64) (string, error) {
 		return string(resp), err
 	}
 
-	API.WriteActivity(teacherID, activities.DeleteGLPActivity, resp)
+	API.WriteActivity(teacherID, activity.DeleteGLPActivity, resp)
 	return string(resp), nil
 }

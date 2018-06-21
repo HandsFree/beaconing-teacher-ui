@@ -4,20 +4,20 @@ import (
 	"log"
 
 	"github.com/HandsFree/beaconing-teacher-ui/backend/api"
-	"github.com/HandsFree/beaconing-teacher-ui/backend/types"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 )
 
-func Students(s *gin.Context) ([]*types.Student, error) {
+func Students(s *gin.Context) ([]*entity.Student, error) {
 	studentsData, err := api.GetStudents(s)
 	if err != nil {
 		log.Println("parse.Students", err.Error())
-		return []*types.Student{}, err
+		return []*entity.Student{}, err
 	}
 
 	// conv json -> objects
-	var students []*types.Student
+	var students []*entity.Student
 	if err := jsoniter.Unmarshal([]byte(studentsData), &students); err != nil {
 		log.Println("parse.Students", err)
 		return nil, err

@@ -7,7 +7,6 @@ import (
 
 	"github.com/HandsFree/beaconing-teacher-ui/backend/api"
 	"github.com/gin-gonic/gin"
-	jsoniter "github.com/json-iterator/go"
 )
 
 // retrieves the given student of the given student id
@@ -16,8 +15,7 @@ import (
 // - student id
 func GetStudentRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
-		studentIDParam := s.Param("id")
-		studentID, err := strconv.Atoi(studentIDParam)
+		studentID, err := strconv.Atoi(s.Param("id"))
 		if err != nil {
 			log.Println("GetStudentRequest", err.Error())
 			s.AbortWithError(http.StatusBadRequest, err)
@@ -31,22 +29,14 @@ func GetStudentRequest() gin.HandlerFunc {
 			return
 		}
 
-		json, err := jsoniter.Marshal(resp)
-		if err != nil {
-			log.Println("GetStudentRequest", err.Error())
-			s.AbortWithError(http.StatusBadRequest, err)
-			return
-		}
-
 		s.Header("Content-Type", "application/json")
-		s.String(http.StatusOK, string(json))
+		s.String(http.StatusOK, resp)
 	}
 }
 
 func PutStudentRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
-		studentIDParam := s.Param("id")
-		studentID, err := strconv.Atoi(studentIDParam)
+		studentID, err := strconv.Atoi(s.Param("id"))
 		if err != nil {
 			log.Println("PutStudentRequest", err.Error())
 			s.AbortWithError(http.StatusBadRequest, err)

@@ -28,16 +28,14 @@ func init() {
 // - glp id
 func GetAssignRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
-		studentID := s.Param("student")
-		studentIDValue, err := strconv.ParseUint(studentID, 10, 64)
-		if err != nil || studentIDValue < 0 {
+		studentID, err := strconv.ParseUint(s.Param("student"), 10, 64)
+		if err != nil || studentID < 0 {
 			s.String(http.StatusBadRequest, "Client Error: Invalid student ID")
 			return
 		}
 
-		glpID := s.Param("glp")
-		glpIDValue, err := strconv.ParseUint(glpID, 10, 64)
-		if err != nil || glpIDValue < 0 {
+		glpID, err := strconv.ParseUint(s.Param("glp"), 10, 64)
+		if err != nil || glpID < 0 {
 			s.String(http.StatusBadRequest, "Client Error: Invalid GLP ID")
 			return
 		}
@@ -72,15 +70,18 @@ func GetAssignRequest() gin.HandlerFunc {
 				s.AbortWithError(http.StatusBadRequest, err)
 				return
 			}
-			to = pq.NullTime{toTime, true}
+			to = pq.NullTime{
+				Time:  toTime,
+				Valid: true,
+			}
 		}
 
 		// register the GLP in the session
-		registerGLP(s, glpIDValue)
+		registerGLP(s, glpID)
 
 		// do the post request to the beaconing API
 		// saying we're assigning said student to glp.
-		resp, err := api.AssignStudentToGLP(s, studentIDValue, glpIDValue, from, to)
+		resp, err := api.AssignStudentToGLP(s, studentID, glpID, from, to)
 		if err != nil {
 			s.String(http.StatusBadRequest, "Failed to assign student to glp")
 			return
@@ -93,16 +94,14 @@ func GetAssignRequest() gin.HandlerFunc {
 
 func GetGroupAssignRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
-		groupID := s.Param("group")
-		groupIDValue, err := strconv.ParseUint(groupID, 10, 64)
-		if err != nil || groupIDValue < 0 {
+		groupID, err := strconv.ParseUint(s.Param("group"), 10, 64)
+		if err != nil || groupID < 0 {
 			s.String(http.StatusBadRequest, "Client Error: Invalid group ID")
 			return
 		}
 
-		glpID := s.Param("glp")
-		glpIDValue, err := strconv.ParseUint(glpID, 10, 64)
-		if err != nil || glpIDValue < 0 {
+		glpID, err := strconv.ParseUint(s.Param("glp"), 10, 64)
+		if err != nil || glpID < 0 {
 			s.String(http.StatusBadRequest, "Client Error: Invalid GLP ID")
 			return
 		}
@@ -130,11 +129,11 @@ func GetGroupAssignRequest() gin.HandlerFunc {
 			}
 		}
 
-		log.Println("THIS IS A GROUP ASSIGN REQUEST ! ", groupIDValue, glpIDValue)
+		log.Println("THIS IS A GROUP ASSIGN REQUEST ! ", groupID, glpID)
 
-		registerGLP(s, glpIDValue)
+		registerGLP(s, glpID)
 
-		resp, err := api.AssignGroupToGLP(s, groupIDValue, glpIDValue, from, to)
+		resp, err := api.AssignGroupToGLP(s, groupID, glpID, from, to)
 		if err != nil {
 			s.String(http.StatusBadRequest, "Failed to assign group to glp")
 			return

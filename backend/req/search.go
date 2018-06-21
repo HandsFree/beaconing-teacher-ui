@@ -7,8 +7,8 @@ import (
 
 	"github.com/felixangell/fuzzysearch/fuzzy"
 
+	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/parse"
-	"github.com/HandsFree/beaconing-teacher-ui/backend/types"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 )
@@ -20,13 +20,13 @@ type searchRequestQuery struct {
 }
 
 type searchQueryResponse struct {
-	MatchedStudents []*types.Student
-	MatchedGLPS     []*types.GLP
+	MatchedStudents []*entity.Student
+	MatchedGLPS     []*entity.GLP
 }
 
 func searchEverything(s *gin.Context, json searchRequestQuery) (*searchQueryResponse, error) {
-	studSet := make(chan []*types.Student, 1)
-	glpSet := make(chan []*types.GLP, 1)
+	studSet := make(chan []*entity.Student, 1)
+	glpSet := make(chan []*entity.GLP, 1)
 
 	go func() {
 		studs, _ := searchStudents(s, json)
@@ -43,7 +43,7 @@ func searchEverything(s *gin.Context, json searchRequestQuery) (*searchQueryResp
 	}, nil
 }
 
-func searchGLPS(s *gin.Context, query searchRequestQuery) ([]*types.GLP, error) {
+func searchGLPS(s *gin.Context, query searchRequestQuery) ([]*entity.GLP, error) {
 	glps, err := parse.GLPS(s, true)
 	if err != nil {
 		log.Println("searchGLPS")
@@ -61,7 +61,7 @@ func searchGLPS(s *gin.Context, query searchRequestQuery) ([]*types.GLP, error) 
 		sortedGlps, err := parse.SortGLPS(s, glps, sortType, sortOrder)
 		if err != nil {
 			log.Println("Failed to sort GLPS in searchGLPS query")
-			return []*types.GLP{}, err
+			return []*entity.GLP{}, err
 		}
 		glps = sortedGlps
 	}
@@ -79,7 +79,7 @@ func searchGLPS(s *gin.Context, query searchRequestQuery) ([]*types.GLP, error) 
 		glpPtrs = append(glpPtrs, idx)
 	}
 
-	matchedGLPS := []*types.GLP{}
+	matchedGLPS := []*entity.GLP{}
 
 	glpsSearches := fuzzy.RankFindFold(query.Query, glpNames)
 	for _, glpRank := range glpsSearches {
@@ -90,7 +90,7 @@ func searchGLPS(s *gin.Context, query searchRequestQuery) ([]*types.GLP, error) 
 	return matchedGLPS, nil
 }
 
-func searchStudents(s *gin.Context, query searchRequestQuery) ([]*types.Student, error) {
+func searchStudents(s *gin.Context, query searchRequestQuery) ([]*entity.Student, error) {
 	students, err := parse.Students(s)
 	if err != nil {
 		log.Println(err)
@@ -113,7 +113,7 @@ func searchStudents(s *gin.Context, query searchRequestQuery) ([]*types.Student,
 	// we're probably only going to match a few
 	// students and glps here so there is no
 	// point over-allocating!
-	matchedStudents := []*types.Student{}
+	matchedStudents := []*entity.Student{}
 
 	// now we invoke our fancy libraries to
 	// do the searches.

@@ -1,4 +1,4 @@
-package activities
+package activity
 
 type CreatedStudentActivity struct {
 	SimpleActivity

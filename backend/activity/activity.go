@@ -1,6 +1,8 @@
-package activities
+package activity
 
-import "time"
+import (
+	"time"
+)
 
 // ActivityType is a type of activity
 // that can be performed, for example
@@ -25,13 +27,16 @@ const (
 
 	StudentAssignGLPActivity
 	StudentUnassignGLPActivity
-	// TODO: EditGLPActivity
 
 	// TODO: changes a setting
 	// TODO: edits a student
 	// TODO: edits a group
 )
 
+// Activity represents an action performed
+// by a teacher on the ui. This action has a message
+// e.g. "deleted a GLP", and a time when the action
+// was executed.
 type Activity interface {
 	GetMessage() string
 	SetMessage(s string)
@@ -41,6 +46,8 @@ type Activity interface {
 	SetExecutionTime(t time.Time)
 }
 
+// SimplyActivity is a helper struct for common
+// activity values
 type SimpleActivity struct {
 	Message       string
 	ExecutionTime time.Time

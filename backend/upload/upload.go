@@ -44,6 +44,37 @@ func saveFile() {
 
 }
 
+func DeleteGLPFile() gin.HandlerFunc {
+	type deleteGLPFiles struct {
+		ID    uint64   `json:"id"`
+		Files []string `json:"files"`
+	}
+
+	return func(c *gin.Context) {
+		id, err := strconv.ParseUint(c.Param("id"), 10, 64)
+		if err != nil {
+			log.Println("DeleteGLPFile", err.Error())
+			c.AbortWithError(http.StatusBadRequest, err)
+			return
+		}
+
+		fileName := c.Param("file")
+		if !isLegalFileName(fileName) {
+			log.Println("DeleteGLPFile", "Bad file name")
+			c.AbortWithError(http.StatusBadRequest, errors.New("Bad file name"))
+			return
+		}
+
+		if err := api.DeleteGLPFile(id, fileName); err != nil {
+			log.Println("DeleteGLPFile", err.Error())
+			c.AbortWithError(http.StatusBadRequest, err)
+			return
+		}
+
+		c.Status(http.StatusOK)
+	}
+}
+
 // PostGLPFiles handles the post route for
 // uploading _multiple_ glp files to a glp.
 // this route takes an id for the glp to upload
@@ -52,9 +83,9 @@ func saveFile() {
 func PostGLPFiles() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		glpSha := sha1.New()
-		idStr := c.Param("id")
+		idParam := c.Param("id")
 
-		glpID, err := strconv.ParseUint(idStr, 10, 64)
+		glpID, err := strconv.ParseUint(idParam, 10, 64)
 		if err != nil {
 			log.Println("Failed to parse id so we can't store it in the db...", err.Error())
 			return
@@ -67,7 +98,7 @@ func PostGLPFiles() gin.HandlerFunc {
 			}
 
 			// gen the hash since it probs. doesn't exist
-			io.WriteString(glpSha, fmt.Sprintf("%s %d", idStr, time.Now().Unix()))
+			io.WriteString(glpSha, fmt.Sprintf("%s %d", idParam, time.Now().Unix()))
 			glpFolderName = fmt.Sprintf("%x", glpSha.Sum(nil))
 
 			// store it.

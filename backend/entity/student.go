@@ -1,4 +1,4 @@
-package types
+package entity
 
 type Address struct {
 	Line1    string `json:"line1"`
@@ -20,7 +20,7 @@ type Profile struct {
 }
 
 type Student struct {
-	Id              uint64  `json:"id"`
+	ID              uint64  `json:"id"`
 	Username        string  `json:"username"`
 	Email           string  `json:"email"`
 	Language        string  `json:"language"`
@@ -29,7 +29,7 @@ type Student struct {
 }
 
 type StudentPost struct {
-	Id       uint64  `json:"id"`
+	ID       uint64  `json:"id"`
 	Username string  `json:"username"`
 	Email    string  `json:"email"`
 	Language string  `json:"language"`

@@ -12,8 +12,7 @@ import (
 
 func GetStudentOverview() gin.HandlerFunc {
 	return func(s *gin.Context) {
-		countParam := s.DefaultQuery("count", "3")
-		fetchCount, err := strconv.Atoi(countParam)
+		fetchCount, err := strconv.Atoi(s.DefaultQuery("count", "3"))
 		if err != nil || fetchCount <= 0 {
 			// NaN or improper data
 			fetchCount = 3

@@ -1,6 +1,31 @@
 package api
 
-import "log"
+import (
+	"log"
+	"os"
+	"path/filepath"
+
+	"github.com/HandsFree/beaconing-teacher-ui/backend/cfg"
+)
+
+// DeleteGLPFile will delete the given file from the given glp
+func DeleteGLPFile(glpID uint64, fileName string) error {
+	log.Println("Deleting glp files ", fileName, " from ", glpID)
+
+	folderName, err := GetGLPFilesFolderName(glpID)
+	if err != nil {
+		log.Println("No such folder for glp ", glpID)
+		return err
+	}
+
+	fullPath := filepath.Join(cfg.Beaconing.Server.RootPath, cfg.Beaconing.Server.GlpFilesPath, folderName, fileName)
+	if err := os.Remove(fullPath); err != nil {
+		log.Println("Failed to remove file ", fullPath, "\n-", err.Error())
+		return err
+	}
+
+	return nil
+}
 
 // GetGLPFilesFolderName gets the name of the folder in which the glps files are
 // stored. this function will return an empty string and no

@@ -1,9 +1,9 @@
-package activities
+package activity
 
 import (
 	"log"
 
-	"github.com/HandsFree/beaconing-teacher-ui/backend/types"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
 	"github.com/json-iterator/go"
 )
 
@@ -15,7 +15,7 @@ type CreatedStudentGroupActivity struct {
 func NewCreateStudentGroupActivity(apiReq []byte) *CreatedStudentGroupActivity {
 	groupName := "Undefined Group Name!" // just in case this happens!
 
-	data := &types.StudentGroup{}
+	data := &entity.StudentGroup{}
 	if err := jsoniter.Unmarshal(apiReq, data); err != nil {
 		log.Println("NewCreateStudentGroupActivity", err.Error())
 	}

@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/HandsFree/beaconing-teacher-ui/backend/api"
-	"github.com/HandsFree/beaconing-teacher-ui/backend/types"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
 	"github.com/gin-gonic/gin"
 )
 
@@ -50,10 +50,8 @@ func SortOption(opt string) SortingOption {
 	case "private":
 		return Private
 	default:
-		return Ascending
+		return Undefined
 	}
-
-	return Undefined
 }
 
 type SortingOption uint
@@ -73,7 +71,7 @@ const (
 	Undefined
 )
 
-func SortByName(s *gin.Context, plans []*types.GLP, order SortingOption) ([]*types.GLP, error) {
+func SortByName(s *gin.Context, plans []*entity.GLP, order SortingOption) ([]*entity.GLP, error) {
 	sort.SliceStable(plans, func(i, j int) bool {
 		if order == Descending {
 			return plans[i].Name > plans[j].Name
@@ -85,7 +83,7 @@ func SortByName(s *gin.Context, plans []*types.GLP, order SortingOption) ([]*typ
 	return plans, nil
 }
 
-func SortBySTEM(s *gin.Context, plans []*types.GLP, order SortingOption) ([]*types.GLP, error) {
+func SortBySTEM(s *gin.Context, plans []*entity.GLP, order SortingOption) ([]*entity.GLP, error) {
 	isSTEM := func(name string) bool {
 		name = strings.ToLower(name)
 		switch order {
@@ -102,7 +100,7 @@ func SortBySTEM(s *gin.Context, plans []*types.GLP, order SortingOption) ([]*typ
 		}
 	}
 
-	results := []*types.GLP{}
+	results := []*entity.GLP{}
 
 	for _, plan := range plans {
 		if isSTEM(plan.Domain) {
@@ -114,7 +112,7 @@ func SortBySTEM(s *gin.Context, plans []*types.GLP, order SortingOption) ([]*typ
 	return results, nil
 }
 
-func SortByCreationTime(s *gin.Context, plans []*types.GLP, order SortingOption) ([]*types.GLP, error) {
+func SortByCreationTime(s *gin.Context, plans []*entity.GLP, order SortingOption) ([]*entity.GLP, error) {
 	sort.Slice(plans, func(i, j int) bool {
 		if order == Descending {
 			return plans[j].CreatedAt.Before(plans[i].CreatedAt)
@@ -124,7 +122,7 @@ func SortByCreationTime(s *gin.Context, plans []*types.GLP, order SortingOption)
 	return plans, nil
 }
 
-func SortByRecentlyUpdated(s *gin.Context, plans []*types.GLP, order SortingOption) ([]*types.GLP, error) {
+func SortByRecentlyUpdated(s *gin.Context, plans []*entity.GLP, order SortingOption) ([]*entity.GLP, error) {
 	sort.Slice(plans, func(i, j int) bool {
 		if order == Descending {
 			return plans[j].UpdatedAt.Before(plans[i].UpdatedAt)
@@ -134,7 +132,7 @@ func SortByRecentlyUpdated(s *gin.Context, plans []*types.GLP, order SortingOpti
 	return plans, nil
 }
 
-func SortByMostAssigned(s *gin.Context, plans []*types.GLP, order SortingOption) ([]*types.GLP, error) {
+func SortByMostAssigned(s *gin.Context, plans []*entity.GLP, order SortingOption) ([]*entity.GLP, error) {
 	glps, err := api.GetMostAssigned(s)
 	if err != nil {
 		log.Println("failed to get most assigned glps")
@@ -150,8 +148,8 @@ func boolToInt(b bool) int8 {
 	return 0
 }
 
-func SortByAvailability(s *gin.Context, plans []*types.GLP, order SortingOption) ([]*types.GLP, error) {
-	results := []*types.GLP{}
+func SortByAvailability(s *gin.Context, plans []*entity.GLP, order SortingOption) ([]*entity.GLP, error) {
+	results := []*entity.GLP{}
 
 	switch order {
 	case Public:
@@ -173,8 +171,8 @@ func SortByAvailability(s *gin.Context, plans []*types.GLP, order SortingOption)
 	return results, nil
 }
 
-func SortByOwnedByMe(s *gin.Context, plans []*types.GLP, order SortingOption) ([]*types.GLP, error) {
-	result := []*types.GLP{}
+func SortByOwnedByMe(s *gin.Context, plans []*entity.GLP, order SortingOption) ([]*entity.GLP, error) {
+	result := []*entity.GLP{}
 	for _, pl := range plans {
 		if pl.OwnedByMe {
 			result = append(result, pl)
@@ -183,7 +181,7 @@ func SortByOwnedByMe(s *gin.Context, plans []*types.GLP, order SortingOption) ([
 	return result, nil
 }
 
-func SortByRecentlyAssigned(s *gin.Context, plans []*types.GLP, order SortingOption) ([]*types.GLP, error) {
+func SortByRecentlyAssigned(s *gin.Context, plans []*entity.GLP, order SortingOption) ([]*entity.GLP, error) {
 	// TODO we do a load for the GLPS and basically
 	// throw them out to reload the ones that have been
 	// recently assigned
@@ -198,7 +196,7 @@ func SortByRecentlyAssigned(s *gin.Context, plans []*types.GLP, order SortingOpt
 
 // SortGLPS invoke sort plan with query
 // ?sort=name, ?sort=stem, ?sort=created, etc.
-func SortGLPS(s *gin.Context, plans []*types.GLP, sortType string, order SortingOption) ([]*types.GLP, error) {
+func SortGLPS(s *gin.Context, plans []*entity.GLP, sortType string, order SortingOption) ([]*entity.GLP, error) {
 	// TODO
 	// sort by most assigned "popular"
 	// sort by deadline soonest/further "deadline"

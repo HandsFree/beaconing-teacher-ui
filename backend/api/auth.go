@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/HandsFree/beaconing-teacher-ui/backend/cfg"
-	"github.com/HandsFree/beaconing-teacher-ui/backend/types"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
@@ -20,7 +20,7 @@ func GetRefreshToken(s *gin.Context) error {
 
 	accessToken := session.Get("access_token").(string)
 
-	message, err := jsoniter.Marshal(types.TokenRequest{
+	message, err := jsoniter.Marshal(entity.TokenRequest{
 		GrantType:    "authorization_code",
 		Code:         accessToken,
 		ClientID:     cfg.Beaconing.Auth.ID,
@@ -40,7 +40,7 @@ func GetRefreshToken(s *gin.Context) error {
 		return err
 	}
 
-	var respToken types.TokenResponse
+	var respToken entity.TokenResponse
 	if err := jsoniter.Unmarshal(resp, &respToken); err != nil {
 		log.Println("GetRefreshToken", err.Error())
 		return err

@@ -5,7 +5,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/HandsFree/beaconing-teacher-ui/backend/activities"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/activity"
 )
 
 // GetActivities looks up in the local PSQL database
@@ -16,21 +16,20 @@ import (
 // a good idea, though im not sure if the frontend
 // would do this for us since this is invoked form a GET
 // request where the json response would be cached.
-func GetActivities(teacherID uint64, count int) ([]activities.Activity, error) {
+func GetActivities(teacherID uint64, count int) ([]activity.Activity, error) {
 	if API.db == nil {
 		log.Println("GetActivities, No database connection has been established")
-		return []activities.Activity{}, errors.New("No database connection established")
+		return []activity.Activity{}, errors.New("No database connection established")
 	}
 
 	query := "SELECT * FROM (SELECT id, creation_date, activity_type, api_req FROM activity WHERE teacher_id = $2) AS activities ORDER BY activities.id DESC LIMIT $1"
 	rows, err := API.db.Query(query, count, teacherID)
 	if err != nil {
 		log.Println("GetActivities", err.Error())
-		return []activities.Activity{}, err
+		return []activity.Activity{}, err
 	}
 
-	loadedActivities := []activities.Activity{}
-	var result activities.Activity
+	loadedActivities := []activity.Activity{}
 
 	defer rows.Close()
 	for rows.Next() {
@@ -47,35 +46,7 @@ func GetActivities(teacherID uint64, count int) ([]activities.Activity, error) {
 
 		// TODO felix clean this system up a whole lot more.
 
-		switch activities.ActivityType(activityType) {
-		case activities.CreateStudentGroupActivity:
-			result = activities.NewCreateStudentGroupActivity(apiReq)
-		case activities.DeleteStudentGroupActivity:
-			result = activities.NewDeleteStudentGroupActivity(apiReq)
-		case activities.GroupAssignGLPActivity:
-			result = activities.NewGroupAssignGLPActivity(apiReq)
-		case activities.GroupUnassignGLPActivity:
-			result = activities.NewGroupUnassignGLPActivity(apiReq)
-
-		case activities.CreateStudentActivity:
-			result = activities.NewCreateStudentActivity(apiReq)
-		case activities.DeleteStudentActivity:
-			result = activities.NewDeleteStudentActivity(apiReq)
-
-		case activities.DeleteGLPActivity:
-			result = activities.NewDeleteGLPActivity(apiReq)
-		case activities.PutGLPActivity:
-			result = activities.NewPutGLPActivity(apiReq)
-		case activities.CreateGLPActivity:
-			result = activities.NewCreateGLPActivity(apiReq)
-		case activities.StudentAssignGLPActivity:
-			result = activities.NewAssignedGLPActivity(apiReq)
-		case activities.StudentUnassignGLPActivity:
-			result = activities.NewUnassignedGLPActivity(apiReq)
-		default:
-			log.Println("-- Unhandled activity type, tell the dashboard devs to get it together!", activities.ActivityType(activityType))
-		}
-
+		result := activity.Parse(activity.ActivityType(activityType), apiReq)
 		// shouldn't happen
 		if result == nil {
 			continue
@@ -90,7 +61,7 @@ func GetActivities(teacherID uint64, count int) ([]activities.Activity, error) {
 
 	if err := rows.Err(); err != nil {
 		log.Println("GetActivities DB Error", err.Error())
-		return []activities.Activity{}, err
+		return []activity.Activity{}, err
 	}
 
 	return loadedActivities, nil
@@ -102,7 +73,7 @@ func GetActivities(teacherID uint64, count int) ([]activities.Activity, error) {
 //
 // in theory this could be a big old relational database but it's not really necessary
 // and most of the times I feel like the JSON wont be used! this may change in the future...
-func (c *CoreAPIManager) WriteActivity(teacherID uint64, kind activities.ActivityType, jsonData []byte) error {
+func (c *CoreAPIManager) WriteActivity(teacherID uint64, kind activity.ActivityType, jsonData []byte) error {
 	if c.db == nil {
 		log.Println("-- No database connection has been established")
 		return errors.New("No database connection")

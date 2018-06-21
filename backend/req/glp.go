@@ -60,8 +60,7 @@ func PostGLPRequest() gin.HandlerFunc {
 // - glp id
 func DeleteGLPRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
-		idParam := s.Param("id")
-		id, err := strconv.ParseUint(idParam, 10, 64)
+		id, err := strconv.ParseUint(s.Param("id"), 10, 64)
 		if err != nil || id < 0 {
 			log.Println("error when sanitising glp id", err.Error())
 			s.String(http.StatusBadRequest, "Client Error: Invalid GLP ID")

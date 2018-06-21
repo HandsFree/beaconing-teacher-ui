@@ -20,6 +20,8 @@ func registerAPI(router *gin.Engine) {
 	{
 		fileUpload.POST("/:id", upload.PostGLPFiles())
 
+		fileUpload.DELETE("/:id/:file", upload.DeleteGLPFile())
+
 		// test upload route
 		if gin.IsDebugging() {
 			fileUpload.GET("/", func(c *gin.Context) {

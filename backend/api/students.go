@@ -8,14 +8,21 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/HandsFree/beaconing-teacher-ui/backend/activities"
-	"github.com/HandsFree/beaconing-teacher-ui/backend/types"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/activity"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 )
 
 // GetStudents requests a list of all students from the
 // core api, returned as a string of json
+// NOTE: because we have to inject the avatars in the json
+// query here ourselves this is slower since we have to turn
+// the json into structures to extract student id's then we
+// have to regenerate the json with the new avatar hash slapped in.
+//
+// one thing I want to do is extract all the id's from the json
+// then we can do one big query to the database asking for all of the ids
 func GetStudents(s *gin.Context) (string, error) {
 	resp, err := DoTimedRequest(s, "GET", API.getPath(s, "students"))
 	if err != nil {
@@ -23,7 +30,7 @@ func GetStudents(s *gin.Context) (string, error) {
 		return "", err
 	}
 
-	students := []*types.Student{}
+	students := []*entity.Student{}
 	if err := jsoniter.Unmarshal(resp, &students); err != nil {
 		log.Println("GetStudents", err.Error(), "resp was", string(resp))
 		return "", err
@@ -32,11 +39,11 @@ func GetStudents(s *gin.Context) (string, error) {
 	// TODO we could easily batch this into one SQL
 	// query
 	for _, student := range students {
-		avatar, err := getUserAvatar(s, student.Id)
+		avatar, err := getUserAvatar(s, student.ID)
 		if err != nil {
 			log.Println("getUserAvatar", err.Error())
 
-			avatar, err = setUserAvatar(s, student.Id, student.Username)
+			avatar, err = setUserAvatar(s, student.ID, student.Username)
 			if err != nil {
 				log.Println("setUserAvatar", err.Error())
 				avatar = "TODO identicon fall back here"
@@ -58,32 +65,43 @@ func GetStudents(s *gin.Context) (string, error) {
 	return body, nil
 }
 
-// GetStudent returns a decoded object as well as the json response
-// of the given student of id {studentID}
-func GetStudent(s *gin.Context, studentID int) (*types.Student, error) {
+// GetStudent returns the json object for the given student id
+// note that it will store the hash object in the student and
+// re-encode it. if anything fails, including hashing the avatar,
+// this will return an empty string and an error.
+func GetStudent(s *gin.Context, studentID int) (string, error) {
 	data, err := DoTimedRequest(s, "GET", API.getPath(s, "students/", fmt.Sprintf("%d", studentID)))
 	if err != nil {
 		log.Println("GetStudent", err.Error())
-		return nil, err
+		return "", err
 	}
 
-	student := &types.Student{}
+	// turn into json and slap in the student encoding hash
+	// thing!
+	// FIXME/TODO this is stupid and slower!!
+	student := &entity.Student{}
 	if err := jsoniter.Unmarshal(data, student); err != nil {
 		log.Println("GetStudent", err.Error())
-		return nil, err
+		return "", err
 	}
 
-	input := fmt.Sprintf("%d%s", student.Id, student.Username)
+	input := fmt.Sprintf("%d%s", student.ID, student.Username)
 	hmac512 := hmac.New(sha512.New, []byte("what should the secret be!"))
 	hmac512.Write([]byte(input))
 	student.IdenticonSha512 = base64.StdEncoding.EncodeToString(hmac512.Sum(nil))
 
-	return student, nil
+	encodedStudent, err := jsoniter.Marshal(student)
+	if err != nil {
+		log.Println("GetStudents", err.Error())
+		return "", nil
+	}
+
+	return string(encodedStudent), nil
 }
 
 // PostStudent handles the POST student request route.
 func PostStudent(s *gin.Context) (string, error) {
-	var json *types.StudentPost
+	var json *entity.StudentPost
 	if err := s.ShouldBindJSON(&json); err != nil {
 		log.Println("PostStudent", err.Error())
 		return "", err
@@ -112,13 +130,13 @@ func PostStudent(s *gin.Context) (string, error) {
 		return string(resp), err
 	}
 
-	API.WriteActivity(currUserID, activities.CreateStudentActivity, resp)
+	API.WriteActivity(currUserID, activity.CreateStudentActivity, resp)
 	return string(resp), nil
 }
 
 // PutStudent handles the PUT student api route
 func PutStudent(s *gin.Context, studentID int) (string, error) {
-	var json *types.StudentPost
+	var json *entity.StudentPost
 	if err := s.ShouldBindJSON(&json); err != nil {
 		log.Println("PutStudent", err.Error())
 		return "", err

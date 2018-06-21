@@ -1,4 +1,4 @@
-package types
+package entity
 
 // CurrentUser contains the information on the current user, including
 // their id and their username.
@@ -12,7 +12,7 @@ type teacherSettings struct {
 }
 
 type CurrentUser struct {
-	Id              uint64          `json:"id"`
+	ID              uint64          `json:"id"`
 	Username        string          `json:"username"`
 	Email           string          `json:"email"`
 	Language        string          `json:"language"`

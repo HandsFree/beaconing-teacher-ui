@@ -1,4 +1,4 @@
-package types
+package entity
 
 // name: Algebra
 // image: http://imgur.com/some_image.png

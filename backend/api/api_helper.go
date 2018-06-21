@@ -26,7 +26,7 @@ import (
 	"net"
 
 	"github.com/HandsFree/beaconing-teacher-ui/backend/cfg"
-	"github.com/HandsFree/beaconing-teacher-ui/backend/types"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
 )
 
 // ApiLayer is a layer which handles manipulation of
@@ -108,7 +108,7 @@ func SetupAPIHelper() {
 	API = newAPIHelper()
 }
 
-// formatRequest generates ascii representation of a request
+// formatRequest generates string representation of a request
 func formatRequest(r *http.Request) string {
 	// Create return string
 	var request []string
@@ -206,7 +206,7 @@ func GetUserID(s *gin.Context) (uint64, error) {
 	if obj == nil {
 		return 0, errors.New("No such user")
 	}
-	return obj.Id, nil
+	return obj.ID, nil
 }
 
 // getPath creates an API path, appending on the given beaconing URL
@@ -222,14 +222,14 @@ func (a *CoreAPIManager) getPath(s *gin.Context, args ...string) string {
 
 // GetCurrentUser returns an object with information about the current
 // user, as well as the JSON string decoded from the object.
-func GetCurrentUser(s *gin.Context) (*types.CurrentUser, error) {
+func GetCurrentUser(s *gin.Context) (*entity.CurrentUser, error) {
 	resp, err := DoTimedRequest(s, "GET", API.getPath(s, "currentuser"))
 	if err != nil {
 		log.Println("GetCurrentUser", err.Error())
 		return nil, err
 	}
 
-	teacher := &types.CurrentUser{}
+	teacher := &entity.CurrentUser{}
 	if err := jsoniter.Unmarshal(resp, teacher); err != nil {
 		log.Println("GetCurrentUser", err.Error())
 		return nil, err
@@ -242,11 +242,11 @@ func GetCurrentUser(s *gin.Context) (*types.CurrentUser, error) {
 	// and re-load it.
 	// TODO if we fail again return some error
 	// identicon and spit the error out in the logs
-	avatar, err := getUserAvatar(s, teacher.Id)
+	avatar, err := getUserAvatar(s, teacher.ID)
 	if err != nil {
 		log.Println("getUserAvatar", err.Error())
 
-		avatar, err = setUserAvatar(s, teacher.Id, teacher.Username)
+		avatar, err = setUserAvatar(s, teacher.ID, teacher.Username)
 		if err != nil {
 			log.Println("setUserAvatar", err.Error())
 			avatar = "TODO identicon fall back here"

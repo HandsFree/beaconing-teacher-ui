@@ -5,24 +5,22 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/parse"
-	"github.com/HandsFree/beaconing-teacher-ui/backend/types"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 )
 
-func slicePlans(plans []*types.GLP, index int, step int) ([]*types.GLP, error) {
-	plansLength := len(plans)
+func slicePlans(plans []*entity.GLP, index int, step int) ([]*entity.GLP, error) {
+	planCount := len(plans)
 
-	if index >= plansLength {
-		return []*types.GLP{}, nil
+	if index >= planCount {
+		return []*entity.GLP{}, nil
 	}
 
 	stepIndex := index + step
 
-	// fmt.Println(plansLength, stepIndex)
-
-	if (stepIndex) > plansLength {
+	if (stepIndex) > planCount {
 		return plans[index:], nil
 	}
 

@@ -1,4 +1,4 @@
-package types
+package entity
 
 // TokenRequest is a json type for the
 // response from the tokenLink

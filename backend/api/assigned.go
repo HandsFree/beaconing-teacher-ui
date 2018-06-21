@@ -9,14 +9,13 @@ import (
 
 	"github.com/lib/pq"
 
-	activities "github.com/HandsFree/beaconing-teacher-ui/backend/activities"
-	"github.com/HandsFree/beaconing-teacher-ui/backend/types"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/activity"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 )
 
 // this is a little funky.
-// https://github.com/HandsFree/beaconing-teacher-ui/issues/120
 func unwrapStudentAssignObject(s *gin.Context, studentID uint64, assignID uint64) (uint64, error) {
 	type Assignment struct {
 		ID        uint64 `json:"id"`
@@ -77,7 +76,7 @@ func insertActivePlan(s *gin.Context, planID uint64) error {
 // AssignStudentToGLP assigns the given student (by id) to the given GLP (by id),
 // returns a string of the returned json from the core API as well as an error (if any).
 func AssignStudentToGLP(s *gin.Context, studentID uint64, glpID uint64, from, to pq.NullTime) (string, error) {
-	assign := &types.AssignPOST{
+	assign := &entity.AssignPOST{
 		StudentID:     studentID,
 		GlpID:         glpID,
 		AvailableFrom: from.Time,
@@ -107,14 +106,14 @@ func AssignStudentToGLP(s *gin.Context, studentID uint64, glpID uint64, from, to
 		return string(resp), nil
 	}
 
-	API.WriteActivity(id, activities.StudentAssignGLPActivity, resp)
+	API.WriteActivity(id, activity.StudentAssignGLPActivity, resp)
 	return string(resp), nil
 }
 
 // AssignGroupToGLP assigns the given group (by id) to the given GLP (by id),
 // returns a string of the returned json from the core API as well as an error (if any).
 func AssignGroupToGLP(s *gin.Context, groupID uint64, glpID uint64, from, to time.Time) (string, error) {
-	assignJSON, err := jsoniter.Marshal(&types.AssignGroupPOST{
+	assignJSON, err := jsoniter.Marshal(&entity.AssignGroupPOST{
 		GroupID:        groupID,
 		GlpID:          glpID,
 		AvailableFrom:  from,
@@ -140,7 +139,7 @@ func AssignGroupToGLP(s *gin.Context, groupID uint64, glpID uint64, from, to tim
 		return string(resp), nil
 	}
 
-	API.WriteActivity(id, activities.GroupAssignGLPActivity, resp)
+	API.WriteActivity(id, activity.GroupAssignGLPActivity, resp)
 	return string(resp), nil
 }
 
@@ -217,7 +216,7 @@ func DeleteAssignedGLP(s *gin.Context, studentID uint64, linkID uint64) string {
 		return string(resp)
 	}
 
-	API.WriteActivity(teacherID, activities.StudentUnassignGLPActivity, resp)
+	API.WriteActivity(teacherID, activity.StudentUnassignGLPActivity, resp)
 	return string(resp)
 }
 
@@ -246,6 +245,6 @@ func DeleteGroupAssignedGLP(s *gin.Context, groupID uint64, glpID uint64) string
 		return string(resp)
 	}
 
-	API.WriteActivity(teacherID, activities.GroupUnassignGLPActivity, resp)
+	API.WriteActivity(teacherID, activity.GroupUnassignGLPActivity, resp)
 	return string(resp)
 }
