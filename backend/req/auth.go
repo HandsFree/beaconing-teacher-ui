@@ -13,8 +13,7 @@ func GetCheckAuthRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
 		accessToken := api.GetAccessToken(s)
 		if accessToken == "" {
-			// header redirect in the GAT function
-			// so return here to avoid header re-writes
+			s.String(http.StatusBadRequest, "Unauthorised access: core")
 			return
 		}
 

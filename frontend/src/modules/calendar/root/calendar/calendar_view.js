@@ -34,8 +34,8 @@ class CalendarView extends Component {
         this.state.eventMap = new Map();
 
         const studentId = window.sessionStorage.getItem('calendarStudentID') ?? -1;
-        this.loadEvents(studentId);
 
+        await this.loadEvents(studentId);
         this.updateView(await this.render());
     }
 
@@ -82,14 +82,16 @@ class CalendarView extends Component {
     async init() {
         if (window.sessionStorage) {
             const studentId = window.sessionStorage.getItem("calendarStudentID") ?? -1;
-            this.loadEvents(studentId);
+            await this.loadEvents(studentId);
         }
     }
 
     // loads all of the events from the glps
     // of the given student id
     async loadEvents(studentId) {
-        if (studentId == -1) return;
+        if (studentId == -1) {
+            return;
+        }
         
         console.log(`[Calendar] writing events for student ${studentId}`);
 

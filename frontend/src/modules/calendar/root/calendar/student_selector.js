@@ -1,6 +1,6 @@
 // @flow
 
-import { section, h1, h2, p, div, a, ul, li, span, select, option } from '../../../../core/html';
+import { label, section, h1, h2, p, div, a, ul, li, span, select, option } from '../../../../core/html';
 import component, { Component } from '../../../../core/component';
 class StudentSelector extends Component {
     async refresh(groupId, studentsList) {
@@ -11,7 +11,16 @@ class StudentSelector extends Component {
         this.updateView(await this.render());
     }
 
+    async init() {
+        const storedId = window.sessionStorage.getItem('calendarStudentID') ?? -1;
+        if (storedId != -1) {
+            this.setStudent(storedId);
+        }
+    }
+
     async setStudent(id) {
+        console.log(`[Calendar] Setting student to ${id}`);
+
         if (window.sessionStorage) {
             const storedId = window.sessionStorage.getItem('calendarStudentID') ?? -1;
 
@@ -24,8 +33,8 @@ class StudentSelector extends Component {
 
         window.sessionStorage.setItem('calendarStudentID', id);
         
-        this.emit('RefreshCalendarView');
         this.emit('RefreshCalendarController');
+        this.emit('RefreshCalendarView');
     }
 
     async render() {
@@ -113,14 +122,14 @@ class StudentGroupSelector extends Component {
 
             return div('.group-select', 
                 h2('Select group:'),
-                select({
+                label('.select', select('#so-class-list', {
                     onchange: (event) => {
                         const self = event.target;
                         const selectedOption = self.options[self.selectedIndex];
                         const groupId = selectedOption.value;
                         studentSel.refresh(groupId, selectedOption.students);
                     },
-                }, options), 
+                }, options)), 
                 studentSelEl);
         });
     }

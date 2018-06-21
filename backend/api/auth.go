@@ -3,7 +3,6 @@ package api
 import (
 	"bytes"
 	"log"
-	"net/http"
 
 	"github.com/HandsFree/beaconing-teacher-ui/backend/cfg"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
@@ -63,8 +62,6 @@ func GetAccessToken(s *gin.Context) string {
 	session := sessions.Default(s)
 	accessToken := session.Get("access_token")
 	if accessToken == nil {
-		s.String(http.StatusBadRequest, "Unauthorised access: core")
-		// NOTE: no return here due to redirect
 		return ""
 	}
 	return accessToken.(string)
