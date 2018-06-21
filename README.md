@@ -26,6 +26,10 @@ should be merged onto the master branch, a release is then made from the master 
 Licensed under GNU AGPLv3. See the `LICENSE.md` file for the full license.
 
 # Development
+## Prerequisites
+- PostgreSQL installed locally
+- Go
+
 ## Installation
 Cloning the repo should be done using Go:
 ```
@@ -53,10 +57,6 @@ $ yarn b
 ```
 
 ### Backend
-#### Prerequisites
-- PostgreSQL installed locally
-- Go
-
 #### Installing
 In the backend folder type:
 ```
