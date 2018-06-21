@@ -2,7 +2,7 @@
   <img width="600" src="http://beaconing.eu/wp-content/themes/beaconing/images/logo/original_version_(black).png" alt="Beaconing">
 </p>
 <p align="center">
-  <strong style="font-size: xx-large">Beaconing Teacher UI</strong>
+  <strong>Beaconing Teacher UI</strong>
 </p>
 <p align="center">
   Teacher Interface for the Beaconing H2020 EU funded project
@@ -26,6 +26,11 @@ should be merged onto the master branch, a release is then made from the master 
 Licensed under GNU AGPLv3. See the `LICENSE.md` file for the full license.
 
 # Development
+## Prerequisites
+- PostgreSQL installed locally
+- Go
+- Yarn
+
 ## Installation
 Cloning the repo should be done using Go:
 ```
@@ -53,10 +58,6 @@ $ yarn b
 ```
 
 ### Backend
-#### Prerequisites
-- PostgreSQL installed locally
-- Go
-
 #### Installing
 In the backend folder type:
 ```
