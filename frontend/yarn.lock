@@ -1525,15 +1525,25 @@ collection-visit@^1.0.0:
     map-visit "^1.0.0"
     object-visit "^1.0.0"
 
-color-convert@1.9.0, color-convert@^1.3.0, color-convert@^1.9.0:
+color-convert@1.9.2:
+  version "1.9.2"
+  resolved "https://registry.yarnpkg.com/color-convert/-/color-convert-1.9.2.tgz#49881b8fba67df12a96bdf3f56c0aab9e7913147"
+  dependencies:
+    color-name "1.1.1"
+
+color-convert@^0.5.3:
+  version "0.5.3"
+  resolved "https://registry.yarnpkg.com/color-convert/-/color-convert-0.5.3.tgz#bdb6c69ce660fadffe0b0007cc447e1b9f7282bd"
+
+color-convert@^1.3.0, color-convert@^1.9.0:
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/color-convert/-/color-convert-1.9.0.tgz#1accf97dd739b983bf994d56fec8f95853641b7a"
   dependencies:
     color-name "^1.1.1"
 
-color-convert@^0.5.3:
-  version "0.5.3"
-  resolved "https://registry.yarnpkg.com/color-convert/-/color-convert-0.5.3.tgz#bdb6c69ce660fadffe0b0007cc447e1b9f7282bd"
+color-name@1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/color-name/-/color-name-1.1.1.tgz#4b1415304cf50028ea81643643bd82ea05803689"
 
 color-name@^1.0.0, color-name@^1.1.1:
   version "1.1.3"
@@ -4214,18 +4224,18 @@ object-keys@^1.0.8:
   version "1.0.11"
   resolved "https://registry.yarnpkg.com/object-keys/-/object-keys-1.0.11.tgz#c54601778ad560f1142ce0e01bcca8b56d13426d"
 
+object-visit@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/object-visit/-/object-visit-1.0.1.tgz#f79c4493af0c5377b59fe39d395e41042dd045bb"
+  dependencies:
+    isobject "^3.0.0"
+
 object.getownpropertydescriptors@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/object.getownpropertydescriptors/-/object.getownpropertydescriptors-2.0.3.tgz#8758c846f5b407adab0f236e0986f14b051caa16"
   dependencies:
     define-properties "^1.1.2"
     es-abstract "^1.5.1"
-
-object-visit@^1.0.0:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/object-visit/-/object-visit-1.0.1.tgz#f79c4493af0c5377b59fe39d395e41042dd045bb"
-  dependencies:
-    isobject "^3.0.0"
 
 object.omit@^2.0.0:
   version "2.0.1"
