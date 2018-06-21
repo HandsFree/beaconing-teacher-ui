@@ -2,7 +2,7 @@
   <img width="600" src="http://beaconing.eu/wp-content/themes/beaconing/images/logo/original_version_(black).png" alt="Beaconing">
 </p>
 <p align="center">
-  <strong style="font-size: xx-large">Beaconing Teacher UI</strong>
+  <strong>Beaconing Teacher UI</strong>
 </p>
 <p align="center">
   Teacher Interface for the Beaconing H2020 EU funded project
