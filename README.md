@@ -29,6 +29,7 @@ Licensed under GNU AGPLv3. See the `LICENSE.md` file for the full license.
 ## Prerequisites
 - PostgreSQL installed locally
 - Go
+- Yarn
 
 ## Installation
 Cloning the repo should be done using Go:
