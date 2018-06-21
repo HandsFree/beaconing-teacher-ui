@@ -8,9 +8,9 @@ import (
 	"github.com/HandsFree/beaconing-teacher-ui/backend/page/glpviewer"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/page/lesson_manager"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/page/profile"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/page/root"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/page/search"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/req"
-	"github.com/HandsFree/beaconing-teacher-ui/backend/root"
 	"github.com/gin-gonic/gin"
 )
 
