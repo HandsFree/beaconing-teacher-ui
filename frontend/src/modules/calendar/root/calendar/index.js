@@ -7,7 +7,7 @@ import MainNav from '../../../nav/main';
 
 import CalendarView from './calendar_view';
 import CalendarController from './calendar_controller';
-import { StudentSelector, StudentGroupSelector, SelectorPanel } from './student_selector';
+import { SelectorPanel } from './student_selector';
 
 class Calendar extends RootComponent {
     async init() {
@@ -38,9 +38,9 @@ class Calendar extends RootComponent {
             const [
                 headerEl,
                 mainNavEl,
-                calendarController,
-                calendarView,
-                studentSelector,
+                calendarControllerEl,
+                calendarViewEl,
+                studentSelectorEl,
             ] = values;
 
             return div(
@@ -50,13 +50,16 @@ class Calendar extends RootComponent {
                     '.flex-container.expand.margin-top-2',
                     mainNavEl,
                     main(
-                        section('.outer-col', 
-                            studentSelector,
-                            section('.full-width', 
-                                calendarController,
-                                calendarView
-                            )
-                        )
+                        '#calendar',
+                        section(
+                            '.outer-col',
+                            studentSelectorEl,
+                            section(
+                                '.full-width',
+                                calendarControllerEl,
+                                calendarViewEl,
+                            ),
+                        ),
                     ),
                 ),
             );

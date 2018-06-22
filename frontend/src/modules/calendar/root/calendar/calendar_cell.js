@@ -1,7 +1,7 @@
 // @flow
 
 import { div, p } from '../../../../core/html';
-import component, { Component } from '../../../../core/component';
+import { Component } from '../../../../core/component';
 
 // an individual cell in the calendar
 class CalendarCell extends Component {
@@ -13,9 +13,9 @@ class CalendarCell extends Component {
             classList += ' .current-day';
         }
 
-        return Promise.resolve(eventList).then((el) => {
-            return div(classList, p('.calendar-day', dayNumber), el);
-        });
+        const el = await eventList;
+
+        return div(classList, p('.calendar-day', dayNumber), el);
     }
 }
 
@@ -40,7 +40,7 @@ class CalendarHeadingCell extends Component {
     }
 }
 
-export { 
+export {
     CalendarCell,
     CalendarHeadingCell,
     CalendarPrevMonthCell,
