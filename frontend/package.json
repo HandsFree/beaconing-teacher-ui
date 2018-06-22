@@ -58,7 +58,7 @@
     "minimatch": "3.0.4",
     "node-sass": "4.9.0",
     "optimize-css-assets-webpack-plugin": "2.0.0",
-    "parallel-webpack": "2.2.0",
+    "parallel-webpack": "2.3.0",
     "sass-loader": "6.0.6",
     "webpack": "3.5.5",
     "webpack-bundle-analyzer": "2.11.1",
