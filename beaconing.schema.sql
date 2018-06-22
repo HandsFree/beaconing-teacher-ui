@@ -1,6 +1,7 @@
-CREATE ROLE beaconing_db_user WITH LOGIN PASSWORD '123ABCCBA';
+-- This schema assumes you've already created the database.
+-- You should be connected to the database beforehand, or apply the schema directly to the database
 
-\connect beaconing
+CREATE ROLE beaconing_db_user WITH LOGIN PASSWORD '123ABCCBA';
 
 CREATE TABLE glp_files (
     glp_id serial PRIMARY KEY,
