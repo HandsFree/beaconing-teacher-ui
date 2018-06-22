@@ -3,4 +3,5 @@ node_js:
   - "node"
 sudo: enabled
 script:
+  - echo "Testing"
   - yarn
