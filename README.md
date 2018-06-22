@@ -13,6 +13,9 @@
   <a href="https://semaphoreci.com/juddus/beaconing-teacher-ui">
     <img src="https://semaphoreci.com/api/v1/juddus/beaconing-teacher-ui/branches/nightly/badge.svg" alt="Build Status">
   </a>
+  <a href="https://snyk.io/test/github/HandsFree/beaconing-teacher-ui?targetFile=frontend%2Fpackage.json">
+    <img src="https://snyk.io/test/github/HandsFree/beaconing-teacher-ui/badge.svg?targetFile=frontend%2Fpackage.json" alt="Known Vulnerabilities" data-canonical-src="https://snyk.io/test/github/HandsFree/beaconing-teacher-ui?targetFile=frontend%2Fpackage.json" style="max-width:100%;">
+  </a>
 </p>
 
 # Repo Information
