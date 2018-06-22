@@ -16,6 +16,9 @@
   <a href="https://snyk.io/test/github/HandsFree/beaconing-teacher-ui?targetFile=frontend%2Fpackage.json">
     <img src="https://snyk.io/test/github/HandsFree/beaconing-teacher-ui/badge.svg?targetFile=frontend%2Fpackage.json" alt="Known Vulnerabilities" data-canonical-src="https://snyk.io/test/github/HandsFree/beaconing-teacher-ui?targetFile=frontend%2Fpackage.json" style="max-width:100%;">
   </a>
+  <a class="badge-align" href="https://www.codacy.com/app/juddus/beaconing-teacher-ui?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=HandsFree/beaconing-teacher-ui&amp;utm_campaign=Badge_Grade">
+    <img src="https://api.codacy.com/project/badge/Grade/f401a717494e45799d90be3fa20e30c6"/>
+  </a>
 </p>
 
 # Repo Information
