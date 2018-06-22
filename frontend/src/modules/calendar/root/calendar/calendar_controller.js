@@ -1,11 +1,11 @@
 // @flow
-
-import { section, h1, h2, p, div, a, ul, li, span, select, option } from '../../../../core/html';
-import component, { Component } from '../../../../core/component';
+import { h2, p, div, span } from '../../../../core/html';
+import { Component } from '../../../../core/component';
+import nullishCheck from '../../../../core/util';
 import './date_helper';
 
 // the top menu options above the calendar
-class CalendarController extends Component {    
+class CalendarController extends Component {
     updateHooks = {
         RefreshCalendarController: this.refresh,
     };
@@ -14,21 +14,22 @@ class CalendarController extends Component {
         this.updateCalendar('CurrMonth');
     }
 
-    async updateCalendar(updateHook) {
+    async updateCalendar(updateHook: string) {
         this.emit(updateHook);
         this.updateView(await this.render());
     }
 
     async render() {
-        const studentId = window.sessionStorage.getItem('calendarStudentID') ?? -1;
-       
+        const studentId = nullishCheck(window.sessionStorage.getItem('calendarStudentID'), -1);
+
         let studentGreet = '';
-        if (studentId != -1) {
+        if (studentId !== -1) {
             const student = await window.beaconingAPI.getStudent(studentId);
-            
+
             const calTranslation = await window.bcnI18n.getPhrase('calendar');
 
-            const profile = student.profile;
+            const { profile } = student;
+
             if (!profile.firstName) {
                 studentGreet = `${student.username}'s ${calTranslation}`;
             } else {
@@ -45,31 +46,33 @@ class CalendarController extends Component {
 
         const year = currDate.getFullYear();
 
-        return div('.calendar-control',
-            div('.calendar-meta-info',
+        return div(
+            '.calendar-control',
+            div(
+                '.calendar-meta-info',
                 h2('.calendar-name', `${studentGreet}`),
                 h2('.calendar-date', `${monthName} ${year}`),
             ),
 
             p(
                 span('.fake-link', {
-                    onclick: () => this.updateCalendar('PrevMonth')
+                    onclick: () => this.updateCalendar('PrevMonth'),
                 }, 'prev'),
 
                 ' ',
 
                 span('.fake-link', {
                     href: '',
-                    onclick: () => this.updateCalendar('CurrMonth')
+                    onclick: () => this.updateCalendar('CurrMonth'),
                 }, 'today'),
 
                 ' ',
 
                 span('.fake-link', {
                     href: '',
-                    onclick: () => this.updateCalendar('NextMonth')
-                }, 'next')
-            )
+                    onclick: () => this.updateCalendar('NextMonth'),
+                }, 'next'),
+            ),
         );
     }
 }
