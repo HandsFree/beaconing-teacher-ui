@@ -1,8 +1,9 @@
 // @flow
-import { section, div, a, i, h1, form, input, select, option, p, label, span, small, textarea } from '../../../../core/html';
+import { section, div, a, i, h1, form, input, select, option, p, label, span } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 import Status from '../../../status';
+import nullishCheck from '../../../../core/util';
 
 class ProfileEditForm extends Component {
     state = {
@@ -19,18 +20,18 @@ class ProfileEditForm extends Component {
         const currUser = await window.beaconingAPI.getCurrentUser();
 
         this.state.teacher = currUser;
-        this.state.teacherGender = currUser.teacherSettings?.gender ?? 'male';
+        this.state.teacherGender = nullishCheck(currUser.teacherSettings?.gender, 'male');
     }
 
     async editTeacher(editButton: EventTarget) {
         const obj = {
             email: this.state.teacherEmail,
-            language: this.state.teacherLang ?? this.state.teacher.language,
+            language: nullishCheck(this.state.teacherLang, this.state.teacher?.language),
             teacherSettings: {
-                firstName: this.state.teacherFirstName ?? this.state.teacher.teacherSettings.firstName,
-                lastName: this.state.teacherLastName ?? this.state.teacher.teacherSettings.lastName,
+                firstName: nullishCheck(this.state.teacherFirstName, this.state.teacher?.teacherSettings?.firstName),
+                lastName: nullishCheck(this.state.teacherLastName, this.state.teacher?.teacherSettings?.lastName),
                 gender: this.state.teacherGender,
-                school: this.state.teacherSchool ?? this.state.teacher.teacherSettings.school,
+                school: nullishCheck(this.state.teacherSchool, this.state.teacher?.teacherSettings?.school),
             },
         };
 
@@ -65,7 +66,7 @@ class ProfileEditForm extends Component {
             message: await window.bcnI18n.getPhrase('teacher_ne'),
         });
 
-        planButton.textContent = await window.bcnI18n.getPhrase('update');
+        editButton.textContent = await window.bcnI18n.getPhrase('update');
 
         this.appendView(statusMessageEl);
     }
