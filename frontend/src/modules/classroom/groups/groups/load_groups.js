@@ -3,10 +3,11 @@ import { section } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 import GroupBox from './group_box';
+import nullishCheck from '../../../../core/util';
 
 class LoadGroups extends Component {
     async init() {
-        this.state.groups = await window.beaconingAPI.getGroups() ?? [];
+        this.state.groups = nullishCheck(await window.beaconingAPI.getGroups(), []);
     }
 
     async render() {
@@ -14,7 +15,7 @@ class LoadGroups extends Component {
         const promArr = [];
 
         for (const group of groups) {
-            const { 
+            const {
                 id,
                 name,
             } = group;

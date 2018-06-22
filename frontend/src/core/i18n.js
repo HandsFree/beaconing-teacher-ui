@@ -1,4 +1,6 @@
+// @flow
 import i18nConfig from '../config/i18n.config.json5';
+import nullishCheck from './util';
 
 class I18n {
     language = 'en-GB';
@@ -7,7 +9,7 @@ class I18n {
     async fetchLang() {
         const currUser = await window.beaconingAPI.getCurrentUser();
 
-        const lang = currUser?.language ?? 'en-GB';
+        const lang = nullishCheck(currUser?.language, 'en-GB');
         this.language = lang;
         this.langFetched = true;
     }

@@ -1,7 +1,8 @@
 // @flow
-import { div, a, i, h1, nav, span } from '../../../core/html';
+import { div, a, h1, nav, span } from '../../../core/html';
 
 import { Component } from '../../../core/component';
+import nullishCheck from '../../../core/util';
 
 class PlanHeader extends Component {
     async init() {
@@ -15,8 +16,8 @@ class PlanHeader extends Component {
     }
 
     async render() {
-        const glpName = this.state.glp.name ?? await window.bcnI18n.getPhrase('lm_unnamed_glp');
-        const playUrl = this.state.glp.playUrl ?? `http://gameplots.beaconing.eu/game/?externs=http://core.beaconing.eu/api/gamifiedlessonpaths/${this.state.glp.id}/externconfig`;
+        const glpName = nullishCheck(this.state.glp?.name, await window.bcnI18n.getPhrase('lm_unnamed_glp'));
+        const playUrl = nullishCheck(this.state.glp?.playUrl, `http://gameplots.beaconing.eu/game/?externs=http://core.beaconing.eu/api/gamifiedlessonpaths/${this.state.glp.id}/externconfig`);
 
         return div(
             '#plan-header',

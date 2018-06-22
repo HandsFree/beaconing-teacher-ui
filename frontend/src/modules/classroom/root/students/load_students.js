@@ -3,11 +3,11 @@ import { section } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 import StudentBox from './student_box';
+import nullishCheck from '../../../../core/util';
 
 class LoadStudents extends Component {
-
     async init() {
-        this.state.students = await window.beaconingAPI.getStudents() ?? [];
+        this.state.students = nullishCheck(await window.beaconingAPI.getStudents(), []);
     }
 
     async render() {

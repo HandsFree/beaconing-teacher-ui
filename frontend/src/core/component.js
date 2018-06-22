@@ -1,4 +1,6 @@
 // @flow
+import nullishCheck from './util';
+
 export interface RootComponentInterface {
     // render(): Promise<HTMLElement>;
     start(): void;
@@ -144,7 +146,7 @@ class Component implements ComponentInterface {
 
     updateView(view: HTMLElement) {
         const func = () => {
-            let parent = this.view.parentElement ?? null;
+            let parent = nullishCheck(this.view?.parentElement, false);
 
             if (Array.isArray(this.view)) {
                 parent = this.view[0].parentElement;
@@ -221,7 +223,7 @@ class Component implements ComponentInterface {
     }
 
     removeSelf() {
-        let parent = this.view.parentElement ?? null;
+        let parent = nullishCheck(this.view.parentElement, false);
 
         if (Array.isArray(this.view)) {
             parent = this.view[0].parentElement;
@@ -281,7 +283,7 @@ class Component implements ComponentInterface {
         }
     }
 
-    // TODO: refine 
+    // TODO: refine
     async* start(): AsyncGenerator<> {
         if (this.updateHooks) {
             this.handleHooks();

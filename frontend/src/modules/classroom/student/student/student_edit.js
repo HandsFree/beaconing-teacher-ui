@@ -3,6 +3,7 @@ import { section, div, form, p, input, label, span, select, option } from '../..
 
 import { Component } from '../../../../core/component';
 import Status from '../../../status';
+import nullishCheck from '../../../../core/util';
 
 class StudentEdit extends Component {
     state = {
@@ -34,7 +35,7 @@ class StudentEdit extends Component {
 
         if (student) {
             this.state.student = student;
-            this.state.studentGender = student.profile?.gender ?? 'male';
+            this.state.studentGender = nullishCheck(student.profile?.gender, 'male');
 
             return;
         }
