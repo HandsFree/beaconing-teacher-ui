@@ -1,6 +1,12 @@
 // @flow
 
 class APICore {
+    reqBase = {
+        mode: 'same-origin',
+        redirect: 'follow',
+        credentials: 'include',
+    };
+
     constructor() {
         console.log('[API Core] Loaded!');
     }
@@ -11,14 +17,7 @@ class APICore {
         });
     }
 
-    async get(link: string): Promise<Object> {
-        const req = {
-            method: 'GET',
-            mode: 'same-origin',
-            redirect: 'follow',
-            credentials: 'include',
-        };
-
+    async handleRequest(link: string, req: Object) {
         const res = await this.doRequest(link, req);
 
         const jsonObj = await res.json();
@@ -26,6 +25,15 @@ class APICore {
         console.log(link, jsonObj);
 
         return jsonObj;
+    }
+
+    async get(link: string): Promise<Object> {
+        const req = {
+            method: 'GET',
+            ...this.reqBase,
+        };
+
+        return this.handleRequest(link, req);
     }
 
     async getWithAuth(link: string, token: string): Promise<Object> {
@@ -38,30 +46,16 @@ class APICore {
             }),
         };
 
-        const res = await this.doRequest(link, req);
-
-        const jsonObj = await res.json();
-
-        console.log(link, jsonObj);
-
-        return jsonObj;
+        return this.handleRequest(link, req);
     }
 
     async delete(link: string): Promise<Object> {
         const req = {
             method: 'DELETE',
-            mode: 'same-origin',
-            redirect: 'follow',
-            credentials: 'include',
+            ...this.reqBase,
         };
 
-        const res = await this.doRequest(link, req);
-
-        const jsonObj = await res.json();
-
-        console.log(link, jsonObj);
-
-        return jsonObj;
+        return this.handleRequest(link, req);
     }
 
     async postCORS(link: string, data: string): Promise<Object> {
@@ -75,55 +69,33 @@ class APICore {
             }),
         };
 
-        const res = await this.doRequest(link, req);
-
-        const jsonObj = await res.json();
-
-        console.log(link, jsonObj);
-
-        return jsonObj;
+        return this.handleRequest(link, req);
     }
 
     async post(link: string, data: string): Promise<Object> {
         const req = {
             body: data,
             method: 'POST',
-            mode: 'same-origin',
-            redirect: 'follow',
-            credentials: 'include',
+            ...this.reqBase,
             headers: new Headers({
                 'Content-Type': 'application/json',
             }),
         };
 
-        const res = await this.doRequest(link, req);
-
-        const jsonObj = await res.json();
-
-        console.log(link, jsonObj);
-
-        return jsonObj;
+        return this.handleRequest(link, req);
     }
 
     async put(link: string, data: string): Promise<Object> {
         const req = {
             body: data,
             method: 'PUT',
-            mode: 'same-origin',
-            redirect: 'follow',
-            credentials: 'include',
+            ...this.reqBase,
             headers: new Headers({
                 'Content-Type': 'application/json',
             }),
         };
 
-        const res = await this.doRequest(link, req);
-
-        const jsonObj = await res.json();
-
-        console.log(link, jsonObj);
-
-        return jsonObj;
+        return this.handleRequest(link, req);
     }
 
     async getActivePlansWidget() {
