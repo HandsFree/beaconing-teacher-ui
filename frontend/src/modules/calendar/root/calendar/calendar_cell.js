@@ -11,7 +11,7 @@ class CalendarCell extends Component {
 
         let classList = '.calendar-cell';
         if (new CustomDate().withoutTime().getTime() === cellDate.getTime()) {
-            classList += ' .current-day';
+            classList += '.current-day';
         }
 
         const el = await eventList;
@@ -23,14 +23,14 @@ class CalendarCell extends Component {
 class CalendarNextMonthCell extends Component {
     async render() {
         const { dayNumber } = this.props;
-        return div('.calendar-cell .next-month', p('.calendar-day', dayNumber));
+        return div('.calendar-cell.next-month', p('.calendar-day', dayNumber));
     }
 }
 
 class CalendarPrevMonthCell extends Component {
     async render() {
         const { dayNumber } = this.props;
-        return div('.calendar-cell .prev-month', p('.calendar-day', dayNumber));
+        return div('.calendar-cell.prev-month', p('.calendar-day', dayNumber));
     }
 }
 
