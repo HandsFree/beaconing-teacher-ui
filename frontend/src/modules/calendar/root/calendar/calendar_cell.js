@@ -2,6 +2,7 @@
 
 import { div, p } from '../../../../core/html';
 import { Component } from '../../../../core/component';
+import CustomDate from './date_helper';
 
 // an individual cell in the calendar
 class CalendarCell extends Component {
@@ -9,7 +10,7 @@ class CalendarCell extends Component {
         const { dayNumber, cellDate, eventList } = this.props;
 
         let classList = '.calendar-cell';
-        if (new Date().withoutTime().getTime() === cellDate.getTime()) {
+        if (new CustomDate().withoutTime().getTime() === cellDate.getTime()) {
             classList += ' .current-day';
         }
 

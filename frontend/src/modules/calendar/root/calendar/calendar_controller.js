@@ -2,7 +2,7 @@
 import { h2, p, div, span } from '../../../../core/html';
 import { Component } from '../../../../core/component';
 import nullishCheck from '../../../../core/util';
-import './date_helper';
+import CustomDate from './date_helper';
 
 // the top menu options above the calendar
 class CalendarController extends Component {
@@ -37,9 +37,9 @@ class CalendarController extends Component {
             }
         }
 
-        let currDate = new Date();
+        let currDate = new CustomDate();
         if (window.sessionStorage) {
-            currDate = new Date(window.sessionStorage.getItem('calendarDate'));
+            currDate = new CustomDate(window.sessionStorage.getItem('calendarDate'));
         }
 
         const monthName = await currDate.getMonthName();

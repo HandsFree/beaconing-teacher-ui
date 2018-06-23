@@ -6,7 +6,7 @@ import { Component } from '../../../../core/component';
 import { CalendarEvent, CalendarEventList } from './calendar_event';
 import { CalendarCell, CalendarHeadingCell, CalendarNextMonthCell, CalendarPrevMonthCell } from './calendar_cell';
 import nullishCheck from '../../../../core/util';
-import './date_helper';
+import CustomDate from './date_helper';
 
 // NOTE
 // we could abstract cells to avoid the event list
@@ -25,7 +25,7 @@ class CalendarView extends Component {
     state = {
         // the date, specifically the month, this calendar
         // will bew a view of.
-        currDate: new Date(),
+        currDate: new CustomDate(),
         eventMap: new Map(),
     };
 
@@ -103,7 +103,7 @@ class CalendarView extends Component {
             if (glpBox.availableFrom) {
                 console.log(`[Calendar] writing event ${glpBox.availableFrom}`);
 
-                this.writeEvent(new Date(glpBox.availableFrom), {
+                this.writeEvent(new CustomDate(glpBox.availableFrom), {
                     name: glp.name,
                     id: glp.id,
                     desc: glp.description,
@@ -113,15 +113,15 @@ class CalendarView extends Component {
     }
 
     async currMonth() {
-        this.state.currDate = new Date();
+        this.state.currDate = new CustomDate();
         window.sessionStorage.setItem('calendarDate', this.state.currDate);
         this.updateView(await this.render());
     }
 
     async prevMonth() {
         const date = this.state.currDate;
-        const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
-        this.state.currDate = new Date(firstDay - 1);
+        const firstDay = new CustomDate(date.getFullYear(), date.getMonth(), 1);
+        this.state.currDate = new CustomDate(firstDay - 1);
         window.sessionStorage.setItem('calendarDate', this.state.currDate);
         console.log('[Calendar] prev ', this.state.currDate);
         this.updateView(await this.render());
@@ -129,9 +129,9 @@ class CalendarView extends Component {
 
     async nextMonth() {
         const date = this.state.currDate;
-        const lastDay = new Date(date.getFullYear(), date.getMonth(), date.daysInMonth() + 1);
+        const lastDay = new CustomDate(date.getFullYear(), date.getMonth(), date.daysInMonth() + 1);
         console.log('[Calendar] last day ', lastDay);
-        this.state.currDate = new Date(lastDay + 1);
+        this.state.currDate = new CustomDate(lastDay + 1);
         window.sessionStorage.setItem('calendarDate', this.state.currDate);
         console.log('[Calendar] ', this.state.currDate);
         this.updateView(await this.render());
@@ -157,7 +157,7 @@ class CalendarView extends Component {
         }
 
         const offset = firstDay.getDay() - 1;
-        const prevMonth = new Date(firstDay - 1);
+        const prevMonth = new CustomDate(firstDay - 1);
         const prevMonthDays = prevMonth.daysInMonth();
 
         // calculates how many cells to create for the
@@ -172,10 +172,11 @@ class CalendarView extends Component {
 
         // work out days in current month
         const numDays = calDate.daysInMonth();
+        console.log(numDays);
         for (let i = offset; i < offset + numDays; i++) {
             const dayNumber = (i - offset) + 1;
 
-            const cellDate = new Date(firstDay.getFullYear(), firstDay.getMonth(), dayNumber).withoutTime();
+            const cellDate = new CustomDate(firstDay.getFullYear(), firstDay.getMonth(), dayNumber).withoutTime();
 
             const { eventMap } = this.state;
 

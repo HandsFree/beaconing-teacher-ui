@@ -15,32 +15,36 @@ const dayNames = [
     'cal_sunday', 'cal_monday', 'cal_tuesday', 'cal_wednesday', 'cal_thursday', 'cal_friday', 'cal_saturday',
 ];
 
-Date.prototype.firstDay = () => {
-    const d = new Date(this);
-    return new Date(d.getFullYear(), d.getMonth(), 1);
-};
+class CustomDate extends Date {
+    async getTrans(key: string) {
+        const trans = await window.bcnI18n.getPhrase(key);
 
-Date.prototype.daysInMonth = () => {
-    const d = new Date(this);
-    return new Date(d.getYear(), d.getMonth() + 1, 0).getDate();
-};
+        return trans;
+    }
 
-Date.prototype.getDayName = () => {
-    const d = new Date(this);
-    const translationKey = dayNames[d.getDay()];
+    firstDay() {
+        const now = new Date();
+        return new CustomDate(now.getFullYear(), now.getMonth(), 1);
+    }
 
-    return Promise.resolve(window.bcnI18n.getPhrase(translationKey)).then(val => val);
-};
+    daysInMonth() {
+        const now = new Date();
+        const d = new CustomDate(now.getYear(), now.getMonth() + 1, 0).getDate();
+        return d;
+    }
 
-Date.prototype.getMonthName = () => {
-    const d = new Date(this);
-    const translationKey = monthNames[d.getMonth()];
+    async getDayName() {
+        return this.getTrans(dayNames[this.getDay()]);
+    }
 
-    return Promise.resolve(window.bcnI18n.getPhrase(translationKey)).then(val => val);
-};
+    async getMonthName() {
+        return this.getTrans(monthNames[this.getMonth()]);
+    }
 
-Date.prototype.withoutTime = () => {
-    const d = new Date(this);
-    d.setHours(0, 0, 0, 0);
-    return d;
-};
+    withoutTime() {
+        this.setHours(0, 0, 0, 0);
+        return this;
+    }
+}
+
+export default CustomDate;

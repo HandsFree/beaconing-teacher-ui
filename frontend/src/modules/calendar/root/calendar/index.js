@@ -7,7 +7,8 @@ import MainNav from '../../../nav/main';
 
 import CalendarView from './calendar_view';
 import CalendarController from './calendar_controller';
-import { SelectorPanel } from './student_selector';
+import SelectorPanel from './student_selector';
+import CustomDate from './date_helper';
 
 class Calendar extends RootComponent {
     async init() {
@@ -17,7 +18,7 @@ class Calendar extends RootComponent {
         }
 
         window.sessionStorage.setItem('calendarStudentID', studentID);
-        window.sessionStorage.setItem('calendarDate', new Date());
+        window.sessionStorage.setItem('calendarDate', new CustomDate());
     }
 
     async render() {
