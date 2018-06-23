@@ -34,7 +34,7 @@ class CalendarView extends Component {
         // we refresh the glps.
         this.state.eventMap = new Map();
 
-        const studentId = nullishCheck(window.sessionStorage.getItem('calendarStudentID'), -1);
+        const studentId = nullishCheck(window.sessionStorage.getItem('calendarStudentID'), 'none');
 
         await this.loadEvents(studentId);
         this.updateView(await this.render());
@@ -47,7 +47,7 @@ class CalendarView extends Component {
     // array or we insert an array when writing an event.
     // note that we strip the time from the date given
     // so that we can index the hashmap just from mm/dd/yyyy
-    writeEvent(eventDate: Date, event: Object) {
+    writeEvent(eventDate: CustomDate, event: Object) {
         // store the date in the event object
         // WITH the time included.
         event.date = eventDate;
@@ -82,15 +82,16 @@ class CalendarView extends Component {
 
     async init() {
         if (window.sessionStorage) {
-            const studentId = nullishCheck(window.sessionStorage.getItem('calendarStudentID'), -1);
+            const studentId = nullishCheck(window.sessionStorage.getItem('calendarStudentID'), 'none');
             await this.loadEvents(studentId);
         }
     }
 
     // loads all of the events from the glps
     // of the given student id
-    async loadEvents(studentId: number) {
-        if (studentId === -1) {
+    async loadEvents(studentId: number | string) {
+        console.log(studentId);
+        if (studentId === 'none') {
             return;
         }
 

@@ -13,8 +13,8 @@ class StudentSelector extends Component {
     }
 
     async init() {
-        const storedId = nullishCheck(window.sessionStorage.getItem('calendarStudentID'), -1);
-        if (storedId !== -1) {
+        const storedId = nullishCheck(window.sessionStorage.getItem('calendarStudentID'), 'none');
+        if (storedId !== 'none') {
             this.setStudent(storedId);
         }
     }
@@ -23,7 +23,7 @@ class StudentSelector extends Component {
         console.log(`[Calendar] Setting student to ${id}`);
 
         if (window.sessionStorage) {
-            const storedId = nullishCheck(window.sessionStorage.getItem('calendarStudentID'), -1);
+            const storedId = nullishCheck(window.sessionStorage.getItem('calendarStudentID'), 'none');
 
             // dont bother setting and refreshing everything
             // if we've selected the same student.

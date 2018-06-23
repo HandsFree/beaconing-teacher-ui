@@ -12,7 +12,7 @@ import CustomDate from './date_helper';
 
 class Calendar extends RootComponent {
     async init() {
-        let studentID = -1;
+        let studentID = 'none'; // set to string due to sessionStorage
         if (this.params.id) {
             studentID = this.params.id;
         }
