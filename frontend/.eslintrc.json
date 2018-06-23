@@ -39,17 +39,12 @@
         "no-plusplus": 0,
         "no-restricted-syntax": 0,
         "no-param-reassign": [2, { "props": false }],
-        "babel/semi": 1,
-        "no-div-regex": 1,
-        "wrap-regex": 1,
-        "no-regex-spaces": 1,
-        "no-unsafe-regex/no-unsafe-regex": 2
+        "babel/semi": 1
     },
     "plugins": [
         "import",
         "flowtype",
-        "babel",
-        "no-unsafe-regex"
+        "babel"
     ],
     "settings": {
         "flowtype": {

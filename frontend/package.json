@@ -51,7 +51,6 @@
     "eslint-plugin-babel": "5.1.0",
     "eslint-plugin-flowtype": "2.49.3",
     "eslint-plugin-import": "2.12.0",
-    "eslint-plugin-no-unsafe-regex": "^1.0.0",
     "extract-text-webpack-plugin": "3.0.2",
     "flow-bin": "0.75.0",
     "hard-source-webpack-plugin": "0.8.1",
