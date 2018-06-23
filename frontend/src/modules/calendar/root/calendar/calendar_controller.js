@@ -20,10 +20,10 @@ class CalendarController extends Component {
     }
 
     async render() {
-        const studentId = nullishCheck(window.sessionStorage.getItem('calendarStudentID'), -1);
+        const studentId = nullishCheck(window.sessionStorage.getItem('calendarStudentID'), 'none');
 
         let studentGreet = '';
-        if (studentId !== -1) {
+        if (studentId !== 'none') {
             const student = await window.beaconingAPI.getStudent(studentId);
 
             const calTranslation = await window.bcnI18n.getPhrase('calendar');
