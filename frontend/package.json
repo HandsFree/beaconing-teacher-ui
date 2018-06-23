@@ -46,7 +46,7 @@
     "color-convert": "1.9.2",
     "css-loader": "0.28.11",
     "cssnano": "3.10.0",
-    "eslint": "5.0.0-rc.0",
+    "eslint": "5.0.0",
     "eslint-config-airbnb-base": "13.0.0",
     "eslint-plugin-babel": "5.1.0",
     "eslint-plugin-flowtype": "2.49.3",
