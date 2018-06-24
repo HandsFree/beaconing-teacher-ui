@@ -1,7 +1,8 @@
 // @flow
 
 import { div, p } from '../../../../core/html';
-import component, { Component } from '../../../../core/component';
+import { Component } from '../../../../core/component';
+import CustomDate from './date_helper';
 
 // an individual cell in the calendar
 class CalendarCell extends Component {
@@ -9,27 +10,27 @@ class CalendarCell extends Component {
         const { dayNumber, cellDate, eventList } = this.props;
 
         let classList = '.calendar-cell';
-        if (new Date().withoutTime().getTime() === cellDate.getTime()) {
-            classList += ' .current-day';
+        if (new CustomDate().withoutTime().getTime() === cellDate.getTime()) {
+            classList += '.current-day';
         }
 
-        return Promise.resolve(eventList).then((el) => {
-            return div(classList, p('.calendar-day', dayNumber), el);
-        });
+        const el = await eventList;
+
+        return div(classList, p('.calendar-day', dayNumber), el);
     }
 }
 
 class CalendarNextMonthCell extends Component {
     async render() {
         const { dayNumber } = this.props;
-        return div('.calendar-cell .next-month', p('.calendar-day', dayNumber));
+        return div('.calendar-cell.next-month', p('.calendar-day', dayNumber));
     }
 }
 
 class CalendarPrevMonthCell extends Component {
     async render() {
         const { dayNumber } = this.props;
-        return div('.calendar-cell .prev-month', p('.calendar-day', dayNumber));
+        return div('.calendar-cell.prev-month', p('.calendar-day', dayNumber));
     }
 }
 
@@ -40,7 +41,7 @@ class CalendarHeadingCell extends Component {
     }
 }
 
-export { 
+export {
     CalendarCell,
     CalendarHeadingCell,
     CalendarPrevMonthCell,

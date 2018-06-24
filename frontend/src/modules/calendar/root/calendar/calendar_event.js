@@ -1,30 +1,33 @@
 // @flow
 
 import { div, a } from '../../../../core/html';
-import component, { Component } from '../../../../core/component';
+import { Component } from '../../../../core/component';
 
 class CalendarEvent extends Component {
     async render() {
-        const { name, desc, id } = this.props;
+        const { name, id } = this.props;
 
-        return div('.event',
-            a({
-                href: `//${window.location.host}/lesson_manager/#view?id=${id}&prev=calendar`
-            },
-                div('.event-name', name)));
+        return div(
+            '.event',
+            a(
+                {
+                    href: `//${window.location.host}/lesson_manager/#view?id=${id}`,
+                },
+                div('.event-name', name),
+            ),
+        );
     }
 }
 
 class CalendarEventList extends Component {
     async render() {
         const { events } = this.props;
-        return Promise.all(events).then((el) => {
-            return div('.events', el);
-        });
+        const el = await Promise.all(events);
+        return div('.events', el);
     }
 }
 
 export {
-    CalendarEvent, 
+    CalendarEvent,
     CalendarEventList,
 };

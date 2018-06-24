@@ -1,4 +1,5 @@
 // @flow
+import nullishCheck from './util';
 
 class APICore {
     reqBase = {
@@ -142,7 +143,7 @@ class APICore {
     async editUser(data: { [string]: string | Object }) {
         let editStatus = false;
 
-        let editJSON = JSON.stringify(data);
+        const editJSON = JSON.stringify(data);
 
         const status = await this.put(`//${window.location.host}/api/v1/profile`, editJSON);
 
@@ -170,7 +171,7 @@ class APICore {
     async deleteGLP(id: number) {
         let glpStatus = false;
         const msg = await this.delete(`//${window.location.host}/api/v1/glp/${id}`);
-        
+
         if (typeof msg === 'object' && msg.success) {
             glpStatus = true;
         }
@@ -219,13 +220,13 @@ class APICore {
     async assignStudent(studentID: number, glpID: number) {
         const assignStatus = await this.get(`//${window.location.host}/api/v1/assign/${studentID}/to/${glpID}`);
 
-        return assignStatus.studentId ?? false;
+        return nullishCheck(assignStatus?.studentId, false);
     }
 
     async assignGroup(groupID: number, glpID: number) {
         const assignStatus = await this.get(`//${window.location.host}/api/v1/assigngroup/${groupID}/to/${glpID}`);
 
-        return assignStatus.studentGroupId ?? false;
+        return nullishCheck(assignStatus?.studentGroupId, false);
     }
 
     async unassignStudent(studentID: number, glpID: number) {
@@ -395,8 +396,10 @@ class APICore {
 
             const analyticsToken = await this.postCORS('https://analytics.beaconing.eu/api/login/beaconing', postJSON);
 
-            return analyticsToken?.user?.token ?? false;
+            return nullishCheck(analyticsToken?.user?.token, false);
         }
+
+        return false;
     }
 
     async getStudentAnalytics(studentID: number) {
@@ -407,8 +410,10 @@ class APICore {
         if (token) {
             const studentData = await this.getWithAuth(`https://analytics.beaconing.eu/api/proxy/gleaner/data/overall/${studentID}`, token);
             // console.log(studentData);
-            return studentData ?? false;
+            return nullishCheck(studentData, false);
         }
+
+        return false;
     }
 
     async getStudentOverviewAnalytics(classID: number, scale: string) {
@@ -419,8 +424,10 @@ class APICore {
         if (token) {
             const overviewData = await this.getWithAuth(`https://analytics.beaconing.eu/api/proxy/gleaner/data/performance/${classID}?scale=${scale}`, token);
             // console.log(studentData);
-            return overviewData ?? false;
+            return nullishCheck(overviewData, false);
         }
+
+        return false;
     }
 }
 

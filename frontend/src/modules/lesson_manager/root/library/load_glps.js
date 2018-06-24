@@ -3,6 +3,7 @@ import { div } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 import GLPBox from './glp_box';
+import nullishCheck from '../../../../core/util';
 
 class LoadGLPs extends Component {
     step = 12;
@@ -22,8 +23,8 @@ class LoadGLPs extends Component {
     }
 
     async updateGLPs() {
-        const sortQuery = this.props.sort ?? 'default';
-        const orderQuery = this.props.order ?? 'default';
+        const sortQuery = nullishCheck(this.props?.sort, 'default');
+        const orderQuery = nullishCheck(this.props?.order, 'default');
 
         const glps = await window.beaconingAPI.getGLPs(sortQuery, orderQuery, true, this.state.index, this.step);
 
@@ -35,8 +36,8 @@ class LoadGLPs extends Component {
     }
 
     async updateAllGLPs() {
-        const sortQuery = this.props.sort ?? 'default';
-        const orderQuery = this.props.order ?? 'default';
+        const sortQuery = nullishCheck(this.props?.sort, 'default');
+        const orderQuery = nullishCheck(this.props?.order, 'default');
 
         const glps = await window.beaconingAPI.getGLPs(sortQuery, orderQuery, true);
 
