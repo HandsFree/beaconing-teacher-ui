@@ -2327,7 +2327,7 @@
     },
 
     cal_today: {
-        'en-GB': 'Today',
+        'en-GB': 'Current',
         'fr-FR': '',
         'es-ES': '',
         'it-IT': '',
