@@ -2266,6 +2266,18 @@
         'pt-PT': '',
 	},
 
+    cal_select_group: {
+        'en-GB': 'Select Group',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',
+    },
+
     cal_no_group_selected: {
         'en-GB': 'No group selected',
         'fr-FR': '',
@@ -2280,6 +2292,54 @@
 
     cal_no_students_for_this_group: {
         'en-GB': 'No students for this group',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',
+    },
+
+    cal_prev: {
+        'en-GB': 'Previous',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',
+    },
+
+    cal_sel_month: {
+        'en-GB': 'Select Month',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',
+    },
+
+    cal_today: {
+        'en-GB': 'Today',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',
+    },
+
+    cal_next: {
+        'en-GB': 'Next',
         'fr-FR': '',
         'es-ES': '',
         'it-IT': '',

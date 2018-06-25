@@ -115,9 +115,11 @@ class StudentGroupSelector extends Component {
 
         const studentSelEl = await studentSel.attach();
 
+        const selectGroupTranslation = await window.bcnI18n.getPhrase('cal_select_group');
+
         return div(
             '.group-select',
-            h2('Select group:'),
+            h2(`${selectGroupTranslation}:`),
             label(
                 '.select',
                 select(
