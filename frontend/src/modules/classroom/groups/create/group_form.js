@@ -124,6 +124,7 @@ class GroupForm extends Component {
 
                                         this.state.groupName = target.value;
                                     },
+                                    required: true,
                                 },
                             ),
                         ),
