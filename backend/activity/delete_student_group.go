@@ -9,3 +9,7 @@ func NewDeleteStudentGroupActivity(apiReq []byte) *DeletedStudentGroupActivity {
 		newSimpleActivity("Deleted student group"),
 	}
 }
+
+func (a DeletedStudentGroupActivity) GetName() string {
+	return "Delete Student Group"
+}

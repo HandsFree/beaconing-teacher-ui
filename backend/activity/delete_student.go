@@ -9,3 +9,7 @@ func NewDeleteStudentActivity(apiReq []byte) *DeletedStudentActivity {
 		newSimpleActivity("Deleted student"),
 	}
 }
+
+func (a DeletedStudentActivity) GetName() string {
+	return "Delete Student"
+}

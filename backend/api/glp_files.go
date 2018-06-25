@@ -1,26 +1,26 @@
 package api
 
 import (
-	"log"
 	"os"
 	"path/filepath"
 
 	"github.com/HandsFree/beaconing-teacher-ui/backend/cfg"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 )
 
 // DeleteGLPFile will delete the given file from the given glp
 func DeleteGLPFile(glpID uint64, fileName string) error {
-	log.Println("Deleting glp files ", fileName, " from ", glpID)
+	util.Verbose("Deleting glp files ", fileName, " from ", glpID)
 
 	folderName, err := GetGLPFilesFolderName(glpID)
 	if err != nil {
-		log.Println("No such folder for glp ", glpID)
+		util.Error("No such folder for glp ", glpID)
 		return err
 	}
 
 	fullPath := filepath.Join(cfg.Beaconing.Server.RootPath, cfg.Beaconing.Server.GlpFilesPath, folderName, fileName)
 	if err := os.Remove(fullPath); err != nil {
-		log.Println("Failed to remove file ", fullPath, "\n-", err.Error())
+		util.Error("Failed to remove file ", fullPath, "\n-", err.Error())
 		return err
 	}
 
@@ -31,12 +31,12 @@ func DeleteGLPFile(glpID uint64, fileName string) error {
 // stored. this function will return an empty string and no
 // error if the key is not in the database
 func GetGLPFilesFolderName(glpID uint64) (string, error) {
-	log.Println("Looking for glp files/folder for the glp of id ", glpID)
+	util.Verbose("Looking for glp files/folder for the glp of id ", glpID)
 
 	query := "SELECT hash FROM glp_files WHERE glp_id = $1 LIMIT 1"
 	rows, err := API.db.Query(query, glpID)
 	if err != nil {
-		log.Println("GetActivities", err.Error())
+		util.Error("GetActivities", err.Error())
 		return "", err
 	}
 
@@ -46,17 +46,17 @@ func GetGLPFilesFolderName(glpID uint64) (string, error) {
 
 		err = rows.Scan(&hash)
 		if err != nil {
-			log.Println("-- Failed to request row in getGLPFilesFolderName!", err.Error())
+			util.Error("Failed to request row in getGLPFilesFolderName!", err.Error())
 			continue
 		}
 
 		key := string(hash)
-		log.Println("- Found glp id for ", glpID, " its ", key)
+		util.Verbose("Found glp id for ", glpID, " its ", key)
 		return key, nil
 	}
 
 	if err := rows.Err(); err != nil {
-		log.Println("getGLPFilesFolderName DB Error", err.Error())
+		util.Error("getGLPFilesFolderName DB Error", err.Error())
 		return "", err
 	}
 
@@ -70,9 +70,9 @@ func StoreGLPHash(glpID uint64, key string) error {
 	query := "INSERT INTO glp_files (glp_id, hash) VALUES($1, $2)"
 	_, err := API.db.Exec(query, glpID, key)
 	if err != nil {
-		log.Println("-- ", err.Error())
+		util.Error(err.Error())
 		return err
 	}
-	log.Println("Stored glp hash ", key, " for glp ", glpID)
+	util.Verbose("Stored glp hash ", key, " for glp ", glpID)
 	return nil
 }

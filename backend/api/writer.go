@@ -2,10 +2,10 @@ package api
 
 import (
 	"errors"
-	"log"
 	"time"
 
 	"github.com/HandsFree/beaconing-teacher-ui/backend/activity"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 )
 
 // GetActivities looks up in the local PSQL database
@@ -18,14 +18,14 @@ import (
 // request where the json response would be cached.
 func GetActivities(teacherID uint64, count int) ([]activity.Activity, error) {
 	if API.db == nil {
-		log.Println("GetActivities, No database connection has been established")
+		util.Error("GetActivities, No database connection has been established")
 		return []activity.Activity{}, errors.New("No database connection established")
 	}
 
 	query := "SELECT * FROM (SELECT id, creation_date, activity_type, api_req FROM activity WHERE teacher_id = $2) AS activities ORDER BY activities.id DESC LIMIT $1"
 	rows, err := API.db.Query(query, count, teacherID)
 	if err != nil {
-		log.Println("GetActivities", err.Error())
+		util.Error("GetActivities", err.Error())
 		return []activity.Activity{}, err
 	}
 
@@ -40,7 +40,7 @@ func GetActivities(teacherID uint64, count int) ([]activity.Activity, error) {
 
 		err = rows.Scan(&id, &creationDate, &activityType, &apiReq)
 		if err != nil {
-			log.Println("-- Failed to request row in GetActivities query!", err.Error())
+			util.Error("-- Failed to request row in GetActivities query!", err.Error())
 			continue
 		}
 
@@ -54,13 +54,13 @@ func GetActivities(teacherID uint64, count int) ([]activity.Activity, error) {
 
 		result.SetExecutionTime(creationDate)
 
-		log.Println("-- Loaded activity", result)
+		util.Verbose("Loaded activity", result.GetName())
 
 		loadedActivities = append(loadedActivities, result)
 	}
 
 	if err := rows.Err(); err != nil {
-		log.Println("GetActivities DB Error", err.Error())
+		util.Error("GetActivities DB Error", err.Error())
 		return []activity.Activity{}, err
 	}
 
@@ -75,7 +75,7 @@ func GetActivities(teacherID uint64, count int) ([]activity.Activity, error) {
 // and most of the times I feel like the JSON wont be used! this may change in the future...
 func (c *CoreAPIManager) WriteActivity(teacherID uint64, kind activity.ActivityType, jsonData []byte) error {
 	if c.db == nil {
-		log.Println("-- No database connection has been established")
+		util.Error("-- No database connection has been established")
 		return errors.New("No database connection")
 	}
 
@@ -84,11 +84,11 @@ func (c *CoreAPIManager) WriteActivity(teacherID uint64, kind activity.ActivityT
 	query := "INSERT INTO activity (teacher_id, creation_date, activity_type, api_req) VALUES($1, $2, $3, $4)"
 	_, err := c.db.Exec(query, teacherID, when, int(kind), jsonData)
 	if err != nil {
-		log.Println("-- ", err.Error())
+		util.Error("-- ", err.Error())
 		return err
 	}
 
-	log.Println("- Wrote activity ", string(kind), " at ", when)
+	util.Verbose("Wrote activity ", string(kind), " at ", when)
 
 	return nil
 }

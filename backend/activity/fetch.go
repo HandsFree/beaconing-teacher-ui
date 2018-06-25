@@ -1,6 +1,6 @@
 package activity
 
-import "log"
+import "github.com/HandsFree/beaconing-teacher-ui/backend/util"
 
 func Parse(kind ActivityType, apiReq []byte) Activity {
 	var result Activity
@@ -30,7 +30,7 @@ func Parse(kind ActivityType, apiReq []byte) Activity {
 	case StudentUnassignGLPActivity:
 		result = NewUnassignedGLPActivity(apiReq)
 	default:
-		log.Println("-- Unhandled activity type, tell the dashboard devs to get it together!", kind)
+		util.Error("-- Unhandled activity type: ", kind, "Please file an issue!")
 	}
 	return result
 }

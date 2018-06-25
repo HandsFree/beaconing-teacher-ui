@@ -2,13 +2,13 @@ package req
 
 import (
 	"fmt"
-	"log"
 	"math"
 	"net/http"
 	"strconv"
 
 	"github.com/HandsFree/beaconing-teacher-ui/backend/api"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 )
@@ -18,19 +18,18 @@ func GetActiveLessonPlansWidget() gin.HandlerFunc {
 		limitParam, err := strconv.Atoi(s.DefaultQuery("limit", "3"))
 		if err != nil || limitParam <= 0 {
 			limitParam = 3 // NaN
-			log.Println("warning ALP limit has illegal value, defaulting to 5")
+			util.Warn("ALP limit has illegal value, defaulting to 5")
 		}
 
 		lps := []entity.LessonPlanWidget{}
 
 		assignedPlans, err := api.GetRecentlyAssignedGLPS(s, true)
 		if err != nil {
-			log.Println("GetActiveLessonPlansWidget: ", err.Error())
+			util.Error("GetActiveLessonPlansWidget: ", err.Error())
 			return
 		}
 
 		for _, glp := range assignedPlans {
-			// log.Println("Displaying ", glp.Name, " as a lesson plan")
 			lessonPlan := NewLessonPlanWidget(glp.Name, glp.ID)
 			lps = append(lps, lessonPlan)
 		}
@@ -40,7 +39,7 @@ func GetActiveLessonPlansWidget() gin.HandlerFunc {
 
 		json, err := jsoniter.Marshal(lps[0:size])
 		if err != nil {
-			log.Println(err.Error())
+			util.Error(err.Error())
 			return
 		}
 

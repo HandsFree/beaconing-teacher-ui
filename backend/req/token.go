@@ -1,13 +1,13 @@
 package req
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 
 	"github.com/HandsFree/beaconing-teacher-ui/backend/api"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 )
 
 func isLetterOrDigit(c rune) bool {
@@ -40,13 +40,13 @@ func GetTokenRequest() gin.HandlerFunc {
 		session.Set("access_token", accessToken)
 
 		if err := api.TryRefreshToken(s); err != nil {
-			log.Println("TokenRequest", err.Error())
+			util.Error("TokenRequest", err.Error())
 			s.String(http.StatusBadRequest, "Server Error: 500 Token Refresh Failed")
 			return
 		}
 
 		if err := session.Save(); err != nil {
-			log.Println("TokenRequest", err.Error())
+			util.Error("TokenRequest", err.Error())
 			s.String(http.StatusBadRequest, "Failed to save session")
 			return
 		}

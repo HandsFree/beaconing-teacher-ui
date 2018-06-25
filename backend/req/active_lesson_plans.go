@@ -1,11 +1,11 @@
 package req
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/HandsFree/beaconing-teacher-ui/backend/api"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
@@ -22,38 +22,29 @@ func GetActiveLessonPlans() gin.HandlerFunc {
 
 		var assigned = map[uint64]bool{}
 		if assignedPlans != nil {
-			log.Println("Restored assigned plans: ", len(assigned), "plans active")
+			util.Verbose("Restored assigned plans: ", len(assigned), "plans active")
 			assigned = assignedPlans.(map[uint64]bool)
 		} else {
-			log.Println("No assigned plans in the session!")
+			util.Verbose("No assigned plans in the session!")
 		}
-
-		/*
-			table := tablewriter.NewWriter(os.Stdout)
-			table.SetHeader([]string{"GLP"})
-			for id := range assigned {
-				table.Append([]string{fmt.Sprintf("%d", id)})
-			}
-			table.Render()
-		*/
 
 		for glpID := range assigned {
 			glp, _ := api.GetGLP(s, glpID, true)
 			if glp == nil {
-				log.Println("No such lesson plan found for ", glpID)
+				util.Warn("No such lesson plan found for ", glpID)
 				// skip this one, TODO
 				// should we insert a 404 empty plan here or ?
 				continue
 			}
 
-			log.Println("Displaying ", glp.Name, " as a lesson plan")
+			util.Error("Displaying ", glp.Name, " as a lesson plan")
 			lessonPlan := NewLessonPlan(glpID, glp)
 			lps = append(lps, lessonPlan)
 		}
 
 		json, err := jsoniter.Marshal(lps)
 		if err != nil {
-			log.Println(err.Error())
+			util.Error(err.Error())
 			return
 		}
 

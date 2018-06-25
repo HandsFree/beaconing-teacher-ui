@@ -2,13 +2,13 @@ package req
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/felixangell/fuzzysearch/fuzzy"
 
 	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/parse"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 )
@@ -46,7 +46,7 @@ func searchEverything(s *gin.Context, json searchRequestQuery) (*searchQueryResp
 func searchGLPS(s *gin.Context, query searchRequestQuery) ([]*entity.GLP, error) {
 	glps, err := parse.GLPS(s, true)
 	if err != nil {
-		log.Println("searchGLPS")
+		util.Error("searchGLPS")
 		return nil, err
 	}
 
@@ -60,7 +60,7 @@ func searchGLPS(s *gin.Context, query searchRequestQuery) ([]*entity.GLP, error)
 	if sortType, exists := query.Sort["type"]; exists {
 		sortedGlps, err := parse.SortGLPS(s, glps, sortType, sortOrder)
 		if err != nil {
-			log.Println("Failed to sort GLPS in searchGLPS query")
+			util.Error("Failed to sort GLPS in searchGLPS query")
 			return []*entity.GLP{}, err
 		}
 		glps = sortedGlps
@@ -93,7 +93,7 @@ func searchGLPS(s *gin.Context, query searchRequestQuery) ([]*entity.GLP, error)
 func searchStudents(s *gin.Context, query searchRequestQuery) ([]*entity.Student, error) {
 	students, err := parse.Students(s)
 	if err != nil {
-		log.Println(err)
+		util.Error(err)
 		return nil, err
 	}
 
@@ -151,7 +151,7 @@ func PostSearchRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
 		var json searchRequestQuery
 		if err := s.ShouldBindJSON(&json); err != nil {
-			log.Println("SearchRequest", err.Error())
+			util.Error("SearchRequest", err.Error())
 			s.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
@@ -164,7 +164,7 @@ func PostSearchRequest() gin.HandlerFunc {
 
 		searchJSON, err := jsoniter.Marshal(&resp)
 		if err != nil {
-			log.Println(err.Error())
+			util.Error(err.Error())
 			return
 		}
 

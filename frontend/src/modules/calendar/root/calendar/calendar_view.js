@@ -207,8 +207,10 @@ class CalendarView extends Component {
         }
 
         const remain = 7 - (rows.length % 7);
-        for (let i = 0; i < remain; i++) {
-            const cell = new CalendarNextMonthCell().attach();
+        for (let dayNumber = 1; dayNumber <= remain; dayNumber++) {
+            const cell = new CalendarNextMonthCell().attach({
+                dayNumber
+            });
             rows.push(cell);
         }
 

@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -16,6 +15,7 @@ import (
 
 	"github.com/HandsFree/beaconing-teacher-ui/backend/api"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/cfg"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 	"github.com/gin-gonic/gin"
 )
 
@@ -53,20 +53,20 @@ func DeleteGLPFile() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id, err := strconv.ParseUint(c.Param("id"), 10, 64)
 		if err != nil {
-			log.Println("DeleteGLPFile", err.Error())
+			util.Error("DeleteGLPFile", err.Error())
 			c.AbortWithError(http.StatusBadRequest, err)
 			return
 		}
 
 		fileName := c.Param("file")
 		if !isLegalFileName(fileName) {
-			log.Println("DeleteGLPFile", "Bad file name")
+			util.Error("DeleteGLPFile", "Bad file name")
 			c.AbortWithError(http.StatusBadRequest, errors.New("Bad file name"))
 			return
 		}
 
 		if err := api.DeleteGLPFile(id, fileName); err != nil {
-			log.Println("DeleteGLPFile", err.Error())
+			util.Error("DeleteGLPFile", err.Error())
 			c.AbortWithError(http.StatusBadRequest, err)
 			return
 		}
@@ -87,14 +87,14 @@ func PostGLPFiles() gin.HandlerFunc {
 
 		glpID, err := strconv.ParseUint(idParam, 10, 64)
 		if err != nil {
-			log.Println("Failed to parse id so we can't store it in the db...", err.Error())
+			util.Error("Failed to parse id so we can't store it in the db...", err.Error())
 			return
 		}
 
 		glpFolderName, err := api.GetGLPFilesFolderName(glpID)
 		if len(glpFolderName) == 0 || err != nil {
 			if err != nil {
-				log.Println("some erorr ", err.Error())
+				util.Error("some erorr ", err.Error())
 			}
 
 			// gen the hash since it probs. doesn't exist
@@ -103,7 +103,7 @@ func PostGLPFiles() gin.HandlerFunc {
 
 			// store it.
 			if err = api.StoreGLPHash(glpID, glpFolderName); err != nil {
-				log.Println("Failed to gen/store glp hashed id")
+				util.Error("Failed to gen/store glp hashed id")
 				return
 			}
 

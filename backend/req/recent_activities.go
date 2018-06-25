@@ -1,11 +1,11 @@
 package req
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/HandsFree/beaconing-teacher-ui/backend/activity"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/api"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 )
@@ -13,7 +13,7 @@ import (
 func getLastActivities(s *gin.Context, n int) ([]activity.Activity, error) {
 	currUserID, err := api.GetUserID(s)
 	if err != nil {
-		log.Println("No such current user!", err.Error())
+		util.Error("No such current user!", err.Error())
 		return []activity.Activity{}, err
 	}
 	return api.GetActivities(currUserID, n)
@@ -29,14 +29,14 @@ func GetRecentActivities() gin.HandlerFunc {
 	return func(s *gin.Context) {
 		activities, err := getLastActivities(s, 4)
 		if err != nil {
-			log.Println("GetRecentActivities", err.Error())
+			util.Error("GetRecentActivities", err.Error())
 			s.AbortWithError(http.StatusBadRequest, err)
 			return
 		}
 
 		json, err := jsoniter.Marshal(activities)
 		if err != nil {
-			log.Println("GetRecentActivities", err.Error())
+			util.Error("GetRecentActivities", err.Error())
 			s.AbortWithError(http.StatusBadRequest, err)
 			return
 		}

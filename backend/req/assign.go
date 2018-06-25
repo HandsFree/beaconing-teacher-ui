@@ -3,7 +3,6 @@ package req
 import (
 	"encoding/gob"
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 	"strconv"
@@ -12,6 +11,7 @@ import (
 	"github.com/lib/pq"
 
 	"github.com/HandsFree/beaconing-teacher-ui/backend/api"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/olekukonko/tablewriter"
@@ -48,7 +48,7 @@ func GetAssignRequest() gin.HandlerFunc {
 		if fromParam != "" {
 			fromTime, err := time.Parse(time.RFC3339, fromParam)
 			if err != nil {
-				log.Println("assign from time is bad", err.Error())
+				util.Error("assign from time is bad", err.Error())
 				fromTime = time.Now()
 
 				// we aren't going to error here since we can
@@ -66,7 +66,7 @@ func GetAssignRequest() gin.HandlerFunc {
 		if toParam != "" {
 			toTime, err := time.Parse(time.RFC3339, toParam)
 			if err != nil {
-				log.Println("assign to time is bad", err.Error())
+				util.Error("assign to time is bad", err.Error())
 				s.AbortWithError(http.StatusBadRequest, err)
 				return
 			}
@@ -109,7 +109,7 @@ func GetGroupAssignRequest() gin.HandlerFunc {
 		fromParam := s.Param("from")
 		from, err := time.Parse(time.RFC3339, fromParam)
 		if err != nil {
-			log.Println("assign from time is bad", err.Error())
+			util.Error("assign from time is bad", err.Error())
 			from = time.Now()
 
 			// we aren't going to error here since we can
@@ -123,13 +123,11 @@ func GetGroupAssignRequest() gin.HandlerFunc {
 			var err error
 			to, err = time.Parse(time.RFC3339, toParam)
 			if err != nil {
-				log.Println("assign to time is bad", err.Error())
+				util.Error("assign to time is bad", err.Error())
 				s.AbortWithError(http.StatusBadRequest, err)
 				return
 			}
 		}
-
-		log.Println("THIS IS A GROUP ASSIGN REQUEST ! ", groupID, glpID)
 
 		registerGLP(s, glpID)
 
@@ -153,12 +151,12 @@ func registerGLP(s *gin.Context, glpID uint64) {
 	assignedPlans := session.Get("assigned_plans")
 
 	if assignedPlans == nil {
-		log.Println("session assigned_plans doesn't exist")
+		util.Error("session assigned_plans doesn't exist")
 	}
 
 	assignedPlansTable := map[uint64]bool{}
 	if assignedPlans != nil {
-		log.Println("restoring old ALP assignments table from session")
+		util.Error("restoring old ALP assignments table from session")
 		assignedPlansTable, _ = assignedPlans.(map[uint64]bool)
 	}
 
@@ -179,6 +177,6 @@ func registerGLP(s *gin.Context, glpID uint64) {
 
 	session.Set("assigned_plans", assignedPlansTable)
 	if err := session.Save(); err != nil {
-		log.Println("registerGLP", err.Error())
+		util.Error("registerGLP", err.Error())
 	}
 }

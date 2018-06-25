@@ -9,3 +9,7 @@ func NewDeleteGLPActivity(apiReq []byte) *DeletedGLPActivity {
 		newSimpleActivity("Deleted GLP"),
 	}
 }
+
+func (a DeletedGLPActivity) GetName() string {
+	return "Delete GLP"
+}

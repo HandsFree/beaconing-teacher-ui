@@ -9,3 +9,7 @@ func NewUnassignedGLPActivity(apiReq []byte) *UnassignedGLPActivity {
 		newSimpleActivity("Unassigned a GLP"),
 	}
 }
+
+func (a UnassignedGLPActivity) GetName() string {
+	return "Unassign GLP"
+}

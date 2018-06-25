@@ -2,12 +2,12 @@ package parse
 
 import (
 	"errors"
-	"log"
 	"sort"
 	"strings"
 
 	"github.com/HandsFree/beaconing-teacher-ui/backend/api"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 	"github.com/gin-gonic/gin"
 )
 
@@ -104,7 +104,7 @@ func SortBySTEM(s *gin.Context, plans []*entity.GLP, order SortingOption) ([]*en
 
 	for _, plan := range plans {
 		if isSTEM(plan.Domain) {
-			log.Println("Matched plan", plan.Name, " to stem ")
+			util.Verbose("Matched plan", plan.Name, " to STEM")
 			results = append(results, plan)
 		}
 	}
@@ -135,7 +135,7 @@ func SortByRecentlyUpdated(s *gin.Context, plans []*entity.GLP, order SortingOpt
 func SortByMostAssigned(s *gin.Context, plans []*entity.GLP, order SortingOption) ([]*entity.GLP, error) {
 	glps, err := api.GetMostAssigned(s)
 	if err != nil {
-		log.Println("failed to get most assigned glps")
+		util.Error("failed to get most assigned glps")
 		return plans, err
 	}
 	return glps, nil
@@ -188,7 +188,7 @@ func SortByRecentlyAssigned(s *gin.Context, plans []*entity.GLP, order SortingOp
 	// i.e. this could be faster
 	glps, err := api.GetRecentlyAssignedGLPS(s, true)
 	if err != nil {
-		log.Println("failed to get recently assigned glps")
+		util.Error("failed to get recently assigned glps")
 		return plans, err
 	}
 	return glps, nil

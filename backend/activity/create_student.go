@@ -9,3 +9,7 @@ func NewCreateStudentActivity(apiReq []byte) *CreatedStudentActivity {
 		newSimpleActivity("Created a student"),
 	}
 }
+
+func (a CreatedStudentActivity) GetName() string {
+	return "Create Student"
+}

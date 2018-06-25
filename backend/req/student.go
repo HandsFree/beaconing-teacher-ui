@@ -1,11 +1,11 @@
 package req
 
 import (
-	"log"
 	"net/http"
 	"strconv"
 
 	"github.com/HandsFree/beaconing-teacher-ui/backend/api"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 	"github.com/gin-gonic/gin"
 )
 
@@ -17,14 +17,14 @@ func GetStudentRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
 		studentID, err := strconv.Atoi(s.Param("id"))
 		if err != nil {
-			log.Println("GetStudentRequest", err.Error())
+			util.Error("GetStudentRequest", err.Error())
 			s.AbortWithError(http.StatusBadRequest, err)
 			return
 		}
 
 		resp, err := api.GetStudent(s, studentID)
 		if err != nil {
-			log.Println("GetStudentRequest", err.Error())
+			util.Error("GetStudentRequest", err.Error())
 			s.AbortWithError(http.StatusBadRequest, err)
 			return
 		}
@@ -38,14 +38,14 @@ func PutStudentRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
 		studentID, err := strconv.Atoi(s.Param("id"))
 		if err != nil {
-			log.Println("PutStudentRequest", err.Error())
+			util.Error("PutStudentRequest", err.Error())
 			s.AbortWithError(http.StatusBadRequest, err)
 			return
 		}
 
 		resp, err := api.PutStudent(s, studentID)
 		if err != nil {
-			log.Println("PutStudentRequest", err.Error())
+			util.Error("PutStudentRequest", err.Error())
 			s.AbortWithError(http.StatusBadRequest, err)
 			return
 		}
@@ -60,14 +60,14 @@ func DeleteStudentRequest() gin.HandlerFunc {
 		studentIDParam := s.Param("id")
 		studentID, err := strconv.Atoi(studentIDParam)
 		if err != nil {
-			log.Println("DeleteStudentRequest", err.Error())
+			util.Error("DeleteStudentRequest", err.Error())
 			s.AbortWithError(http.StatusBadRequest, err)
 			return
 		}
 
 		resp, err := api.DeleteStudent(s, studentID)
 		if err != nil {
-			log.Println("DeleteStudentRequest", err.Error())
+			util.Error("DeleteStudentRequest", err.Error())
 			s.AbortWithError(http.StatusBadRequest, err)
 			return
 		}

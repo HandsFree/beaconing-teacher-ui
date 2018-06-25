@@ -1,10 +1,10 @@
 package req
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/HandsFree/beaconing-teacher-ui/backend/api"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 )
@@ -21,7 +21,7 @@ func GetCheckAuthRequest() gin.HandlerFunc {
 			Token: accessToken,
 		})
 		if err != nil {
-			log.Println(err.Error())
+			util.Error(err.Error())
 			return
 		}
 
