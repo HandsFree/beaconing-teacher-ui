@@ -64,6 +64,11 @@ class GroupAside extends Component {
             return;
         }
 
+        const delGroupTranslation = await window.bcnI18n.getPhrase('confirm_delete_group');
+        if (!confirm(delGroupTranslation)) {
+            return;
+        }
+
         const status = await window.beaconingAPI.deleteGroup(this.state.group.id);
         const statusMessage = new Status();
 

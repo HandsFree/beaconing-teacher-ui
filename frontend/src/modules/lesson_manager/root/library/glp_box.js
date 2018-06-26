@@ -94,7 +94,16 @@ class GLPBox extends Component {
                 a(
                     '.item',
                     {
-                        ondblclick: () => this.deleteGLP(),
+                        onclick: async () => {
+                            const confirmDelGLPTranslation = await window.bcnI18n.getPhrase('confirm_delete_glp');
+
+                            // https://eslint.org/docs/rules/no-alert
+                            // breaking the rules for now!
+                            const doDelete = confirm(confirmDelGLPTranslation);
+                            if (doDelete) {
+                                this.deleteGLP();
+                            }
+                        },
                     },
                     await window.bcnI18n.getPhrase('delete'),
                 ),

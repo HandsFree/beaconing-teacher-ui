@@ -2000,6 +2000,44 @@
         'pt-PT': ''
     },
 
+    // Confirm DEletions //
+
+    confirm_delete_glp: {
+        'en-GB': 'Are you sure you wish to delete this GLP?',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',
+    },
+
+    confirm_delete_group: {
+        'en-GB': 'Are you sure you wish to delete this group?',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',
+    },
+
+    confirm_delete_student: {
+        'en-GB': 'Are you sure you wish to delete this student?',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',
+    },
+
     // Calendar //
 
     cal_jan: {
