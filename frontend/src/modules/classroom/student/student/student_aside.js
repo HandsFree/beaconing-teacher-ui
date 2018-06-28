@@ -76,6 +76,11 @@ class StudentAside extends Component {
             return;
         }
 
+        const delStudentTranslation = await window.bcnI18n.getPhrase('confirm_delete_student');
+        if (!confirm(delStudentTranslation)) {
+            return;
+        }
+
         const status = await window.beaconingAPI.deleteStudent(this.state.student.id);
         const statusMessage = new Status();
 
