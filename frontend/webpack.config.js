@@ -1,7 +1,8 @@
+process.traceDeprecation = true;
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const webpack = require('webpack');
 const { resolve } = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
@@ -37,12 +38,11 @@ const mainSettings = {
             },
             {
                 test: /\.(css|scss)$/,
-                use: ExtractTextPlugin.extract({
-                    use: [
-                        'css-loader',
-                        'sass-loader',
-                    ],
-                }),
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    'css-loader',
+                    'sass-loader',
+                ],
             },
             {
                 test: /\.json5$/,
@@ -59,7 +59,9 @@ const mainSettings = {
         new webpack.BannerPlugin({
             banner: devBanner,
         }),
-        new ExtractTextPlugin('app.css'),
+        new MiniCssExtractPlugin({
+            filename: 'app.css',
+        }),
         new HardSourceWebpackPlugin({
             cacheDirectory: `${resolve(__dirname, 'node_modules', '.cache', 'hard-source')}/[confighash]`,
         }),
@@ -82,13 +84,16 @@ const mainSettings = {
         new webpack.BannerPlugin({
             banner: prodBanner,
         }),
-        new ExtractTextPlugin('app.css'),
+        new MiniCssExtractPlugin({
+            filename: 'app.css',
+        }),
         new OptimizeCssAssetsPlugin(),
         new HardSourceWebpackPlugin({
             cacheDirectory: `${resolve(__dirname, 'node_modules', '.cache', 'hard-source')}/[confighash]`,
         }),
     ],
     devtool: dev ? 'inline-source-map' : false,
+    mode: 'none',
 };
 
 let config = [
