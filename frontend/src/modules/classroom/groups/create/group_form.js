@@ -30,7 +30,32 @@ class GroupForm extends Component {
         }
     }
 
-    async createGroup() {
+    async checkFields(groupButton: EventTarget) {
+        // TODO: reduce duped code
+        if (this.state.groupName === '') {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'group-name',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('empty_field')).replace('%s', `'${await window.bcnI18n.getPhrase('cr_group_name')}'`),
+            });
+
+            this.appendView(statusMessageEl);
+
+            groupButton.textContent = await window.bcnI18n.getPhrase('cr_create_group');
+
+            return false;
+        }
+
+        return true;
+    }
+
+    async createGroup(groupButton: EventTarget) {
+        if (await this.checkFields(groupButton) === false) {
+            return;
+        }
+
         const obj = {
             name: this.state.groupName,
             category: this.state.groupCategory,
@@ -56,8 +81,6 @@ class GroupForm extends Component {
 
             this.appendView(statusMessageEl);
 
-            const groupButton = document.getElementById('create-group-button');
-
             groupButton.textContent = await window.bcnI18n.getPhrase('cr_create_group');
 
             return;
@@ -69,8 +92,6 @@ class GroupForm extends Component {
             type: 'error',
             message: await window.bcnI18n.getPhrase('group_nc'),
         });
-
-        const groupButton = document.getElementById('create-group-button');
 
         groupButton.textContent = await window.bcnI18n.getPhrase('cr_create_group');
 
@@ -154,7 +175,7 @@ class GroupForm extends Component {
                                 {
                                     onclick: (event) => {
                                         const { target } = event;
-                                        this.createGroup();
+                                        this.createGroup(target);
 
                                         target.textContent = `${creatingText}...`;
                                     },
