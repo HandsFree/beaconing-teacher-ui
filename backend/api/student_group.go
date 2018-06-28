@@ -3,9 +3,9 @@ package api
 import (
 	"bytes"
 	"fmt"
-	"log"
 
 	"github.com/HandsFree/beaconing-teacher-ui/backend/activity"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 )
@@ -27,13 +27,13 @@ type studentGroupPostJSON struct {
 func CreateStudentGroup(s *gin.Context) (string, error) {
 	var json studentGroupPostJSON
 	if err := s.ShouldBindJSON(&json); err != nil {
-		log.Println("CreateStudentGroupPOST", err.Error())
+		util.Error("CreateStudentGroupPOST", err.Error())
 		return "", err
 	}
 
 	studentGroupPost, err := jsoniter.Marshal(json)
 	if err != nil {
-		log.Println("CreateStudentGroupPOST", err.Error())
+		util.Error("CreateStudentGroupPOST", err.Error())
 		return "", err
 	}
 
@@ -42,13 +42,13 @@ func CreateStudentGroup(s *gin.Context) (string, error) {
 		bytes.NewBuffer(studentGroupPost),
 	)
 	if err != nil {
-		log.Println("CreateStudentGroupPOST", err.Error())
+		util.Error("CreateStudentGroupPOST", err.Error())
 		return "", err
 	}
 
 	id, err := GetUserID(s)
 	if err != nil {
-		log.Println("No such current user", err.Error())
+		util.Error("No such current user", err.Error())
 		return string(resp), err
 	}
 
@@ -61,7 +61,7 @@ func CreateStudentGroup(s *gin.Context) (string, error) {
 func GetStudentGroups(s *gin.Context) (string, error) {
 	resp, err := DoTimedRequest(s, "GET", API.getPath(s, "studentgroups"))
 	if err != nil {
-		log.Println("GetStudentGroups", err.Error())
+		util.Error("GetStudentGroups", err.Error())
 		return "", err
 	}
 	return string(resp), nil
@@ -75,7 +75,7 @@ func GetStudentGroup(s *gin.Context, groupID int) (string, error) {
 	)
 
 	if err != nil {
-		log.Println("GetStudentGroup", err.Error())
+		util.Error("GetStudentGroup", err.Error())
 		return "", err
 	}
 
@@ -89,13 +89,13 @@ func DeleteStudentGroup(s *gin.Context, id int64) (string, error) {
 		API.getPath(s, "studentgroups/", fmt.Sprintf("%d", id)),
 	)
 	if err != nil {
-		log.Println("DeleteStudentGroup", err.Error())
+		util.Error("DeleteStudentGroup", err.Error())
 		return "", err
 	}
 
 	currUserID, err := GetUserID(s)
 	if err != nil {
-		log.Println("No such current user", err.Error())
+		util.Error("No such current user", err.Error())
 		return string(req), err
 	}
 
@@ -107,13 +107,13 @@ func DeleteStudentGroup(s *gin.Context, id int64) (string, error) {
 func PutStudentGroup(s *gin.Context, groupID int) (string, error) {
 	var groupJSON studentGroupPostJSON
 	if err := s.ShouldBindJSON(&groupJSON); err != nil {
-		log.Println("PutStudentGroup shouldBind", err.Error())
+		util.Error("PutStudentGroup shouldBind", err.Error())
 		return "", err
 	}
 
 	putJSON, err := jsoniter.Marshal(groupJSON)
 	if err != nil {
-		log.Println("PutStudentGroup JSON marshal", err.Error())
+		util.Error("PutStudentGroup JSON marshal", err.Error())
 		return "", err
 	}
 
@@ -123,7 +123,7 @@ func PutStudentGroup(s *gin.Context, groupID int) (string, error) {
 	)
 
 	if err != nil {
-		log.Println("PutStudentGroup TimedRequest", err.Error())
+		util.Error("PutStudentGroup TimedRequest", err.Error())
 		return "", err
 	}
 

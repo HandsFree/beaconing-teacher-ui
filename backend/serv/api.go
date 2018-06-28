@@ -1,9 +1,6 @@
 package serv
 
 import (
-	"log"
-	"os"
-
 	"github.com/HandsFree/beaconing-teacher-ui/backend/req"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/upload"
 	"github.com/gin-gonic/gin"
@@ -21,15 +18,6 @@ func registerAPI(router *gin.Engine) {
 		fileUpload.POST("/:id", upload.PostGLPFiles())
 
 		fileUpload.DELETE("/:id/:file", upload.DeleteGLPFile())
-
-		// test upload route
-		if gin.IsDebugging() {
-			fileUpload.GET("/", func(c *gin.Context) {
-				str, _ := os.Getwd()
-				log.Println(str)
-				c.File("./upload/index.html")
-			})
-		}
 	}
 
 	authAPI := v1.Group("auth")

@@ -10,6 +10,10 @@ func NewGroupUnassignGLPActivity(apiReq []byte) *GroupUnassignedGLPActivity {
 	}
 }
 
+func (a GroupUnassignedGLPActivity) GetName() string {
+	return "Group Unassign"
+}
+
 type GroupAssignedGLPActivity struct {
 	SimpleActivity
 }
@@ -18,4 +22,8 @@ func NewGroupAssignGLPActivity(apiReq []byte) *GroupAssignedGLPActivity {
 	return &GroupAssignedGLPActivity{
 		newSimpleActivity("Assigned group GLP"),
 	}
+}
+
+func (a GroupAssignedGLPActivity) GetName() string {
+	return "Group Assign"
 }

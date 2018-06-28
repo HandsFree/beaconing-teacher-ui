@@ -9,3 +9,7 @@ func NewPutGLPActivity(apiReq []byte) *UpdatedGLPActivity {
 		newSimpleActivity("Updated GLP"),
 	}
 }
+
+func (a UpdatedGLPActivity) GetName() string {
+	return "Edit GLP"
+}

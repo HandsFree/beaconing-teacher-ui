@@ -6,6 +6,10 @@ type UnassignedGLPActivity struct {
 
 func NewUnassignedGLPActivity(apiReq []byte) *UnassignedGLPActivity {
 	return &UnassignedGLPActivity{
-		newSimpleActivity("Un-assigned a GLP"),
+		newSimpleActivity("Unassigned a GLP"),
 	}
+}
+
+func (a UnassignedGLPActivity) GetName() string {
+	return "Unassign GLP"
 }

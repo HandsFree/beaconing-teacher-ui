@@ -129,6 +129,7 @@ class GroupForm extends Component {
 
                                         this.state.studentUsername = target.value;
                                     },
+                                    required: true,
                                 },
                             ),
                         ),
@@ -144,6 +145,7 @@ class GroupForm extends Component {
 
                                         this.state.studentFirstName = target.value;
                                     },
+                                    required: true,
                                 },
                             ),
                         ),
@@ -159,6 +161,7 @@ class GroupForm extends Component {
 
                                         this.state.studentLastName = target.value;
                                     },
+                                    required: true,
                                 },
                             ),
                         ),
@@ -191,6 +194,7 @@ class GroupForm extends Component {
 
                                         this.state.studentDOB = target.value;
                                     },
+                                    required: true,
                                 },
                             ),
                         ),

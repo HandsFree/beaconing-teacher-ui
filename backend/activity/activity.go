@@ -44,6 +44,8 @@ type Activity interface {
 	// when the activity was executed
 	GetExecutionTime() time.Time
 	SetExecutionTime(t time.Time)
+
+	GetName() string
 }
 
 // SimplyActivity is a helper struct for common

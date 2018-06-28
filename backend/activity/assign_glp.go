@@ -9,3 +9,7 @@ func NewAssignedGLPActivity(apiReq []byte) *AssignedGLPActivity {
 		newSimpleActivity("Assigned a GLP"),
 	}
 }
+
+func (a AssignedGLPActivity) GetName() string {
+	return "GLP Assignment"
+}

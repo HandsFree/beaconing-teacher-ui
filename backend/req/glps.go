@@ -7,6 +7,7 @@ import (
 
 	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/parse"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 )
@@ -43,7 +44,7 @@ func GetGLPSRequest() gin.HandlerFunc {
 			var err error
 			index, err = strconv.Atoi(indexQuery)
 			if err != nil {
-				log.Println("GLPSRequest", err.Error())
+				util.Error("GLPSRequest", err.Error())
 				index = 0
 			}
 		}
@@ -63,7 +64,7 @@ func GetGLPSRequest() gin.HandlerFunc {
 			if err == nil {
 				shouldMinify = minifyParam == 1
 			} else {
-				log.Println("Note: failed to atoi minify param in glps.go", err.Error())
+				util.Error("Note: failed to atoi minify param in glps.go", err.Error())
 			}
 		}
 
@@ -75,7 +76,7 @@ func GetGLPSRequest() gin.HandlerFunc {
 
 		plans, err := parse.GLPS(s, shouldMinify)
 		if err != nil {
-			log.Println("parse.GLPS failed", err.Error())
+			util.Error("parse.GLPS failed", err.Error())
 			s.AbortWithError(http.StatusBadRequest, err)
 			return
 		}
@@ -83,7 +84,7 @@ func GetGLPSRequest() gin.HandlerFunc {
 		if sortQuery := s.Query("sort"); sortQuery != "" {
 			plans, err = parse.SortGLPS(s, plans, sortQuery, order)
 			if err != nil {
-				log.Println("Failed to sort GLPs by ", sortQuery, " in order ", order, "\n"+err.Error())
+				util.Error("Failed to sort GLPs by ", sortQuery, " in order ", order, "\n"+err.Error())
 				s.AbortWithError(http.StatusBadRequest, err)
 				return
 			}
@@ -92,7 +93,7 @@ func GetGLPSRequest() gin.HandlerFunc {
 		if index != 0 || step != 0 {
 			plans, err = slicePlans(plans, index, step)
 			if err != nil {
-				log.Println("Failed to slice GLPs \n", err.Error())
+				util.Error("Failed to slice GLPs \n", err.Error())
 				s.AbortWithError(http.StatusBadRequest, err)
 				return
 			}
@@ -101,7 +102,7 @@ func GetGLPSRequest() gin.HandlerFunc {
 		// convert the plans into json and display
 		jsonResult, err := jsoniter.Marshal(&plans)
 		if err != nil {
-			log.Println(err.Error())
+			util.Error(err.Error())
 			return
 		}
 

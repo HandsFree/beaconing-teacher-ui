@@ -2,10 +2,10 @@ package api
 
 import (
 	"bytes"
-	"log"
 
 	"github.com/HandsFree/beaconing-teacher-ui/backend/cfg"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
@@ -28,20 +28,20 @@ func GetRefreshToken(s *gin.Context) error {
 	})
 
 	if err != nil {
-		log.Println("GetRefreshToken", err.Error())
+		util.Error("GetRefreshToken", err.Error())
 		return err
 	}
 
 	const tokenRefreshLink = "https://core.beaconing.eu/auth/token"
 	resp, err := DoTimedRequestBody(s, "POST", tokenRefreshLink, bytes.NewBuffer(message))
 	if err != nil {
-		log.Println("GetRefreshToken", err.Error())
+		util.Error("GetRefreshToken", err.Error())
 		return err
 	}
 
 	var respToken entity.TokenResponse
 	if err := jsoniter.Unmarshal(resp, &respToken); err != nil {
-		log.Println("GetRefreshToken", err.Error())
+		util.Error("GetRefreshToken", err.Error())
 		return err
 	}
 
@@ -49,7 +49,7 @@ func GetRefreshToken(s *gin.Context) error {
 	session.Set("refresh_token", respToken.RefreshToken)
 	session.Set("token_type", respToken.TokenType)
 	if err := session.Save(); err != nil {
-		log.Println("GetRefreshToken", err.Error())
+		util.Error("GetRefreshToken", err.Error())
 	}
 
 	return nil

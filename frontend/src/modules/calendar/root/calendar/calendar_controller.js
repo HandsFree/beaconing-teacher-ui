@@ -46,6 +46,11 @@ class CalendarController extends Component {
 
         const year = currDate.getFullYear();
 
+        const selMonthTranslation = await window.bcnI18n.getPhrase('cal_sel_month');
+        const prevMonthTranslation = await window.bcnI18n.getPhrase('cal_prev');
+        const currMonthTranslation = await window.bcnI18n.getPhrase('cal_today');
+        const nextMonthTranslation = await window.bcnI18n.getPhrase('cal_next');
+
         return div(
             '.calendar-control',
             div(
@@ -55,23 +60,25 @@ class CalendarController extends Component {
             ),
 
             p(
+                `${selMonthTranslation}: `,
+
                 span('.fake-link', {
                     onclick: () => this.updateCalendar('PrevMonth'),
-                }, 'prev'),
+                }, prevMonthTranslation),
 
-                ' ',
+                ', ',
 
                 span('.fake-link', {
                     href: '',
                     onclick: () => this.updateCalendar('CurrMonth'),
-                }, 'today'),
+                }, currMonthTranslation),
 
-                ' ',
+                ', ',
 
                 span('.fake-link', {
                     href: '',
                     onclick: () => this.updateCalendar('NextMonth'),
-                }, 'next'),
+                }, nextMonthTranslation),
             ),
         );
     }

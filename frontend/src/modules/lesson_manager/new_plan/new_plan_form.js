@@ -111,6 +111,7 @@ class NewPlanForm extends Component {
 
                                         this.state.planName = target.value;
                                     },
+                                    required: true,
                                 },
                             ),
                         ),
@@ -125,6 +126,7 @@ class NewPlanForm extends Component {
 
                                         this.state.planDescription = target.value;
                                     },
+                                    required: true,
                                 },
                             ),
                         ),
@@ -140,6 +142,7 @@ class NewPlanForm extends Component {
 
                                         this.state.planDomain = target.value;
                                     },
+                                    required: true,
                                 },
                             ),
                         ),
@@ -155,6 +158,7 @@ class NewPlanForm extends Component {
 
                                         this.state.planTopic = target.value;
                                     },
+                                    required: true,
                                 },
                             ),
                         ),
@@ -170,6 +174,7 @@ class NewPlanForm extends Component {
 
                                         this.state.planAgeGroup = target.value;
                                     },
+                                    required: true,
                                 },
                             ),
                         ),
@@ -186,6 +191,7 @@ class NewPlanForm extends Component {
 
                                         this.state.planYear = target.value;
                                     },
+                                    required: true,
                                 },
                             ),
                         ),

@@ -1,13 +1,13 @@
 package req
 
 import (
-	"log"
 	"net/http"
 	"strconv"
 	"strings"
 
 	"github.com/HandsFree/beaconing-teacher-ui/backend/api"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 )
@@ -23,7 +23,7 @@ func sortStudentGroups(groups []*entity.StudentGroup, filterBy string, match str
 		}
 		return result
 	default:
-		log.Println("Attempted to sort student groups by", filterBy, "=>", match)
+		util.Error("Attempted to sort student groups by", filterBy, "=>", match)
 		// NOP
 		return groups
 	}
@@ -33,7 +33,7 @@ func PostStudentGroupRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
 		body, err := api.CreateStudentGroup(s)
 		if err != nil {
-			log.Println("PostStudentGroupRequest", err.Error())
+			util.Error("PostStudentGroupRequest", err.Error())
 			s.AbortWithError(http.StatusBadRequest, err)
 			return
 		}
@@ -47,7 +47,7 @@ func DeleteStudentGroupRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
 		id, err := strconv.ParseInt(s.Param("id"), 10, 64)
 		if err != nil || id < 0 {
-			log.Println("StudentGroupRequest", err.Error())
+			util.Error("StudentGroupRequest", err.Error())
 			s.Header("Content-Type", "application/json")
 			s.String(http.StatusOK, "Oh dear there was some error thing!")
 			return
@@ -55,7 +55,7 @@ func DeleteStudentGroupRequest() gin.HandlerFunc {
 
 		body, err := api.DeleteStudentGroup(s, id)
 		if err != nil {
-			log.Println("DeleteStudentGroupRequest", err.Error())
+			util.Error("DeleteStudentGroupRequest", err.Error())
 			s.AbortWithError(http.StatusBadRequest, err)
 			return
 		}
@@ -79,7 +79,7 @@ func GetStudentGroupsRequest() gin.HandlerFunc {
 
 		body, err := api.GetStudentGroups(s)
 		if err != nil {
-			log.Println("GetStudentGroupsRequest", err.Error())
+			util.Error("GetStudentGroupsRequest", err.Error())
 			s.AbortWithError(http.StatusBadRequest, err)
 			return
 		}
@@ -93,7 +93,7 @@ func GetStudentGroupsRequest() gin.HandlerFunc {
 		var groups []*entity.StudentGroup
 		err = jsoniter.Unmarshal([]byte(body), &groups)
 		if err != nil {
-			log.Println(err.Error())
+			util.Error(err.Error())
 			s.AbortWithError(http.StatusBadRequest, err)
 			return
 		}
@@ -101,7 +101,7 @@ func GetStudentGroupsRequest() gin.HandlerFunc {
 		filteredGroups := sortStudentGroups(groups, filterBy, match)
 		data, err := jsoniter.Marshal(&filteredGroups)
 		if err != nil {
-			log.Println(err.Error())
+			util.Error(err.Error())
 			s.AbortWithError(http.StatusBadRequest, err)
 			return
 		}
@@ -121,7 +121,7 @@ func GetStudentGroupRequest() gin.HandlerFunc {
 
 		body, err := api.GetStudentGroup(s, groupID)
 		if err != nil {
-			log.Println("GetStudentGroupRequest", err.Error())
+			util.Error("GetStudentGroupRequest", err.Error())
 			s.AbortWithError(http.StatusBadRequest, err)
 			return
 		}
@@ -141,7 +141,7 @@ func PutStudentGroupRequest() gin.HandlerFunc {
 
 		body, err := api.PutStudentGroup(s, groupID)
 		if err != nil {
-			log.Println("PutStudentGroupRequest", err.Error())
+			util.Error("PutStudentGroupRequest", err.Error())
 			s.AbortWithError(http.StatusBadRequest, err)
 			return
 		}

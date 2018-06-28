@@ -2,7 +2,6 @@ package req
 
 import (
 	"io/ioutil"
-	"log"
 	"os"
 	"path/filepath"
 
@@ -10,6 +9,7 @@ import (
 
 	"github.com/HandsFree/beaconing-teacher-ui/backend/api"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/cfg"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 
@@ -62,7 +62,7 @@ func DeleteGLPRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
 		id, err := strconv.ParseUint(s.Param("id"), 10, 64)
 		if err != nil || id < 0 {
-			log.Println("error when sanitising glp id", err.Error())
+			util.Error("error when sanitising glp id", err.Error())
 			s.String(http.StatusBadRequest, "Client Error: Invalid GLP ID")
 			return
 		}
@@ -90,12 +90,12 @@ func loadGLPFiles(folderName string) []glpFile {
 
 	path := filepath.Join(base, folderName)
 
-	log.Println("Loading glp files from ", path)
+	util.Error("Loading glp files from ", path)
 
 	fileList := []glpFile{}
 	fileInfo, err := ioutil.ReadDir(path)
 	if err != nil {
-		log.Println("Failed to walk dir ", path, " because ", err.Error())
+		util.Error("Failed to walk dir ", path, " because ", err.Error())
 		return []glpFile{}
 	}
 
@@ -104,7 +104,7 @@ func loadGLPFiles(folderName string) []glpFile {
 
 		file, err := os.Open(fullPath)
 		if err != nil {
-			log.Println(err.Error())
+			util.Error(err.Error())
 			continue
 		}
 		defer file.Close()
@@ -112,7 +112,7 @@ func loadGLPFiles(folderName string) []glpFile {
 		fstPart := make([]byte, 1024)
 		_, err = file.Read(fstPart)
 		if err != nil {
-			log.Println(err.Error())
+			util.Error(err.Error())
 			continue
 		}
 		file.Seek(0, os.SEEK_SET)
@@ -123,7 +123,7 @@ func loadGLPFiles(folderName string) []glpFile {
 
 		kind, unknown := filetype.Match(fstPart)
 		if unknown != nil {
-			log.Println("Unknown file type for file ", fullPath)
+			util.Error("Unknown file type for file ", fullPath)
 			// mime std. says not to send
 			// mime type for unknown files
 			fileType = ""
@@ -200,7 +200,7 @@ func GetGLPRequest() gin.HandlerFunc {
 			if errConv == nil {
 				shouldMinify = minifyParam == 1
 			} else {
-				log.Println("Note: failed to atoi minify param in glp.go", err.Error())
+				util.Error("Note: failed to atoi minify param in glp.go", err.Error())
 			}
 		}
 
@@ -210,15 +210,9 @@ func GetGLPRequest() gin.HandlerFunc {
 			return
 		}
 
-		// log.Println("GLP Testing!")
-		// log.Println("-", plan.Analytics)
-		// log.Println("-", plan.Analytics.ActivityID)
-		// log.Println("-", plan.Analytics.Json.Analytics.TrackingCode)
-		// log.Println("-", plan.Analytics.Json.Analytics.Dashboard)
-
 		planJSON, err := jsoniter.Marshal(plan)
 		if err != nil {
-			log.Println(err.Error())
+			util.Error(err.Error())
 			return
 		}
 

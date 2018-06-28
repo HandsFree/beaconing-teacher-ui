@@ -2,6 +2,7 @@ package serv
 
 import (
 	"crypto/rand"
+	"errors"
 	"fmt"
 	"net/http"
 
@@ -67,7 +68,7 @@ func GetRouterEngine() *gin.Engine {
 
 	// 404 page.
 	router.NoRoute(func(c *gin.Context) {
-		c.String(404, "Error: 404 Page Not Found!")
+		c.AbortWithError(404, errors.New("404 Page Not Found"))
 	})
 
 	// Load the main template file

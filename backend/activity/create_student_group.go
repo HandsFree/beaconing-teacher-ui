@@ -1,9 +1,8 @@
 package activity
 
 import (
-	"log"
-
 	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 	"github.com/json-iterator/go"
 )
 
@@ -17,7 +16,7 @@ func NewCreateStudentGroupActivity(apiReq []byte) *CreatedStudentGroupActivity {
 
 	data := &entity.StudentGroup{}
 	if err := jsoniter.Unmarshal(apiReq, data); err != nil {
-		log.Println("NewCreateStudentGroupActivity", err.Error())
+		util.Error("NewCreateStudentGroupActivity", err.Error())
 	}
 
 	if data != nil {
@@ -28,4 +27,8 @@ func NewCreateStudentGroupActivity(apiReq []byte) *CreatedStudentGroupActivity {
 		newSimpleActivity("Created student group"),
 		groupName,
 	}
+}
+
+func (a CreatedStudentGroupActivity) GetName() string {
+	return "Create Student Group"
 }

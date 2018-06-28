@@ -2,9 +2,9 @@ package api
 
 import (
 	"bytes"
-	"log"
 
 	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 )
@@ -13,13 +13,13 @@ import (
 func PutProfile(s *gin.Context) (string, error) {
 	var json *entity.CurrentUser
 	if err := s.ShouldBindJSON(&json); err != nil {
-		log.Println("PutProfile", err.Error())
+		util.Error("PutProfile", err.Error())
 		return "", err
 	}
 
 	profilePut, err := jsoniter.Marshal(json)
 	if err != nil {
-		log.Println("PutProfile", err.Error())
+		util.Error("PutProfile", err.Error())
 		return "", err
 	}
 
@@ -28,7 +28,7 @@ func PutProfile(s *gin.Context) (string, error) {
 		bytes.NewBuffer(profilePut),
 	)
 	if err != nil {
-		log.Println("PutProfile", err.Error())
+		util.Error("PutProfile", err.Error())
 		return "", err
 	}
 

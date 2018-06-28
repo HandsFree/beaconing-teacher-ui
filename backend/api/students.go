@@ -6,10 +6,10 @@ import (
 	"crypto/sha512"
 	"encoding/base64"
 	"fmt"
-	"log"
 
 	"github.com/HandsFree/beaconing-teacher-ui/backend/activity"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 )
@@ -26,13 +26,13 @@ import (
 func GetStudents(s *gin.Context) (string, error) {
 	resp, err := DoTimedRequest(s, "GET", API.getPath(s, "students"))
 	if err != nil {
-		log.Println("GetStudents", err.Error())
+		util.Error("GetStudents", err.Error())
 		return "", err
 	}
 
 	students := []*entity.Student{}
 	if err := jsoniter.Unmarshal(resp, &students); err != nil {
-		log.Println("GetStudents", err.Error(), "resp was", string(resp))
+		util.Error("GetStudents", err.Error(), "resp was", string(resp))
 		return "", err
 	}
 
@@ -41,11 +41,11 @@ func GetStudents(s *gin.Context) (string, error) {
 	for _, student := range students {
 		avatar, err := getUserAvatar(s, student.ID)
 		if err != nil {
-			log.Println("getUserAvatar", err.Error())
+			util.Error("getUserAvatar", err.Error())
 
 			avatar, err = setUserAvatar(s, student.ID, student.Username)
 			if err != nil {
-				log.Println("setUserAvatar", err.Error())
+				util.Error("setUserAvatar", err.Error())
 				avatar = "TODO identicon fall back here"
 			}
 		}
@@ -54,7 +54,7 @@ func GetStudents(s *gin.Context) (string, error) {
 
 	modifiedStudentsJSON, err := jsoniter.Marshal(students)
 	if err != nil {
-		log.Println("GetStudents", err.Error())
+		util.Error("GetStudents", err.Error())
 		return string(resp), nil
 	}
 
@@ -72,7 +72,7 @@ func GetStudents(s *gin.Context) (string, error) {
 func GetStudent(s *gin.Context, studentID int) (string, error) {
 	data, err := DoTimedRequest(s, "GET", API.getPath(s, "students/", fmt.Sprintf("%d", studentID)))
 	if err != nil {
-		log.Println("GetStudent", err.Error())
+		util.Error("GetStudent", err.Error())
 		return "", err
 	}
 
@@ -81,7 +81,7 @@ func GetStudent(s *gin.Context, studentID int) (string, error) {
 	// FIXME/TODO this is stupid and slower!!
 	student := &entity.Student{}
 	if err := jsoniter.Unmarshal(data, student); err != nil {
-		log.Println("GetStudent", err.Error())
+		util.Error("GetStudent", err.Error())
 		return "", err
 	}
 
@@ -92,7 +92,7 @@ func GetStudent(s *gin.Context, studentID int) (string, error) {
 
 	encodedStudent, err := jsoniter.Marshal(student)
 	if err != nil {
-		log.Println("GetStudents", err.Error())
+		util.Error("GetStudents", err.Error())
 		return "", nil
 	}
 
@@ -103,30 +103,28 @@ func GetStudent(s *gin.Context, studentID int) (string, error) {
 func PostStudent(s *gin.Context) (string, error) {
 	var json *entity.StudentPost
 	if err := s.ShouldBindJSON(&json); err != nil {
-		log.Println("PostStudent", err.Error())
+		util.Error("PostStudent", err.Error())
 		return "", err
 	}
 
 	postStudent, err := jsoniter.Marshal(json)
 	if err != nil {
-		log.Println("PostStudent", err.Error())
+		util.Error("PostStudent", err.Error())
 		return "", err
 	}
-
-	log.Println(string(postStudent))
 
 	resp, err := DoTimedRequestBody(s, "POST",
 		API.getPath(s, "students"),
 		bytes.NewBuffer(postStudent),
 	)
 	if err != nil {
-		log.Println("PostStudent", err.Error())
+		util.Error("PostStudent", err.Error())
 		return "", err
 	}
 
 	currUserID, err := GetUserID(s)
 	if err != nil {
-		log.Println("No such user", err.Error())
+		util.Error("No such user", err.Error())
 		return string(resp), err
 	}
 
@@ -138,13 +136,13 @@ func PostStudent(s *gin.Context) (string, error) {
 func PutStudent(s *gin.Context, studentID int) (string, error) {
 	var json *entity.StudentPost
 	if err := s.ShouldBindJSON(&json); err != nil {
-		log.Println("PutStudent", err.Error())
+		util.Error("PutStudent", err.Error())
 		return "", err
 	}
 
 	putStudent, err := jsoniter.Marshal(json)
 	if err != nil {
-		log.Println("PutStudent", err.Error())
+		util.Error("PutStudent", err.Error())
 		return "", err
 	}
 
@@ -153,7 +151,7 @@ func PutStudent(s *gin.Context, studentID int) (string, error) {
 		bytes.NewBuffer(putStudent),
 	)
 	if err != nil {
-		log.Println("PutStudent", err.Error())
+		util.Error("PutStudent", err.Error())
 		return "", err
 	}
 
@@ -169,7 +167,7 @@ func DeleteStudent(s *gin.Context, studentID int) (string, error) {
 	)
 
 	if err != nil {
-		log.Println("Delete Student", err.Error())
+		util.Error("Delete Student", err.Error())
 		return "", err
 	}
 

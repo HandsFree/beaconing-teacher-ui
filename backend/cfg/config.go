@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/BurntSushi/toml"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 )
 
 type tomlConfig struct {
@@ -44,7 +45,7 @@ var Beaconing tomlConfig
 func LoadConfig() {
 	filePath := "cfg/config.toml"
 
-	log.Println("Loading configuration file from ", filePath)
+	util.Verbose("Loading configuration file from ", filePath)
 
 	configFileData, fileReadErr := ioutil.ReadFile(filePath)
 	if fileReadErr != nil {
