@@ -48,6 +48,22 @@ class GroupForm extends Component {
             return false;
         }
 
+        if (this.studentList.length < 2) {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: false,
+                heading: 'Error',
+                type: 'error',
+                message: await window.bcnI18n.getPhrase('more_students_needed'),
+            });
+
+            this.appendView(statusMessageEl);
+
+            groupButton.textContent = await window.bcnI18n.getPhrase('cr_create_group');
+
+            return false;
+        }
+
         return true;
     }
 
