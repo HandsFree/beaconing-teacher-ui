@@ -24,7 +24,37 @@ class GroupForm extends Component {
         studentSchool: '',
     };
 
+    async resetSubmit() {
+        const studentButton = document.getElementById('create-student-button');
+        studentButton.textContent = await window.bcnI18n.getPhrase('cr_create_student');
+    }
+
+    async checkFields() {
+        // TODO: reduce duped code
+        if (this.state.studentUsername === '') {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'student-username',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('empty_field')).replace('%s', `'${await window.bcnI18n.getPhrase('cr_student_username')}'`),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.resetSubmit();
+
+            return false;
+        }
+
+        return true;
+    }
+
     async createStudent() {
+        if (await this.checkFields() === false) {
+            return;
+        }
+
         const obj = {
             username: this.state.studentUsername,
             email: this.state.studentEmail,
@@ -65,9 +95,7 @@ class GroupForm extends Component {
 
             this.appendView(statusMessageEl);
 
-            const studentButton = document.getElementById('create-student-button');
-
-            studentButton.textContent = await window.bcnI18n.getPhrase('cr_create_student');
+            this.resetSubmit();
 
             return;
         }
@@ -79,11 +107,9 @@ class GroupForm extends Component {
             message: await window.bcnI18n.getPhrase('student_nc'),
         });
 
-        const studentButton = document.getElementById('create-student-button');
-
-        studentButton.textContent = await window.bcnI18n.getPhrase('cr_create_student');
-
         this.appendView(statusMessageEl);
+
+        this.resetSubmit();
     }
 
     async render() {
