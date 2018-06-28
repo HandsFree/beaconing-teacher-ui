@@ -79,6 +79,22 @@ class GroupForm extends Component {
             return false;
         }
 
+        if (this.state.studentDOB === '') {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'student-dob',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('empty_field')).replace('%s', `'${await window.bcnI18n.getPhrase('cr_student_dob')}'`),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.resetSubmit();
+
+            return false;
+        }
+
         return true;
     }
 
@@ -243,7 +259,7 @@ class GroupForm extends Component {
                         label(
                             span(await window.bcnI18n.getPhrase('cr_student_dob')),
                             input(
-                                '#student-dossignedb.text-field',
+                                '#student-dob.text-field',
                                 {
                                     type: 'date',
                                     placeholder: await window.bcnI18n.getPhrase('cr_enter_dob'),
