@@ -30,7 +30,12 @@ class GroupForm extends Component {
         }
     }
 
-    async checkFields(groupButton: EventTarget) {
+    async resetSubmit() {
+        const groupButton = document.getElementById('create-group-button');
+        groupButton.textContent = await window.bcnI18n.getPhrase('cr_create_group');
+    }
+
+    async checkFields() {
         // TODO: reduce duped code
         if (this.state.groupName === '') {
             const statusMessage = new Status();
@@ -43,7 +48,7 @@ class GroupForm extends Component {
 
             this.appendView(statusMessageEl);
 
-            groupButton.textContent = await window.bcnI18n.getPhrase('cr_create_group');
+            this.resetSubmit();
 
             return false;
         }
@@ -59,7 +64,7 @@ class GroupForm extends Component {
 
             this.appendView(statusMessageEl);
 
-            groupButton.textContent = await window.bcnI18n.getPhrase('cr_create_group');
+            this.resetSubmit();
 
             return false;
         }
@@ -67,8 +72,8 @@ class GroupForm extends Component {
         return true;
     }
 
-    async createGroup(groupButton: EventTarget) {
-        if (await this.checkFields(groupButton) === false) {
+    async createGroup() {
+        if (await this.checkFields() === false) {
             return;
         }
 
@@ -97,7 +102,7 @@ class GroupForm extends Component {
 
             this.appendView(statusMessageEl);
 
-            groupButton.textContent = await window.bcnI18n.getPhrase('cr_create_group');
+            this.resetSubmit();
 
             return;
         }
@@ -109,9 +114,9 @@ class GroupForm extends Component {
             message: await window.bcnI18n.getPhrase('group_nc'),
         });
 
-        groupButton.textContent = await window.bcnI18n.getPhrase('cr_create_group');
-
         this.appendView(statusMessageEl);
+
+        this.resetSubmit();
     }
 
     async render() {
@@ -191,7 +196,7 @@ class GroupForm extends Component {
                                 {
                                     onclick: (event) => {
                                         const { target } = event;
-                                        this.createGroup(target);
+                                        this.createGroup();
 
                                         target.textContent = `${creatingText}...`;
                                     },
