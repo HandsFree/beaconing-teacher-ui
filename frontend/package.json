@@ -60,6 +60,7 @@
     "optimize-css-assets-webpack-plugin": "4.0.3",
     "parallel-webpack": "2.3.0",
     "sass-loader": "7.0.3",
+    "uglifyjs-webpack-plugin": "^1.2.7",
     "webpack": "4.12.1",
     "webpack-bundle-analyzer": "2.13.1",
     "webpack-cli": "3.0.8",

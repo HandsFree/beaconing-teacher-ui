@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const { resolve } = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 const dev = process.env.NODE_ENV === 'development';
@@ -67,19 +68,8 @@ const mainSettings = {
         }),
     ] : [
         new webpack.optimize.ModuleConcatenationPlugin(),
-        new webpack.optimize.FlagIncludedChunksPlugin(),
-        new webpack.optimize.FlagDependencyUsagePlugin(),
         new webpack.optimize.SideEffectsFlagPlugin(),
         new webpack.optimize.OccurrenceOrderPlugin(),
-        new webpack.optimize.UglifyJsPlugin({
-            parallel: true,
-            sourceMap: false,
-            cache: true,
-            uglifyOptions: {
-                ie8: false,
-                ecma: 8,
-            },
-        }),
         new webpack.NoEmitOnErrorsPlugin(),
         new webpack.BannerPlugin({
             banner: prodBanner,
@@ -94,6 +84,20 @@ const mainSettings = {
     ],
     devtool: dev ? 'inline-source-map' : false,
     mode: 'none',
+    optimization: !dev ? {
+        minimize: true,
+        minimizer: [
+            new UglifyJsPlugin({
+                parallel: true,
+                sourceMap: false,
+                cache: true,
+                uglifyOptions: {
+                    ie8: false,
+                    ecma: 8,
+                },
+            }),
+        ],
+    } : {},
 };
 
 let config = [
