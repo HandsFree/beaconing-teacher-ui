@@ -73,6 +73,22 @@ class NewPlanForm extends Component {
             return false;
         }
 
+        if (this.state.planTopic === '') {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'plan-topic',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('empty_field')).replace('%s', `'${await window.bcnI18n.getPhrase('lm_plan_topic')}'`),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.resetSubmit();
+
+            return false;
+        }
+
         return true;
     }
 
