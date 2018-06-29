@@ -54,7 +54,7 @@ class StudentEdit extends Component {
 
     async changeButtons(completed: boolean) {
         const doneButton = document.getElementById('edit-group-done');
-        const groupButton = document.getElementById('create-group-button');
+        const groupButton = document.getElementById('update-group-button');
 
         if (completed) {
             groupButton.textContent = await window.bcnI18n.getPhrase('cr_update_group');
@@ -251,7 +251,7 @@ class StudentEdit extends Component {
                                 await window.bcnI18n.getPhrase('cancel'),
                             ),
                             div(
-                                '#create-group-button.button-action',
+                                '#update-group-button.button-action',
                                 {
                                     onclick: (event) => {
                                         const { target } = event;
