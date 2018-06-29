@@ -148,17 +148,17 @@ class ProfileEditForm extends Component {
                                 },
                                 option(
                                     {
-                                        value: 'male',
-                                        selected: teacher.teacherSettings?.gender === 'male',
-                                    },
-                                    await window.bcnI18n.getPhrase('male'),
-                                ),
-                                option(
-                                    {
                                         value: 'female',
                                         selected: teacher.teacherSettings?.gender === 'female',
                                     },
                                     await window.bcnI18n.getPhrase('female'),
+                                ),
+                                option(
+                                    {
+                                        value: 'male',
+                                        selected: teacher.teacherSettings?.gender === 'male',
+                                    },
+                                    await window.bcnI18n.getPhrase('male'),
                                 ),
                                 option(
                                     {

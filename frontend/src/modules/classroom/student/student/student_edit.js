@@ -286,17 +286,17 @@ class StudentEdit extends Component {
                                 },
                                 option(
                                     {
-                                        value: 'male',
-                                        selected: student.profile.gender === 'male',
-                                    },
-                                    await window.bcnI18n.getPhrase('male'),
-                                ),
-                                option(
-                                    {
                                         value: 'female',
                                         selected: student.profile.gender === 'female',
                                     },
                                     await window.bcnI18n.getPhrase('female'),
+                                ),
+                                option(
+                                    {
+                                        value: 'male',
+                                        selected: student.profile.gender === 'male',
+                                    },
+                                    await window.bcnI18n.getPhrase('male'),
                                 ),
                                 option(
                                     {

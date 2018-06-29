@@ -251,8 +251,8 @@ class GroupForm extends Component {
                                         this.state.studentGender = target.value;
                                     },
                                 },
-                                option({ value: 'male' }, await window.bcnI18n.getPhrase('male')),
                                 option({ value: 'female' }, await window.bcnI18n.getPhrase('female')),
+                                option({ value: 'male' }, await window.bcnI18n.getPhrase('male')),
                                 option({ value: 'other' }, await window.bcnI18n.getPhrase('other')),
                             ),
                         ),
