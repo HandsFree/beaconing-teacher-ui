@@ -2715,6 +2715,28 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+    empty_field: {
+        'en-GB': '%s is empty!',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    more_students_needed: {
+        'en-GB': 'A minimum of 2 students is required to create a group!',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
 
     // Success Messages //
 
