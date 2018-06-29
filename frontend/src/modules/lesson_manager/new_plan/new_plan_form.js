@@ -18,7 +18,53 @@ class NewPlanForm extends Component {
         planPublic: true, // TODO: allow teacher to decide visibility
     };
 
-    async createPlan(planButton: EventTarget) {
+    async resetSubmit() {
+        const planButton = document.getElementById('create-plan-button');
+        planButton.textContent = await window.bcnI18n.getPhrase('lm_create_plan');
+    }
+
+    async checkFields() {
+        // TODO: reduce duped code
+        if (this.state.planName === '') {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'plan-name',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('empty_field')).replace('%s', `'${await window.bcnI18n.getPhrase('lm_plan_name')}'`),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.resetSubmit();
+
+            return false;
+        }
+
+        if (this.state.planDescription === '') {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'plan-description',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('empty_field')).replace('%s', `'${await window.bcnI18n.getPhrase('lm_plan_desc')}'`),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.resetSubmit();
+
+            return false;
+        }
+
+        return true;
+    }
+
+    async createPlan() {
+        if (await this.checkFields() === false) {
+            return;
+        }
+
         const obj = {
             name: this.state.planName,
             category: this.state.planCategory,
@@ -51,7 +97,7 @@ class NewPlanForm extends Component {
 
             this.appendView(statusMessageEl);
 
-            planButton.textContent = await window.bcnI18n.getPhrase('lm_create_plan');
+            this.resetSubmit();
 
             return;
         }
@@ -63,9 +109,9 @@ class NewPlanForm extends Component {
             message: await window.bcnI18n.getPhrase('plan_nc'),
         });
 
-        planButton.textContent = await window.bcnI18n.getPhrase('lm_create_plan');
-
         this.appendView(statusMessageEl);
+
+        this.resetSubmit();
     }
 
     async render() {
@@ -233,7 +279,7 @@ class NewPlanForm extends Component {
                                 {
                                     onclick: (event) => {
                                         const { target } = event;
-                                        this.createPlan(target);
+                                        this.createPlan();
 
                                         target.textContent = `${creatingText}...`;
                                     },
