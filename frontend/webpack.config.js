@@ -9,6 +9,7 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 const dev = process.env.NODE_ENV === 'development';
 const analyse = process.env.analyse === 'true';
+const quiet = process.env.quiet === 'true';
 
 const prodBanner = `Beaconing Teacher UI
 ------------
@@ -98,6 +99,7 @@ const mainSettings = {
             }),
         ],
     } : {},
+    stats: quiet ? 'errors-only' : 'verbose',
 };
 
 let config = [
