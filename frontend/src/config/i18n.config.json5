@@ -2292,8 +2292,8 @@
         'pt-PT': '',
     },
 
-    cal_inspect_student: {
-		'en-GB': 'Inspect Student',
+    cal_select_student: {
+		'en-GB': 'Select Student',
         'fr-FR': '',
         'es-ES': '',
         'it-IT': '',
@@ -2328,8 +2328,8 @@
         'pt-PT': '',
     },
 
-    cal_no_students_for_this_group: {
-        'en-GB': 'No students for this group',
+    cal_no_students_in_group: {
+        'en-GB': 'No students are in this group',
         'fr-FR': '',
         'es-ES': '',
         'it-IT': '',
@@ -2364,7 +2364,7 @@
         'pt-PT': '',
     },
 
-    cal_today: {
+    cal_current: {
         'en-GB': 'Current',
         'fr-FR': '',
         'es-ES': '',

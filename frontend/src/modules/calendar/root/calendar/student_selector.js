@@ -74,14 +74,14 @@ class StudentSelector extends Component {
             );
         }
 
-        let studentSet = p(await window.bcnI18n.getPhrase('cal_no_students_for_this_group'));
+        let studentSet = p(await window.bcnI18n.getPhrase('cal_no_students_in_group'));
         if (studentLinks.length > 0) {
             studentSet = ul(studentLinks);
         }
 
         return div(
             '.full-width',
-            h2(`${await window.bcnI18n.getPhrase('cal_inspect_student')}:`),
+            h2(`${await window.bcnI18n.getPhrase('cal_select_student')}:`),
             studentSet,
         );
     }
