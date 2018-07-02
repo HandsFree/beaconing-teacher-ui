@@ -15,7 +15,7 @@ class NewPlanForm extends Component {
         planYear: '',
         planLearningObjectives: [''],
         planCompetences: [''],
-        planPublic: true, // TODO: allow teacher to decide visibility
+        planPublic: false,
     };
 
     async resetSubmit() {
@@ -141,8 +141,6 @@ class NewPlanForm extends Component {
             competences: this.state.planCompetences,
             public: this.state.planPublic,
         };
-
-        console.log(obj);
 
         const status = await window.beaconingAPI.addGLP(obj);
         const statusMessage = new Status();
@@ -334,6 +332,52 @@ class NewPlanForm extends Component {
                                         this.state.planCompetences = values;
                                     },
                                 },
+                            ),
+                        ),
+                        label(
+                            span(await window.bcnI18n.getPhrase('lm_vis')),
+                            div(
+                                '.radio',
+                                span('Public'),
+                                input(
+                                    '#plan-vis-public',
+                                    {
+                                        type: 'radio',
+                                        onchange: (event) => {
+                                            const { target } = event;
+                                            
+                                            if (target.checked) {
+                                                const radioEl = document.getElementById('plan-vis-private');
+
+                                                radioEl.checked = false;
+
+                                                this.state.planPublic = true;
+                                            }
+                                        },
+                                    },
+                                ),
+                            ),
+                            div(
+                                '.radio',
+                                span('Private'),
+                                input(
+                                    '#plan-vis-private',
+                                    {
+                                        type: 'radio',
+                                        onchange: (event) => {
+                                            const { target } = event;
+                                            
+                                            if (target.checked) {
+                                                const radioEl = document.getElementById('plan-vis-public');
+
+                                                radioEl.checked = false;
+
+                                                this.state.planPublic = false;
+                                            }
+                                        },
+                                        checked: true,
+                                    },
+                                ),
                             ),
                         ),
                         div(
