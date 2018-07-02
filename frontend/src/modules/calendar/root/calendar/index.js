@@ -8,7 +8,12 @@ import MainNav from '../../../nav/main';
 import CalendarView from './calendar_view';
 import CalendarController from './calendar_controller';
 import SelectorPanel from './student_selector';
-import CustomDate from './date_helper';
+
+// https://github.com/palantir/blueprint/issues/959
+let moment = require("moment");
+if ("default" in moment) {
+    moment = moment["default"];
+}
 
 class Calendar extends RootComponent {
     async init() {
@@ -18,7 +23,7 @@ class Calendar extends RootComponent {
         }
 
         window.sessionStorage.setItem('calendarStudentID', studentID);
-        window.sessionStorage.setItem('calendarDate', new CustomDate());
+        window.sessionStorage.setItem('calendarDate', moment());
     }
 
     async render() {
