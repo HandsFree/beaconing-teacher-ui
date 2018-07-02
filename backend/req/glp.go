@@ -30,7 +30,7 @@ type GLPModel struct {
 
 func PutGLPRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
-		resp, err := api.CreateGLP(s)
+		resp, err := api.PutGLP(s)
 		if err != nil {
 			s.AbortWithError(http.StatusBadRequest, err)
 			return
@@ -43,7 +43,7 @@ func PutGLPRequest() gin.HandlerFunc {
 
 func PostGLPRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
-		resp, err := api.PutGLP(s)
+		resp, err := api.CreateGLP(s)
 		if err != nil {
 			s.AbortWithError(http.StatusBadRequest, err)
 			return
