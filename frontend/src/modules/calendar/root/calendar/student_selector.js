@@ -97,6 +97,14 @@ class StudentGroupSelector extends Component {
         const vals = Object.values(await window.beaconingAPI.getGroups());
         const groups = nullishCheck(vals, []);
 
+        options.push(
+            option({
+                disabled: true,
+                selected: true,
+                value: '',
+            }, 'Select a group')
+        );
+
         for (const group of groups) {
             options.push(
                 option({
