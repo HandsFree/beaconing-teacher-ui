@@ -79,6 +79,10 @@ class StudentBox extends Component {
     }
 
     async removeStudent() {
+        if (!confirm('Are you sure you wish to remove this student?')) {
+            return;
+        }
+
         const {
             groupID,
             studentID,

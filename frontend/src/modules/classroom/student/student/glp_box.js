@@ -43,6 +43,10 @@ class GLPBox extends Component {
     }
 
     async unassignPlan() {
+        if (!confirm('Are you sure you wish to unassign this GLP?')) {
+            return;
+        }
+
         const {
             assignedGLPID,
             studentID,

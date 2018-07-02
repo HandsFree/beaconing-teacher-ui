@@ -44,6 +44,10 @@ class StudentBox extends Component {
     }
 
     async assign(assignButton: HTMLElement) {
+        if (!confirm('Are you sure you wish to assign this student?')) {
+            return;
+        }
+
         const {
             glpID,
             student,

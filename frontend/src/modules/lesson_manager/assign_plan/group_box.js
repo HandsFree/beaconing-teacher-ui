@@ -27,6 +27,10 @@ class GroupBox extends Component {
     }
 
     async assignGroup(assignButton: HTMLElement) {
+        if (!confirm('Are you sure you wish to assign this group?')) {
+            return;
+        }
+
         const {
             glpID,
             group,
