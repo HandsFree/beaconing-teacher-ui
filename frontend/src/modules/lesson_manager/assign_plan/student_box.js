@@ -44,7 +44,8 @@ class StudentBox extends Component {
     }
 
     async assign(assignButton: HTMLElement) {
-        if (!confirm('Are you sure you wish to assign this student?')) {
+        const assignStudentTransl = await window.bcnI18n.getPhrase('assign_student');
+        if (!confirm(assignStudentTransl)) {
             return;
         }
 

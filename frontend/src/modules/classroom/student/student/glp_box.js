@@ -43,7 +43,8 @@ class GLPBox extends Component {
     }
 
     async unassignPlan() {
-        if (!confirm('Are you sure you wish to unassign this GLP?')) {
+        const unassignGLPTransl = await window.bcnI18n.getPhrase('unassign_glp');
+        if (!confirm(unassignGLPTransl)) {
             return;
         }
 

@@ -79,7 +79,8 @@ class StudentBox extends Component {
     }
 
     async removeStudent() {
-        if (!confirm('Are you sure you wish to remove this student?')) {
+        const removeStudentTransl = await window.bcnI18n.getPhrase('remove_student');
+        if (!confirm(removeStudentTransl)) {
             return;
         }
 

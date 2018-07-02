@@ -2000,7 +2000,55 @@
         'pt-PT': ''
     },
 
-    // Confirm DEletions //
+    // Confirm Deletion/Creation //
+
+    remove_student: {
+        'en-GB': 'Are you sure you wish to remove this student?',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',
+    },
+
+    assign_group: {
+        'en-GB': 'Are you sure you wish to assign this group?',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',
+    },
+
+    assign_student: {
+        'en-GB': 'Are you sure you wish to assign this student?',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',
+    },
+
+    unassign_glp: {
+        'en-GB': 'Are you sure you wish to unassign this GLP?',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',
+    },
 
     confirm_delete_glp: {
         'en-GB': 'Are you sure you wish to delete this GLP?',

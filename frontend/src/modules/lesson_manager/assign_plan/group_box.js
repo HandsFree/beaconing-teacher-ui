@@ -27,7 +27,8 @@ class GroupBox extends Component {
     }
 
     async assignGroup(assignButton: HTMLElement) {
-        if (!confirm('Are you sure you wish to assign this group?')) {
+        const assignGroupTransl = await window.bcnI18n.getPhrase('assign_group');
+        if (!confirm(assignGroupTransl)) {
             return;
         }
 
