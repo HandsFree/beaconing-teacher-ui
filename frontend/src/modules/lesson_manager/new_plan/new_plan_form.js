@@ -1,5 +1,5 @@
 // @flow
-import { section, div, a, i, h1, form, input, select, option, p, label, span, small, textarea } from '../../../core/html';
+import { section, div, a, i, h1, form, input, p, label, span, textarea } from '../../../core/html';
 
 import { Component } from '../../../core/component';
 import Status from '../../status';
@@ -345,7 +345,7 @@ class NewPlanForm extends Component {
                                         type: 'radio',
                                         onchange: (event) => {
                                             const { target } = event;
-                                            
+
                                             if (target.checked) {
                                                 const radioEl = document.getElementById('plan-vis-private');
 
@@ -366,7 +366,7 @@ class NewPlanForm extends Component {
                                         type: 'radio',
                                         onchange: (event) => {
                                             const { target } = event;
-                                            
+
                                             if (target.checked) {
                                                 const radioEl = document.getElementById('plan-vis-public');
 
