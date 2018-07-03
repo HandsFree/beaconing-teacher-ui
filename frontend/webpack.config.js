@@ -1,15 +1,17 @@
-process.traceDeprecation = true;
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+const DashboardPlugin = require('webpack-dashboard/plugin');
+const OfflinePlugin = require('offline-plugin');
+const threadLoader = require('thread-loader');
 const webpack = require('webpack');
-const { resolve } = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const { resolve } = require('path');
+const { length: cpuCount } = require('os').cpus();
 
-const dev = process.env.NODE_ENV === 'development';
-const analyse = process.env.analyse === 'true';
-const quiet = process.env.quiet === 'true';
+//
+// ─── BANNERS ────────────────────────────────────────────────────────────────────
+//
 
 const prodBanner = `Beaconing Teacher UI
 ------------
@@ -23,174 +25,247 @@ Beaconing Teacher UI
 Authors:
 Elliott Judd <elliott.judd@hands-free.co.uk>`;
 
-const mainSettings = {
-    context: resolve(__dirname, 'src'),
-    output: {
-        path: resolve(__dirname, 'public', 'dist', 'beaconing'),
-        filename: '[name].js',
+//
+// ─── LOADER OPTIONS ─────────────────────────────────────────────────────────────
+//
+
+threadLoader.warmup({
+    workers: cpuCount - 1,
+    workerParallelJobs: 50,
+}, [
+    'babel-loader',
+    'sass-loader',
+]);
+
+const babelLoader = {
+    loader: 'babel-loader',
+    options: {
+        cacheDirectory: true,
     },
-    module: {
-        rules: [
-            {
-                test: /\.js$/,
-                exclude: /node_modules/,
-                use: [
-                    'babel-loader?cacheDirectory=true',
-                ],
-            },
-            {
-                test: /\.(css|scss)$/,
-                use: [
-                    MiniCssExtractPlugin.loader,
-                    'css-loader',
-                    'sass-loader',
-                ],
-            },
-            {
-                test: /\.json5$/,
-                use: [
-                    'json5-loader',
-                ],
-            },
-        ],
-    },
-    plugins: dev ? [
-        new webpack.NoEmitOnErrorsPlugin(),
-        new webpack.NamedModulesPlugin(),
-        new webpack.NamedChunksPlugin(),
-        new webpack.BannerPlugin({
-            banner: devBanner,
-        }),
-        new MiniCssExtractPlugin({
-            filename: 'app.css',
-        }),
-        new HardSourceWebpackPlugin({
-            cacheDirectory: `${resolve(__dirname, 'node_modules', '.cache', 'hard-source')}/[confighash]`,
-        }),
-    ] : [
-        new webpack.optimize.ModuleConcatenationPlugin(),
-        new webpack.optimize.SideEffectsFlagPlugin(),
-        new webpack.optimize.OccurrenceOrderPlugin(),
-        new webpack.NoEmitOnErrorsPlugin(),
-        new webpack.BannerPlugin({
-            banner: prodBanner,
-        }),
-        new MiniCssExtractPlugin({
-            filename: 'app.css',
-        }),
-        new OptimizeCssAssetsPlugin(),
-        new HardSourceWebpackPlugin({
-            cacheDirectory: `${resolve(__dirname, 'node_modules', '.cache', 'hard-source')}/[confighash]`,
-        }),
-    ],
-    devtool: dev ? 'inline-source-map' : false,
-    mode: 'none',
-    optimization: !dev ? {
-        minimize: true,
-        minimizer: [
-            new UglifyJsPlugin({
-                parallel: true,
-                sourceMap: false,
-                cache: true,
-                uglifyOptions: {
-                    ie8: false,
-                    ecma: 8,
-                },
-            }),
-        ],
-    } : {},
-    stats: quiet ? 'errors-only' : 'verbose',
 };
 
-let config = [
+const optLoaders = [
     {
-        entry: {
-            core: './core/',
+        loader: 'cache-loader',
+        options: {
+            cacheDirectory: resolve(__dirname, 'node_modules', '.cache', 'cache-loader'),
         },
-        ...mainSettings,
     },
     {
-        entry: {
-            'pages/home/page': './modules/home/root/',
+        loader: 'thread-loader',
+        options: {
+            workers: cpuCount - 1,
+            workerParallelJobs: 50,
         },
-        ...mainSettings,
-    },
-    {
-        entry: {
-            'pages/lesson_manager/page': './modules/lesson_manager/root/',
-        },
-        ...mainSettings,
-    },
-    {
-        entry: {
-            'pages/authoring_tool/page': './modules/authoring_tool/root/',
-        },
-        ...mainSettings,
-    },
-    {
-        entry: {
-            'pages/classroom/page': './modules/classroom/root/',
-        },
-        ...mainSettings,
-    },
-    {
-        entry: {
-            'pages/classroom/student/page': './modules/classroom/student/',
-        },
-        ...mainSettings,
-    },
-    {
-        entry: {
-            'pages/classroom/groups/page': './modules/classroom/groups/',
-        },
-        ...mainSettings,
-    },
-    {
-        entry: {
-            'pages/classroom/group/page': './modules/classroom/group/',
-        },
-        ...mainSettings,
-    },
-    {
-        entry: {
-            'pages/search/page': './modules/search/root/',
-        },
-        ...mainSettings,
-    },
-    {
-        entry: {
-            'pages/profile/page': './modules/profile/root/',
-        },
-        ...mainSettings,
-    },
-    {
-        entry: {
-            'pages/calendar/page': './modules/calendar/root/',
-        },
-        ...mainSettings,
     },
 ];
 
-if (dev) {
-    config.push({
-        entry: {
-            'pages/glpviewer/page': './modules/glpviewer/root/',
-        },
-        ...mainSettings,
-    });
-}
+//
+// ─── MAIN CONFIG ────────────────────────────────────────────────────────────────
+//
 
-if (analyse) {
-    config = {
-        entry: {
-            'pages/lesson_manager/page': './modules/lesson_manager/root/',
+const mainSettings = (dev, devServer, dash, verbose) => {
+    // Plugin Options //
+
+    const sharedPlugins = [
+        new webpack.NoEmitOnErrorsPlugin(),
+        new webpack.BannerPlugin({
+            banner: dev ? devBanner : prodBanner,
+        }),
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: JSON.stringify(dev),
+            },
+        }),
+        new HardSourceWebpackPlugin({
+            cacheDirectory: `${resolve(__dirname, 'node_modules', '.cache', 'hard-source')}/[confighash]`,
+        }),
+        new MiniCssExtractPlugin({
+            filename: 'app.css',
+        }),
+    ];
+
+    return {
+        context: resolve(__dirname, 'src'),
+        output: {
+            publicPath: '/dist/beaconing/',
+            path: resolve(__dirname, 'public', 'dist', 'beaconing'),
+            filename: '[name].js',
         },
-        ...mainSettings,
+        module: {
+            rules: [
+                {
+                    test: /\.js$/,
+                    exclude: /node_modules/,
+                    use: [
+                        ...optLoaders,
+                        babelLoader,
+                    ],
+                },
+                {
+                    test: /\.(css|scss)$/,
+                    use: [
+                        MiniCssExtractPlugin.loader,
+                        'css-loader',
+                        'sass-loader',
+                    ],
+                },
+                {
+                    test: /\.json5$/,
+                    use: [
+                        'json5-loader',
+                    ],
+                },
+            ],
+        },
+        plugins: dev ? [
+            ...sharedPlugins,
+            new webpack.NamedModulesPlugin(),
+            new webpack.NamedChunksPlugin(),
+            ...(devServer ? [new webpack.HotModuleReplacementPlugin()] : []),
+            ...(dash ? [new DashboardPlugin()] : []),
+        ] : [
+            ...sharedPlugins,
+            new webpack.optimize.ModuleConcatenationPlugin(),
+            new webpack.optimize.SideEffectsFlagPlugin(),
+            new webpack.optimize.OccurrenceOrderPlugin(),
+            new OptimizeCssAssetsPlugin(),
+            new OfflinePlugin({
+                externals: [
+                    '/index.html',
+                ],
+            }),
+        ],
+        devtool: dev ? 'inline-source-map' : false,
+        devServer: {
+            contentBase: './public/',
+            hot: true,
+            hotOnly: true,
+            open: false,
+            publicPath: 'http://localhost:8080/dist/beaconing/',
+            compress: true,
+        },
+        mode: 'none',
+        optimization: !dev ? {
+            minimize: true,
+            minimizer: [
+                new UglifyJsPlugin({
+                    parallel: true,
+                    sourceMap: false,
+                    cache: true,
+                    uglifyOptions: {
+                        ie8: false,
+                        ecma: 8,
+                    },
+                }),
+            ],
+        } : {},
+        stats: verbose ? 'verbose' : {
+            errors: true,
+            errorDetails: false,
+            assets: true,
+            builtAt: false,
+            cached: false,
+            cachedAssets: false,
+            children: false,
+            chunks: false,
+            hash: false,
+            modules: false,
+            reasons: false,
+            version: false,
+            source: false,
+            warnings: false,
+            publicPath: false,
+            entrypoints: false,
+            timings: false,
+        },
     };
+};
 
-    config.plugins.push(new BundleAnalyzerPlugin({
-        openAnalyzer: false,
-    }));
-}
+//
+// ─── CONFIG FUNCTION ────────────────────────────────────────────────────────────
+//
+
+const config = (env) => {
+    const dev = env.mode === 'development';
+    const devServer = env.server === 'enabled';
+    const dash = env.dash === 'enabled';
+    const verbose = env.verbose === 'enabled';
+
+    return [
+        {
+            entry: {
+                core: './core/',
+            },
+            ...mainSettings(dev, devServer, dash, verbose),
+        },
+        {
+            entry: {
+                'pages/home/page': './modules/home/root/',
+            },
+            ...mainSettings(dev, devServer, dash, verbose),
+        },
+        {
+            entry: {
+                'pages/lesson_manager/page': './modules/lesson_manager/root/',
+            },
+            ...mainSettings(dev, devServer, dash, verbose),
+        },
+        {
+            entry: {
+                'pages/authoring_tool/page': './modules/authoring_tool/root/',
+            },
+            ...mainSettings(dev, devServer, dash, verbose),
+        },
+        {
+            entry: {
+                'pages/classroom/page': './modules/classroom/root/',
+            },
+            ...mainSettings(dev, devServer, dash, verbose),
+        },
+        {
+            entry: {
+                'pages/classroom/student/page': './modules/classroom/student/',
+            },
+            ...mainSettings(dev, devServer, dash, verbose),
+        },
+        {
+            entry: {
+                'pages/classroom/groups/page': './modules/classroom/groups/',
+            },
+            ...mainSettings(dev, devServer, dash, verbose),
+        },
+        {
+            entry: {
+                'pages/classroom/group/page': './modules/classroom/group/',
+            },
+            ...mainSettings(dev, devServer, dash, verbose),
+        },
+        {
+            entry: {
+                'pages/search/page': './modules/search/root/',
+            },
+            ...mainSettings(dev, devServer, dash, verbose),
+        },
+        {
+            entry: {
+                'pages/profile/page': './modules/profile/root/',
+            },
+            ...mainSettings(dev, devServer, dash, verbose),
+        },
+        {
+            entry: {
+                'pages/calendar/page': './modules/calendar/root/',
+            },
+            ...mainSettings(dev, devServer, dash, verbose),
+        },
+        ...(dev ? [{
+            entry: {
+                'pages/glpviewer/page': './modules/glpviewer/root/',
+            },
+            ...mainSettings(dev, devServer, dash, verbose),
+        }] : []),
+    ];
+};
 
 module.exports = config;
