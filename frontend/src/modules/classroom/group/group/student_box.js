@@ -67,6 +67,12 @@ class StudentBox extends Component {
                     ),
                     a(
                         {
+                            href: `//${window.location.host}/calendar?id=${studentID}`,
+                        },
+                        await window.bcnI18n.getPhrase('cr_view_calendar')
+                    ),
+                    a(
+                        {
                             onclick: () => {
                                 this.removeStudent();
                             },
@@ -79,6 +85,11 @@ class StudentBox extends Component {
     }
 
     async removeStudent() {
+        const removeStudentTransl = await window.bcnI18n.getPhrase('remove_student');
+        if (!confirm(removeStudentTransl)) {
+            return;
+        }
+
         const {
             groupID,
             studentID,

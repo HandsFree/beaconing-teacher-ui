@@ -32,14 +32,14 @@ class LoadActivePlans extends Component {
         for (const activePlan of values) {
             const {
                 name,
-                src,
+                description,
                 link,
             } = activePlan;
 
             const activePlanBox = new ActivePlanBox();
             const apBoxProm = activePlanBox.attach({
                 name,
-                src,
+                description,
                 link,
             });
             promArr.push(apBoxProm);

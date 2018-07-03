@@ -762,7 +762,7 @@
         'pt-PT': 'Data de nascimento do aluno'
     },
     cr_student_lang: {
-        'en-GB': 'Student Lanaguage',
+        'en-GB': 'Student Language',
         'fr-FR': 'Langue',
         'es-ES': 'Idioma del Estudiante',
         'it-IT': 'Lingua dello studente',
@@ -773,7 +773,7 @@
         'pt-PT': 'Idioma do aluno'
     },
     cr_student_email: {
-        'en-GB': 'Student email',
+        'en-GB': 'Student Email',
         'fr-FR': 'Email',
         'es-ES': 'Email del Estudiante',
         'it-IT': 'Email',
@@ -1181,6 +1181,72 @@
     },
     cr_enter_new_email: {
         'en-GB': 'Enter New Email (or leave blank)',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    cr_addr_line_1: {
+        'en-GB': 'Address Line 1',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    cr_addr_line_2: {
+        'en-GB': 'Address Line 2',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    cr_city: {
+        'en-GB': 'City',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    cr_county: {
+        'en-GB': 'County',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    cr_country: {
+        'en-GB': 'Country',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    cr_postcode: {
+        'en-GB': 'Postcode',
         'fr-FR': '',
         'es-ES': '',
         'it-IT': '',
@@ -2000,7 +2066,55 @@
         'pt-PT': ''
     },
 
-    // Confirm DEletions //
+    // Confirm Deletion/Creation //
+
+    remove_student: {
+        'en-GB': 'Are you sure you wish to remove this student?',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',
+    },
+
+    assign_group: {
+        'en-GB': 'Are you sure you wish to assign this group?',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',
+    },
+
+    assign_student: {
+        'en-GB': 'Are you sure you wish to assign this student?',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',
+    },
+
+    unassign_glp: {
+        'en-GB': 'Are you sure you wish to unassign this GLP?',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',
+    },
 
     confirm_delete_glp: {
         'en-GB': 'Are you sure you wish to delete this GLP?',

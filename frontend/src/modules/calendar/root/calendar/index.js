@@ -5,10 +5,22 @@ import { RootComponent } from '../../../../core/component';
 import Header from '../../../header/root';
 import MainNav from '../../../nav/main';
 
+import SecondNav from '../../../nav/second';
+
+// yikes is the point of this that i would copy
+// this class into this module or can I just reuse
+// the classroom one?
+import InnerNav from '../../../classroom/inner_nav';
+
 import CalendarView from './calendar_view';
 import CalendarController from './calendar_controller';
 import SelectorPanel from './student_selector';
-import CustomDate from './date_helper';
+
+// https://github.com/palantir/blueprint/issues/959
+let moment = require("moment");
+if ("default" in moment) {
+    moment = moment["default"];
+}
 
 class Calendar extends RootComponent {
     async init() {
@@ -18,7 +30,7 @@ class Calendar extends RootComponent {
         }
 
         window.sessionStorage.setItem('calendarStudentID', studentID);
-        window.sessionStorage.setItem('calendarDate', new CustomDate());
+        window.sessionStorage.setItem('calendarDate', moment());
     }
 
     async render() {
@@ -27,11 +39,17 @@ class Calendar extends RootComponent {
 
         const calendarView = new CalendarView();
         const studentSelector = new SelectorPanel();
+        const secondNav = new SecondNav();
+        const innerNav = new InnerNav();
         const calendarController = new CalendarController();
 
         return Promise.all([
             header.attach(),
             mainNav.attach(),
+            secondNav.attach({
+                title: await window.bcnI18n.getPhrase('calendar'),
+                innerNav: innerNav.attach(),
+            }),
             calendarController.attach(),
             calendarView.attach(),
             studentSelector.attach(),
@@ -39,9 +57,9 @@ class Calendar extends RootComponent {
             const [
                 headerEl,
                 mainNavEl,
+                secondNavEl,
                 calendarControllerEl,
                 calendarViewEl,
-                studentSelectorEl,
             ] = values;
 
             return div(
@@ -50,16 +68,13 @@ class Calendar extends RootComponent {
                 div(
                     '.flex-container.expand.margin-top-2',
                     mainNavEl,
+                    secondNavEl,
                     main(
                         '#calendar',
                         section(
-                            '.outer-col',
-                            studentSelectorEl,
-                            section(
-                                '.full-width',
-                                calendarControllerEl,
-                                calendarViewEl,
-                            ),
+                            '.full-width',
+                            calendarControllerEl,
+                            calendarViewEl,
                         ),
                     ),
                 ),
