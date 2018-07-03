@@ -140,6 +140,42 @@ class StudentEdit extends Component {
             return false;
         }
 
+        const now = new Date();
+        const parsedDate = new Date(this.state.studentDOB);
+
+        /* eslint-disable-next-line no-restricted-globals */
+        if (isNaN(parsedDate)) {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'student-dob',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('not_valid_dob')),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.resetSubmit();
+
+            return false;
+        }
+
+        if (parsedDate.getTime() > now.getTime()) {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'student-dob',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('not_valid_dob')),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.resetSubmit();
+
+            return false;
+        }
+
         return true;
     }
 
