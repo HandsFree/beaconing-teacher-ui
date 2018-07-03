@@ -30,7 +30,7 @@ func GetActiveLessonPlansWidget() gin.HandlerFunc {
 		}
 
 		for _, glp := range assignedPlans {
-			lessonPlan := NewLessonPlanWidget(glp.Name, glp.ID)
+			lessonPlan := NewLessonPlanWidget(glp.Name, glp.Desc, glp.ID)
 			lps = append(lps, lessonPlan)
 		}
 
@@ -48,10 +48,10 @@ func GetActiveLessonPlansWidget() gin.HandlerFunc {
 	}
 }
 
-func NewLessonPlanWidget(name string, glpID uint64) entity.LessonPlanWidget {
+func NewLessonPlanWidget(name string, desc string, glpID uint64) entity.LessonPlanWidget {
 	return entity.LessonPlanWidget{
 		Name: name,
-		Src:  "https://via.placeholder.com/512x512&text=" + name,
+		Desc: desc,
 		Link: "/lesson_manager#view?id=" + fmt.Sprintf("%d", glpID) + "&prev=lesson_manager",
 	}
 }

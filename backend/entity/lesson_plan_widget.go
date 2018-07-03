@@ -1,10 +1,7 @@
 package entity
 
-// name: Algebra
-// image: http://imgur.com/some_image.png
-// link: http://whatever.com/algebra
 type LessonPlanWidget struct {
 	Name string `json:"name"`
-	Src  string `json:"src"`
+	Desc string `json:"description"`
 	Link string `json:"link"`
 }

@@ -27,6 +27,11 @@ class GroupBox extends Component {
     }
 
     async assignGroup(assignButton: HTMLElement) {
+        const assignGroupTransl = await window.bcnI18n.getPhrase('assign_group');
+        if (!confirm(assignGroupTransl)) {
+            return;
+        }
+
         const {
             glpID,
             group,
