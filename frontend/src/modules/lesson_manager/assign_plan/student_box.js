@@ -44,6 +44,11 @@ class StudentBox extends Component {
     }
 
     async assign(assignButton: HTMLElement) {
+        const assignStudentTransl = await window.bcnI18n.getPhrase('assign_student');
+        if (!confirm(assignStudentTransl)) {
+            return;
+        }
+
         const {
             glpID,
             student,

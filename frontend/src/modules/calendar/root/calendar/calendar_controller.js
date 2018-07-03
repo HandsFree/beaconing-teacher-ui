@@ -2,7 +2,12 @@
 import { h2, p, div, span } from '../../../../core/html';
 import { Component } from '../../../../core/component';
 import nullishCheck from '../../../../core/util';
-import CustomDate from './date_helper';
+
+// https://github.com/palantir/blueprint/issues/959
+let moment = require("moment");
+if ("default" in moment) {
+    moment = moment["default"];
+}
 
 // the top menu options above the calendar
 class CalendarController extends Component {
@@ -17,6 +22,16 @@ class CalendarController extends Component {
     async updateCalendar(updateHook: string) {
         this.emit(updateHook);
         this.updateView(await this.render());
+    }
+
+    // FIXME
+    async getTranslatedMonthName(date) {
+        const monthNames = [
+            'cal_jan', 'cal_feb', 'cal_mar', 'cal_apr', 'cal_may', 'cal_jun', 'cal_jul', 'cal_aug',
+            'cal_sept', 'cal_oct', 'cal_nov', 'cal_dec',
+        ];
+        const monthIndex = date.month();
+        return await window.bcnI18n.getPhrase(monthNames[monthIndex]);   
     }
 
     async render() {
@@ -37,18 +52,18 @@ class CalendarController extends Component {
             }
         }
 
-        let currDate = new CustomDate();
+        let currDate = moment();
         if (window.sessionStorage) {
-            currDate = new CustomDate(window.sessionStorage.getItem('calendarDate'));
+            currDate = moment(window.sessionStorage.getItem('calendarDate'));
         }
 
-        const monthName = await currDate.getMonthName();
+        const monthName = await this.getTranslatedMonthName(currDate);
 
-        const year = currDate.getFullYear();
+        const year = currDate.format('YYYY');
 
         const selMonthTranslation = await window.bcnI18n.getPhrase('cal_sel_month');
         const prevMonthTranslation = await window.bcnI18n.getPhrase('cal_prev');
-        const currMonthTranslation = await window.bcnI18n.getPhrase('cal_today');
+        const currMonthTranslation = await window.bcnI18n.getPhrase('cal_current');
         const nextMonthTranslation = await window.bcnI18n.getPhrase('cal_next');
 
         return div(

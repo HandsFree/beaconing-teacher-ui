@@ -2,7 +2,12 @@
 
 import { div, p } from '../../../../core/html';
 import { Component } from '../../../../core/component';
-import CustomDate from './date_helper';
+
+// https://github.com/palantir/blueprint/issues/959
+let moment = require("moment");
+if ("default" in moment) {
+    moment = moment["default"];
+}
 
 // an individual cell in the calendar
 class CalendarCell extends Component {
@@ -10,13 +15,13 @@ class CalendarCell extends Component {
         const { dayNumber, cellDate, eventList } = this.props;
 
         let classList = '.calendar-cell';
-        if (new CustomDate().withoutTime().getTime() === cellDate.getTime()) {
+        if (moment().isSame(cellDate, 'D')) {
             classList += '.current-day';
         }
 
         const el = await eventList;
 
-        return div(classList, p('.calendar-day', dayNumber), el);
+        return div(classList, p('.calendar-day', `${dayNumber}`), el);
     }
 }
 

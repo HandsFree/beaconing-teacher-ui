@@ -6,7 +6,12 @@ import { Component } from '../../../../core/component';
 import { CalendarEvent, CalendarEventList } from './calendar_event';
 import { CalendarCell, CalendarHeadingCell, CalendarNextMonthCell, CalendarPrevMonthCell } from './calendar_cell';
 import nullishCheck from '../../../../core/util';
-import CustomDate from './date_helper';
+
+// https://github.com/palantir/blueprint/issues/959
+let moment = require("moment");
+if ("default" in moment) {
+    moment = moment["default"];
+}
 
 // NOTE
 // we could abstract cells to avoid the event list
@@ -25,7 +30,7 @@ class CalendarView extends Component {
     state = {
         // the date, specifically the month, this calendar
         // will bew a view of.
-        currDate: new CustomDate(),
+        currDate: moment(),
         eventMap: new Map(),
     };
 
@@ -47,21 +52,21 @@ class CalendarView extends Component {
     // array or we insert an array when writing an event.
     // note that we strip the time from the date given
     // so that we can index the hashmap just from mm/dd/yyyy
-    writeEvent(eventDate: CustomDate, event: Object) {
+    writeEvent(eventDate, event: Object) {
         // store the date in the event object
         // WITH the time included.
-        event.date = eventDate;
+        event.date = eventDate.toDate();
 
-        const newDate = eventDate.withoutTime();
-        console.log('[Calendar] writing ', event, ' time ', newDate.getTime());
+        const newDate = eventDate.clone().startOf('D');
+        console.log('[Calendar] writing ', event, ' time ', newDate);
 
-        const events = this.state.eventMap.get(newDate.getTime());
+        const events = this.state.eventMap.get(newDate.format());
         if (events) {
             events.push(event);
             // re-write into hashmap
-            this.state.eventMap.set(newDate.getTime(), events);
+            this.state.eventMap.set(newDate.format(), events);
         } else {
-            this.state.eventMap.set(newDate.getTime(), [event]);
+            this.state.eventMap.set(newDate.format(), [event]);
         }
     }
 
@@ -90,7 +95,6 @@ class CalendarView extends Component {
     // loads all of the events from the glps
     // of the given student id
     async loadEvents(studentId: number | string) {
-        console.log(studentId);
         if (studentId === 'none') {
             return;
         }
@@ -102,9 +106,11 @@ class CalendarView extends Component {
             const { glp } = glpBox;
 
             if (glpBox.availableFrom) {
-                console.log(`[Calendar] writing event ${glpBox.availableFrom}`);
+                const availDate = moment(glpBox.availableFrom).startOf('D');
 
-                this.writeEvent(new CustomDate(glpBox.availableFrom), {
+                console.log(`[Calendar] writing event ${availDate.format()}`);
+
+                this.writeEvent(availDate, {
                     name: glp.name,
                     id: glp.id,
                     desc: glp.description,
@@ -114,27 +120,29 @@ class CalendarView extends Component {
     }
 
     async currMonth() {
-        this.state.currDate = new CustomDate();
+        this.state.currDate = moment();
         window.sessionStorage.setItem('calendarDate', this.state.currDate);
         this.updateView(await this.render());
     }
 
     async prevMonth() {
         const date = this.state.currDate;
-        const firstDay = new CustomDate(date.getFullYear(), date.getMonth(), 1);
-        this.state.currDate = new CustomDate(firstDay - 1);
+        const prevMonth = date.clone().subtract(1, 'M');
+        console.log('[Calendar] Previous month ', prevMonth.format());
+
+        this.state.currDate = prevMonth;
+
         window.sessionStorage.setItem('calendarDate', this.state.currDate);
-        console.log('[Calendar] prev ', this.state.currDate);
         this.updateView(await this.render());
     }
 
     async nextMonth() {
         const date = this.state.currDate;
-        const lastDay = new CustomDate(date.getFullYear(), date.getMonth(), date.daysInMonth() + 1);
-        console.log('[Calendar] last day ', lastDay);
-        this.state.currDate = new CustomDate(lastDay + 1);
+        const nextMonth = date.clone().add(1, 'M');
+        console.log('[Calendar] Next month is ', nextMonth.format());
+        this.state.currDate = nextMonth;
+
         window.sessionStorage.setItem('calendarDate', this.state.currDate);
-        console.log('[Calendar] ', this.state.currDate);
         this.updateView(await this.render());
     }
 
@@ -143,7 +151,9 @@ class CalendarView extends Component {
         // for this particular month
 
         const calDate = this.state.currDate;
-        const firstDay = calDate.firstDay();
+
+        const firstDay = calDate.clone().startOf('M');
+        console.log("[Calendar] Displaying calendar for ", firstDay.format());
 
         // rows of calendar cells in the calendar
         const rows = [];
@@ -157,8 +167,8 @@ class CalendarView extends Component {
             rows.push(cellProm);
         }
 
-        const offset = firstDay.getDay() - 1;
-        const prevMonth = new CustomDate(firstDay - 1);
+        const offset = firstDay.day() - 1;
+        const prevMonth = firstDay.clone().subtract(1, 'M').endOf('M');
         const prevMonthDays = prevMonth.daysInMonth();
 
         // calculates how many cells to create for the
@@ -173,19 +183,21 @@ class CalendarView extends Component {
 
         // work out days in current month
         const numDays = calDate.daysInMonth();
-        console.log(numDays);
         for (let i = offset; i < offset + numDays; i++) {
             const dayNumber = (i - offset) + 1;
 
-            const cellDate = new CustomDate(firstDay.getFullYear(), firstDay.getMonth(), dayNumber).withoutTime();
+            const cellDate = firstDay.clone().day(i + 1).startOf('D');
 
             const { eventMap } = this.state;
 
             // here we attach the event components
             // if there are any events for this day.
             const events = [];
-            if (eventMap.has(cellDate.getTime())) {
-                const storedEvents = eventMap.get(cellDate.getTime());
+
+            const eventDateKey = cellDate.clone().startOf('D').format();
+
+            if (eventMap.has(eventDateKey)) {
+                const storedEvents = eventMap.get(eventDateKey);
                 for (const event of storedEvents) {
                     events.push(new CalendarEvent().attach({
                         name: event.name,
