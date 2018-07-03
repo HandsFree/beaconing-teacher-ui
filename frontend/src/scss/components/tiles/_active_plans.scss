@@ -21,10 +21,6 @@
 			border-bottom: none;
 		}
 
-		.description {
-			text-align: right;
-		}
-
 		@include for-tablet-portrait-up {
 			padding: 1em;
 		}
