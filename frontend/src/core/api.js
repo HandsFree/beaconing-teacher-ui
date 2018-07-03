@@ -375,7 +375,7 @@ class APICore {
 
         const glp = await this.post(`//${window.location.host}/api/v1/glp`, glpJSON);
 
-        console.log(glp);
+        console.log('[API Core] addGLP result: ', glp);
 
         if (glp.name === data.name) {
             glpStatus = true;
