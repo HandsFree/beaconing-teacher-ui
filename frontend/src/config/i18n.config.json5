@@ -2737,6 +2737,17 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+    not_valid_dob: {
+        'en-GB': 'Please enter a valid date of birth!',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
 
     // Success Messages //
 
