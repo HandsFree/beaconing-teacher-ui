@@ -2406,8 +2406,8 @@
         'pt-PT': '',
     },
 
-    cal_inspect_student: {
-		'en-GB': 'Inspect Student',
+    cal_select_student: {
+		'en-GB': 'Select Student',
         'fr-FR': '',
         'es-ES': '',
         'it-IT': '',
@@ -2442,8 +2442,8 @@
         'pt-PT': '',
     },
 
-    cal_no_students_for_this_group: {
-        'en-GB': 'No students for this group',
+    cal_no_students_in_group: {
+        'en-GB': 'No students are in this group',
         'fr-FR': '',
         'es-ES': '',
         'it-IT': '',
@@ -2478,7 +2478,7 @@
         'pt-PT': '',
     },
 
-    cal_today: {
+    cal_current: {
         'en-GB': 'Current',
         'fr-FR': '',
         'es-ES': '',
@@ -2820,6 +2820,39 @@
     },
     glp_nd: {
         'en-GB': 'GLP not deleted!',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    empty_field: {
+        'en-GB': '%s is empty!',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    more_students_needed: {
+        'en-GB': 'A minimum of 2 students is required to create a group!',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    not_valid_dob: {
+        'en-GB': 'Please enter a valid date of birth!',
         'fr-FR': '',
         'es-ES': '',
         'it-IT': '',

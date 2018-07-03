@@ -33,7 +33,7 @@ class Status extends Component {
         return label(
             `.status-message${typeClass}`,
             elementID === false ? {} : {
-                for: elementID,
+                htmlFor: elementID,
             },
             strong(`${heading}: `),
             span(message),

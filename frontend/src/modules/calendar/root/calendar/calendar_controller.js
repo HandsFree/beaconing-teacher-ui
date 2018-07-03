@@ -63,7 +63,7 @@ class CalendarController extends Component {
 
         const selMonthTranslation = await window.bcnI18n.getPhrase('cal_sel_month');
         const prevMonthTranslation = await window.bcnI18n.getPhrase('cal_prev');
-        const currMonthTranslation = await window.bcnI18n.getPhrase('cal_today');
+        const currMonthTranslation = await window.bcnI18n.getPhrase('cal_current');
         const nextMonthTranslation = await window.bcnI18n.getPhrase('cal_next');
 
         return div(

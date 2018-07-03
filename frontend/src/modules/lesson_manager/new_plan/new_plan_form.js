@@ -1,5 +1,5 @@
 // @flow
-import { section, div, a, i, h1, form, input, select, option, p, label, span, small, textarea } from '../../../core/html';
+import { section, div, a, i, h1, form, input, p, label, span, textarea } from '../../../core/html';
 
 import { Component } from '../../../core/component';
 import Status from '../../status';
@@ -15,10 +15,120 @@ class NewPlanForm extends Component {
         planYear: '',
         planLearningObjectives: [''],
         planCompetences: [''],
-        planPublic: true, // TODO: allow teacher to decide visibility
+        planPublic: false,
     };
 
-    async createPlan(planButton: EventTarget) {
+    async resetSubmit() {
+        const planButton = document.getElementById('create-plan-button');
+        planButton.textContent = await window.bcnI18n.getPhrase('lm_create_plan');
+    }
+
+    async checkFields() {
+        // TODO: reduce duped code
+        if (this.state.planName === '') {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'plan-name',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('empty_field')).replace('%s', `'${await window.bcnI18n.getPhrase('lm_plan_name')}'`),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.resetSubmit();
+
+            return false;
+        }
+
+        if (this.state.planDescription === '') {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'plan-description',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('empty_field')).replace('%s', `'${await window.bcnI18n.getPhrase('lm_plan_desc')}'`),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.resetSubmit();
+
+            return false;
+        }
+
+        if (this.state.planDomain === '') {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'plan-domain',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('empty_field')).replace('%s', `'${await window.bcnI18n.getPhrase('lm_plan_domain')}'`),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.resetSubmit();
+
+            return false;
+        }
+
+        if (this.state.planTopic === '') {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'plan-topic',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('empty_field')).replace('%s', `'${await window.bcnI18n.getPhrase('lm_plan_topic')}'`),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.resetSubmit();
+
+            return false;
+        }
+
+        if (this.state.planAgeGroup === '') {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'plan-age-group',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('empty_field')).replace('%s', `'${await window.bcnI18n.getPhrase('lm_plan_ag')}'`),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.resetSubmit();
+
+            return false;
+        }
+
+        if (this.state.planYear === '') {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'plan-year',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('empty_field')).replace('%s', `'${await window.bcnI18n.getPhrase('lm_plan_year')}'`),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.resetSubmit();
+
+            return false;
+        }
+
+        return true;
+    }
+
+    async createPlan() {
+        if (await this.checkFields() === false) {
+            return;
+        }
+
         const obj = {
             name: this.state.planName,
             category: this.state.planCategory,
@@ -31,8 +141,6 @@ class NewPlanForm extends Component {
             competences: this.state.planCompetences,
             public: this.state.planPublic,
         };
-
-        console.log(obj);
 
         const status = await window.beaconingAPI.addGLP(obj);
         const statusMessage = new Status();
@@ -51,7 +159,7 @@ class NewPlanForm extends Component {
 
             this.appendView(statusMessageEl);
 
-            planButton.textContent = await window.bcnI18n.getPhrase('lm_create_plan');
+            this.resetSubmit();
 
             return;
         }
@@ -63,9 +171,9 @@ class NewPlanForm extends Component {
             message: await window.bcnI18n.getPhrase('plan_nc'),
         });
 
-        planButton.textContent = await window.bcnI18n.getPhrase('lm_create_plan');
-
         this.appendView(statusMessageEl);
+
+        this.resetSubmit();
     }
 
     async render() {
@@ -226,6 +334,52 @@ class NewPlanForm extends Component {
                                 },
                             ),
                         ),
+                        label(
+                            span(await window.bcnI18n.getPhrase('lm_vis')),
+                            div(
+                                '.radio',
+                                span('Public'),
+                                input(
+                                    '#plan-vis-public',
+                                    {
+                                        type: 'radio',
+                                        onchange: (event) => {
+                                            const { target } = event;
+
+                                            if (target.checked) {
+                                                const radioEl = document.getElementById('plan-vis-private');
+
+                                                radioEl.checked = false;
+
+                                                this.state.planPublic = true;
+                                            }
+                                        },
+                                    },
+                                ),
+                            ),
+                            div(
+                                '.radio',
+                                span('Private'),
+                                input(
+                                    '#plan-vis-private',
+                                    {
+                                        type: 'radio',
+                                        onchange: (event) => {
+                                            const { target } = event;
+
+                                            if (target.checked) {
+                                                const radioEl = document.getElementById('plan-vis-public');
+
+                                                radioEl.checked = false;
+
+                                                this.state.planPublic = false;
+                                            }
+                                        },
+                                        checked: true,
+                                    },
+                                ),
+                            ),
+                        ),
                         div(
                             '.flex-justify-end.margin-top-10',
                             div(
@@ -233,7 +387,7 @@ class NewPlanForm extends Component {
                                 {
                                     onclick: (event) => {
                                         const { target } = event;
-                                        this.createPlan(target);
+                                        this.createPlan();
 
                                         target.textContent = `${creatingText}...`;
                                     },

@@ -30,7 +30,53 @@ class GroupForm extends Component {
         }
     }
 
+    async resetSubmit() {
+        const groupButton = document.getElementById('create-group-button');
+        groupButton.textContent = await window.bcnI18n.getPhrase('cr_create_group');
+    }
+
+    async checkFields() {
+        // TODO: reduce duped code
+        if (this.state.groupName === '') {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'group-name',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('empty_field')).replace('%s', `'${await window.bcnI18n.getPhrase('cr_group_name')}'`),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.resetSubmit();
+
+            return false;
+        }
+
+        if (this.studentList.length < 2) {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: false,
+                heading: 'Error',
+                type: 'error',
+                message: await window.bcnI18n.getPhrase('more_students_needed'),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.resetSubmit();
+
+            return false;
+        }
+
+        return true;
+    }
+
     async createGroup() {
+        if (await this.checkFields() === false) {
+            return;
+        }
+
         const obj = {
             name: this.state.groupName,
             category: this.state.groupCategory,
@@ -56,9 +102,7 @@ class GroupForm extends Component {
 
             this.appendView(statusMessageEl);
 
-            const groupButton = document.getElementById('create-group-button');
-
-            groupButton.textContent = await window.bcnI18n.getPhrase('cr_create_group');
+            this.resetSubmit();
 
             return;
         }
@@ -70,11 +114,9 @@ class GroupForm extends Component {
             message: await window.bcnI18n.getPhrase('group_nc'),
         });
 
-        const groupButton = document.getElementById('create-group-button');
-
-        groupButton.textContent = await window.bcnI18n.getPhrase('cr_create_group');
-
         this.appendView(statusMessageEl);
+
+        this.resetSubmit();
     }
 
     async render() {

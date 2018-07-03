@@ -35,7 +35,23 @@ class StudentEdit extends Component {
 
         if (student) {
             this.state.student = student;
-            this.state.studentGender = nullishCheck(student.profile?.gender, 'male');
+
+            this.state.studentUsername = nullishCheck(student?.username, '');
+            this.state.studentFirstName = nullishCheck(student?.profile?.firstName, '');
+            this.state.studentLastName = nullishCheck(student?.profile?.lastName, '');
+            this.state.studentDOB = nullishCheck(student?.profile?.DOB, '');
+            this.state.studentEmail = nullishCheck(student?.email, '');
+            this.state.studentAddress = nullishCheck(student?.profile?.address, {
+                line1: '',
+                line2: '',
+                city: '',
+                country: '',
+                county: '',
+                postcode: '',
+            });
+            this.state.studentLang = nullishCheck(student?.language, 'en-GB');
+            this.state.studentGender = nullishCheck(student?.profile?.gender, 'male');
+            this.state.studentSchool = nullishCheck(student?.profile?.school, '');
 
             return;
         }
@@ -43,7 +59,131 @@ class StudentEdit extends Component {
         throw new Error('[Student Edit] Student not found!');
     }
 
-    async updateStudent(studentButton: EventTarget) {
+    async changeButtons(completed: boolean) {
+        const doneButton = document.getElementById('edit-student-done');
+        const studentButton = document.getElementById('update-student-button');
+
+        if (completed) {
+            studentButton.textContent = await window.bcnI18n.getPhrase('cr_student_update');
+            doneButton.textContent = await window.bcnI18n.getPhrase('done');
+
+            return;
+        }
+
+        studentButton.textContent = await window.bcnI18n.getPhrase('cr_student_update');
+        doneButton.textContent = await window.bcnI18n.getPhrase('cancel');
+    }
+
+    async checkFields() {
+        // TODO: reduce duped code
+        if (this.state.studentUsername === '') {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'student-username',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('empty_field')).replace('%s', `'${await window.bcnI18n.getPhrase('cr_student_username')}'`),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.changeButtons(false);
+
+            return false;
+        }
+
+        if (this.state.studentFirstName === '') {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'student-first-name',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('empty_field')).replace('%s', `'${await window.bcnI18n.getPhrase('cr_student_fn')}'`),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.changeButtons(false);
+
+            return false;
+        }
+
+        if (this.state.studentLastName === '') {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'student-last-name',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('empty_field')).replace('%s', `'${await window.bcnI18n.getPhrase('cr_student_ln')}'`),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.changeButtons(false);
+
+            return false;
+        }
+
+        if (this.state.studentDOB === '') {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'student-dob',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('empty_field')).replace('%s', `'${await window.bcnI18n.getPhrase('cr_student_dob')}'`),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.changeButtons(false);
+
+            return false;
+        }
+
+        const now = new Date();
+        const parsedDate = new Date(this.state.studentDOB);
+
+        /* eslint-disable-next-line no-restricted-globals */
+        if (isNaN(parsedDate)) {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'student-dob',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('not_valid_dob')),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.resetSubmit();
+
+            return false;
+        }
+
+        if (parsedDate.getTime() > now.getTime()) {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'student-dob',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('not_valid_dob')),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.resetSubmit();
+
+            return false;
+        }
+
+        return true;
+    }
+
+    async updateStudent() {
+        if (await this.checkFields() === false) {
+            return;
+        }
+
         const { student } = this.state;
 
         const obj = {
@@ -87,10 +227,7 @@ class StudentEdit extends Component {
 
             this.appendView(statusMessageEl);
 
-            const doneButton = document.getElementById('edit-student-done');
-
-            studentButton.textContent = await window.bcnI18n.getPhrase('cr_student_update');
-            doneButton.textContent = await window.bcnI18n.getPhrase('done');
+            this.changeButtons(true);
 
             this.emit('StudentNameUpdate');
 
@@ -104,7 +241,7 @@ class StudentEdit extends Component {
             message: await window.bcnI18n.getPhrase('student_nu'),
         });
 
-        studentButton.textContent = await window.bcnI18n.getPhrase('cr_student_update');
+        this.changeButtons(false);
 
         this.appendView(statusMessageEl);
     }
@@ -427,7 +564,7 @@ class StudentEdit extends Component {
                                     {
                                         onclick: (event) => {
                                             const { target } = event;
-                                            this.updateStudent(target);
+                                            this.updateStudent();
 
                                             target.textContent = `${updatingText}...`;
                                         },

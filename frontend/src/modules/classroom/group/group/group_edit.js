@@ -4,6 +4,7 @@ import { section, div, form, p, input, label, span, select, option, small } from
 import { Component } from '../../../../core/component';
 import Status from '../../../status';
 import StudentsList from './students_list';
+import nullishCheck from '../../../../core/util';
 
 class StudentEdit extends Component {
     state = {
@@ -28,6 +29,10 @@ class StudentEdit extends Component {
         if (group) {
             this.state.group = group;
 
+            this.state.groupName = nullishCheck(group?.name, '');
+            this.state.groupCategory = nullishCheck(group?.category, '');
+            this.state.studentList = nullishCheck(group?.students, []);
+
             return;
         }
 
@@ -47,7 +52,63 @@ class StudentEdit extends Component {
         }
     }
 
-    async updateGroup(groupButton: EventTarget) {
+    async changeButtons(completed: boolean) {
+        const doneButton = document.getElementById('edit-group-done');
+        const groupButton = document.getElementById('update-group-button');
+
+        if (completed) {
+            groupButton.textContent = await window.bcnI18n.getPhrase('cr_update_group');
+            doneButton.textContent = await window.bcnI18n.getPhrase('done');
+
+            return;
+        }
+
+        groupButton.textContent = await window.bcnI18n.getPhrase('cr_create_group');
+        doneButton.textContent = await window.bcnI18n.getPhrase('cancel');
+    }
+
+    async checkFields() {
+        // TODO: reduce duped code
+        if (this.state.groupName === '') {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'group-name',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('empty_field')).replace('%s', `'${await window.bcnI18n.getPhrase('cr_group_name')}'`),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.changeButtons(false);
+
+            return false;
+        }
+
+        if (this.studentList.length < 2) {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: false,
+                heading: 'Error',
+                type: 'error',
+                message: await window.bcnI18n.getPhrase('more_students_needed'),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.changeButtons(false);
+
+            return false;
+        }
+
+        return true;
+    }
+
+    async updateGroup() {
+        if (await this.checkFields() === false) {
+            return;
+        }
+
         const { group } = this.state;
 
         // console.log(this.state.groupCategory);
@@ -56,7 +117,7 @@ class StudentEdit extends Component {
             id: group.id,
             name: this.state.groupName === '' ? group.name : this.state.groupName,
             category: this.state.groupCategory === '' ? group.category : this.state.groupCategory,
-            students: this.studentList.length >= 1 ? this.studentList : group.students,
+            students: this.studentList.length >= 2 ? this.studentList : group.students,
         };
 
         // console.log('Group Obj: ', obj);
@@ -78,10 +139,7 @@ class StudentEdit extends Component {
 
             this.appendView(statusMessageEl);
 
-            const doneButton = document.getElementById('edit-group-done');
-
-            groupButton.textContent = await window.bcnI18n.getPhrase('cr_update_group');
-            doneButton.textContent = await window.bcnI18n.getPhrase('done');
+            this.changeButtons(true);
 
             this.emit('GroupNameUpdate');
 
@@ -95,7 +153,7 @@ class StudentEdit extends Component {
             message: await window.bcnI18n.getPhrase('group_nu'),
         });
 
-        groupButton.textContent = await window.bcnI18n.getPhrase('cr_update_group');
+        this.changeButtons(false);
 
         this.appendView(statusMessageEl);
     }
@@ -193,11 +251,11 @@ class StudentEdit extends Component {
                                 await window.bcnI18n.getPhrase('cancel'),
                             ),
                             div(
-                                '#create-group-button.button-action',
+                                '#update-group-button.button-action',
                                 {
                                     onclick: (event) => {
                                         const { target } = event;
-                                        this.updateGroup(target);
+                                        this.updateGroup();
 
                                         target.textContent = `${updatingText}...`;
                                     },
