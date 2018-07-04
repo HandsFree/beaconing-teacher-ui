@@ -151,7 +151,7 @@ class SelectorPanel extends Component {
     }
 
     async init() {
-        window.sessionStorage.setItem('calendarSelectionType', null);
+        this.showStudents();
     }
 
     async render() {
@@ -159,7 +159,7 @@ class SelectorPanel extends Component {
         switch (selectionType) {
         case 'students':
             const studentsEl = await new StudentSelector().attach();
-        return section('.full-width', studentsEl);
+            return section('.full-width', studentsEl);
         case 'groups':
             const groupEl = await new GroupSelector().attach();
             return section('.full-width', groupEl);

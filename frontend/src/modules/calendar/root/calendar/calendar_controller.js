@@ -12,7 +12,6 @@ class CalendarController extends Component {
     };
 
     async init() {
-        window.sessionStorage.setItem('calendarSelection', 'none');
     }
 
     async refresh() {

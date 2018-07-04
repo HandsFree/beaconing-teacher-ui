@@ -38,8 +38,9 @@ class CalendarView extends Component {
         if (calendarSelJSON !== 'none') {
             const calendarSel = JSON.parse(calendarSelJSON);
             await this.loadEvents(calendarSel);
-            this.updateView(await this.render());
         }
+
+        this.updateView(await this.render());
     }
 
     // the event map stores key => value
@@ -89,10 +90,15 @@ class CalendarView extends Component {
     async loadGLPEvents(glpId : number) {
         console.log(`[Calendar] writing events for group ${glpId}`);
     
-        const glpBoxes = await this.getGroupAssigned(glpId);
+        const glpBoxes = await window.beaconingAPI.getGroupAssigned(glpId);
         for (const glpBox of glpBoxes) {
             const { glp } = glpBox;
-    
+
+            // bad glp somehow?
+            if (nullishCheck(glp, 'none') === 'none') {
+                continue;
+            }
+
             if (glpBox.availableFrom) {
                 const availDate = moment(glpBox.availableFrom).startOf('D');
     
@@ -131,18 +137,17 @@ class CalendarView extends Component {
     async loadEvents(calendarSelection) {
         if (calendarSelection.student !== null) {
             const {id} = calendarSelection.student;
-            this.loadStudentEvents(id);
+            await this.loadStudentEvents(id);
         }
         else if (calendarSelection.group !== null) {
             const {id} = calendarSelection.group;
-            this.loadStudentEvents(id);
+            await this.loadGLPEvents(id);
         }
     }
 
     async currMonth() {
         this.state.currDate = moment();
         window.sessionStorage.setItem('calendarDate', this.state.currDate);
-        this.updateView(await this.render());
     }
 
     async prevMonth() {
