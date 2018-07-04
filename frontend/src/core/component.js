@@ -104,7 +104,14 @@ class RootComponent implements RootComponentInterface {
         }
     }
 
-    emit(name: string) {
+    emit(name: string, data: ?Object = null) {
+        if (data) {
+            const ev = new CustomEvent(name, { detail: data });
+            window.dispatchEvent(ev);
+
+            return;
+        }
+
         const ev = new Event(name);
         window.dispatchEvent(ev);
     }
@@ -240,7 +247,14 @@ class Component implements ComponentInterface {
         }
     }
 
-    emit(name: string) {
+    emit(name: string, data: ?Object = null) {
+        if (data) {
+            const ev = new CustomEvent(name, { detail: data });
+            window.dispatchEvent(ev);
+
+            return;
+        }
+
         const ev = new Event(name);
         window.dispatchEvent(ev);
     }
