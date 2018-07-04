@@ -51,6 +51,7 @@ class Header extends Component {
                     a(
                         {
                             href: `//${window.location.host}/auth/logout`,
+                            tabIndex: 2,
                         },
                         await window.bcnI18n.getPhrase('log_out'),
                     ),
@@ -60,6 +61,7 @@ class Header extends Component {
                     a(
                         {
                             href: `//${window.location.host}/profile`,
+                            tabIndex: 2,
                         },
                         img({
                             src: teacherIMG,
