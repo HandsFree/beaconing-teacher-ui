@@ -10,8 +10,14 @@ class AuthoringTool extends RootComponent {
         message: this.handleIDChange,
     };
 
+    async init() {
+        if (!this?.params?.id) {
+            throw new Error('[Authoring Tool] No ID Provided!');
+        }
+    }
+
     handleIDChange(event) {
-        if (event?.data?.event === 'glp_opened' && event?.data?.id) {
+        if (event?.data?.event === 'glp_opened' && event?.data?.id && event.data.id !== this.params.id) {
             window.history.pushState('', 'Authoring Tool', `/authoring_tool?id=${event.data.id}`);
         }
     }
