@@ -16,14 +16,16 @@ const { length: cpuCount } = require('os').cpus();
 const prodBanner = `Beaconing Teacher UI
 ------------
 Authors:
-Elliott Judd <elliott.judd@hands-free.co.uk>`;
+Elliott Judd <elliott.judd@hands-free.co.uk>
+Felix Angell <felix.angell@hands-free.co.uk>`;
 
 const devBanner = `--- Compiled in Developer Mode ---
 
 Beaconing Teacher UI
 ------------
 Authors:
-Elliott Judd <elliott.judd@hands-free.co.uk>`;
+Elliott Judd <elliott.judd@hands-free.co.uk>
+Felix Angell <felix.angell@hands-free.co.uk>`;
 
 //
 // ─── LOADER OPTIONS ─────────────────────────────────────────────────────────────
