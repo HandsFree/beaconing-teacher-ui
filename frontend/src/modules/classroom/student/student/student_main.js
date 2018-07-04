@@ -1,5 +1,5 @@
 // @flow
-import { section, div } from '../../../../core/html';
+import { h2, section, div } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 import AssignedGLPs from './assigned_glps';
@@ -65,11 +65,11 @@ class StudentMain extends Component {
 
     async render() {
         const assignedGLPs = new AssignedGLPs();
-
         const assignedGLPsEl = await assignedGLPs.attach(this.state);
 
         return div(
             '#pane-container.flex-column.flex-grow',
+            h2('Assigned Plans'),
             assignedGLPsEl,
         );
     }

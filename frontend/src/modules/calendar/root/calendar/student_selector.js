@@ -1,22 +1,85 @@
 // @flow
 import { label, section, h2, p, div, ul, li, span, select, option } from '../../../../core/html';
 import { Component } from '../../../../core/component';
+import Loading from '../../../loading';
 import nullishCheck from '../../../../core/util';
 
+class CalendarSelectionItem extends Component {
+    async render() {
+        const {
+            name,
+        } = this.props;
+
+        return div('.cal-sel-item', 
+            p('.item-name', {
+                onclick: () => {
+                    // do selection thingy!
+                    alert(`selected group ${name}`);
+                },
+            }, `${name}`)
+        );
+    }
+}
+
 class StudentSelector extends Component {
-    async refresh(groupId, studentsList) {
-        this.state = {
-            groupId,
-            studentsList: nullishCheck(studentsList, []),
-        };
+    async render() {
+        return div(
+            h2('Students:')
+        );
+    }
+}
+
+class GroupSelector extends Component {
+    async render() {
+        const loading = new Loading();
+
+        const loadingEl = await loading.attach();
+
+        return section(
+            '.flex-column',
+            loadingEl,
+        );
+    }
+
+    async afterMount() {
+        const groupSet = await window.beaconingAPI.getGroups();
+        const selItemsProm = [];
+
+        for (const group of groupSet) {
+            const selItem = new CalendarSelectionItem();
+            const selItemEl = selItem.attach({
+                name: group.name,
+            });
+
+            selItemsProm.push(selItemEl);
+        }
+
+        const groupsEl = await Promise.all(selItemsProm).then(elements => elements);
+        this.updateView(groupsEl);
+    }
+}
+
+class SelectorPanel extends Component {
+    updateHooks = {
+        CalendarSelectorShowStudents: this.showStudents,
+        CalendarSelectorShowGroups: this.showGroups,
+    };
+
+    async showStudents() {
+        this.updateSelector('students');
+    }
+
+    async showGroups() {
+        this.updateSelector('groups');
+    }
+
+    async updateSelector(selType : string) {
+        window.sessionStorage.setItem('calendarSelectionType', selType);
         this.updateView(await this.render());
     }
 
     async init() {
-        const storedId = nullishCheck(window.sessionStorage.getItem('calendarStudentID'), 'none');
-        if (storedId !== 'none') {
-            this.setStudent(storedId);
-        }
+        window.sessionStorage.setItem('calendarSelectionType', '');
     }
 
     async setStudent(id) {
@@ -39,118 +102,17 @@ class StudentSelector extends Component {
     }
 
     async render() {
-        const { groupId } = this.state;
-        if (!groupId) {
-            return p(await window.bcnI18n.getPhrase('cal_no_group_selected'));
+        const selectionType = window.sessionStorage.getItem('calendarSelectionType');
+        switch (selectionType) {
+        case 'students':
+            const studentsEl = await new StudentSelector().attach();
+        return section('.full-width', studentsEl);
+        case 'groups':
+            const groupEl = await new GroupSelector().attach();
+            return section('.full-width', groupEl);
+        default:
+            return section('.full-width', p("Debugging!"));
         }
-
-        const { studentsList } = this.state;
-
-        const students = [];
-        for (const student of studentsList) {
-            const studentId = student.id;
-
-            // cache this in local storage or something?
-            students.push(await window.beaconingAPI.getStudent(studentId));
-        }
-
-        const studentLinks = [];
-        for (const student of students) {
-            let studentName = student.username;
-            if (student.profile.firstName) {
-                studentName += `, ${student.profile.firstName} ${student.profile.lastName}`;
-            }
-
-            studentLinks.push(
-                li(span(
-                    '.fake-link',
-                    {
-                        onclick: () => {
-                            this.setStudent(student.id);
-                        },
-                    },
-                    studentName,
-                )),
-            );
-        }
-
-        let studentSet = p(await window.bcnI18n.getPhrase('cal_no_students_in_group'));
-        if (studentLinks.length > 0) {
-            studentSet = ul(studentLinks);
-        }
-
-        return div(
-            '.full-width',
-            h2(`${await window.bcnI18n.getPhrase('cal_select_student')}:`),
-            studentSet,
-        );
-    }
-}
-
-class StudentGroupSelector extends Component {
-    state = {
-        groupId: 0,
-    };
-
-    async render() {
-        const options = [];
-        const vals = Object.values(await window.beaconingAPI.getGroups());
-        const groups = nullishCheck(vals, []);
-
-        options.push(
-            option({
-                disabled: true,
-                selected: true,
-                value: '',
-            }, 'Select a group')
-        );
-
-        for (const group of groups) {
-            options.push(
-                option({
-                    value: `${group.id}`,
-                    students: group.students,
-                    selected: this.state.groupId === group.id,
-                }, `${group.name}`),
-            );
-        }
-
-        const studentSel = new StudentSelector();
-
-        const studentSelEl = await studentSel.attach();
-
-        const selectGroupTranslation = await window.bcnI18n.getPhrase('cal_select_group');
-
-        return div(
-            '.group-select',
-            h2(`${selectGroupTranslation}:`),
-            label(
-                '.select',
-                select(
-                    '#so-class-list',
-                    {
-                        onchange: (event) => {
-                            const self = event.target;
-                            const selectedOption = self.options[self.selectedIndex];
-                            const groupId = selectedOption.value;
-                            studentSel.refresh(groupId, selectedOption.students);
-                        },
-                    },
-                    options,
-                ),
-            ),
-            studentSelEl,
-        );
-    }
-}
-
-class SelectorPanel extends Component {
-    async render() {
-        const studentGroupSelector = new StudentGroupSelector();
-
-        const studentGroupSelEl = await studentGroupSelector.attach();
-
-        return section('.full-width', studentGroupSelEl);
     }
 }
 

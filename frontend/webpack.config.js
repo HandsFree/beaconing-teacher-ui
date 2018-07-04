@@ -1,7 +1,7 @@
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const DashboardPlugin = require('webpack-dashboard/plugin');
 const OfflinePlugin = require('offline-plugin');
-const threadLoader = require('thread-loader');
+// const threadLoader = require('thread-loader');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
@@ -31,13 +31,13 @@ Felix Angell <felix.angell@hands-free.co.uk>`;
 // ─── LOADER OPTIONS ─────────────────────────────────────────────────────────────
 //
 
-threadLoader.warmup({
-    workers: cpuCount - 1,
-    workerParallelJobs: 50,
-}, [
-    'babel-loader',
-    'sass-loader',
-]);
+// threadLoader.warmup({
+//     workers: cpuCount - 1,
+//     workerParallelJobs: 50,
+// }, [
+//     'babel-loader',
+//     'sass-loader',
+// ]);
 
 const babelLoader = {
     loader: 'babel-loader',
@@ -53,13 +53,13 @@ const optLoaders = [
             cacheDirectory: resolve(__dirname, 'node_modules', '.cache', 'cache-loader'),
         },
     },
-    {
-        loader: 'thread-loader',
-        options: {
-            workers: cpuCount - 1,
-            workerParallelJobs: 50,
-        },
-    },
+    // {
+    //     loader: 'thread-loader',
+    //     options: {
+    //         workers: cpuCount - 1,
+    //         workerParallelJobs: 50,
+    //     },
+    // },
 ];
 
 //

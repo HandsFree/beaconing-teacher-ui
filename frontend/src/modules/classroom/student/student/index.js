@@ -9,6 +9,7 @@ import SecondNav from '../../../nav/second';
 import InnerNav from '../../inner_nav';
 import StudentMain from './student_main';
 import StudentAside from './student_aside';
+import StudentInfo from './student_info';
 
 class Student extends RootComponent {
     studentExists = true;
@@ -41,6 +42,7 @@ class Student extends RootComponent {
         const mainNav = new MainNav();
         const secondNav = new SecondNav();
         const innerNav = new InnerNav();
+        const studentInfo = new StudentInfo();
         const studentMain = new StudentMain();
         const studentAside = new StudentAside();
 
@@ -54,6 +56,7 @@ class Student extends RootComponent {
                 title: await window.bcnI18n.getPhrase('classroom'),
                 innerNav: innerNav.attach(),
             }),
+            studentInfo.attach(this.params),
             studentMain.attach(this.params),
             studentAside.attach(this.params),
         ]).then((values) => {
@@ -62,6 +65,7 @@ class Student extends RootComponent {
                 footerEl,
                 mainNavEl,
                 secondNavEl,
+                studentInfoEl,
                 studentMainEl,
                 studentAsideEl,
             ] = values;
@@ -77,6 +81,7 @@ class Student extends RootComponent {
                         '#student.no-padding',
                         div(
                             '.flex-spacebetween.flex-align-stretch.flex-grow',
+                            studentInfoEl,
                             studentMainEl,
                             studentAsideEl,
                         ),
