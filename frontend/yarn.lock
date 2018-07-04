@@ -1452,7 +1452,7 @@ cache-base@^1.0.1:
     union-value "^1.0.0"
     unset-value "^1.0.0"
 
-cache-loader@^1.2.2:
+cache-loader@1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/cache-loader/-/cache-loader-1.2.2.tgz#6d5c38ded959a09cc5d58190ab5af6f73bd353f5"
   dependencies:
@@ -4576,7 +4576,7 @@ obuf@^1.0.0, obuf@^1.1.1:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/obuf/-/obuf-1.1.2.tgz#09bea3343d41859ebd446292d11c9d4db619084e"
 
-offline-plugin@^5.0.5:
+offline-plugin@5.0.5:
   version "5.0.5"
   resolved "https://registry.yarnpkg.com/offline-plugin/-/offline-plugin-5.0.5.tgz#e9b16c569d19899af9c923f5bc260705578ffeba"
   dependencies:
@@ -5582,7 +5582,7 @@ right-align@^0.1.1:
   dependencies:
     align-text "^0.1.1"
 
-rimraf@2, rimraf@^2.2.8, rimraf@^2.5.4, rimraf@^2.6.1, rimraf@^2.6.2:
+rimraf@2, rimraf@2.6.2, rimraf@^2.2.8, rimraf@^2.5.4, rimraf@^2.6.1, rimraf@^2.6.2:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.6.2.tgz#2ed8150d24a16ea8651e6d6ef0f47c4158ce7a36"
   dependencies:
@@ -6232,7 +6232,7 @@ text-table@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
 
-thread-loader@^1.1.5:
+thread-loader@1.1.5:
   version "1.1.5"
   resolved "https://registry.yarnpkg.com/thread-loader/-/thread-loader-1.1.5.tgz#7f9d6701f773734fff1832586779021ab8571917"
   dependencies:
@@ -6613,7 +6613,7 @@ webpack-cli@3.0.8:
     v8-compile-cache "^2.0.0"
     yargs "^11.1.0"
 
-webpack-dashboard@^2.0.0:
+webpack-dashboard@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/webpack-dashboard/-/webpack-dashboard-2.0.0.tgz#70db22e7bb5b12b4a7fde82de87ce01eed8d921c"
   dependencies:
