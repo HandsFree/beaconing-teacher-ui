@@ -81,6 +81,9 @@ const mainSettings = (dev, devServer, dash, verbose) => {
         }),
         new HardSourceWebpackPlugin({
             cacheDirectory: `${resolve(__dirname, 'node_modules', '.cache', 'hard-source')}/[confighash]`,
+            info: {
+                level: 'warn',
+            },
         }),
         new MiniCssExtractPlugin({
             filename: 'app.css',
