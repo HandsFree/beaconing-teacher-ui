@@ -58,6 +58,11 @@ class GLPBox extends Component {
     }
 
     async unassignPlan() {
+        const unassignGLPTransl = await window.bcnI18n.getPhrase('unassign_glp');
+        if (!confirm(unassignGLPTransl)) {
+            return;
+        }
+
         const {
             assignedGLPID,
             groupID,

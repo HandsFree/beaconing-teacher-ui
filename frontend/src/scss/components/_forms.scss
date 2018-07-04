@@ -51,8 +51,18 @@ form.create-group, form.create-student, form.create-new-plan, form.edit-teacher 
 		flex-direction: column;
 		margin: 0.75em 0.5em;
 
-		span {
+		> span {
 			font-size: 0.9em;
+		}
+
+		.radio {
+			margin: 0.5em 0;
+			align-items: center;
+
+			> span {
+				font-size: 1.2em;
+				margin: 0 0.35em;
+			}
 		}
 	}
 

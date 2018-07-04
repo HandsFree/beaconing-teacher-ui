@@ -1,5 +1,5 @@
 // @flow
-import { section, div, p } from '../../../../core/html';
+import { section, div, p, a } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 import Loading from '../../../loading';
@@ -21,7 +21,7 @@ class AssignedGLPs extends Component {
         const { id } = this.props;
         const assignedGLPs = await window.beaconingAPI.getGroupAssigned(id);
 
-        if (assignedGLPs) {
+        if (assignedGLPs && assignedGLPs.length >= 1) {
             const glps = [];
 
             for (const glp of assignedGLPs) {
@@ -61,8 +61,15 @@ class AssignedGLPs extends Component {
         }
 
         const el = div(
-            '#assigned-plans-container.status',
-            p('No Assigned GLPs!'),
+            '#assigned-plans-container.status.flex-column.flex-align-center',
+            p(await window.bcnI18n.getPhrase('no_assigned_glps')),
+            a(
+                '.link-underline',
+                {
+                    href: `//${window.location.host}/lesson_manager`,
+                },
+                await window.bcnI18n.getPhrase('cr_go_to_lib'),
+            ),
         );
 
         this.updateView(el);

@@ -24,7 +24,121 @@ class GroupForm extends Component {
         studentSchool: '',
     };
 
+    async resetSubmit() {
+        const studentButton = document.getElementById('create-student-button');
+        studentButton.textContent = await window.bcnI18n.getPhrase('cr_create_student');
+    }
+
+    async checkFields() {
+        // TODO: reduce duped code
+        if (this.state.studentUsername === '') {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'student-username',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('empty_field')).replace('%s', `'${await window.bcnI18n.getPhrase('cr_student_username')}'`),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.resetSubmit();
+
+            return false;
+        }
+
+        if (this.state.studentFirstName === '') {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'student-first-name',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('empty_field')).replace('%s', `'${await window.bcnI18n.getPhrase('cr_student_fn')}'`),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.resetSubmit();
+
+            return false;
+        }
+
+        if (this.state.studentLastName === '') {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'student-last-name',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('empty_field')).replace('%s', `'${await window.bcnI18n.getPhrase('cr_student_ln')}'`),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.resetSubmit();
+
+            return false;
+        }
+
+        if (this.state.studentDOB === '') {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'student-dob',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('empty_field')).replace('%s', `'${await window.bcnI18n.getPhrase('cr_student_dob')}'`),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.resetSubmit();
+
+            return false;
+        }
+
+        const now = new Date();
+        const parsedDate = new Date(this.state.studentDOB);
+
+        /* eslint-disable-next-line no-restricted-globals */
+        if (isNaN(parsedDate)) {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'student-dob',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('not_valid_dob')),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.resetSubmit();
+
+            return false;
+        }
+
+        if (parsedDate.getTime() > now.getTime()) {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'student-dob',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('not_valid_dob')),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.resetSubmit();
+
+            return false;
+        }
+
+        return true;
+    }
+
     async createStudent() {
+        if (await this.checkFields() === false) {
+            return;
+        }
+
         const obj = {
             username: this.state.studentUsername,
             email: this.state.studentEmail,
@@ -65,9 +179,7 @@ class GroupForm extends Component {
 
             this.appendView(statusMessageEl);
 
-            const studentButton = document.getElementById('create-student-button');
-
-            studentButton.textContent = await window.bcnI18n.getPhrase('cr_create_student');
+            this.resetSubmit();
 
             return;
         }
@@ -79,11 +191,9 @@ class GroupForm extends Component {
             message: await window.bcnI18n.getPhrase('student_nc'),
         });
 
-        const studentButton = document.getElementById('create-student-button');
-
-        studentButton.textContent = await window.bcnI18n.getPhrase('cr_create_student');
-
         this.appendView(statusMessageEl);
+
+        this.resetSubmit();
     }
 
     async render() {
@@ -185,7 +295,7 @@ class GroupForm extends Component {
                         label(
                             span(await window.bcnI18n.getPhrase('cr_student_dob')),
                             input(
-                                '#student-dossignedb.text-field',
+                                '#student-dob.text-field',
                                 {
                                     type: 'date',
                                     placeholder: await window.bcnI18n.getPhrase('cr_enter_dob'),

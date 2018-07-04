@@ -1,13 +1,9 @@
 // @flow
+import moment from 'moment';
+
 import { h2, p, div, span } from '../../../../core/html';
 import { Component } from '../../../../core/component';
 import nullishCheck from '../../../../core/util';
-
-// https://github.com/palantir/blueprint/issues/959
-let moment = require("moment");
-if ("default" in moment) {
-    moment = moment["default"];
-}
 
 // the top menu options above the calendar
 class CalendarController extends Component {
@@ -63,7 +59,7 @@ class CalendarController extends Component {
 
         const selMonthTranslation = await window.bcnI18n.getPhrase('cal_sel_month');
         const prevMonthTranslation = await window.bcnI18n.getPhrase('cal_prev');
-        const currMonthTranslation = await window.bcnI18n.getPhrase('cal_today');
+        const currMonthTranslation = await window.bcnI18n.getPhrase('cal_current');
         const nextMonthTranslation = await window.bcnI18n.getPhrase('cal_next');
 
         return div(

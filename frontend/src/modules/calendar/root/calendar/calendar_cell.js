@@ -1,13 +1,8 @@
 // @flow
+import moment from 'moment';
 
 import { div, p } from '../../../../core/html';
 import { Component } from '../../../../core/component';
-
-// https://github.com/palantir/blueprint/issues/959
-let moment = require("moment");
-if ("default" in moment) {
-    moment = moment["default"];
-}
 
 // an individual cell in the calendar
 class CalendarCell extends Component {
