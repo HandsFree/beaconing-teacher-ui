@@ -269,7 +269,7 @@ class StudentEdit extends Component {
                                 '#student-username.text-field',
                                 {
                                     type: 'text',
-                                    placeholder: 'jessdoe',
+                                    placeholder: await window.bcnI18n.getPhrase('cr_enter_username'),
                                     value: student.username,
                                     oninput: (event) => {
                                         const { target } = event;
@@ -285,7 +285,7 @@ class StudentEdit extends Component {
                                 '#student-first-name.text-field',
                                 {
                                     type: 'text',
-                                    placeholder: 'Jessica',
+                                    placeholder: await window.bcnI18n.getPhrase('cr_enter_fn'),
                                     value: student.profile.firstName,
                                     oninput: (event) => {
                                         const { target } = event;
@@ -301,7 +301,7 @@ class StudentEdit extends Component {
                                 '#student-last-name.text-field',
                                 {
                                     type: 'text',
-                                    placeholder: 'Doe',
+                                    placeholder: await window.bcnI18n.getPhrase('cr_enter_ln'),
                                     value: student.profile.lastName,
                                     oninput: (event) => {
                                         const { target } = event;
@@ -352,6 +352,7 @@ class StudentEdit extends Component {
                                 '#student-dob.text-field',
                                 {
                                     type: 'date',
+                                    placeholder: await window.bcnI18n.getPhrase('cr_enter_dob'),
                                     value: student.profile.DOB,
                                     oninput: (event) => {
                                         const { target } = event;
@@ -459,6 +460,7 @@ class StudentEdit extends Component {
                                 '#student-school.text-field',
                                 {
                                     type: 'text',
+                                    placeholder: await window.bcnI18n.getPhrase('cr_enter_school'),
                                     value: student.profile.school,
                                     oninput: (event) => {
                                         const { target } = event;
@@ -474,7 +476,7 @@ class StudentEdit extends Component {
                                 '#student-address1.text-field',
                                 {
                                     type: 'text',
-                                    placeholder: await window.bcnI18n.getPhrase('cr_addr_line_1'),
+                                    placeholder: await window.bcnI18n.getPhrase('cr_student_adrs_ln1'),
                                     value: student.profile.address.line1,
                                     oninput: (event) => {
                                         const { target } = event;
@@ -487,7 +489,7 @@ class StudentEdit extends Component {
                                 '#student-address2.text-field',
                                 {
                                     type: 'text',
-                                    placeholder: await window.bcnI18n.getPhrase('cr_addr_line_2'),
+                                    placeholder: await window.bcnI18n.getPhrase('cr_student_adrs_ln2'),
                                     value: student.profile.address.line2,
                                     oninput: (event) => {
                                         const { target } = event;
@@ -500,7 +502,7 @@ class StudentEdit extends Component {
                                 '#student-address-city.text-field',
                                 {
                                     type: 'text',
-                                    placeholder: await window.bcnI18n.getPhrase('cr_city'),
+                                    placeholder: await window.bcnI18n.getPhrase('cr_student_adrs_city'),
                                     value: student.profile.address.city,
                                     oninput: (event) => {
                                         const { target } = event;
@@ -513,7 +515,7 @@ class StudentEdit extends Component {
                                 '#student-address-county.text-field',
                                 {
                                     type: 'text',
-                                    placeholder: await window.bcnI18n.getPhrase('cr_county'),
+                                    placeholder: await window.bcnI18n.getPhrase('cr_student_adrs_county'),
                                     value: student.profile.address.county,
                                     oninput: (event) => {
                                         const { target } = event;
@@ -526,7 +528,7 @@ class StudentEdit extends Component {
                                 '#student-address-country.text-field',
                                 {
                                     type: 'text',
-                                    placeholder: await window.bcnI18n.getPhrase('cr_country'),
+                                    placeholder: await window.bcnI18n.getPhrase('cr_student_adrs_country'),
                                     value: student.profile.address.country,
                                     oninput: (event) => {
                                         const { target } = event;
@@ -539,7 +541,7 @@ class StudentEdit extends Component {
                                 '#student-address-code.text-field',
                                 {
                                     type: 'text',
-                                    placeholder: await window.bcnI18n.getPhrase('cr_postcode'),
+                                    placeholder: await window.bcnI18n.getPhrase('cr_student_adrs_pc'),
                                     value: student.profile.address.postcode,
                                     oninput: (event) => {
                                         const { target } = event;
