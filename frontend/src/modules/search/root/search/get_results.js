@@ -8,8 +8,9 @@ class SearchResults extends Component {
     async init() {
         const query = decodeURIComponent(this.props.query);
 
-        this.state.results = await window.beaconingAPI.getSearchResults(query);
+        this.state.results = await window.beaconingAPI.getSearchResults({ query });
     }
+
     async render() {
         const {
             MatchedGLPS,
