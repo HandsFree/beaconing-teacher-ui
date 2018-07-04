@@ -109,6 +109,7 @@ const mainSettings = (dev, devServer, dash, verbose) => {
                     use: [
                         MiniCssExtractPlugin.loader,
                         'css-loader',
+                        ...optLoaders,
                         'sass-loader',
                     ],
                 },
