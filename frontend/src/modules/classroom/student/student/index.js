@@ -56,7 +56,7 @@ class Student extends RootComponent {
                 title: await window.bcnI18n.getPhrase('classroom'),
                 innerNav: innerNav.attach(),
             }),
-            studentInfo.attach(this.params),
+            // studentInfo.attach(this.params),
             studentMain.attach(this.params),
             studentAside.attach(this.params),
         ]).then((values) => {
@@ -65,7 +65,7 @@ class Student extends RootComponent {
                 footerEl,
                 mainNavEl,
                 secondNavEl,
-                studentInfoEl,
+                // studentInfoEl,
                 studentMainEl,
                 studentAsideEl,
             ] = values;
@@ -80,8 +80,7 @@ class Student extends RootComponent {
                     main(
                         '#student.no-padding',
                         div(
-                            '.flex-spacebetween.flex-align-stretch.flex-grow',
-                            studentInfoEl,
+                            '.margin-20.flex-spacebetween.flex-align-stretch.flex-grow',
                             studentMainEl,
                             studentAsideEl,
                         ),

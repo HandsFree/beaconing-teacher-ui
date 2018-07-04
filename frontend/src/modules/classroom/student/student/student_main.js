@@ -68,7 +68,7 @@ class StudentMain extends Component {
         const assignedGLPsEl = await assignedGLPs.attach(this.state);
 
         return div(
-            '#pane-container.flex-column.flex-grow',
+            '#pane-container.flex-column.flex-grow.margin-20',
             h2('Assigned Plans'),
             assignedGLPsEl,
         );
