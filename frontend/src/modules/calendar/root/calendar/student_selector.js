@@ -23,9 +23,31 @@ class CalendarSelectionItem extends Component {
 
 class StudentSelector extends Component {
     async render() {
-        return div(
-            h2('Students:')
+        const loading = new Loading();
+
+        const loadingEl = await loading.attach();
+
+        return section(
+            '.flex-column',
+            loadingEl,
         );
+    }
+
+    async afterMount() {
+        const studentsSet = await window.beaconingAPI.getStudents();
+        const selItemsProm = [];
+
+        for (const student of studentsSet) {
+            const selItem = new CalendarSelectionItem();
+            const selItemEl = selItem.attach({
+                username: student.username,
+            });
+
+            selItemsProm.push(selItemEl);
+        }
+
+        const studentsEl = await Promise.all(selItemsProm).then(elements => elements);
+        this.updateView(studentsEl);
     }
 }
 
