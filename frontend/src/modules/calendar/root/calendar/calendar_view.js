@@ -83,27 +83,18 @@ class CalendarView extends Component {
         return glps;
     }
 
-    async init() {
-
-    }
-
-    async loadGLPEvents(glpId : number) {
+    async loadGLPEvents(glpId: number) {
         console.log(`[Calendar] writing events for group ${glpId}`);
-    
+
         const glpBoxes = await window.beaconingAPI.getGroupAssigned(glpId);
         for (const glpBox of glpBoxes) {
             const { glp } = glpBox;
 
-            // bad glp somehow?
-            if (nullishCheck(glp, 'none') === 'none') {
-                continue;
-            }
-
-            if (glpBox.availableFrom) {
+            if (nullishCheck(glp, false) && glpBox.availableFrom) {
                 const availDate = moment(glpBox.availableFrom).startOf('D');
-    
+
                 console.log(`[Calendar] writing event ${availDate.format()}`);
-    
+
                 this.writeEvent(availDate, {
                     name: glp.name,
                     id: glp.id,
@@ -113,18 +104,18 @@ class CalendarView extends Component {
         }
     }
 
-    async loadStudentEvents(studentId : number) {
+    async loadStudentEvents(studentId: number) {
         console.log(`[Calendar] writing events for student ${studentId}`);
-    
+
         const glpBoxes = await this.getStudentGLPS(studentId);
         for (const glpBox of glpBoxes) {
             const { glp } = glpBox;
-    
+
             if (glpBox.availableFrom) {
                 const availDate = moment(glpBox.availableFrom).startOf('D');
-    
+
                 console.log(`[Calendar] writing event ${availDate.format()}`);
-    
+
                 this.writeEvent(availDate, {
                     name: glp.name,
                     id: glp.id,
@@ -136,11 +127,10 @@ class CalendarView extends Component {
 
     async loadEvents(calendarSelection) {
         if (calendarSelection.student !== null) {
-            const {id} = calendarSelection.student;
+            const { id } = calendarSelection.student;
             await this.loadStudentEvents(id);
-        }
-        else if (calendarSelection.group !== null) {
-            const {id} = calendarSelection.group;
+        } else if (calendarSelection.group !== null) {
+            const { id } = calendarSelection.group;
             await this.loadGLPEvents(id);
         }
     }
@@ -148,6 +138,8 @@ class CalendarView extends Component {
     async currMonth() {
         this.state.currDate = moment();
         window.sessionStorage.setItem('calendarDate', this.state.currDate);
+
+        this.updateView(await this.render());
     }
 
     async prevMonth() {
@@ -178,7 +170,7 @@ class CalendarView extends Component {
         const calDate = this.state.currDate;
 
         const firstDay = calDate.clone().startOf('M');
-        console.log("[Calendar] Displaying calendar for ", firstDay.format());
+        console.log('[Calendar] Displaying calendar for ', firstDay.format());
 
         // rows of calendar cells in the calendar
         const rows = [];
@@ -246,7 +238,7 @@ class CalendarView extends Component {
         const remain = 7 - (rows.length % 7);
         for (let dayNumber = 1; dayNumber <= remain; dayNumber++) {
             const cell = new CalendarNextMonthCell().attach({
-                dayNumber
+                dayNumber,
             });
             rows.push(cell);
         }
