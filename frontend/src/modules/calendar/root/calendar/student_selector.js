@@ -24,7 +24,8 @@ class CalendarSelectedGroup extends Component {
                                 name: name,
                             },
                         }));
-                        this.emit('CalendarProcessSelection');
+                        this.emit('RefreshCalendarController');
+                        this.emit('RefreshCalendarView');
                     },
                 },
                 'View',
@@ -53,7 +54,8 @@ class CalendarSelectedStudent extends Component {
                             },
                             group: null,
                         }));
-                        this.emit('CalendarProcessSelection');
+                        this.emit('RefreshCalendarController');
+                        this.emit('RefreshCalendarView');               
                     },
                 },
                 'View',
@@ -127,44 +129,22 @@ class GroupSelector extends Component {
 
 class SelectorPanel extends Component {
     updateHooks = {
-        CalendarSelectorShowStudents: this.showStudents,
-        CalendarSelectorShowGroups: this.showGroups,
-        CalendarProcessSelection: this.procSelection,
+        RefreshPanel: this.refreshPanel,
     };
 
-    async showStudents() {
-        this.updateSelector('students');
-    }
-
-    async showGroups() {
-        this.updateSelector('groups');
-    }
-
-    async updateSelector(selType : string) {
-        window.sessionStorage.setItem('calendarSelectionType', selType);
+    async refreshPanel() {
         this.updateView(await this.render());
     }
 
-    async procSelection() {
-        this.emit('RefreshCalendarController');
-        this.emit('RefreshCalendarView');
-    }
-
-    async init() {
-        this.showStudents();
-    }
-
     async render() {
-        const selectionType = window.sessionStorage.getItem('calendarSelectionType');
-        switch (selectionType) {
+        const selType = window.sessionStorage.getItem('calendarSelectionType');
+        switch (selType) {
         case 'students':
             const studentsEl = await new StudentSelector().attach();
             return section('.full-width', studentsEl);
         case 'groups':
             const groupEl = await new GroupSelector().attach();
             return section('.full-width', groupEl);
-        default:
-            return section('.full-width');
         }
     }
 }

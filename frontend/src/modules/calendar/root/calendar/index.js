@@ -19,7 +19,6 @@ class Calendar extends RootComponent {
             studentID = this.params.id;
         }
 
-        window.sessionStorage.setItem('calendarStudentID', studentID);
         window.sessionStorage.setItem('calendarDate', moment());
     }
 

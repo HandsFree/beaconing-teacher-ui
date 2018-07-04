@@ -11,9 +11,6 @@ class CalendarController extends Component {
         RefreshCalendarController: this.refresh,
     };
 
-    async init() {
-    }
-
     async refresh() {
         this.updateCalendar('CurrMonth');
     }
