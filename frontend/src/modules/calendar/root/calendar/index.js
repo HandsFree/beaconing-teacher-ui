@@ -9,7 +9,7 @@ import MainNav from '../../../nav/main';
 import CalendarView from './calendar_view';
 import CalendarController from './calendar_controller';
 import SelectorPanel from './student_selector';
-import SecondNav from '../../../nav/second'
+import SecondNav from '../../../nav/second';
 import CalendarInnerNav from './calendar_inner_nav';
 
 class Calendar extends RootComponent {
@@ -67,7 +67,7 @@ class Calendar extends RootComponent {
                                 calendarControllerEl,
                                 calendarViewEl,
                             ),
-                        )
+                        ),
                     ),
                 ),
             );
