@@ -141,7 +141,10 @@ class StudentEdit extends Component {
 
             this.changeButtons(true);
 
-            this.emit('GroupNameUpdate');
+            this.emit('GroupNameUpdate', {
+                groupName: this.state.groupName,
+                groupCategory: this.state.groupCategory,
+            });
 
             return;
         }
