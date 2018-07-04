@@ -1,13 +1,13 @@
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const DashboardPlugin = require('webpack-dashboard/plugin');
 const OfflinePlugin = require('offline-plugin');
-// const threadLoader = require('thread-loader');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const { resolve } = require('path');
-const { length: cpuCount } = require('os').cpus();
+// const threadLoader = require('thread-loader');
+// const { length: cpuCount } = require('os').cpus();
 
 //
 // ─── BANNERS ────────────────────────────────────────────────────────────────────
@@ -30,6 +30,8 @@ Felix Angell <felix.angell@hands-free.co.uk>`;
 //
 // ─── LOADER OPTIONS ─────────────────────────────────────────────────────────────
 //
+
+// Add thread loader if needed
 
 // threadLoader.warmup({
 //     workers: cpuCount - 1,
