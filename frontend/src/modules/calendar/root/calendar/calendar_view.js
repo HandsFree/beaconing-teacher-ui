@@ -1,4 +1,5 @@
 // @flow
+import moment from 'moment';
 
 import { div } from '../../../../core/html';
 import { Component } from '../../../../core/component';
@@ -6,12 +7,6 @@ import { Component } from '../../../../core/component';
 import { CalendarEvent, CalendarEventList } from './calendar_event';
 import { CalendarCell, CalendarHeadingCell, CalendarNextMonthCell, CalendarPrevMonthCell } from './calendar_cell';
 import nullishCheck from '../../../../core/util';
-
-// https://github.com/palantir/blueprint/issues/959
-let moment = require("moment");
-if ("default" in moment) {
-    moment = moment["default"];
-}
 
 // NOTE
 // we could abstract cells to avoid the event list

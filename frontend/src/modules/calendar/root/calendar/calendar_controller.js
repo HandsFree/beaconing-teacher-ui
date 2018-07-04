@@ -1,13 +1,9 @@
 // @flow
+import moment from 'moment';
+
 import { h2, p, div, span } from '../../../../core/html';
 import { Component } from '../../../../core/component';
 import nullishCheck from '../../../../core/util';
-
-// https://github.com/palantir/blueprint/issues/959
-let moment = require("moment");
-if ("default" in moment) {
-    moment = moment["default"];
-}
 
 // the top menu options above the calendar
 class CalendarController extends Component {

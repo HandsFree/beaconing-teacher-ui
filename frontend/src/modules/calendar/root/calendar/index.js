@@ -1,4 +1,5 @@
 // @flow
+import moment from 'moment';
 import { div, main, section } from '../../../../core/html';
 
 import { RootComponent } from '../../../../core/component';
@@ -15,12 +16,6 @@ import InnerNav from '../../../classroom/inner_nav';
 import CalendarView from './calendar_view';
 import CalendarController from './calendar_controller';
 import SelectorPanel from './student_selector';
-
-// https://github.com/palantir/blueprint/issues/959
-let moment = require("moment");
-if ("default" in moment) {
-    moment = moment["default"];
-}
 
 class Calendar extends RootComponent {
     async init() {
