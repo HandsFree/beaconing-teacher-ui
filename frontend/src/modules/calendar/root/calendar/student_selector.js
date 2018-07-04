@@ -1,8 +1,7 @@
 // @flow
-import { a, label, section, h2, p, div, ul, li, span, select, option } from '../../../../core/html';
+import { a, section, p, div } from '../../../../core/html';
 import { Component } from '../../../../core/component';
 import Loading from '../../../loading';
-import nullishCheck from '../../../../core/util';
 
 class CalendarSelectedGroup extends Component {
     async render() {
@@ -11,17 +10,16 @@ class CalendarSelectedGroup extends Component {
             name,
         } = this.props;
 
-        return div('.cal-sel-item', 
+        return div('.cal-sel-item',
             p('.item-name', `${name}`),
             p(a('.fake-link',
                 {
-                    href: '#',
                     onclick: () => {
                         window.sessionStorage.setItem('calendarSelection', JSON.stringify({
                             student: null,
                             group: {
-                                id: id,
-                                name: name,
+                                id,
+                                name,
                             },
                         }));
                         this.emit('RefreshCalendarController');
@@ -41,21 +39,20 @@ class CalendarSelectedStudent extends Component {
             username,
         } = this.props;
 
-        return div('.cal-sel-item', 
+        return div('.cal-sel-item',
             p('.item-name', `${username}`),
             p(a('.fake-link',
                 {
-                    href: '#',
                     onclick: () => {
                         window.sessionStorage.setItem('calendarSelection', JSON.stringify({
                             student: {
-                                id: id,
-                                username: username,
+                                id,
+                                username,
                             },
                             group: null,
                         }));
                         this.emit('RefreshCalendarController');
-                        this.emit('RefreshCalendarView');               
+                        this.emit('RefreshCalendarView');
                     },
                 },
                 'View',
@@ -145,6 +142,8 @@ class SelectorPanel extends Component {
         case 'groups':
             const groupEl = await new GroupSelector().attach();
             return section('.full-width', groupEl);
+        default:
+            return section('.full-width');
         }
     }
 }

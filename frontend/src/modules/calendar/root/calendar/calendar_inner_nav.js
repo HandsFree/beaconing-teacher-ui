@@ -3,10 +3,6 @@ import { div, a, span } from '../../../../core/html';
 import { Component } from '../../../../core/component';
 
 class CalendarInnerNav extends Component {
-    state = {
-        path: window.location.pathname.slice(1),
-    };
-
     async init() {
         // hack! so that we can
         // trick the menu into using students
@@ -27,16 +23,12 @@ class CalendarInnerNav extends Component {
     }
 
     async render() {
-        const { path } = this.state;
-
-        // FIXME nullish check for active items?
         return div(
             '.nav-group',
             a(
                 window.sessionStorage.getItem('calendarSelectionType') === 'students' ? '.item.active-white' : '.item',
                 {
-                    href: '#',
-                    onclick: (event) => {
+                    onclick: () => {
                         this.showStudents();
                     },
                 },
@@ -45,13 +37,12 @@ class CalendarInnerNav extends Component {
             a(
                 window.sessionStorage.getItem('calendarSelectionType') === 'groups' ? '.item.active-white' : '.item',
                 {
-                    href: '#',
-                    onclick: (event) => {
+                    onclick: () => {
                         this.showGroups();
                     },
                 },
                 span(await window.bcnI18n.getPhrase('groups')),
-            )
+            ),
         );
     }
 }

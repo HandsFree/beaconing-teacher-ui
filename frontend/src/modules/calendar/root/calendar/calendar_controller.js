@@ -43,24 +43,22 @@ class CalendarController extends Component {
     
             controllerTitle = do {
                 if (calendarSelObj.student !== null) {
-                    const {id, username} = calendarSelObj.student;
+                    const { id, username } = calendarSelObj.student;
                     
                     const student = await window.beaconingAPI.getStudent(id);
-                    const {firstName, lastName} = student;
+                    const { firstName, lastName } = student;
 
                     if (firstName !== '') {
-                        controllerTitle = `${username}'s ${calTranslation}`;
+                        `${username}'s ${calTranslation}`;
                     } else {
-                        controllerTitle = `${firstName} ${lastName}'s ${calTranslation}`;
+                        `${firstName} ${lastName}'s ${calTranslation}`;
                     }
                 } else if (calendarSelObj.group !== null) {
-                    const {id, name} = calendarSelObj.group;
-                    controllerTitle = `${name}'s ${calTranslation}`;
+                    const { name } = calendarSelObj.group;
+                    `${name}'s ${calTranslation}`;
                 }
             };
         }
-
-        // 
 
         let currDate = moment();
         if (window.sessionStorage) {
@@ -94,14 +92,12 @@ class CalendarController extends Component {
                 ', ',
 
                 span('.fake-link', {
-                    href: '',
                     onclick: () => this.updateCalendar('CurrMonth'),
                 }, currMonthTranslation),
 
                 ', ',
 
                 span('.fake-link', {
-                    href: '',
                     onclick: () => this.updateCalendar('NextMonth'),
                 }, nextMonthTranslation),
             ),

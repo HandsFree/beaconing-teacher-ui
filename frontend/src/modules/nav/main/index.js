@@ -43,7 +43,7 @@ class MainNav extends Component {
                     span(await window.bcnI18n.getPhrase('nav_lesson_manager')),
                 ),
                 a(
-                    /^calendar/.test(path) ? '.item.active' : '.item',
+                    /^calendar/.test(path) ? '.item.active-orange' : '.item',
                     {
                         href: `//${window.location.host}/calendar/`,
                         tabindex: 1,
