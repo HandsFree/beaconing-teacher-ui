@@ -1,22 +1,63 @@
 // @flow
-import { label, section, h2, p, div, ul, li, span, select, option } from '../../../../core/html';
+import { a, label, section, h2, p, div, ul, li, span, select, option } from '../../../../core/html';
 import { Component } from '../../../../core/component';
 import Loading from '../../../loading';
 import nullishCheck from '../../../../core/util';
 
-class CalendarSelectionItem extends Component {
+class CalendarSelectedGroup extends Component {
     async render() {
         const {
+            id,
             name,
         } = this.props;
 
         return div('.cal-sel-item', 
-            p('.item-name', {
-                onclick: () => {
-                    // do selection thingy!
-                    alert(`selected group ${name}`);
+            p('.item-name', `${name}`),
+            p(a('.fake-link',
+                {
+                    href: '#',
+                    onclick: () => {
+                        window.sessionStorage.setItem('calendarSelection', JSON.stringify({
+                            student: null,
+                            group: {
+                                id: id,
+                                name: name,
+                            },
+                        }));
+                        this.emit('CalendarProcessSelection');
+                    },
                 },
-            }, `${name}`)
+                'View',
+            )),
+        );
+    }
+}
+
+class CalendarSelectedStudent extends Component {
+    async render() {
+        const {
+            id,
+            username,
+        } = this.props;
+
+        return div('.cal-sel-item', 
+            p('.item-name', `${username}`),
+            p(a('.fake-link',
+                {
+                    href: '#',
+                    onclick: () => {
+                        window.sessionStorage.setItem('calendarSelection', JSON.stringify({
+                            student: {
+                                id: id,
+                                username: username,
+                            },
+                            group: null,
+                        }));
+                        this.emit('CalendarProcessSelection');
+                    },
+                },
+                'View',
+            )),
         );
     }
 }
@@ -38,8 +79,10 @@ class StudentSelector extends Component {
         const selItemsProm = [];
 
         for (const student of studentsSet) {
-            const selItem = new CalendarSelectionItem();
+            const selItem = new CalendarSelectedStudent();
+            console.log(student);
             const selItemEl = selItem.attach({
+                id: student.id,
                 username: student.username,
             });
 
@@ -68,8 +111,9 @@ class GroupSelector extends Component {
         const selItemsProm = [];
 
         for (const group of groupSet) {
-            const selItem = new CalendarSelectionItem();
+            const selItem = new CalendarSelectedGroup();
             const selItemEl = selItem.attach({
+                id: group.id,
                 name: group.name,
             });
 
@@ -85,6 +129,7 @@ class SelectorPanel extends Component {
     updateHooks = {
         CalendarSelectorShowStudents: this.showStudents,
         CalendarSelectorShowGroups: this.showGroups,
+        CalendarProcessSelection: this.procSelection,
     };
 
     async showStudents() {
@@ -100,27 +145,13 @@ class SelectorPanel extends Component {
         this.updateView(await this.render());
     }
 
-    async init() {
-        window.sessionStorage.setItem('calendarSelectionType', '');
-    }
-
-    async setStudent(id) {
-        console.log(`[Calendar] Setting student to ${id}`);
-
-        if (window.sessionStorage) {
-            const storedId = nullishCheck(window.sessionStorage.getItem('calendarStudentID'), 'none');
-
-            // dont bother setting and refreshing everything
-            // if we've selected the same student.
-            if (storedId === id) {
-                return;
-            }
-        }
-
-        window.sessionStorage.setItem('calendarStudentID', id);
-
+    async procSelection() {
         this.emit('RefreshCalendarController');
         this.emit('RefreshCalendarView');
+    }
+
+    async init() {
+        window.sessionStorage.setItem('calendarSelectionType', null);
     }
 
     async render() {
@@ -133,7 +164,7 @@ class SelectorPanel extends Component {
             const groupEl = await new GroupSelector().attach();
             return section('.full-width', groupEl);
         default:
-            return section('.full-width', p("Debugging!"));
+            return section('.full-width');
         }
     }
 }

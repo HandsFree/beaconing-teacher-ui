@@ -13,7 +13,7 @@ class CalendarInnerNav extends Component {
         return div(
             '.nav-group',
             a(
-                window.sessionStorage.getItem('calendarSelectionType') === 'students' ? '.item.active-white' : '.item',
+                '.item',
                 {
                     href: '#',
                     onclick: (event) => {
@@ -23,7 +23,7 @@ class CalendarInnerNav extends Component {
                 span(await window.bcnI18n.getPhrase('students')),
             ),
             a(
-                window.sessionStorage.getItem('calendarSelectionType') === 'groups' ? '.item.active-white' : '.item',
+                '.item',
                 {
                     href: '#',
                     onclick: (event) => {

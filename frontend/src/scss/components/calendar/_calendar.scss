@@ -77,7 +77,8 @@
 
 .outer-col {
 	display: grid;
-	grid-template-columns: 30% 70%;
+	grid-column-gap: 2em;
+	grid-template-columns: 25% 70%;
 }
 
 // this is a bit awkward
@@ -107,5 +108,15 @@
 .calendar-meta-info {
 	// aligns the name and calendar
 	// date to the left/right
+	justify-content: space-between;
+}
+
+// TODO move this into the students selectiony css file but for now 
+// im gonna slap it here.
+
+.cal-sel-item {
+	border: 1px solid #e87f62;
+	padding: 1em;
+	margin: 1em;
 	justify-content: space-between;
 }

@@ -11,6 +11,10 @@ class CalendarController extends Component {
         RefreshCalendarController: this.refresh,
     };
 
+    async init() {
+        window.sessionStorage.setItem('calendarSelection', 'none');
+    }
+
     async refresh() {
         this.updateCalendar('CurrMonth');
     }
@@ -31,22 +35,36 @@ class CalendarController extends Component {
     }
 
     async render() {
-        const studentId = nullishCheck(window.sessionStorage.getItem('calendarStudentID'), 'none');
+        // clean me
 
-        let studentGreet = '';
-        if (studentId !== 'none') {
-            const student = await window.beaconingAPI.getStudent(studentId);
-
+        let controllerTitle = '';
+        
+        const calendarSelection = nullishCheck(window.sessionStorage.getItem('calendarSelection'), 'none');
+        if (calendarSelection !== 'none') {
+            const calendarSelObj = JSON.parse(calendarSelection);
+            
             const calTranslation = await window.bcnI18n.getPhrase('calendar');
+    
+            controllerTitle = do {
+                if (calendarSelObj.student !== null) {
+                    const {id, username} = calendarSelObj.student;
+                    
+                    const student = await window.beaconingAPI.getStudent(id);
+                    const {firstName, lastName} = student;
 
-            const { profile } = student;
-
-            if (!profile.firstName) {
-                studentGreet = `${student.username}'s ${calTranslation}`;
-            } else {
-                studentGreet = `${profile.firstName} ${profile.lastName}'s ${calTranslation}`;
-            }
+                    if (firstName !== '') {
+                        controllerTitle = `${username}'s ${calTranslation}`;
+                    } else {
+                        controllerTitle = `${firstName} ${lastName}'s ${calTranslation}`;
+                    }
+                } else if (calendarSelObj.group !== null) {
+                    const {id, name} = calendarSelObj.group;
+                    controllerTitle = `${name}'s ${calTranslation}`;
+                }
+            };
         }
+
+        // 
 
         let currDate = moment();
         if (window.sessionStorage) {
@@ -66,7 +84,7 @@ class CalendarController extends Component {
             '.calendar-control',
             div(
                 '.calendar-meta-info',
-                h2('.calendar-name', `${studentGreet}`),
+                h2('.calendar-name', `${controllerTitle}`),
                 h2('.calendar-date', `${monthName} ${year}`),
             ),
 

@@ -34,10 +34,12 @@ class CalendarView extends Component {
         // we refresh the glps.
         this.state.eventMap = new Map();
 
-        const studentId = nullishCheck(window.sessionStorage.getItem('calendarStudentID'), 'none');
-
-        await this.loadEvents(studentId);
-        this.updateView(await this.render());
+        const calendarSelJSON = nullishCheck(window.sessionStorage.getItem('calendarSelection'), 'none');
+        if (calendarSelJSON !== 'none') {
+            const calendarSel = JSON.parse(calendarSelJSON);
+            await this.loadEvents(calendarSel);
+            this.updateView(await this.render());
+        }
     }
 
     // the event map stores key => value
@@ -81,36 +83,59 @@ class CalendarView extends Component {
     }
 
     async init() {
-        if (window.sessionStorage) {
-            const studentId = nullishCheck(window.sessionStorage.getItem('calendarStudentID'), 'none');
-            await this.loadEvents(studentId);
-        }
+
     }
 
-    // loads all of the events from the glps
-    // of the given student id
-    async loadEvents(studentId: number | string) {
-        if (studentId === 'none') {
-            return;
-        }
-
-        console.log(`[Calendar] writing events for student ${studentId}`);
-
-        const glpBoxes = await this.getStudentGLPS(studentId);
+    async loadGLPEvents(glpId : number) {
+        console.log(`[Calendar] writing events for group ${glpId}`);
+    
+        const glpBoxes = await this.getGroupAssigned(glpId);
         for (const glpBox of glpBoxes) {
             const { glp } = glpBox;
-
+    
             if (glpBox.availableFrom) {
                 const availDate = moment(glpBox.availableFrom).startOf('D');
-
+    
                 console.log(`[Calendar] writing event ${availDate.format()}`);
-
+    
                 this.writeEvent(availDate, {
                     name: glp.name,
                     id: glp.id,
                     desc: glp.description,
                 });
             }
+        }
+    }
+
+    async loadStudentEvents(studentId : number) {
+        console.log(`[Calendar] writing events for student ${studentId}`);
+    
+        const glpBoxes = await this.getStudentGLPS(studentId);
+        for (const glpBox of glpBoxes) {
+            const { glp } = glpBox;
+    
+            if (glpBox.availableFrom) {
+                const availDate = moment(glpBox.availableFrom).startOf('D');
+    
+                console.log(`[Calendar] writing event ${availDate.format()}`);
+    
+                this.writeEvent(availDate, {
+                    name: glp.name,
+                    id: glp.id,
+                    desc: glp.description,
+                });
+            }
+        }
+    }
+
+    async loadEvents(calendarSelection) {
+        if (calendarSelection.student !== null) {
+            const {id} = calendarSelection.student;
+            this.loadStudentEvents(id);
+        }
+        else if (calendarSelection.group !== null) {
+            const {id} = calendarSelection.group;
+            this.loadStudentEvents(id);
         }
     }
 
