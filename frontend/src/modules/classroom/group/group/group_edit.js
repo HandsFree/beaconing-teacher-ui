@@ -193,6 +193,7 @@ class StudentEdit extends Component {
                                 '#group-name.text-field',
                                 {
                                     type: 'text',
+                                    placeholder: await window.bcnI18n.getPhrase('cr_group_enter_name'),
                                     value: group.name,
                                     oninput: (event) => {
                                         const { target } = event;
