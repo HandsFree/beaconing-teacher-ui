@@ -6,6 +6,7 @@ import { div, a, small } from '../../../../core/html';
 import { Component } from '../../../../core/component';
 import Loading from '../../../loading';
 import LoadGLPs from './load_glps';
+import nullishCheck from '../../../../core/util';
 
 const listConfig = {
     valueNames: ['name', 'domain', 'topic', 'description'],
@@ -14,6 +15,8 @@ const listConfig = {
 
 class GLPHandle extends Component {
     list: List;
+
+    eventsLoaded: boolean = false;
 
     updateHooks = {
         SortActiveGLPsClicked: this.startActiveGLPs,
@@ -235,8 +238,24 @@ class GLPHandle extends Component {
         this.loadGLPs('owned', 'desc', false);
     }
 
+    loadEvents() {
+        if (!this.eventsLoaded) {
+            window.addEventListener('pageshow', () => {
+                this.startLoad();
+                this.afterMount();
+            });
+
+            this.eventsLoaded = true;
+        }
+    }
+
     async afterViewUpdate() {
-        this.list = new List('new-plans', listConfig);
+        this.loadEvents();
+
+        const listEl = document.getElementById('new-plans');
+        if (nullishCheck(listEl, false)) {
+            this.list = new List('new-plans', listConfig);
+        }
     }
 }
 
