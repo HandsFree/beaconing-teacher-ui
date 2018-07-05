@@ -22,7 +22,7 @@ class CalendarSelectedGroup extends Component {
                             const data = nullishCheck(window.sessionStorage.getItem('calendarSelection'), 'none');
                             if (data !== 'none') {
                                 const groupData = JSON.parse(data);
-                                if (groupData.group.id === id) {
+                                if (groupData.group !== null && groupData.group.id === id) {
                                     return;
                                 }
                             }
@@ -63,7 +63,7 @@ class CalendarSelectedStudent extends Component {
                             const data = nullishCheck(window.sessionStorage.getItem('calendarSelection'), 'none');
                             if (data !== 'none') {
                                 const studentData = JSON.parse(data);
-                                if (studentData.student.id === id) {
+                                if (studentData.student !== null && studentData.student.id === id) {
                                     return;
                                 }
                             }
