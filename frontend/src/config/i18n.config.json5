@@ -2389,7 +2389,7 @@
     },
 
     cal_prev: {
-        'en-GB': 'Previous',
+        'en-GB': 'Previous Month',
         'fr-FR': '',
         'es-ES': '',
         'it-IT': '',
@@ -2413,7 +2413,7 @@
     },
 
     cal_current: {
-        'en-GB': 'Current',
+        'en-GB': 'Current Month',
         'fr-FR': '',
         'es-ES': '',
         'it-IT': '',
@@ -2425,7 +2425,7 @@
     },
 
     cal_next: {
-        'en-GB': 'Next',
+        'en-GB': 'Next Month',
         'fr-FR': '',
         'es-ES': '',
         'it-IT': '',

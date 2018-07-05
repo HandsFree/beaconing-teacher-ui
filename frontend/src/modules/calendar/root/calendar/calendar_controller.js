@@ -1,7 +1,7 @@
 // @flow
 import moment from 'moment';
 
-import { h2, p, div, span } from '../../../../core/html';
+import { a, h2, p, div, span } from '../../../../core/html';
 import { Component } from '../../../../core/component';
 import nullishCheck from '../../../../core/util';
 
@@ -82,24 +82,24 @@ class CalendarController extends Component {
                 h2('.calendar-date', `${monthName} ${year}`),
             ),
 
-            p(
-                `${selMonthTranslation}: `,
-
-                span('.fake-link', {
+            div('.calendar-buttons',
+                p(a('.btn', {
+                    role: 'button',
                     onclick: () => this.updateCalendar('PrevMonth'),
-                }, prevMonthTranslation),
+                }, prevMonthTranslation)),
+                ' ',
 
-                ', ',
-
-                span('.fake-link', {
+                !currDate.isSame(moment(), 'D') ? 
+                p(a('.btn', {
+                    role: 'button',
                     onclick: () => this.updateCalendar('CurrMonth'),
-                }, currMonthTranslation),
-
-                ', ',
-
-                span('.fake-link', {
+                }, currMonthTranslation)) : div(),
+                
+                ' ',
+                p(a('.btn', {
+                    role: 'button',
                     onclick: () => this.updateCalendar('NextMonth'),
-                }, nextMonthTranslation),
+                }, nextMonthTranslation)),
             ),
         );
     }

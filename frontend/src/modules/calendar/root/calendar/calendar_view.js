@@ -136,6 +136,12 @@ class CalendarView extends Component {
     }
 
     async currMonth() {
+        // we're already on the same day there is no need
+        // to trigger a re-render
+        if (this.state.currDate.isSame(moment(), 'D')) {
+            return;
+        }
+
         this.state.currDate = moment();
         window.sessionStorage.setItem('calendarDate', this.state.currDate);
 
