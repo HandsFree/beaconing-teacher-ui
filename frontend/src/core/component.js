@@ -66,9 +66,9 @@ class RootComponent implements RootComponentInterface {
                 return;
             }
 
-            const first = document.body.firstChild;
+            const { firstChild } = document.body;
 
-            document.body.insertBefore(view, first);
+            document.body.insertBefore(view, firstChild);
         } else {
             throw new Error('[Beaconing] Document Body not found');
         }
@@ -168,7 +168,7 @@ class Component implements ComponentInterface {
 
     updateHooks: { [string]: Function } = {};
 
-
+    // TODO Reduce complexity
     updateView(view: HTMLElement) {
         const func = () => {
             let parent = nullishCheck(this.view?.parentElement, false);
@@ -191,10 +191,20 @@ class Component implements ComponentInterface {
                 if (Array.isArray(view)) {
                     const firstEl = view[0];
 
-                    parent.insertAdjacentElement('afterbegin', firstEl);
+                    if (nullishCheck(parent.insertAdjacentElement, false)) {
+                        parent.insertAdjacentElement('afterbegin', firstEl);
 
-                    for (let i = 1; i < view.length; i++) {
-                        view[i - 1].insertAdjacentElement('afterend', view[i]);
+                        for (let i = 1; i < view.length; i++) {
+                            view[i - 1].insertAdjacentElement('afterend', view[i]);
+                        }
+                    } else {
+                        const { firstChild } = parent;
+
+                        parent.insertBefore(firstEl, firstChild);
+
+                        for (let i = 1; i < view.length; i++) {
+                            parent.insertBefore(view[i], view[i - 1]);
+                        }
                     }
 
                     this.view = view;
@@ -202,7 +212,13 @@ class Component implements ComponentInterface {
                 }
 
                 if (!Array.isArray(view) && Array.isArray(this.view)) {
-                    parent.insertAdjacentElement('afterbegin', view);
+                    if (nullishCheck(parent.insertAdjacentElement, false)) {
+                        parent.insertAdjacentElement('afterbegin', view);
+                    } else {
+                        const { firstChild } = parent;
+
+                        parent.insertBefore(view, firstChild);
+                    }
 
                     this.view = view;
                 }
