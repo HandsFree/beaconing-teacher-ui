@@ -38,11 +38,17 @@ export interface ComponentInterface {
 
 class RootComponent implements RootComponentInterface {
     containerID: string = 'app';
+
     view: HTMLElement | Array<HTMLElement>;
+
     state: { [string]: any } = {};
+
     params: { [string]: string } = {};
+
     loadEvent: Event = new Event('UILoaded');
+
     loadDone: boolean = false;
+
     updateHooks: { [string]: Function } = {};
 
     updateView(view: HTMLElement) {
@@ -54,7 +60,15 @@ class RootComponent implements RootComponentInterface {
             }
 
             this.view = view;
-            document.body.insertAdjacentElement('afterbegin', this.view);
+
+            if (nullishCheck(document.body?.insertAdjacentElement, false)) {
+                document.body.insertAdjacentElement('afterbegin', this.view);
+                return;
+            }
+
+            const first = document.body.firstChild;
+
+            document.body.insertBefore(view, first);
         } else {
             throw new Error('[Beaconing] Document Body not found');
         }
@@ -147,9 +161,13 @@ class RootComponent implements RootComponentInterface {
 
 class Component implements ComponentInterface {
     state: { [string]: any } = {};
+
     view: HTMLElement;
+
     props: { [string]: any } = {};
+
     updateHooks: { [string]: Function } = {};
+
 
     updateView(view: HTMLElement) {
         const func = () => {
