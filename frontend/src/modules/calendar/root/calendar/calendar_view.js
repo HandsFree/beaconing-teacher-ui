@@ -83,17 +83,19 @@ class CalendarView extends Component {
         return glps;
     }
 
-    async loadGLPEvents(glpId: number) {
-        console.log(`[Calendar] writing events for group ${glpId}`);
+    async loadGroupEvents(group: number) {
+        console.log(`[Calendar] writing events for group ${group}`);
 
-        const glpBoxes = await window.beaconingAPI.getGroupAssigned(glpId);
+        const glpBoxes = await window.beaconingAPI.getGroupAssigned(group);
+        console.log(`[Calendar] loaded ${glpBoxes.length} events`)
+
         for (const glpBox of glpBoxes) {
-            const { glp } = glpBox;
+            const glp = await window.beaconingAPI.getGLP(glpBox.gamifiedLessonPathId);
 
             if (nullishCheck(glp, false) && glpBox.availableFrom) {
                 const availDate = moment(glpBox.availableFrom).startOf('D');
 
-                console.log(`[Calendar] writing event ${availDate.format()}`);
+                console.log(`[Calendar] writing GROUP event ${availDate.format()}`);
 
                 this.writeEvent(availDate, {
                     name: glp.name,
@@ -111,7 +113,7 @@ class CalendarView extends Component {
         for (const glpBox of glpBoxes) {
             const { glp } = glpBox;
 
-            if (glpBox.availableFrom) {
+            if (nullishCheck(glp, false) && glpBox.availableFrom) {
                 const availDate = moment(glpBox.availableFrom).startOf('D');
 
                 console.log(`[Calendar] writing event ${availDate.format()}`);
@@ -127,15 +129,23 @@ class CalendarView extends Component {
 
     async loadEvents(calendarSelection) {
         if (calendarSelection.student !== null) {
+            console.log("[Calendar] Loading student events");
             const { id } = calendarSelection.student;
             await this.loadStudentEvents(id);
         } else if (calendarSelection.group !== null) {
+            console.log("[Calendar] Loading group events");
             const { id } = calendarSelection.group;
-            await this.loadGLPEvents(id);
+            await this.loadGroupEvents(id);
         }
     }
 
     async currMonth() {
+        // we're already on the same day there is no need
+        // to trigger a re-render
+        if (this.state.currDate.isSame(moment(), 'D')) {
+            return;
+        }
+
         this.state.currDate = moment();
         window.sessionStorage.setItem('calendarDate', this.state.currDate);
 

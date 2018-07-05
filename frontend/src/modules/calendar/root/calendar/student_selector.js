@@ -2,6 +2,7 @@
 import { a, section, p, div } from '../../../../core/html';
 import { Component } from '../../../../core/component';
 import Loading from '../../../loading';
+import nullishCheck from '../../../../core/util';
 
 class CalendarSelectedGroup extends Component {
     async render() {
@@ -15,6 +16,18 @@ class CalendarSelectedGroup extends Component {
             p(a('.fake-link',
                 {
                     onclick: () => {
+                        // don't do anything if we've already selected
+                        // this group
+                        if (window.sessionStorage.getItem('calendarSelectionType') === 'groups') {
+                            const data = nullishCheck(window.sessionStorage.getItem('calendarSelection'), 'none');
+                            if (data !== 'none') {
+                                const groupData = JSON.parse(data);
+                                if (groupData.group !== null && groupData.group.id === id) {
+                                    return;
+                                }
+                            }
+                        }
+
                         window.sessionStorage.setItem('calendarSelection', JSON.stringify({
                             student: null,
                             group: {
@@ -44,6 +57,18 @@ class CalendarSelectedStudent extends Component {
             p(a('.fake-link',
                 {
                     onclick: () => {
+                        // don't do anything if we've already selected
+                        // this group
+                        if (window.sessionStorage.getItem('calendarSelectionType') === 'students') {
+                            const data = nullishCheck(window.sessionStorage.getItem('calendarSelection'), 'none');
+                            if (data !== 'none') {
+                                const studentData = JSON.parse(data);
+                                if (studentData.student !== null && studentData.student.id === id) {
+                                    return;
+                                }
+                            }
+                        }
+
                         window.sessionStorage.setItem('calendarSelection', JSON.stringify({
                             student: {
                                 id,

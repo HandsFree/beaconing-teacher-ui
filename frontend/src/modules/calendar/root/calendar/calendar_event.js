@@ -1,19 +1,17 @@
 // @flow
 
-import { div, a } from '../../../../core/html';
+import { p, div, a } from '../../../../core/html';
 import { Component } from '../../../../core/component';
 
 class CalendarEvent extends Component {
     async render() {
         const { name, id } = this.props;
 
-        return div(
-            '.event',
-            a(
-                {
+        return div('.event',
+            p('.event-name', 
+                a({
                     href: `//${window.location.host}/lesson_manager/#view?id=${id}`,
-                },
-                div('.event-name', name),
+                }, name)
             ),
         );
     }
