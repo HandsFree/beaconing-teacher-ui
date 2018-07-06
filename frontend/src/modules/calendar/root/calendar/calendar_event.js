@@ -21,7 +21,7 @@ class CalendarDueEvent extends Component {
 
 class CalendarEvent extends Component {
     async render() {
-        const { name, id, due } = this.props;
+        const { name, id, due, avail } = this.props;
 
         return div('.event',
             p('.event-name', name),
@@ -35,8 +35,9 @@ class CalendarEvent extends Component {
                 }, i('.icon-search'))),
                 
                 // don't show this option if we have no due date
-                // available for the GLP.
-                nullishCheck(due, false) ? 
+                // available for the GLP. OR if the due date
+                // is the same date as the assignment.
+                nullishCheck(due, false) && !due.isSame(avail, 'D') ? 
                 a('.fake-link', {
                     target: '_blank',
                     onclick: () => {

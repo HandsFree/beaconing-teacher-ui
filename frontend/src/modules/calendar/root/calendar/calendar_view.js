@@ -144,6 +144,7 @@ class CalendarView extends Component {
                     desc: glp.description,
                     id: glp.id,
                     due: glp.availableUntil,
+                    avail: glp.availableFrom,
                 }));
             }
         }
@@ -166,6 +167,7 @@ class CalendarView extends Component {
                     desc: glp.description,
                     id: glp.id,
                     due: glp.availableUntil,
+                    avail: glp.availableFrom,
                 }));
             }
         }
