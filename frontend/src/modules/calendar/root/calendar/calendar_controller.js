@@ -27,7 +27,7 @@ class CalendarController extends Component {
             'cal_sept', 'cal_oct', 'cal_nov', 'cal_dec',
         ];
         const monthIndex = date.month();
-        return await window.bcnI18n.getPhrase(monthNames[monthIndex]);   
+        return window.bcnI18n.getPhrase(monthNames[monthIndex]);   
     }
 
     async render() {

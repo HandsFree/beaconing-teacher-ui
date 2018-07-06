@@ -52,16 +52,14 @@ class CalendarView extends Component {
         const { id, name, due } = detail;
         
         const eventProm = new CalendarDueEvent().attach({
-            name: name,
-            id: id,
-            due: due,
+            name, id, due,
         });
 
         // we could write this with "writeEvent" but it's
         // easier to just have one due date event rendered
         // at a time. this could easily be expanded to multiple
         this.state.currentDueEvent = {
-            eventProm: eventProm,
+            eventProm,
             date: due,
         };
         
@@ -131,7 +129,7 @@ class CalendarView extends Component {
         console.log(`[Calendar] writing events for group ${group}`);
 
         const glpBoxes = await window.beaconingAPI.getGroupAssigned(group);
-        console.log(`[Calendar] loaded ${glpBoxes.length} events`)
+        console.log(`[Calendar] loaded ${glpBoxes.length} events`);
 
         for (const glpBox of glpBoxes) {
             const glp = await window.beaconingAPI.getGLP(glpBox.gamifiedLessonPathId);
@@ -175,11 +173,11 @@ class CalendarView extends Component {
 
     async loadEvents(calendarSelection) {
         if (calendarSelection.student !== null) {
-            console.log("[Calendar] Loading student events");
+            console.log('[Calendar] Loading student events');
             const { id } = calendarSelection.student;
             await this.loadStudentEvents(id);
         } else if (calendarSelection.group !== null) {
-            console.log("[Calendar] Loading group events");
+            console.log('[Calendar] Loading group events');
             const { id } = calendarSelection.group;
             await this.loadGroupEvents(id);
         }
@@ -277,9 +275,8 @@ class CalendarView extends Component {
 
             if (eventMap.has(eventDateKey)) {
                 const storedEvents = eventMap.get(eventDateKey);
-                
+
                 for (const event of storedEvents) {
-                    console.log("event is ", event);
                     eventsProm.push(event);
                 }
             }
