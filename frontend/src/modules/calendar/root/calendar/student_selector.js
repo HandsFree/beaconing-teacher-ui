@@ -39,7 +39,7 @@ class CalendarSelectedGroup extends Component {
                         this.emit('RefreshCalendarView');
                     },
                 },
-                'View',
+                await window.bcnI18n.getPhrase('view'),
             )),
         );
     }
@@ -80,7 +80,7 @@ class CalendarSelectedStudent extends Component {
                         this.emit('RefreshCalendarView');
                     },
                 },
-                'View',
+                await window.bcnI18n.getPhrase('view'),
             )),
         );
     }
