@@ -1,7 +1,7 @@
 // @flow
 import Identicon from 'identicon.js';
 
-import { div, figure, img, h4, a } from '../../../../core/html';
+import { div, figure, img, h4, a, h3 } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 import Status from '../../../status';
@@ -18,9 +18,19 @@ class StudentBox extends Component {
 
         const studentName = do {
             if (firstName && lastName) {
-                `${firstName} ${lastName}`;
+                div(
+                    '.flex-column',
+                    h3('.name', `${firstName} ${lastName}`),
+                    h4(
+                        '.username',
+                        {
+                            title: await window.bcnI18n.getPhrase('username'),
+                        },
+                        username,
+                    ),
+                );
             } else {
-                username;
+                h3('.name', username);
             }
         };
 
@@ -56,7 +66,7 @@ class StudentBox extends Component {
                 '.info.flex-column',
                 div(
                     '.title',
-                    h4('.name', studentName),
+                    studentName,
                 ),
                 div(
                     a(
