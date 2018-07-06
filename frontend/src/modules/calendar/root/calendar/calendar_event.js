@@ -8,10 +8,11 @@ class CalendarEvent extends Component {
         const { name, id } = this.props;
 
         return div('.event',
-            p('.event-name', 
+            p('.event-name',
                 a({
                     href: `//${window.location.host}/lesson_manager/#view?id=${id}`,
-                }, name)
+                    target: '_blank',
+                }, name),
             ),
         );
     }

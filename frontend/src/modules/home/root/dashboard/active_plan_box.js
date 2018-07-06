@@ -11,6 +11,14 @@ class ActivePlanBox extends Component {
             link,
         } = this.props;
 
+        const glpDesc = do {
+            if (description.length > 200) {
+                p(`${description.substr(0, 200)}...`);
+            } else {
+                p(description);
+            }
+        };
+
         return div(
             '.plan',
             div(
@@ -27,10 +35,8 @@ class ActivePlanBox extends Component {
             ),
             div(
                 '.desc',
-                p(
-                    `${description}`,
-                ),
-            )
+                glpDesc,
+            ),
         );
     }
 }

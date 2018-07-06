@@ -9,16 +9,17 @@ import SecondNav from '../../../nav/second';
 import InnerNav from '../../inner_nav';
 import StudentMain from './student_main';
 import StudentAside from './student_aside';
-import StudentInfo from './student_info';
+// import StudentInfo from './student_info';
 
 class Student extends RootComponent {
     studentExists = true;
+
     updateHooks = {
         StudentDeleted: this.handleStudentDelete,
     };
 
     async init() {
-        const id = this.params.id;
+        const { id } = this.params;
 
         if (!id) {
             console.log('[View Student] No Student ID provided!');
@@ -32,7 +33,6 @@ class Student extends RootComponent {
 
         if (!student || student.id === 0) {
             this.studentExists = false;
-            return;
         }
     }
 
@@ -42,7 +42,7 @@ class Student extends RootComponent {
         const mainNav = new MainNav();
         const secondNav = new SecondNav();
         const innerNav = new InnerNav();
-        const studentInfo = new StudentInfo();
+        // const studentInfo = new StudentInfo();
         const studentMain = new StudentMain();
         const studentAside = new StudentAside();
 
@@ -80,7 +80,7 @@ class Student extends RootComponent {
                     main(
                         '#student.no-padding',
                         div(
-                            '.margin-20.flex-spacebetween.flex-align-stretch.flex-grow',
+                            '.flex-spacebetween.flex-align-stretch.flex-grow',
                             studentMainEl,
                             studentAsideEl,
                         ),
