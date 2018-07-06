@@ -411,6 +411,17 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+    username: {
+        'en-GB': 'Username',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
 
     // Header //
 
