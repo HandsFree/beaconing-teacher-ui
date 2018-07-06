@@ -31,16 +31,14 @@ class CalendarController extends Component {
     }
 
     async render() {
-        // clean me
+        const calTranslation = await window.bcnI18n.getPhrase('calendar');
 
-        let controllerTitle = '';
+        let controllerTitle = calTranslation;
         
         const calendarSelection = nullishCheck(window.sessionStorage.getItem('calendarSelection'), 'none');
         if (calendarSelection !== 'none') {
             const calendarSelObj = JSON.parse(calendarSelection);
             
-            const calTranslation = await window.bcnI18n.getPhrase('calendar');
-    
             controllerTitle = do {
                 if (calendarSelObj.student !== null) {
                     const { id, username } = calendarSelObj.student;

@@ -23,6 +23,9 @@ class CalendarEvent extends Component {
     async render() {
         const { name, id, due, avail } = this.props;
 
+        const inspectGLPTransl = await window.bcnI18n.getPhrase('cal_inspect_glp');
+        const goToDueDateTransl = await window.bcnI18n.getPhrase('cal_go_to_due_date');
+
         const inspectGLPButtonEl = a(
             {
                 href: `//${window.location.host}/lesson_manager/#view?id=${id}`,
@@ -30,7 +33,7 @@ class CalendarEvent extends Component {
             }, 
             span(
                 {
-                    'title': 'Inspect GLP',
+                    'title': inspectGLPTransl,
                 }, 
                 i('.icon-search')
             )
@@ -57,7 +60,7 @@ class CalendarEvent extends Component {
                     }, 
                     
                     span({
-                        'title': 'Go to due date',
+                        'title': goToDueDateTransl,
                     }, i('.icon-clock'))
                 )
             } else {
