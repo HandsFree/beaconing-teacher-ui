@@ -1,13 +1,13 @@
 // @flow
 
-import { span, i, p, div, a, button } from '../../../../core/html';
+import { span, i, p, div, a } from '../../../../core/html';
 import { Component } from '../../../../core/component';
 import nullishCheck from '../../../../core/util';
 import moment from 'moment';
 
 class CalendarDueEvent extends Component {
     async render() {
-        const { name, id, due } = this.props;
+        const { name } = this.props;
 
         return div('.event.due-event',
             p('.event-name', {
@@ -21,7 +21,12 @@ class CalendarDueEvent extends Component {
 
 class CalendarEvent extends Component {
     async render() {
-        const { name, id, due, avail } = this.props;
+        const { 
+            name, 
+            id, 
+            due, 
+            avail 
+        } = this.props;
 
         const inspectGLPTransl = await window.bcnI18n.getPhrase('cal_inspect_glp');
         const goToDueDateTransl = await window.bcnI18n.getPhrase('cal_go_to_due_date');
