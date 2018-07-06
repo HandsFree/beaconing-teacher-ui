@@ -1,5 +1,5 @@
 // @flow
-import { div, h4, a } from '../../../core/html';
+import { div, h3, a } from '../../../core/html';
 
 import { Component } from '../../../core/component';
 import Status from '../../status';
@@ -12,7 +12,7 @@ class GroupBox extends Component {
             '.small-box',
             div(
                 '.title',
-                h4('.name', group.name),
+                h3('.name', group.name),
             ),
             a(
                 {
