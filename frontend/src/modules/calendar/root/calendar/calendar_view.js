@@ -20,6 +20,7 @@ class CalendarView extends Component {
         NextMonth: this.nextMonth,
         CurrMonth: this.currMonth,
         RefreshCalendarView: this.refreshCalendarView,
+        WriteDueEvent: this.writeDueEvent,
     };
 
     state = {
@@ -28,6 +29,17 @@ class CalendarView extends Component {
         currDate: moment(),
         eventMap: new Map(),
     };
+
+    async writeDueEvent(event: CustomEvent) {
+        const { detail } = event;
+        const { id, name, due } = detail;
+        this.writeEvent(due, new CalendarEvent().attach({
+            name: "fake event",
+            desc: "fake desc",
+            id: id,
+            due: due,
+        }));
+    }
 
     async refreshCalendarView() {
         // reset any of the previously loaded events before
@@ -101,6 +113,7 @@ class CalendarView extends Component {
                     name: glp.name,
                     desc: glp.description,
                     id: glp.id,
+                    due: glp.availableUntil,
                 }));
             }
         }
@@ -122,6 +135,7 @@ class CalendarView extends Component {
                     name: glp.name,
                     desc: glp.description,
                     id: glp.id,
+                    due: glp.availableUntil,
                 }));
             }
         }
@@ -233,7 +247,7 @@ class CalendarView extends Component {
             }
 
             const eventList = new CalendarEventList().attach({
-                eventsProm,
+                events: eventsProm,
             });
             const cell = new CalendarCell().attach({
                 dayNumber,
