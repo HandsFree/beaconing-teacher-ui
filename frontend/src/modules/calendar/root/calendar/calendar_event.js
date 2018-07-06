@@ -20,7 +20,7 @@ class CalendarEvent extends Component {
 class CalendarEventList extends Component {
     async render() {
         const { events } = this.props;
-        const el = await Promise.all(events);
+        const el = await Promise.all(events).then(evts => evts);
         return div('.events', el);
     }
 }

@@ -20,7 +20,7 @@
 	background: #2d353e;
 	color: #fff;
 	font-size: 14pt;
-	border-bottom: 2px solid #a9b5c0;
+	border-bottom: 1px solid #a9b5c0;
 }
 
 .calendar-heading-cell p {
@@ -115,8 +115,8 @@
 // im gonna slap it here.
 
 .cal-sel-item {
-	border: 1px solid #e87f62;
-	padding: 1em;
+	border: 2px solid #e87f62;
+	padding: 0.5em 1em;
 	margin: 1em;
 	justify-content: space-between;
 }

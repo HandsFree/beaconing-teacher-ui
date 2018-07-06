@@ -50,7 +50,7 @@ class CalendarView extends Component {
     // array or we insert an array when writing an event.
     // note that we strip the time from the date given
     // so that we can index the hashmap just from mm/dd/yyyy
-    writeEvent(eventDate, event: Object) {
+    async writeEvent(eventDate, event: Component) {
         // store the date in the event object
         // WITH the time included.
         event.date = eventDate.toDate();
@@ -58,8 +58,8 @@ class CalendarView extends Component {
         const newDate = eventDate.clone().startOf('D');
         console.log('[Calendar] writing ', event, ' time ', newDate);
 
-        const events = this.state.eventMap.get(newDate.format());
-        if (events) {
+        const events = nullishCheck(this.state.eventMap.get(newDate.format()), 'none');
+        if (events !== 'none') {
             events.push(event);
             // re-write into hashmap
             this.state.eventMap.set(newDate.format(), events);
@@ -97,11 +97,11 @@ class CalendarView extends Component {
 
                 console.log(`[Calendar] writing GROUP event ${availDate.format()}`);
 
-                this.writeEvent(availDate, {
+                this.writeEvent(availDate, new CalendarEvent().attach({
                     name: glp.name,
-                    id: glp.id,
                     desc: glp.description,
-                });
+                    id: glp.id,
+                }));
             }
         }
     }
@@ -118,11 +118,11 @@ class CalendarView extends Component {
 
                 console.log(`[Calendar] writing event ${availDate.format()}`);
 
-                this.writeEvent(availDate, {
+                this.writeEvent(availDate, new CalendarEvent().attach({
                     name: glp.name,
-                    id: glp.id,
                     desc: glp.description,
-                });
+                    id: glp.id,
+                }));
             }
         }
     }
@@ -219,23 +219,21 @@ class CalendarView extends Component {
 
             // here we attach the event components
             // if there are any events for this day.
-            const events = [];
+            const eventsProm = [];
 
             const eventDateKey = cellDate.clone().startOf('D').format();
 
             if (eventMap.has(eventDateKey)) {
                 const storedEvents = eventMap.get(eventDateKey);
+                
                 for (const event of storedEvents) {
-                    events.push(new CalendarEvent().attach({
-                        name: event.name,
-                        desc: '',
-                        id: event.id,
-                    }));
+                    console.log("event is ", event);
+                    eventsProm.push(event);
                 }
             }
 
             const eventList = new CalendarEventList().attach({
-                events,
+                eventsProm,
             });
             const cell = new CalendarCell().attach({
                 dayNumber,
