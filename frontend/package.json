@@ -61,7 +61,7 @@
     "eslint-plugin-babel": "5.1.0",
     "eslint-plugin-flowtype": "2.49.3",
     "eslint-plugin-import": "2.13.0",
-    "flow-bin": "0.75.0",
+    "flow-bin": "0.76.0",
     "hard-source-webpack-plugin": "0.10.1",
     "json5-loader": "1.0.1",
     "mini-css-extract-plugin": "0.4.1",
