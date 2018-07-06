@@ -92,9 +92,17 @@ aside#student-aside {
 
             figcaption {
                 text-align: center;
-                font-weight: 300;
-                font-size: 1.2em;
                 padding: 0.5em;
+
+                .name {
+                    font-weight: 300;
+                    font-size: 1.2em;
+                }
+
+                .username {
+                    font-weight: 300;
+                    color: $secondary_font_colour_faded;
+                }
             }
 
             img{
