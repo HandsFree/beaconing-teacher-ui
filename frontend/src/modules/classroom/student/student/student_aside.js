@@ -29,7 +29,7 @@ class StudentAside extends Component {
             this.state.studentName = do {
                 if (student.profile.firstName && student.profile.lastName) {
                     div(
-                        '.flex-column',
+                        '#student-name.flex-column',
                         span('.name', `${student.profile.firstName} ${student.profile.lastName}`),
                         span(
                             '.username',
@@ -40,13 +40,13 @@ class StudentAside extends Component {
                         ),
                     );
                 } else {
-                    span('.name', student.username);
+                    span('#student-name.name', student.username);
                 }
             };
 
             const studentNameEl = document.getElementById('student-name');
 
-            studentNameEl.textContent = this.state.studentName;
+            studentNameEl.parentElement.replaceChild(this.state.studentName, studentNameEl);
         }
     }
 
@@ -122,7 +122,7 @@ class StudentAside extends Component {
             this.state.studentName = do {
                 if (student.profile.firstName && student.profile.lastName) {
                     div(
-                        '.flex-column',
+                        '#student-name.flex-column',
                         span('.name', `${student.profile.firstName} ${student.profile.lastName}`),
                         span(
                             '.username',
@@ -133,7 +133,7 @@ class StudentAside extends Component {
                         ),
                     );
                 } else {
-                    span('.name', student.username);
+                    span('#student-name.name', student.username);
                 }
             };
         }
@@ -189,7 +189,7 @@ class StudentAside extends Component {
                     img({
                         src: imgData,
                     }),
-                    figcaption('#student-name', this.state.studentName),
+                    figcaption(this.state.studentName),
                 ),
             ),
             nav(
