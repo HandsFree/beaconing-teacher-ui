@@ -14,11 +14,6 @@ import CalendarInnerNav from './calendar_inner_nav';
 
 class Calendar extends RootComponent {
     async init() {
-        let studentID = 'none'; // set to string due to sessionStorage
-        if (this.params.id) {
-            studentID = this.params.id;
-        }
-
         window.sessionStorage.setItem('calendarSelection', 'none');
         window.sessionStorage.setItem('calendarDate', moment());
     }

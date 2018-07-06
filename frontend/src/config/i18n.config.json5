@@ -2099,6 +2099,30 @@
 
     // Calendar //
 
+    cal_go_to_due_date: {
+        'en-GB': 'Go to due date',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',
+    },
+
+    cal_inspect_glp: {
+        'en-GB': 'Inspect GLP',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',
+    },
+
     cal_jan: {
         'en-GB': 'January',
         'fr-FR': '',

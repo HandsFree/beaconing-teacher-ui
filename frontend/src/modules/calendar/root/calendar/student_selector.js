@@ -39,7 +39,7 @@ class CalendarSelectedGroup extends Component {
                         this.emit('RefreshCalendarView');
                     },
                 },
-                'View',
+                await window.bcnI18n.getPhrase('view'),
             )),
         );
     }
@@ -80,7 +80,7 @@ class CalendarSelectedStudent extends Component {
                         this.emit('RefreshCalendarView');
                     },
                 },
-                'View',
+                await window.bcnI18n.getPhrase('view'),
             )),
         );
     }
@@ -161,14 +161,17 @@ class SelectorPanel extends Component {
     async render() {
         const selType = window.sessionStorage.getItem('calendarSelectionType');
         switch (selType) {
-        case 'students':
-            const studentsEl = await new StudentSelector().attach();
-            return section('.full-width', studentsEl);
-        case 'groups':
-            const groupEl = await new GroupSelector().attach();
-            return section('.full-width', groupEl);
-        default:
-            return section('.full-width');
+            case 'students': {
+                const studentsEl = await new StudentSelector().attach();
+                return section('.full-width', studentsEl);
+            }
+            case 'groups': {
+                const groupEl = await new GroupSelector().attach();
+                return section('.full-width', groupEl);
+            }
+            default: {
+                return section('.full-width');
+            }
         }
     }
 }
