@@ -13,6 +13,12 @@ import nullishCheck from '../../../../core/util';
 // stuff and fetch events for each cell including prev
 // and next month ones.
 
+class CalendarDayView extends Component {
+    async render() {
+        return div();
+    }
+}
+
 // the actual calendar
 class CalendarView extends Component {
     updateHooks = {
