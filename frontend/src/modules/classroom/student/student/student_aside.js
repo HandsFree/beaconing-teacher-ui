@@ -28,9 +28,19 @@ class StudentAside extends Component {
 
             this.state.studentName = do {
                 if (student.profile.firstName && student.profile.lastName) {
-                    `${student.profile.firstName} ${student.profile.lastName}`;
+                    div(
+                        '.flex-column',
+                        span('.name', `${student.profile.firstName} ${student.profile.lastName}`),
+                        span(
+                            '.username',
+                            {
+                                title: await window.bcnI18n.getPhrase('username'),
+                            },
+                            student.username,
+                        ),
+                    );
                 } else {
-                    student.username;
+                    span('.name', student.username);
                 }
             };
 
@@ -111,9 +121,19 @@ class StudentAside extends Component {
             this.state.student = student;
             this.state.studentName = do {
                 if (student.profile.firstName && student.profile.lastName) {
-                    `${student.profile.firstName} ${student.profile.lastName}`;
+                    div(
+                        '.flex-column',
+                        span('.name', `${student.profile.firstName} ${student.profile.lastName}`),
+                        span(
+                            '.username',
+                            {
+                                title: await window.bcnI18n.getPhrase('username'),
+                            },
+                            student.username,
+                        ),
+                    );
                 } else {
-                    student.username;
+                    span('.name', student.username);
                 }
             };
         }
@@ -203,8 +223,8 @@ class StudentAside extends Component {
     }
 
     toggleActive(el: EventTarget) {
-        const nav = document.getElementById('student-nav');
-        const active = nav.querySelector('.active');
+        const studentNav = document.getElementById('student-nav');
+        const active = studentNav.querySelector('.active');
 
         active.classList.remove('active');
 
