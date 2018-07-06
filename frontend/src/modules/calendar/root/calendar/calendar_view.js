@@ -4,7 +4,7 @@ import moment from 'moment';
 import { div } from '../../../../core/html';
 import { Component } from '../../../../core/component';
 
-import { CalendarEvent, CalendarEventList } from './calendar_event';
+import { CalendarEvent, CalendarDueEvent, CalendarEventList } from './calendar_event';
 import { CalendarCell, CalendarHeadingCell, CalendarNextMonthCell, CalendarPrevMonthCell } from './calendar_cell';
 import nullishCheck from '../../../../core/util';
 
@@ -21,6 +21,7 @@ class CalendarView extends Component {
         CurrMonth: this.currMonth,
         RefreshCalendarView: this.refreshCalendarView,
         WriteDueEvent: this.writeDueEvent,
+        ClearDueEvent: this.clearDueEvent,
     };
 
     state = {
@@ -28,17 +29,42 @@ class CalendarView extends Component {
         // will bew a view of.
         currDate: moment(),
         eventMap: new Map(),
+
+        // the current event that is due
+        currentDueEvent: null,
     };
 
+    async clearDueEvent() {
+        this.state.currentDueEvent = null;
+        this.updateView(await this.render());
+    }
+
+    // TODO handle if event is due on the same day
     async writeDueEvent(event: CustomEvent) {
         const { detail } = event;
+
         const { id, name, due } = detail;
-        this.writeEvent(due, new CalendarEvent().attach({
-            name: "fake event",
-            desc: "fake desc",
+        
+        const eventProm = new CalendarDueEvent().attach({
+            name: name,
             id: id,
             due: due,
-        }));
+        });
+
+        // we could write this with "writeEvent" but it's
+        // easier to just have one due date event rendered
+        // at a time. this could easily be expanded to multiple
+        this.state.currentDueEvent = {
+            eventProm: eventProm,
+            date: due,
+        };
+        
+        if (!this.state.currDate.isSame(due, 'M')) {
+            this.emit('RefreshCalendarController');
+            this.gotoDate(due);
+        } else {
+            this.updateView(await this.render());
+        }
     }
 
     async refreshCalendarView() {
@@ -166,6 +192,12 @@ class CalendarView extends Component {
         this.updateView(await this.render());
     }
 
+    async gotoDate(date) {
+        this.state.currDate = date.clone().startOf('month');
+        window.sessionStorage.setItem('calendarDate', this.state.currDate);
+        this.updateView(await this.render());
+    }
+
     async prevMonth() {
         const date = this.state.currDate;
         const prevMonth = date.clone().subtract(1, 'M');
@@ -243,6 +275,14 @@ class CalendarView extends Component {
                 for (const event of storedEvents) {
                     console.log("event is ", event);
                     eventsProm.push(event);
+                }
+            }
+
+            // render the due dates...
+            if (nullishCheck(this.state.currentDueEvent, 'none') !== 'none') {
+                const { eventProm, date } = this.state.currentDueEvent;
+                if (date.isSame(cellDate, 'D')) {
+                    eventsProm.push(eventProm);
                 }
             }
 
