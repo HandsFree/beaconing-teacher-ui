@@ -3,6 +3,7 @@ package api
 import (
 	"fmt"
 	"log"
+	"strings"
 	"time"
 
 	"database/sql"
@@ -44,8 +45,8 @@ func GetOutboundIP() net.IP {
 
 // GetProtocol returns the protocol in which
 // the server should run in. By default this is
-// https, unless gin is in debug mode, in which case
-// it will run in HTTP
+// https, unless the host string contains the protocol.
+// If gin is running in debug mode, it will run in HTTP.
 //
 // this assumption is made as debug mode will only be
 // run locally and not in production so https is not necessary
@@ -54,6 +55,11 @@ func GetProtocol() string {
 	if gin.IsDebugging() {
 		return "http://"
 	}
+
+	if strings.HasPrefix(cfg.Beaconing.Server.Host, "https://") || strings.HasPrefix(cfg.Beaconing.Server.Host, "http://") {
+		return ""
+	}
+
 	return "https://"
 }
 
