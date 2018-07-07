@@ -15,11 +15,9 @@ echo "password = \"123ABCCBA\"" >> cfg/config.toml
 echo "name = \"beaconing\"" >> cfg/config.toml
 echo "table = \"activities\"" >> cfg/config.toml
 echo "ssl = false" >> cfg/config.toml
-echo "\n" >> cfg/config.toml
 echo "[auth]" >> cfg/config.toml
 echo "id = \"teacherui\"" >> cfg/config.toml
 echo "secret = \"$BCN_SECRET\"" >> cfg/config.toml
-echo "\n" >> cfg/config.toml
 echo "[server]" >> cfg/config.toml
 echo "host = \"$NOW_URL\"" >> cfg/config.toml
 echo "protocol = \"\"" >> cfg/config.toml
