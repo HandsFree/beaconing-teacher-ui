@@ -1,0 +1,8 @@
+{
+    "name": "bcn-teacher-ui",
+    "type": "docker",
+    "env": {
+        "BCN_SECRET": "@bcn-secret",
+        "GIN_MODE": "release"
+    }
+}
