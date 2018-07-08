@@ -4,5 +4,11 @@
     "env": {
         "BCN_SECRET": "@bcn-secret",
         "GIN_MODE": "release"
+    },
+    "scale": {
+        "bru1": {
+            "min": 1,
+            "max": "auto"
+        }
     }
 }
