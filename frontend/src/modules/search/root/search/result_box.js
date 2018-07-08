@@ -14,7 +14,7 @@ class ResultBox extends Component {
             '.result',
             div(
                 '.title',
-                h4(title),
+                title,
             ),
             a(
                 {
