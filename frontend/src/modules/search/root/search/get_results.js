@@ -21,10 +21,12 @@ class SearchResults extends Component {
         if (MatchedStudents.length > 0) {
             const promArr = [];
 
+            const studentUsernameStr = await window.bcnI18n.getPhrase('username');
             for (const student of MatchedStudents) {
                 const resultBox = new ResultBox();
                 const { profile } = student;
 
+                
                 const studentName = do {
                     if (profile.firstName && profile.lastName) {
                         div(
@@ -33,7 +35,7 @@ class SearchResults extends Component {
                             h4(
                                 '.username',
                                 {
-                                    title: await window.bcnI18n.getPhrase('username'),
+                                    title: studentUsernameStr,
                                 },
                                 student.username,
                             ),
