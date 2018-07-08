@@ -26,7 +26,6 @@ class SearchResults extends Component {
                 const resultBox = new ResultBox();
                 const { profile } = student;
 
-                
                 const studentName = do {
                     if (profile.firstName && profile.lastName) {
                         div(
