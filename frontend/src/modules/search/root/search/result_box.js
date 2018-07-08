@@ -1,5 +1,5 @@
 // @flow
-import { div, h4, a } from '../../../../core/html';
+import { div, a } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 
