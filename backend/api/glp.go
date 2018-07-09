@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net/http"
 	"strconv"
 	"time"
 
@@ -76,13 +77,17 @@ func PutGLP(s *gin.Context) (string, error) {
 		return "", err
 	}
 
-	resp, err := DoTimedRequestBody(s, "PUT",
+	resp, err, status := DoTimedRequestBody(s, "PUT",
 		API.getPath(s, "gamifiedlessonpaths"),
 		bytes.NewBuffer(glpPut),
 	)
 	if err != nil {
 		util.Error("PutGLP", err.Error())
 		return "", err
+	}
+
+	if status != http.StatusOK {
+		return "", nil
 	}
 
 	id, err := GetUserID(s)
@@ -109,13 +114,17 @@ func CreateGLP(s *gin.Context) (string, error) {
 		return "", err
 	}
 
-	resp, err := DoTimedRequestBody(s, "POST",
+	resp, err, status := DoTimedRequestBody(s, "POST",
 		API.getPath(s, "gamifiedlessonpaths"),
 		bytes.NewBuffer(glpPost),
 	)
 	if err != nil {
 		util.Error("CreateGLP", err.Error())
 		return "", err
+	}
+
+	if status != http.StatusOK {
+		return "", nil
 	}
 
 	id, err := GetUserID(s)
@@ -234,13 +243,15 @@ func GetRecentlyAssignedGLPS(s *gin.Context, reverse bool) ([]*entity.GLP, error
 // GetGLPS requests all of the GLPs from the core
 // API returned as a json string
 func GetGLPS(s *gin.Context, minify bool) (string, error) {
-	resp, err := DoTimedRequest(s, "GET",
+	resp, err, status := DoTimedRequest(s, "GET",
 		API.getPath(s, "gamifiedlessonpaths/", fmt.Sprintf("?noContent=%s", strconv.FormatBool(minify))),
 	)
-
 	if err != nil {
 		util.Error("GetGLPS", err.Error())
 		return "", err
+	}
+	if status != http.StatusOK {
+		return "", nil
 	}
 
 	response := string(resp)
@@ -252,15 +263,18 @@ func GetGLPS(s *gin.Context, minify bool) (string, error) {
 // the string of json retrieved _as well as_ the parsed json object
 // see entity.GLP
 func GetGLP(s *gin.Context, id uint64, minify bool) (*entity.GLP, error) {
-	resp, err := DoTimedRequest(s, "GET",
+	resp, err, status := DoTimedRequest(s, "GET",
 		API.getPath(s, "gamifiedlessonpaths/",
 			fmt.Sprintf("%d", id),
 			fmt.Sprintf("?noContent=%s", strconv.FormatBool(minify))),
 	)
-
 	if err != nil {
 		util.Error("GetGLP", err.Error())
 		return nil, err
+	}
+
+	if status != http.StatusOK {
+		return nil, nil
 	}
 
 	data := &entity.GLP{}
@@ -283,12 +297,16 @@ func GetGLP(s *gin.Context, id uint64, minify bool) (*entity.GLP, error) {
 // DeleteGLP deletes the given GLP of {id} from the
 // core database.
 func DeleteGLP(s *gin.Context, id uint64) (string, error) {
-	resp, err := DoTimedRequest(s, "DELETE",
+	resp, err, status := DoTimedRequest(s, "DELETE",
 		API.getPath(s, "gamifiedlessonpaths/", fmt.Sprintf("%d", id)),
 	)
 	if err != nil {
 		util.Error(err)
 		return "", err
+	}
+
+	if status != http.StatusOK {
+		return "", nil
 	}
 
 	teacherID, err := GetUserID(s)

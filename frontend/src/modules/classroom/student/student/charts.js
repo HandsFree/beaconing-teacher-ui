@@ -33,6 +33,10 @@ class Charts extends Component {
         const mamText = await window.bcnI18n.getPhrase('cr_analytics_mam');
         const aspText = await window.bcnI18n.getPhrase('cr_analytics_asp');
 
+        const {id} = this.props;
+        const assigned = await window.beaconingAPI.getStudentAssigned(id);
+        console.log("assigned glps are ", assigned);
+
         const graphWrapper = (title, el) => div(
             '.tile.spacing.flex-column.flex-3',
             div(

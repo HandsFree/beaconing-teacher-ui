@@ -2,6 +2,7 @@ package api
 
 import (
 	"bytes"
+	"net/http"
 
 	"github.com/HandsFree/beaconing-teacher-ui/backend/cfg"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
@@ -33,10 +34,14 @@ func GetRefreshToken(s *gin.Context) error {
 	}
 
 	const tokenRefreshLink = "https://core.beaconing.eu/auth/token"
-	resp, err := DoTimedRequestBody(s, "POST", tokenRefreshLink, bytes.NewBuffer(message))
+	resp, err, status := DoTimedRequestBody(s, "POST", tokenRefreshLink, bytes.NewBuffer(message))
 	if err != nil {
 		util.Error("GetRefreshToken", err.Error())
 		return err
+	}
+
+	if status != http.StatusOK {
+		return nil
 	}
 
 	var respToken entity.TokenResponse
