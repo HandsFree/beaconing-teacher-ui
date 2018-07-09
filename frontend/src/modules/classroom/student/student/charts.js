@@ -6,6 +6,7 @@ import AlternativesGraph from './alternatives_graph';
 import ProgressGraph from './progress_graph';
 import ScoresGraph from './scores_graph';
 import CompletionGraph from './completion_graph';
+import RightWrongGraph from './right_wrong_graph';
 
 class Charts extends Component {
     state = {
@@ -27,15 +28,12 @@ class Charts extends Component {
         const progressGraph = new ProgressGraph();
         const scoresGraph = new ScoresGraph();
         const completionGraph = new CompletionGraph();
+        const rightWrongGraph = new RightWrongGraph();
 
         const rwText = await window.bcnI18n.getPhrase('cr_analytics_rw');
         const sopText = await window.bcnI18n.getPhrase('cr_analytics_sop');
         const mamText = await window.bcnI18n.getPhrase('cr_analytics_mam');
         const aspText = await window.bcnI18n.getPhrase('cr_analytics_asp');
-
-        const {id} = this.props;
-        const assigned = await window.beaconingAPI.getStudentAssigned(id);
-        console.log("assigned glps are ", assigned);
 
         const graphWrapper = (title, el) => div(
             '.tile.spacing.flex-column.flex-3',
@@ -50,6 +48,9 @@ class Charts extends Component {
         );
 
         return Promise.all([
+            rightWrongGraph.attach({
+                data: this.state.analyticsData?.alternatives,
+            }),
             alternativesGraph.attach({
                 graphData: this.state.analyticsData?.alternatives,
             }),
@@ -64,6 +65,7 @@ class Charts extends Component {
             }),
         ]).then((elements) => {
             const [
+                rightWrongGraphEl,
                 alternativesGraphEl,
                 progressGraphEl,
                 scoresGraphEl,
@@ -72,6 +74,7 @@ class Charts extends Component {
 
             return div(
                 '.flex-wrap',
+                graphWrapper('Question Overview', rightWrongGraphEl),
                 graphWrapper(rwText, alternativesGraphEl),
                 graphWrapper(sopText, progressGraphEl),
                 graphWrapper(mamText, scoresGraphEl),
