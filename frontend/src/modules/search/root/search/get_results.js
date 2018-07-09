@@ -75,8 +75,10 @@ class SearchResults extends Component {
             for (const glp of MatchedGLPS) {
                 const resultBox = new ResultBox();
 
+                const glpNameEl = h3(glp.name);
+
                 const resultBoxEl = resultBox.attach({
-                    title: glp.name,
+                    title: glpNameEl,
                     link: `//${window.location.host}/lesson_manager#view?id=${glp.id}&prev=search`,
                 });
 
