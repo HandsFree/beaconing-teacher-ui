@@ -4,6 +4,15 @@ import { canvas } from '../../../../core/html';
 import { Component } from '../../../../core/component';
 
 const config = async (yours, others) => {
+    console.log("configurating ", yours, " vs ", others);
+
+    // if the average is over > 100
+    // we say it's 100, i.e. average is 100% complete
+    const avg = Math.min(others, 100);
+
+    const studentScore = (Math.abs(yours-avg) / yours) * 100;
+    const averageScore = avg;
+
     return {
         type: 'polarArea',
         data: {
@@ -15,8 +24,8 @@ const config = async (yours, others) => {
                 {
                     label: await window.bcnI18n.getPhrase('cr_analytics_p'),
                     data: [
-                        (yours * 100),
-                        (others * 100),
+                        studentScore,
+                        averageScore,
                     ],
                     backgroundColor: [
                         'rgba(249, 168, 37, 0.75)',
