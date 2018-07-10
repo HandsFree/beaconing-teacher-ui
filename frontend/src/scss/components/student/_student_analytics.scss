@@ -18,7 +18,8 @@
 
 .rw-box {
     display: block;   
-    padding: 0 20px;
+    padding: 20px;
+    width: 100%;
 }
 
 .rw-incorrect {
@@ -27,4 +28,12 @@
 
 .rw-correct {
     background: #4b893d;
+}
+
+.answer-list-box {
+    display: block;
+}
+
+.student-analytics-title {
+    display: block;
 }

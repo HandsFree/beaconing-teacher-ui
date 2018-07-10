@@ -112,6 +112,10 @@
 	flex: 100%;
 }
 
+.flex-full {
+	flex: 0 0 100%;
+}
+
 // device restrictions
 .mobile-collapse {
 	@media screen and (max-width: 39.9375em) {

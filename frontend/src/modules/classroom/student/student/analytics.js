@@ -1,5 +1,5 @@
 // @flow
-import { section } from '../../../../core/html';
+import { h2, div, p, section } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 import Loading from '../../../loading';
@@ -26,7 +26,6 @@ class Analytics extends Component {
             '#student-analytics.flex-grow',
             chartsEl,
         );
-
         this.updateView(el);
     }
 }

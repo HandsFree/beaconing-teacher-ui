@@ -1,10 +1,45 @@
 // @flow
 import { div, h1, h2, h3, p } from '../../../../core/html';
 import { Component } from '../../../../core/component';
+import nullishCheck from '../../../../core/util';
 
+class QuestionBox extends Component {
+    state = {
+        showQuestions: false,
+    }
+
+    async toggleQuestions() {
+        this.state.showQuestions = !this.state.showQuestions;        
+        this.updateView(await this.render());
+    }
+
+    async render() {
+        const { minigameName, questionSet } = this.props;
+        const { showQuestions } = this.state;
+
+        return div('.rw-question-container',
+            h3(
+                '.fake-link', 
+                minigameName, 
+                {
+                    onclick: () => {
+                        this.toggleQuestions();
+                    },
+                    title: 'Click to toggle question set visibility',
+                }
+            ),
+            div('.rw-question-set', showQuestions ? questionSet : []),
+        );
+    }
+}
+
+// misnomer... this isn't really a graph oh well
 class RightWrongGraph extends Component {
     async render() {
         const { data } = this.props;
+        if (nullishCheck(data.answers, 'none') === 'none') {
+            return div(h2('No data to display.'));
+        }
 
         const answerSet = new Map();
         for (const answer of data.answers) {
@@ -14,10 +49,10 @@ class RightWrongGraph extends Component {
             });
         }
 
-        const makeAnswer = (question, answer, succ) => {
-            const correctTransl = await window.bcnI18n.getPhrase('rw_correct');
-            const incorrectTransl = await window.bcnI18n.getPhrase('rw_incorrect');
+        const correctTransl = await window.bcnI18n.getPhrase('rw_correct');
+        const incorrectTransl = await window.bcnI18n.getPhrase('rw_incorrect');
 
+        const makeAnswer = (question, answer, succ) => {
             const bgClass = succ ? '.rw-correct' : '.rw-incorrect';
             return div(
                 '.rw-box' + bgClass,
@@ -77,9 +112,9 @@ class RightWrongGraph extends Component {
             answerSet.set(rootAnalyticsName, ansObj);
         }
 
-        const answerListEl = [];
+        const answerListProm = [];
         for (const [glpName, entry] of answerSet.entries()) {
-            answerListEl.push(div(h2(glpName)));
+            answerListProm.push(h2(glpName));
 
             for (const [mgName, mg] of entry.minigames.entries()) {
 
@@ -88,16 +123,15 @@ class RightWrongGraph extends Component {
                     questionSet.push(makeAnswer(question.title, question.answer, !question.failed));
                 }
 
-                answerListEl.push(div('.rw-question-container',
-                    h3(mgName),
-                    div('.rw-question-set', questionSet),
-                ));
-
+                answerListProm.push(new QuestionBox().attach({
+                    minigameName: mgName,
+                    questionSet,
+                }));
             }
-
         }
 
-        return div(answerListEl);
+        const answerListEl = await Promise.all(answerListProm).then((el => el));
+        return div('.answer-list-box', answerListEl);
     }
 }
 
