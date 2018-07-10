@@ -2097,6 +2097,44 @@
         'pt-PT': '',
     },
 
+    // question overview
+
+    rw_question_overview: {
+        'en-GB': 'Question Overview',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',
+    },
+
+    rw_correct: {
+        'en-GB': 'Correct',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',
+    },
+
+    rw_incorrect: {
+        'en-GB': 'Incorrect',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',
+    },
+
     // Calendar //
 
     cal_go_to_due_date: {

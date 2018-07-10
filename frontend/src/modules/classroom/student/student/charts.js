@@ -30,6 +30,7 @@ class Charts extends Component {
         const completionGraph = new CompletionGraph();
         const rightWrongGraph = new RightWrongGraph();
 
+        const qoText = await window.bcnI18n.getPhrase('rw_question_overview');
         const rwText = await window.bcnI18n.getPhrase('cr_analytics_rw');
         const sopText = await window.bcnI18n.getPhrase('cr_analytics_sop');
         const mamText = await window.bcnI18n.getPhrase('cr_analytics_mam');
@@ -74,7 +75,7 @@ class Charts extends Component {
 
             return div(
                 '.flex-wrap',
-                graphWrapper('Question Overview', rightWrongGraphEl),
+                graphWrapper(qoText, rightWrongGraphEl),
                 graphWrapper(rwText, alternativesGraphEl),
                 graphWrapper(sopText, progressGraphEl),
                 graphWrapper(mamText, scoresGraphEl),
