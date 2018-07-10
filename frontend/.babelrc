@@ -8,8 +8,8 @@
 		"@babel/plugin-proposal-async-generator-functions",
 		"@babel/plugin-syntax-async-generators",
 		["@babel/plugin-transform-runtime", {
-			"helpers": false,
-			"polyfill": false,
+			"helpers": true,
+			"polyfill": true,
 			"regenerator": true,
 			"moduleName": "@babel/runtime"
 		}],

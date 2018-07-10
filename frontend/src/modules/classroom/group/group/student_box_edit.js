@@ -1,5 +1,5 @@
 // @flow
-import { div, h4, input } from '../../../../core/html';
+import { div, h4, input, h3 } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 
@@ -14,11 +14,21 @@ class StudentBox extends Component {
 
         console.log(checked);
 
-        const name = do {
+        const studentName = do {
             if (profile.firstName && profile.lastName) {
-                `${profile.firstName} ${profile.lastName}`;
+                div(
+                    '.flex-column',
+                    h3('.name', `${profile.firstName} ${profile.lastName}`),
+                    h4(
+                        '.username',
+                        {
+                            title: await window.bcnI18n.getPhrase('username'),
+                        },
+                        username,
+                    ),
+                );
             } else {
-                username;
+                h3('.name', username);
             }
         };
 
@@ -26,7 +36,7 @@ class StudentBox extends Component {
             '.small-box',
             div(
                 '.title',
-                h4('.name', name),
+                studentName,
             ),
             input(
                 '.checkbox',

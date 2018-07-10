@@ -9,15 +9,17 @@ import SecondNav from '../../../nav/second';
 import InnerNav from '../../inner_nav';
 import StudentMain from './student_main';
 import StudentAside from './student_aside';
+// import StudentInfo from './student_info';
 
 class Student extends RootComponent {
     studentExists = true;
+
     updateHooks = {
         StudentDeleted: this.handleStudentDelete,
     };
 
     async init() {
-        const id = this.params.id;
+        const { id } = this.params;
 
         if (!id) {
             console.log('[View Student] No Student ID provided!');
@@ -31,7 +33,6 @@ class Student extends RootComponent {
 
         if (!student || student.id === 0) {
             this.studentExists = false;
-            return;
         }
     }
 
@@ -41,6 +42,7 @@ class Student extends RootComponent {
         const mainNav = new MainNav();
         const secondNav = new SecondNav();
         const innerNav = new InnerNav();
+        // const studentInfo = new StudentInfo();
         const studentMain = new StudentMain();
         const studentAside = new StudentAside();
 
@@ -54,6 +56,7 @@ class Student extends RootComponent {
                 title: await window.bcnI18n.getPhrase('classroom'),
                 innerNav: innerNav.attach(),
             }),
+            // studentInfo.attach(this.params),
             studentMain.attach(this.params),
             studentAside.attach(this.params),
         ]).then((values) => {
@@ -62,6 +65,7 @@ class Student extends RootComponent {
                 footerEl,
                 mainNavEl,
                 secondNavEl,
+                // studentInfoEl,
                 studentMainEl,
                 studentAsideEl,
             ] = values;
@@ -70,7 +74,7 @@ class Student extends RootComponent {
                 '#app',
                 headerEl,
                 div(
-                    '.flex-container.expand.margin-top-2',
+                    '.flex-container.expand',
                     mainNavEl,
                     secondNavEl,
                     main(
@@ -87,7 +91,7 @@ class Student extends RootComponent {
                 '#app',
                 headerEl,
                 div(
-                    '.flex-container.expand.margin-top-2',
+                    '.flex-container.expand',
                     mainNavEl,
                     secondNavEl,
                     main(
@@ -132,7 +136,7 @@ class Student extends RootComponent {
                 '#app',
                 headerEl,
                 div(
-                    '.flex-container.expand.margin-top-2',
+                    '.flex-container.expand',
                     mainNavEl,
                     secondNavEl,
                     main(

@@ -27,13 +27,19 @@
         justify-content: space-around;
 
         .title {
-            padding: 1em;
+			padding: 1em;
 
-            h4 {
-                margin: 0;
+            h3 {
+                margin: 0 0 0.2em;
                 font-weight: 300;
                 font-size: 1.2em;
-            }
+			}
+			
+			h4.username {
+				font-weight: 300;
+				margin: 0;
+				color: $primary_font_colour_faded;
+			}
         }
 
         a {
@@ -61,11 +67,17 @@
     align-items: center;
 
     > .title {
-        h4 {
+        h3 {
             margin: 0;
             font-weight: 400;
             font-size: 1.2em;
-        }
+		}
+
+		h4 {
+			font-weight: 300;
+			margin: 0;
+			color: $primary_font_colour_faded;
+		}
     }
 
     a {

@@ -57,13 +57,13 @@ class StudentEdit extends Component {
         const groupButton = document.getElementById('update-group-button');
 
         if (completed) {
-            groupButton.textContent = await window.bcnI18n.getPhrase('cr_update_group');
+            groupButton.textContent = await window.bcnI18n.getPhrase('cr_group_update');
             doneButton.textContent = await window.bcnI18n.getPhrase('done');
 
             return;
         }
 
-        groupButton.textContent = await window.bcnI18n.getPhrase('cr_create_group');
+        groupButton.textContent = await window.bcnI18n.getPhrase('cr_group_update');
         doneButton.textContent = await window.bcnI18n.getPhrase('cancel');
     }
 
@@ -141,7 +141,10 @@ class StudentEdit extends Component {
 
             this.changeButtons(true);
 
-            this.emit('GroupNameUpdate');
+            this.emit('GroupNameUpdate', {
+                groupName: this.state.groupName,
+                groupCategory: this.state.groupCategory,
+            });
 
             return;
         }

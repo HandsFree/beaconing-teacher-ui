@@ -155,7 +155,7 @@ class StudentEdit extends Component {
 
             this.appendView(statusMessageEl);
 
-            this.resetSubmit();
+            this.changeButtons(false);
 
             return false;
         }
@@ -171,7 +171,24 @@ class StudentEdit extends Component {
 
             this.appendView(statusMessageEl);
 
-            this.resetSubmit();
+            this.changeButtons(false);
+
+            return false;
+        }
+
+        if ((now.getFullYear() - parsedDate.getFullYear()) >= 120
+            || (now.getFullYear() - parsedDate.getFullYear()) < 1) {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'student-dob',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('not_valid_dob')),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.changeButtons(false);
 
             return false;
         }

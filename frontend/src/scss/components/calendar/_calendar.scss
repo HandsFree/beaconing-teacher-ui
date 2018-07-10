@@ -20,7 +20,7 @@
 	background: #2d353e;
 	color: #fff;
 	font-size: 14pt;
-	border: none !important;
+	border-bottom: 1px solid #a9b5c0;
 }
 
 .calendar-heading-cell p {
@@ -77,7 +77,8 @@
 
 .outer-col {
 	display: grid;
-	grid-template-columns: 30% 70%;
+	grid-column-gap: 2em;
+	grid-template-columns: 25% 70%;
 }
 
 // this is a bit awkward
@@ -107,5 +108,15 @@
 .calendar-meta-info {
 	// aligns the name and calendar
 	// date to the left/right
+	justify-content: space-between;
+}
+
+// TODO move this into the students selectiony css file but for now 
+// im gonna slap it here.
+
+.cal-sel-item {
+	border: 2px solid #e87f62;
+	padding: 0.5em 1em;
+	margin: 1em;
 	justify-content: space-between;
 }

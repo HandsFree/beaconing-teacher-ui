@@ -4,7 +4,7 @@ import moment from 'moment';
 import { div } from '../../../../core/html';
 import { Component } from '../../../../core/component';
 
-import { CalendarEvent, CalendarEventList } from './calendar_event';
+import { CalendarEvent, CalendarDueEvent, CalendarEventList } from './calendar_event';
 import { CalendarCell, CalendarHeadingCell, CalendarNextMonthCell, CalendarPrevMonthCell } from './calendar_cell';
 import nullishCheck from '../../../../core/util';
 
@@ -13,6 +13,12 @@ import nullishCheck from '../../../../core/util';
 // stuff and fetch events for each cell including prev
 // and next month ones.
 
+class CalendarDayView extends Component {
+    async render() {
+        return div();
+    }
+}
+
 // the actual calendar
 class CalendarView extends Component {
     updateHooks = {
@@ -20,6 +26,8 @@ class CalendarView extends Component {
         NextMonth: this.nextMonth,
         CurrMonth: this.currMonth,
         RefreshCalendarView: this.refreshCalendarView,
+        WriteDueEvent: this.writeDueEvent,
+        ClearDueEvent: this.clearDueEvent,
     };
 
     state = {
@@ -27,16 +35,53 @@ class CalendarView extends Component {
         // will bew a view of.
         currDate: moment(),
         eventMap: new Map(),
+
+        // the current event that is due
+        currentDueEvent: null,
     };
+
+    async clearDueEvent() {
+        this.state.currentDueEvent = null;
+        this.updateView(await this.render());
+    }
+
+    // TODO handle if event is due on the same day
+    async writeDueEvent(event: CustomEvent) {
+        const { detail } = event;
+
+        const { id, name, due } = detail;
+        
+        const eventProm = new CalendarDueEvent().attach({
+            name, id, due,
+        });
+
+        // we could write this with "writeEvent" but it's
+        // easier to just have one due date event rendered
+        // at a time. this could easily be expanded to multiple
+        this.state.currentDueEvent = {
+            eventProm,
+            date: due,
+        };
+        
+        if (!this.state.currDate.isSame(due, 'M')) {
+            this.emit('RefreshCalendarController');
+            this.gotoDate(due);
+        } else {
+            this.updateView(await this.render());
+        }
+    }
 
     async refreshCalendarView() {
         // reset any of the previously loaded events before
         // we refresh the glps.
         this.state.eventMap = new Map();
 
-        const studentId = nullishCheck(window.sessionStorage.getItem('calendarStudentID'), 'none');
+        const calendarSelJSON = nullishCheck(window.sessionStorage.getItem('calendarSelection'), 'none');
+        if (calendarSelJSON !== 'none') {
+            const calendarSel = JSON.parse(calendarSelJSON);
+            await this.loadEvents(calendarSel);
+        }
 
-        await this.loadEvents(studentId);
         this.updateView(await this.render());
     }
 
@@ -47,7 +92,7 @@ class CalendarView extends Component {
     // array or we insert an array when writing an event.
     // note that we strip the time from the date given
     // so that we can index the hashmap just from mm/dd/yyyy
-    writeEvent(eventDate, event: Object) {
+    async writeEvent(eventDate, event: Component) {
         // store the date in the event object
         // WITH the time included.
         event.date = eventDate.toDate();
@@ -55,8 +100,8 @@ class CalendarView extends Component {
         const newDate = eventDate.clone().startOf('D');
         console.log('[Calendar] writing ', event, ' time ', newDate);
 
-        const events = this.state.eventMap.get(newDate.format());
-        if (events) {
+        const events = nullishCheck(this.state.eventMap.get(newDate.format()), 'none');
+        if (events !== 'none') {
             events.push(event);
             // re-write into hashmap
             this.state.eventMap.set(newDate.format(), events);
@@ -80,42 +125,81 @@ class CalendarView extends Component {
         return glps;
     }
 
-    async init() {
-        if (window.sessionStorage) {
-            const studentId = nullishCheck(window.sessionStorage.getItem('calendarStudentID'), 'none');
-            await this.loadEvents(studentId);
+    async loadGroupEvents(group: number) {
+        console.log(`[Calendar] writing events for group ${group}`);
+
+        const glpBoxes = await window.beaconingAPI.getGroupAssigned(group);
+        console.log(`[Calendar] loaded ${glpBoxes.length} events`);
+
+        for (const glpBox of glpBoxes) {
+            const glp = await window.beaconingAPI.getGLP(glpBox.gamifiedLessonPathId);
+
+            if (nullishCheck(glp, false) && glpBox.availableFrom) {
+                const availDate = moment(glpBox.availableFrom).startOf('D');
+
+                console.log(`[Calendar] writing GROUP event ${availDate.format()}`);
+
+                this.writeEvent(availDate, new CalendarEvent().attach({
+                    name: glp.name,
+                    desc: glp.description,
+                    id: glp.id,
+                    due: glp.availableUntil,
+                    avail: glp.availableFrom,
+                }));
+            }
         }
     }
 
-    // loads all of the events from the glps
-    // of the given student id
-    async loadEvents(studentId: number | string) {
-        if (studentId === 'none') {
-            return;
-        }
-
+    async loadStudentEvents(studentId: number) {
         console.log(`[Calendar] writing events for student ${studentId}`);
 
         const glpBoxes = await this.getStudentGLPS(studentId);
         for (const glpBox of glpBoxes) {
             const { glp } = glpBox;
 
-            if (glpBox.availableFrom) {
+            if (nullishCheck(glp, false) && glpBox.availableFrom) {
                 const availDate = moment(glpBox.availableFrom).startOf('D');
 
                 console.log(`[Calendar] writing event ${availDate.format()}`);
 
-                this.writeEvent(availDate, {
+                this.writeEvent(availDate, new CalendarEvent().attach({
                     name: glp.name,
-                    id: glp.id,
                     desc: glp.description,
-                });
+                    id: glp.id,
+                    due: glp.availableUntil,
+                    avail: glp.availableFrom,
+                }));
             }
         }
     }
 
+    async loadEvents(calendarSelection) {
+        if (calendarSelection.student !== null) {
+            console.log('[Calendar] Loading student events');
+            const { id } = calendarSelection.student;
+            await this.loadStudentEvents(id);
+        } else if (calendarSelection.group !== null) {
+            console.log('[Calendar] Loading group events');
+            const { id } = calendarSelection.group;
+            await this.loadGroupEvents(id);
+        }
+    }
+
     async currMonth() {
+        // we're already on the same day there is no need
+        // to trigger a re-render
+        if (this.state.currDate.isSame(moment(), 'D')) {
+            return;
+        }
+
         this.state.currDate = moment();
+        window.sessionStorage.setItem('calendarDate', this.state.currDate);
+
+        this.updateView(await this.render());
+    }
+
+    async gotoDate(date) {
+        this.state.currDate = date.clone().startOf('month');
         window.sessionStorage.setItem('calendarDate', this.state.currDate);
         this.updateView(await this.render());
     }
@@ -148,7 +232,7 @@ class CalendarView extends Component {
         const calDate = this.state.currDate;
 
         const firstDay = calDate.clone().startOf('M');
-        console.log("[Calendar] Displaying calendar for ", firstDay.format());
+        console.log('[Calendar] Displaying calendar for ', firstDay.format());
 
         // rows of calendar cells in the calendar
         const rows = [];
@@ -187,23 +271,28 @@ class CalendarView extends Component {
 
             // here we attach the event components
             // if there are any events for this day.
-            const events = [];
+            const eventsProm = [];
 
             const eventDateKey = cellDate.clone().startOf('D').format();
 
             if (eventMap.has(eventDateKey)) {
                 const storedEvents = eventMap.get(eventDateKey);
+
                 for (const event of storedEvents) {
-                    events.push(new CalendarEvent().attach({
-                        name: event.name,
-                        desc: '',
-                        id: event.id,
-                    }));
+                    eventsProm.push(event);
+                }
+            }
+
+            // render the due dates...
+            if (nullishCheck(this.state.currentDueEvent, 'none') !== 'none') {
+                const { eventProm, date } = this.state.currentDueEvent;
+                if (date.isSame(cellDate, 'D')) {
+                    eventsProm.push(eventProm);
                 }
             }
 
             const eventList = new CalendarEventList().attach({
-                events,
+                events: eventsProm,
             });
             const cell = new CalendarCell().attach({
                 dayNumber,
@@ -216,7 +305,7 @@ class CalendarView extends Component {
         const remain = 7 - (rows.length % 7);
         for (let dayNumber = 1; dayNumber <= remain; dayNumber++) {
             const cell = new CalendarNextMonthCell().attach({
-                dayNumber
+                dayNumber,
             });
             rows.push(cell);
         }

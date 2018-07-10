@@ -38,6 +38,7 @@ const config = async (yours, others) => {
                     max: 100,
                     stepSize: 25,
                     showLabelBackdrop: false,
+                    callback: value => `${value}%`,
                 },
                 reverse: false,
             },

@@ -110,9 +110,13 @@ func searchStudents(s *gin.Context, query searchRequestQuery) ([]*entity.Student
 		studentPtrs = append(studentPtrs, idx)
 	}
 
+	// so we avoid duplicate students since we
+	// search both students and usernames.
+	encounteredStudents := map[uint64]bool{}
+
 	// we're probably only going to match a few
 	// students and glps here so there is no
-	// point over-allocating!
+	// point over-allocating extra space
 	matchedStudents := []*entity.Student{}
 
 	// now we invoke our fancy libraries to
@@ -120,13 +124,23 @@ func searchStudents(s *gin.Context, query searchRequestQuery) ([]*entity.Student
 	studentUsernameSearch := fuzzy.RankFindFold(query.Query, studentUsernames)
 	for _, studentRank := range studentUsernameSearch {
 		studentIndex := studentPtrs[studentRank.Index]
-		matchedStudents = append(matchedStudents, students[studentIndex])
+
+		student := students[studentIndex]
+		if _, ok := encounteredStudents[student.ID]; !ok {
+			matchedStudents = append(matchedStudents, student)
+			encounteredStudents[student.ID] = true
+		}
 	}
 
 	studentFullNameSearch := fuzzy.RankFindFold(query.Query, studentFullNames)
 	for _, studentRank := range studentFullNameSearch {
 		studentIndex := studentPtrs[studentRank.Index]
-		matchedStudents = append(matchedStudents, students[studentIndex])
+
+		student := students[studentIndex]
+		if _, ok := encounteredStudents[student.ID]; !ok {
+			matchedStudents = append(matchedStudents, student)
+			encounteredStudents[student.ID] = true
+		}
 	}
 
 	return matchedStudents, nil

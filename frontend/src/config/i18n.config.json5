@@ -411,6 +411,17 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+    username: {
+        'en-GB': 'Username',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
 
     // Header //
 
@@ -2086,7 +2097,69 @@
         'pt-PT': '',
     },
 
+    // question overview
+
+    rw_question_overview: {
+        'en-GB': 'Question Overview',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',
+    },
+
+    rw_correct: {
+        'en-GB': 'Correct',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',
+    },
+
+    rw_incorrect: {
+        'en-GB': 'Incorrect',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',
+    },
+
     // Calendar //
+
+    cal_go_to_due_date: {
+        'en-GB': 'Go to due date',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',
+    },
+
+    cal_inspect_glp: {
+        'en-GB': 'Inspect GLP',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',
+    },
 
     cal_jan: {
         'en-GB': 'January',
@@ -2389,7 +2462,7 @@
     },
 
     cal_prev: {
-        'en-GB': 'Previous',
+        'en-GB': 'Previous Month',
         'fr-FR': '',
         'es-ES': '',
         'it-IT': '',
@@ -2413,7 +2486,7 @@
     },
 
     cal_current: {
-        'en-GB': 'Current',
+        'en-GB': 'Current Month',
         'fr-FR': '',
         'es-ES': '',
         'it-IT': '',
@@ -2425,7 +2498,7 @@
     },
 
     cal_next: {
-        'en-GB': 'Next',
+        'en-GB': 'Next Month',
         'fr-FR': '',
         'es-ES': '',
         'it-IT': '',

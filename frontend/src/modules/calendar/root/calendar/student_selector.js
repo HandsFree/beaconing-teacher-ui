@@ -1,156 +1,178 @@
 // @flow
-import { label, section, h2, p, div, ul, li, span, select, option } from '../../../../core/html';
+import { a, section, p, div } from '../../../../core/html';
 import { Component } from '../../../../core/component';
+import Loading from '../../../loading';
 import nullishCheck from '../../../../core/util';
 
-class StudentSelector extends Component {
-    async refresh(groupId, studentsList) {
-        this.state = {
-            groupId,
-            studentsList: nullishCheck(studentsList, []),
-        };
-        this.updateView(await this.render());
-    }
-
-    async init() {
-        const storedId = nullishCheck(window.sessionStorage.getItem('calendarStudentID'), 'none');
-        if (storedId !== 'none') {
-            this.setStudent(storedId);
-        }
-    }
-
-    async setStudent(id) {
-        console.log(`[Calendar] Setting student to ${id}`);
-
-        if (window.sessionStorage) {
-            const storedId = nullishCheck(window.sessionStorage.getItem('calendarStudentID'), 'none');
-
-            // dont bother setting and refreshing everything
-            // if we've selected the same student.
-            if (storedId === id) {
-                return;
-            }
-        }
-
-        window.sessionStorage.setItem('calendarStudentID', id);
-
-        this.emit('RefreshCalendarController');
-        this.emit('RefreshCalendarView');
-    }
-
+class CalendarSelectedGroup extends Component {
     async render() {
-        const { groupId } = this.state;
-        if (!groupId) {
-            return p(await window.bcnI18n.getPhrase('cal_no_group_selected'));
-        }
+        const {
+            id,
+            name,
+        } = this.props;
 
-        const { studentsList } = this.state;
+        return div('.cal-sel-item',
+            p('.item-name', `${name}`),
+            p(a('.fake-link',
+                {
+                    onclick: () => {
+                        // don't do anything if we've already selected
+                        // this group
+                        if (window.sessionStorage.getItem('calendarSelectionType') === 'groups') {
+                            const data = nullishCheck(window.sessionStorage.getItem('calendarSelection'), 'none');
+                            if (data !== 'none') {
+                                const groupData = JSON.parse(data);
+                                if (groupData.group !== null && groupData.group.id === id) {
+                                    return;
+                                }
+                            }
+                        }
 
-        const students = [];
-        for (const student of studentsList) {
-            const studentId = student.id;
-
-            // cache this in local storage or something?
-            students.push(await window.beaconingAPI.getStudent(studentId));
-        }
-
-        const studentLinks = [];
-        for (const student of students) {
-            let studentName = student.username;
-            if (student.profile.firstName) {
-                studentName += `, ${student.profile.firstName} ${student.profile.lastName}`;
-            }
-
-            studentLinks.push(
-                li(span(
-                    '.fake-link',
-                    {
-                        onclick: () => {
-                            this.setStudent(student.id);
-                        },
+                        window.sessionStorage.setItem('calendarSelection', JSON.stringify({
+                            student: null,
+                            group: {
+                                id,
+                                name,
+                            },
+                        }));
+                        this.emit('RefreshCalendarController');
+                        this.emit('RefreshCalendarView');
                     },
-                    studentName,
-                )),
-            );
-        }
-
-        let studentSet = p(await window.bcnI18n.getPhrase('cal_no_students_in_group'));
-        if (studentLinks.length > 0) {
-            studentSet = ul(studentLinks);
-        }
-
-        return div(
-            '.full-width',
-            h2(`${await window.bcnI18n.getPhrase('cal_select_student')}:`),
-            studentSet,
+                },
+                await window.bcnI18n.getPhrase('view'),
+            )),
         );
     }
 }
 
-class StudentGroupSelector extends Component {
-    state = {
-        groupId: 0,
-    };
-
+class CalendarSelectedStudent extends Component {
     async render() {
-        const options = [];
-        const vals = Object.values(await window.beaconingAPI.getGroups());
-        const groups = nullishCheck(vals, []);
+        const {
+            id,
+            username,
+        } = this.props;
 
-        options.push(
-            option({
-                disabled: true,
-                selected: true,
-                value: '',
-            }, 'Select a group')
+        return div('.cal-sel-item',
+            p('.item-name', `${username}`),
+            p(a('.fake-link',
+                {
+                    onclick: () => {
+                        // don't do anything if we've already selected
+                        // this group
+                        if (window.sessionStorage.getItem('calendarSelectionType') === 'students') {
+                            const data = nullishCheck(window.sessionStorage.getItem('calendarSelection'), 'none');
+                            if (data !== 'none') {
+                                const studentData = JSON.parse(data);
+                                if (studentData.student !== null && studentData.student.id === id) {
+                                    return;
+                                }
+                            }
+                        }
+
+                        window.sessionStorage.setItem('calendarSelection', JSON.stringify({
+                            student: {
+                                id,
+                                username,
+                            },
+                            group: null,
+                        }));
+                        this.emit('RefreshCalendarController');
+                        this.emit('RefreshCalendarView');
+                    },
+                },
+                await window.bcnI18n.getPhrase('view'),
+            )),
         );
+    }
+}
 
-        for (const group of groups) {
-            options.push(
-                option({
-                    value: `${group.id}`,
-                    students: group.students,
-                    selected: this.state.groupId === group.id,
-                }, `${group.name}`),
-            );
+class StudentSelector extends Component {
+    async render() {
+        const loading = new Loading();
+
+        const loadingEl = await loading.attach();
+
+        return section(
+            '.flex-column',
+            loadingEl,
+        );
+    }
+
+    async afterMount() {
+        const studentsSet = await window.beaconingAPI.getStudents();
+        const selItemsProm = [];
+
+        for (const student of studentsSet) {
+            const selItem = new CalendarSelectedStudent();
+            console.log(student);
+            const selItemEl = selItem.attach({
+                id: student.id,
+                username: student.username,
+            });
+
+            selItemsProm.push(selItemEl);
         }
 
-        const studentSel = new StudentSelector();
+        const studentsEl = await Promise.all(selItemsProm).then(elements => elements);
+        this.updateView(studentsEl);
+    }
+}
 
-        const studentSelEl = await studentSel.attach();
+class GroupSelector extends Component {
+    async render() {
+        const loading = new Loading();
 
-        const selectGroupTranslation = await window.bcnI18n.getPhrase('cal_select_group');
+        const loadingEl = await loading.attach();
 
-        return div(
-            '.group-select',
-            h2(`${selectGroupTranslation}:`),
-            label(
-                '.select',
-                select(
-                    '#so-class-list',
-                    {
-                        onchange: (event) => {
-                            const self = event.target;
-                            const selectedOption = self.options[self.selectedIndex];
-                            const groupId = selectedOption.value;
-                            studentSel.refresh(groupId, selectedOption.students);
-                        },
-                    },
-                    options,
-                ),
-            ),
-            studentSelEl,
+        return section(
+            '.flex-column',
+            loadingEl,
         );
+    }
+
+    async afterMount() {
+        const groupSet = await window.beaconingAPI.getGroups();
+        const selItemsProm = [];
+
+        for (const group of groupSet) {
+            const selItem = new CalendarSelectedGroup();
+            const selItemEl = selItem.attach({
+                id: group.id,
+                name: group.name,
+            });
+
+            selItemsProm.push(selItemEl);
+        }
+
+        const groupsEl = await Promise.all(selItemsProm).then(elements => elements);
+        this.updateView(groupsEl);
     }
 }
 
 class SelectorPanel extends Component {
+    updateHooks = {
+        RefreshPanel: this.refreshPanel,
+    };
+
+    async refreshPanel() {
+        this.updateView(await this.render());
+    }
+
     async render() {
-        const studentGroupSelector = new StudentGroupSelector();
-
-        const studentGroupSelEl = await studentGroupSelector.attach();
-
-        return section('.full-width', studentGroupSelEl);
+        const selType = window.sessionStorage.getItem('calendarSelectionType');
+        switch (selType) {
+            case 'students': {
+                const studentsEl = await new StudentSelector().attach();
+                return section('.full-width', studentsEl);
+            }
+            case 'groups': {
+                const groupEl = await new GroupSelector().attach();
+                return section('.full-width', groupEl);
+            }
+            default: {
+                return section('.full-width');
+            }
+        }
     }
 }
 

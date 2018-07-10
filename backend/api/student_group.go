@@ -3,6 +3,7 @@ package api
 import (
 	"bytes"
 	"fmt"
+	"net/http"
 
 	"github.com/HandsFree/beaconing-teacher-ui/backend/activity"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
@@ -37,13 +38,17 @@ func CreateStudentGroup(s *gin.Context) (string, error) {
 		return "", err
 	}
 
-	resp, err := DoTimedRequestBody(s, "POST",
+	resp, err, status := DoTimedRequestBody(s, "POST",
 		API.getPath(s, "studentgroups"),
 		bytes.NewBuffer(studentGroupPost),
 	)
 	if err != nil {
 		util.Error("CreateStudentGroupPOST", err.Error())
 		return "", err
+	}
+
+	if status != http.StatusOK {
+		return "", nil
 	}
 
 	id, err := GetUserID(s)
@@ -59,10 +64,13 @@ func CreateStudentGroup(s *gin.Context) (string, error) {
 // GetStudentGroups gets all of the student groups
 // currently registered.
 func GetStudentGroups(s *gin.Context) (string, error) {
-	resp, err := DoTimedRequest(s, "GET", API.getPath(s, "studentgroups"))
+	resp, err, status := DoTimedRequest(s, "GET", API.getPath(s, "studentgroups"))
 	if err != nil {
 		util.Error("GetStudentGroups", err.Error())
 		return "", err
+	}
+	if status != http.StatusOK {
+		return "", nil
 	}
 	return string(resp), nil
 }
@@ -70,7 +78,7 @@ func GetStudentGroups(s *gin.Context) (string, error) {
 // GetStudentGroup gets all of the student groups
 // currently registered.
 func GetStudentGroup(s *gin.Context, groupID int) (string, error) {
-	resp, err := DoTimedRequest(s, "GET",
+	resp, err, status := DoTimedRequest(s, "GET",
 		API.getPath(s, "studentgroups/", fmt.Sprintf("%d", groupID)),
 	)
 
@@ -79,18 +87,26 @@ func GetStudentGroup(s *gin.Context, groupID int) (string, error) {
 		return "", err
 	}
 
+	if status != http.StatusOK {
+		return "", nil
+	}
+
 	return string(resp), nil
 }
 
 // DeleteStudentGroup deletes a specific student group of
 // the given id {id}.
 func DeleteStudentGroup(s *gin.Context, id int64) (string, error) {
-	req, err := DoTimedRequest(s, "DELETE",
+	req, err, status := DoTimedRequest(s, "DELETE",
 		API.getPath(s, "studentgroups/", fmt.Sprintf("%d", id)),
 	)
 	if err != nil {
 		util.Error("DeleteStudentGroup", err.Error())
 		return "", err
+	}
+
+	if status != http.StatusOK {
+		return "", nil
 	}
 
 	currUserID, err := GetUserID(s)
@@ -117,7 +133,7 @@ func PutStudentGroup(s *gin.Context, groupID int) (string, error) {
 		return "", err
 	}
 
-	resp, err := DoTimedRequestBody(s, "PUT",
+	resp, err, status := DoTimedRequestBody(s, "PUT",
 		API.getPath(s, "studentgroups/", fmt.Sprintf("%d", groupID)),
 		bytes.NewBuffer(putJSON),
 	)
@@ -125,6 +141,10 @@ func PutStudentGroup(s *gin.Context, groupID int) (string, error) {
 	if err != nil {
 		util.Error("PutStudentGroup TimedRequest", err.Error())
 		return "", err
+	}
+
+	if status != http.StatusOK {
+		return "", nil
 	}
 
 	return string(resp), nil

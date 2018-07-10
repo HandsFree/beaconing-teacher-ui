@@ -6,6 +6,7 @@ import Status from '../../../status';
 
 class GroupAside extends Component {
     editMode: boolean = false;
+
     updateHooks = {
         GroupNameUpdate: this.updateName,
         EditDoneClicked: this.toggleEditButton,
@@ -14,18 +15,18 @@ class GroupAside extends Component {
         AnalyticsClicked: this.resetEditButton,
     };
 
-    async updateName() {
-        const group = await window.beaconingAPI.getGroup(this.props.id);
+    async updateName(event: CustomEvent) {
+        const { detail } = event;
+        const {
+            groupName,
+            groupCategory,
+        } = detail;
 
-        if (group) {
-            this.state.group = group;
+        const groupNameEl = document.getElementById('group-aside-name');
+        const groupCategoryEl = document.getElementById('group-aside-category');
 
-            const groupNameEl = document.getElementById('group-aside-name');
-            const groupCategoryEl = document.getElementById('group-aside-category');
-
-            groupNameEl.textContent = group.name;
-            groupCategoryEl.textContent = group.category;
-        }
+        groupNameEl.textContent = groupName;
+        groupCategoryEl.textContent = groupCategory;
     }
 
     toggleEditButton() {

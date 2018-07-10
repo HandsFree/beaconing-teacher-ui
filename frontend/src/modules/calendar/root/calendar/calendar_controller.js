@@ -1,7 +1,7 @@
 // @flow
 import moment from 'moment';
 
-import { h2, p, div, span } from '../../../../core/html';
+import { a, h2, p, div } from '../../../../core/html';
 import { Component } from '../../../../core/component';
 import nullishCheck from '../../../../core/util';
 
@@ -27,25 +27,35 @@ class CalendarController extends Component {
             'cal_sept', 'cal_oct', 'cal_nov', 'cal_dec',
         ];
         const monthIndex = date.month();
-        return await window.bcnI18n.getPhrase(monthNames[monthIndex]);   
+        return window.bcnI18n.getPhrase(monthNames[monthIndex]);   
     }
 
     async render() {
-        const studentId = nullishCheck(window.sessionStorage.getItem('calendarStudentID'), 'none');
+        const calTranslation = await window.bcnI18n.getPhrase('calendar');
 
-        let studentGreet = '';
-        if (studentId !== 'none') {
-            const student = await window.beaconingAPI.getStudent(studentId);
+        let controllerTitle = calTranslation;
+        
+        const calendarSelection = nullishCheck(window.sessionStorage.getItem('calendarSelection'), 'none');
+        if (calendarSelection !== 'none') {
+            const calendarSelObj = JSON.parse(calendarSelection);
 
-            const calTranslation = await window.bcnI18n.getPhrase('calendar');
+            controllerTitle = do {
+                if (calendarSelObj.student !== null) {
+                    const { id, username } = calendarSelObj.student;
 
-            const { profile } = student;
+                    const student = await window.beaconingAPI.getStudent(id);
+                    const { firstName, lastName } = student;
 
-            if (!profile.firstName) {
-                studentGreet = `${student.username}'s ${calTranslation}`;
-            } else {
-                studentGreet = `${profile.firstName} ${profile.lastName}'s ${calTranslation}`;
-            }
+                    if (firstName !== '') {
+                        `${username}'s ${calTranslation}`;
+                    } else {
+                        `${firstName} ${lastName}'s ${calTranslation}`;
+                    }
+                } else if (calendarSelObj.group !== null) {
+                    const { name } = calendarSelObj.group;
+                    `${name}'s ${calTranslation}`;
+                }
+            };
         }
 
         let currDate = moment();
@@ -57,7 +67,6 @@ class CalendarController extends Component {
 
         const year = currDate.format('YYYY');
 
-        const selMonthTranslation = await window.bcnI18n.getPhrase('cal_sel_month');
         const prevMonthTranslation = await window.bcnI18n.getPhrase('cal_prev');
         const currMonthTranslation = await window.bcnI18n.getPhrase('cal_current');
         const nextMonthTranslation = await window.bcnI18n.getPhrase('cal_next');
@@ -66,30 +75,37 @@ class CalendarController extends Component {
             '.calendar-control',
             div(
                 '.calendar-meta-info',
-                h2('.calendar-name', `${studentGreet}`),
+                h2('.calendar-name', `${controllerTitle}`),
                 h2('.calendar-date', `${monthName} ${year}`),
             ),
 
-            p(
-                `${selMonthTranslation}: `,
+            div('.calendar-buttons',
+                p(a(
+                    '.btn', 
+                    {
+                        role: 'button',
+                        onclick: () => this.updateCalendar('PrevMonth'),
+                    }, prevMonthTranslation)
+                ),
+                ' ',
 
-                span('.fake-link', {
-                    onclick: () => this.updateCalendar('PrevMonth'),
-                }, prevMonthTranslation),
-
-                ', ',
-
-                span('.fake-link', {
-                    href: '',
-                    onclick: () => this.updateCalendar('CurrMonth'),
-                }, currMonthTranslation),
-
-                ', ',
-
-                span('.fake-link', {
-                    href: '',
-                    onclick: () => this.updateCalendar('NextMonth'),
-                }, nextMonthTranslation),
+                !currDate.isSame(moment(), 'D') ?
+                p(a(
+                    '.btn', 
+                    {
+                        role: 'button',
+                        onclick: () => this.updateCalendar('CurrMonth'),
+                    }, currMonthTranslation)
+                ) : div(),
+                
+                ' ',
+                p(a(
+                    '.btn', 
+                    {
+                        role: 'button',
+                        onclick: () => this.updateCalendar('NextMonth'),
+                    }, nextMonthTranslation)
+                ),
             ),
         );
     }

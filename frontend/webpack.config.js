@@ -1,6 +1,5 @@
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const DashboardPlugin = require('webpack-dashboard/plugin');
-const OfflinePlugin = require('offline-plugin');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
@@ -138,11 +137,6 @@ const mainSettings = (dev, devServer, dash, verbose) => {
             new webpack.optimize.SideEffectsFlagPlugin(),
             new webpack.optimize.OccurrenceOrderPlugin(),
             new OptimizeCssAssetsPlugin(),
-            new OfflinePlugin({
-                externals: [
-                    '/index.html',
-                ],
-            }),
         ],
         devtool: dev ? 'inline-source-map' : false,
         devServer: {
