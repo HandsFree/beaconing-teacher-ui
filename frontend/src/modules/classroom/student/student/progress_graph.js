@@ -40,6 +40,7 @@ const config = async (progress) => {
                         ticks: {
                             beginAtZero: true,
                             max: 100,
+                            callback: value => `${value}%`,
                         },
                         stacked: true,
                     },
