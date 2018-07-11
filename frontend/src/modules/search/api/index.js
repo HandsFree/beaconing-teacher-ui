@@ -29,6 +29,15 @@ class APISearchStatic extends Component {
         SearchNoResults: this.showError,
     };
 
+    async init() {
+        if (this.props?.filterOptions) {
+            this.queryObj = {
+                query: '',
+                ...this.props.filterOptions,
+            };
+        }
+    }
+
     hideError() {
         const errorEl = document.getElementById('search-no-results');
 
@@ -62,6 +71,12 @@ class APISearchStatic extends Component {
                 query: '',
                 ...(nullishCheck(detail, {})),
             };
+
+            this.hideError();
+
+            if (nullishCheck(this.view)) {
+                this.view.querySelector('input').value = '';
+            }
         }
     }
 
