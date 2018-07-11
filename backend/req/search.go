@@ -73,6 +73,10 @@ func searchGLPS(s *gin.Context, query searchRequestQuery) ([]*entity.GLP, error)
 		glps = sortedGlps
 	}
 
+	if query.Query == "" {
+		return glps, nil
+	}
+
 	// likewise we allocate a chunk of memory for the glps
 	glpNames := make([]string, len(glps))
 	glpPtrs := make([]int, len(glps))
