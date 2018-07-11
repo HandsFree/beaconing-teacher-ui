@@ -8,7 +8,9 @@ import LoadGroups from './load_groups';
 class GroupsContainer extends Component {
     async render() {
         const loading = new Loading();
-        const loadingEl = await loading.attach();
+        const loadingEl = await loading.attach({
+            msg: await window.bcnI18n.getPhrase('ld_groups'),
+        });
 
         return section('.flex-column', loadingEl);
     }

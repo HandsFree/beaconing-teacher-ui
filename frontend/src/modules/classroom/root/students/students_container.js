@@ -8,7 +8,9 @@ import LoadStudents from './load_students';
 class StudentsContainer extends Component {
     async render() {
         const loading = new Loading();
-        const loadingEl = await loading.attach();
+        const loadingEl = await loading.attach({
+            msg: await window.bcnI18n.getPhrase('ld_students'),
+        });
 
         return section('.flex-column', loadingEl);
     }
