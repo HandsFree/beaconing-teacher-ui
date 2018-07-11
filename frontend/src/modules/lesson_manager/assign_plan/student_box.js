@@ -1,10 +1,11 @@
 // @flow
 import Identicon from 'identicon.js';
 
-import { div, figure, img, h4, a, span, h3 } from '../../../core/html';
+import { div, figure, img, h4, a, h3 } from '../../../core/html';
 
 import { Component } from '../../../core/component';
 import Status from '../../status';
+import nullishCheck from '../../../core/util';
 
 class StudentBox extends Component {
     state = {
@@ -32,8 +33,31 @@ class StudentBox extends Component {
             return arr;
         };
 
+        let studentColour = randArray();
+
+        // fix this complexity
+        if (window.sessionStorage) {
+            if (!window.sessionStorage.getItem('student_colours')) {
+                const colours = {};
+
+                colours[student.username] = studentColour;
+
+                window.sessionStorage.setItem('student_colours', JSON.stringify(colours));
+            } else {
+                const colours = JSON.parse(window.sessionStorage.getItem('student_colours'));
+
+                if (nullishCheck(colours[student.username], false)) {
+                    studentColour = colours[student.username];
+                } else {
+                    colours[student.username] = studentColour;
+
+                    window.sessionStorage.setItem('student_colours', JSON.stringify(colours));
+                }
+            }
+        }
+
         const options = {
-            foreground: randArray(),
+            foreground: studentColour,
             background: [255, 255, 255, 255],
             margin: 0.1,
             size: 64,
