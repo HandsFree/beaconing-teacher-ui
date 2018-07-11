@@ -41,6 +41,8 @@ class LoadGLPs extends Component {
         }
 
         this.emit('SearchNoResults');
+        await this.noPlansFound() |> this.updateView;
+        this.removeLoadButtons();
     }
 
     async updateGLPs() {
@@ -115,6 +117,16 @@ class LoadGLPs extends Component {
         await this.GLPList() |> this.updateView;
     }
 
+    async noPlansFound() {
+        return div(
+            '.plans-container.list.flex-wrap',
+            div(
+                '.status',
+                span(await window.bcnI18n.getPhrase('lm_no_plans_found')),
+            ),
+        );
+    }
+
     async GLPList() {
         const values = Object.values(this.state.glps);
         const promArr = [];
@@ -124,13 +136,7 @@ class LoadGLPs extends Component {
         if (values.length === 0) {
             this.removeLoadButtons();
 
-            return div(
-                '.plans-container.list.flex-wrap',
-                div(
-                    '.status',
-                    span(await window.bcnI18n.getPhrase('lm_no_plans_found')),
-                ),
-            );
+            return this.noPlansFound();
         }
 
         for (const glp of values) {
