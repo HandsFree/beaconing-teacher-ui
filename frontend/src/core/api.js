@@ -356,14 +356,12 @@ class APICore {
         return studentStatus;
     }
 
-    async getSearchResults(query: string) {
-        const searchJSON = JSON.stringify({
-            Query: query,
-        });
+    async getSearchResults(queryObj: Object) {
+        const searchJSON = JSON.stringify(queryObj);
 
         const results = await this.post(`//${window.location.host}/api/v1/search`, searchJSON);
 
-        console.log(results);
+        // console.log(results);
 
         return results;
     }

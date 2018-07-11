@@ -1952,6 +1952,28 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+    lm_no_results: {
+        'en-GB': 'No Results',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    lm_no_plans_found: {
+        'en-GB': 'No Plans Found',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
 
     // Footer //
 

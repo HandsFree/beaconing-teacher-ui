@@ -21,16 +21,22 @@ type searchRequestQuery struct {
 
 type searchQueryResponse struct {
 	MatchedStudents []*entity.Student
+	MatchedGroups   []*entity.StudentGroup
 	MatchedGLPS     []*entity.GLP
 }
 
 func searchEverything(s *gin.Context, json searchRequestQuery) (*searchQueryResponse, error) {
 	studSet := make(chan []*entity.Student, 1)
+	groupSet := make(chan []*entity.StudentGroup, 1)
 	glpSet := make(chan []*entity.GLP, 1)
 
 	go func() {
 		studs, _ := searchStudents(s, json)
 		studSet <- studs
+	}()
+	go func() {
+		groups, _ := searchGroups(s, json)
+		groupSet <- groups
 	}()
 	go func() {
 		glps, _ := searchGLPS(s, json)
@@ -39,6 +45,7 @@ func searchEverything(s *gin.Context, json searchRequestQuery) (*searchQueryResp
 
 	return &searchQueryResponse{
 		MatchedStudents: <-studSet,
+		MatchedGroups:   <-groupSet,
 		MatchedGLPS:     <-glpSet,
 	}, nil
 }
@@ -146,6 +153,49 @@ func searchStudents(s *gin.Context, query searchRequestQuery) ([]*entity.Student
 	return matchedStudents, nil
 }
 
+func searchGroups(s *gin.Context, query searchRequestQuery) ([]*entity.StudentGroup, error) {
+	groups, err := parse.StudentGroups(s)
+	if err != nil {
+		util.Error(err)
+		return nil, err
+	}
+
+	groupNames := make([]string, len(groups))
+	groupPtrs := make([]int, len(groups))
+
+	// Now we actually append all this data
+	// unfortunately there is no other way to do
+	// this than a linear scan over both of the students/glps
+	for idx, group := range groups {
+		groupNames = append(groupNames, group.Name)
+		groupPtrs = append(groupPtrs, idx)
+	}
+
+	// so we avoid duplicate students since we
+	// search both students and usernames.
+	encounteredGroups := map[uint64]bool{}
+
+	// we're probably only going to match a few
+	// students and glps here so there is no
+	// point over-allocating extra space
+	matchedGroups := []*entity.StudentGroup{}
+
+	// now we invoke our fancy libraries to
+	// do the searches.
+	groupNameSearch := fuzzy.RankFindFold(query.Query, groupNames)
+	for _, groupRank := range groupNameSearch {
+		groupIndex := groupPtrs[groupRank.Index]
+
+		group := groups[groupIndex]
+		if _, ok := encounteredGroups[group.ID]; !ok {
+			matchedGroups = append(matchedGroups, group)
+			encounteredGroups[group.ID] = true
+		}
+	}
+
+	return matchedGroups, nil
+}
+
 func processSearch(s *gin.Context, query searchRequestQuery) (*searchQueryResponse, error) {
 	resp := &searchQueryResponse{}
 
@@ -155,6 +205,9 @@ func processSearch(s *gin.Context, query searchRequestQuery) (*searchQueryRespon
 		return resp, nil
 	case "student":
 		resp.MatchedStudents, _ = searchStudents(s, query)
+		return resp, nil
+	case "group":
+		resp.MatchedGroups, _ = searchGroups(s, query)
 		return resp, nil
 	default:
 		return searchEverything(s, query)

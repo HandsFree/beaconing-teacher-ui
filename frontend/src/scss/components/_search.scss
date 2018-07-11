@@ -21,6 +21,23 @@
 		top: 0;
 		position: absolute;
 		font-size: 1.25em;
-		padding: 1.25em 1em;
+		margin: 1.25em 1em;
+	}
+
+	.search-error {
+		font-size: 0.85em;
+		white-space: nowrap;
+		top: 0;
+		right: 0;
+		position: absolute;
+		margin: 2em;
+		background: white;
+		font-weight: 400;
+		color: #c62828;
+		visibility: hidden;
+
+		&.show {
+			visibility: visible;
+		}
 	}
 }
