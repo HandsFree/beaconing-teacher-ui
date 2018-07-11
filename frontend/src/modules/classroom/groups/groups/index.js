@@ -7,7 +7,7 @@ import Footer from '../../../footer/root';
 import MainNav from '../../../nav/main';
 import SecondNav from '../../../nav/second';
 import InnerNav from '../../inner_nav';
-import BasicSearch from '../../../search/basic';
+import APISearch from '../../../search/api';
 import GroupsContainer from './groups_container';
 import CreateGroupButton from './create_group_button';
 
@@ -18,7 +18,7 @@ class Groups extends RootComponent {
         const mainNav = new MainNav();
         const secondNav = new SecondNav();
         const innerNav = new InnerNav();
-        const search = new BasicSearch();
+        const search = new APISearch();
         const groups = new GroupsContainer();
         const createGroupButton = new CreateGroupButton();
 
@@ -32,6 +32,10 @@ class Groups extends RootComponent {
             }),
             search.attach({
                 searchType: 'width-expand',
+                filterOptions: {
+                    filter: 'group',
+                    sort: {},
+                },
             }),
             groups.attach(),
             createGroupButton.attach(),
