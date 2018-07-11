@@ -1,5 +1,5 @@
 // @flow
-import { div, i, input } from '../../../core/html';
+import { div, i, input, span } from '../../../core/html';
 
 import { Component } from '../../../core/component';
 import nullishCheck from '../../../core/util';
@@ -23,20 +23,57 @@ class APISearchStatic extends Component {
         },
     };
 
-    async init() {
-        const {
-            filterOptions,
-        } = this.props;
+    updateHooks = {
+        SearchFilterUpdate: this.updateFilter,
+        SearchResultsGiven: this.hideError,
+        SearchNoResults: this.showError,
+    };
 
-        this.queryObj = {
-            query: '',
-            ...(nullishCheck(filterOptions, {})),
-        };
+    hideError() {
+        const errorEl = document.getElementById('search-no-results');
+
+        if (!nullishCheck(errorEl, false)) {
+            return;
+        }
+
+        if (errorEl.classList.contains('show')) {
+            errorEl.classList.remove('show');
+        }
+    }
+
+    showError() {
+        const errorEl = document.getElementById('search-no-results');
+
+        if (!nullishCheck(errorEl, false)) {
+            return;
+        }
+
+        if (!errorEl.classList.contains('show')) {
+            errorEl.classList.add('show');
+        }
+    }
+
+    updateFilter(event: CustomEvent) {
+        console.log(event);
+        const { detail } = event;
+
+        if (nullishCheck(detail?.filter, false)) {
+            this.queryObj = {
+                query: '',
+                ...(nullishCheck(detail, {})),
+            };
+        }
     }
 
     async doSearch() {
-        const results = window.beaconingAPI.getSearchResults(this.queryObj);
-        console.log(results);
+        if (!this.queryObj || this.queryObj.query === '') {
+            return;
+        }
+
+        const results = await window.beaconingAPI.getSearchResults(this.queryObj);
+        if (nullishCheck(results, false)) {
+            this.emit('SearchDone', results);
+        }
     }
 
     async render() {
@@ -44,8 +81,10 @@ class APISearchStatic extends Component {
             searchType,
         } = this.props;
 
+        const noResultsStr = await window.bcnI18n.getPhrase('lm_no_results');
+
         return div(
-            '.search',
+            '.search.flex-grow',
             i('.icon-search', { 'aria-hidden': true }),
             input(
                 `.${searchType}`,
@@ -67,6 +106,7 @@ class APISearchStatic extends Component {
                     },
                 },
             ),
+            span('#search-no-results.search-error', noResultsStr),
         );
     }
 }
