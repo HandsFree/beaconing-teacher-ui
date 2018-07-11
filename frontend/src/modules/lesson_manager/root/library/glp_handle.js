@@ -127,7 +127,9 @@ class GLPHandle extends Component {
     async startLoad() {
         const loading = new Loading();
 
-        const loadingEl = await loading.attach();
+        const loadingEl = await loading.attach({
+            msg: await window.bcnI18n.getPhrase('ld_plans'),
+        });
 
         const el = div('.plans.flex-column.flex-grow.margin-20', loadingEl);
 
@@ -178,7 +180,9 @@ class GLPHandle extends Component {
     async render() {
         const loading = new Loading();
 
-        const loadingEl = await loading.attach();
+        const loadingEl = await loading.attach({
+            msg: await window.bcnI18n.getPhrase('ld_plans'),
+        });
 
         return div('.plans.flex-column.flex-grow.margin-20', loadingEl);
     }
