@@ -64,19 +64,6 @@ class Panel extends Component {
             studentsEl.push(div(
                 '.student',
                 div(
-                    '.flex-container.tablet-hide',
-                    div(
-                        '.student-profile-image',
-                        img(
-                            '.profile-blue',
-                            {
-                                src: `//${window.location.host}/dist/beaconing/images/profile.png`,
-                                alt: username,
-                            },
-                        ),
-                    ),
-                ),
-                div(
                     '.flex-container.flex-column.flex-spacearound.flex-grow',
                     div(
                         '.student-name',
