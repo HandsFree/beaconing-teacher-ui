@@ -4,11 +4,14 @@ import { section, div, p } from '../../../../core/html';
 import { Component } from '../../../../core/component';
 import Loading from '../../../loading';
 import StudentBox from './student_box';
+
 class GroupStudents extends Component {
     async render() {
         const loading = new Loading();
 
-        const loadingEl = await loading.attach();
+        const loadingEl = await loading.attach({
+            msg: await window.bcnI18n.getPhrase('ld_students'),
+        });
 
         return section(
             '.flex-column',
