@@ -12,19 +12,6 @@ class GLPBox extends Component {
             dashboardLink,
         } = this.props;
 
-        const dashboardEl = do {
-            if (dashboardLink) {
-                a(
-                    '.item',
-                    {
-                        href: dashboardLink,
-                        target: '_blank',
-                    },
-                    await window.bcnI18n.getPhrase('analytics'),
-                );
-            }
-        };
-
         return div(
             '.glp-assigned-box.flex-4.flex-column',
             div(
@@ -46,13 +33,19 @@ class GLPBox extends Component {
                 a(
                     '.item',
                     {
+                        href: `//${window.location.host}/classroom/group#analytics?id=${glpID}`,
+                    },
+                    await window.bcnI18n.getPhrase('analytics'),
+                ),
+                a(
+                    '.item',
+                    {
                         onclick: () => {
                             this.unassignPlan();
                         },
                     },
                     await window.bcnI18n.getPhrase('cr_unassign'),
                 ),
-                dashboardEl,
             ),
         );
     }

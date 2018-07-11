@@ -4,6 +4,40 @@ import { section, div, p, a } from '../../../../core/html';
 import { Component } from '../../../../core/component';
 import Loading from '../../../loading';
 import GLPBox from './glp_box';
+import { WSAEINVALIDPROCTABLE } from 'constants';
+import nullishCheck from '../../../../core/util';
+
+class QuestAnalytics {
+    constructor(name : string, dashboardLink : string) {
+        this.name = name;
+        this.dashboardLink = dashboardLink;
+    }
+}
+
+class MissionAnalytics {
+    constructor(name : string, dashboardLink : string) {
+        this.name = name;
+        this.dashboardLink = dashboardLink;
+        this.quests = [];
+    }
+
+    registerQuest(quest : QuestAnalytics) {
+        this.quests.push(quest);
+    }
+}
+
+class GLPAnalyticsInfo {
+    constructor(id : number, name : string, dashboardLink : string) {
+        this.id = id;
+        this.name = name;
+        this.dashboardLink = dashboardLink;
+        this.missions = [];
+    }
+
+    registerMission(mission : MissionAnalytics) {
+        this.missions.push(mission);
+    }
+}
 
 class AssignedGLPs extends Component {
     async render() {
@@ -20,6 +54,59 @@ class AssignedGLPs extends Component {
     async afterMount() {
         const { id } = this.props;
         const assignedGLPs = await window.beaconingAPI.getGroupAssigned(id);
+
+        const glpAnalyticsNodes = new Map();
+
+        // we're basically taking this janky json
+        // format and converting it into a nice tree data structure
+        // that's a bit more usable
+        for (const assigned of assignedGLPs) {
+            // some glps dont have this analyticsGlp available!
+            if (nullishCheck(assigned.analyticsGlp, 'none') === 'none') {
+                continue;
+            }
+
+            console.log("ze analyticsglp is ", assigned.analyticsGlp);
+            const { 
+                analytics,
+                id,
+                missions,
+                name,
+            } = assigned.analyticsGlp;
+
+            // lovely.
+            const mainDashboard = analytics?.json?.analytics?.dashboard ?? "";
+            const glpAnalyticsObj = new GLPAnalyticsInfo(id, name, mainDashboard);
+            
+            for (const mission of missions) {
+                const { 
+                    analytics, 
+                    description, 
+                    id, 
+                    name, 
+                    quests,
+                } = mission;
+
+                const missionDashboardLink = analytics?.json?.analytics?.dashboard ?? "";
+
+                const missionAnalyticsObj = new MissionAnalytics(name, missionDashboardLink);
+                for (const quest of quests) {
+                    const { analytics, name } = quest;
+                    const questDashboardLink = analytics?.json?.analytics?.dashboard ?? "";
+                    missionAnalyticsObj.registerQuest(new QuestAnalytics(name, questDashboardLink));
+                }
+
+                glpAnalyticsObj.registerMission(missionAnalyticsObj);
+            }
+
+            // store glp id => glp data
+            glpAnalyticsNodes.set(id, glpAnalyticsObj);
+        }
+
+        // FIXME EASY
+        // we store the whole thing but we can probably just
+        // store one node later on
+        window.sessionStorage.setItem('assignedAnalyticsData', JSON.stringify(glpAnalyticsNodes));
 
         if (assignedGLPs && assignedGLPs.length >= 1) {
             const glps = [];
