@@ -31,7 +31,6 @@ class LoadGLPs extends Component {
         const { MatchedGLPS } = detail;
 
         if (Array.isArray(MatchedGLPS) && MatchedGLPS.length >= 1) {
-            console.log('hi');
             this.removeLoadButtons();
             this.emit('SearchResultsGiven');
             this.state.glps = MatchedGLPS;
@@ -41,8 +40,6 @@ class LoadGLPs extends Component {
         }
 
         this.emit('SearchNoResults');
-        await this.noPlansFound() |> this.updateView;
-        this.removeLoadButtons();
     }
 
     async updateGLPs() {
