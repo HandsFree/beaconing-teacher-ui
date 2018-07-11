@@ -81,9 +81,9 @@ class APISearchStatic extends Component {
     }
 
     async doSearch() {
-        if (!this.queryObj || this.queryObj.query === '') {
-            return;
-        }
+        // if (!this.queryObj || this.queryObj.query === '') {
+        //     return;
+        // }
 
         const results = await window.beaconingAPI.getSearchResults(this.queryObj);
         if (nullishCheck(results, false)) {
@@ -109,6 +109,7 @@ class APISearchStatic extends Component {
                         const { target } = event;
 
                         this.queryObj.query = target.value;
+                        this.doSearch();
                     },
                     onkeypress: (event) => {
                         const {
