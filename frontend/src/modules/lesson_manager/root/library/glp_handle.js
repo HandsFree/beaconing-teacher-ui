@@ -9,6 +9,8 @@ import LoadGLPs from './load_glps';
 class GLPHandle extends Component {
     eventsLoaded: boolean = false;
 
+    filterOptions: ?Object = null;
+
     updateHooks = {
         SortActiveGLPsClicked: this.startActiveGLPs,
         RecentDescendingClicked: this.startAddedDescendingGLPs,
@@ -36,6 +38,8 @@ class GLPHandle extends Component {
                 order,
             },
         };
+
+        this.filterOptions = filterOptions;
 
         this.emit('SearchFilterUpdate', filterOptions);
     }
@@ -250,6 +254,7 @@ class GLPHandle extends Component {
                     this.loadGLPs('owned', 'desc', false);
                     break;
                 default:
+                    this.emitSearchFilter('owned', 'desc');
                     this.loadGLPs('owned', 'desc', false);
                     break;
                 }
@@ -258,6 +263,7 @@ class GLPHandle extends Component {
             }
         }
 
+        this.emitSearchFilter('owned', 'desc');
         this.loadGLPs('owned', 'desc', false);
     }
 
