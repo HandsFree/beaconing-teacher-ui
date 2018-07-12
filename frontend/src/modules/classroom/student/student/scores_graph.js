@@ -39,6 +39,7 @@ const config = async (min, avg, max) => {
                             beginAtZero: true,
                             min: 0,
                             max: 100,
+                            callback: value => `${value}%`,
                         },
                     },
                 ],

@@ -41,7 +41,7 @@ func formatRequest(r *http.Request) string {
 }
 
 // DoTimedRequestBody ...
-func DoTimedRequestBody(s *gin.Context, method string, url string, reqBody io.Reader) ([]byte, error) {
+func DoTimedRequestBody(s *gin.Context, method string, url string, reqBody io.Reader) ([]byte, error, int) {
 	return DoTimedRequestBodyHeaders(s, method, url, reqBody, map[string]string{
 		"accept":        "application/json",
 		"authorization": fmt.Sprintf("Bearer %s", GetAccessToken(s)),
@@ -50,7 +50,7 @@ func DoTimedRequestBody(s *gin.Context, method string, url string, reqBody io.Re
 
 // DoTimedRequestBodyHeaders does a timed request of type {method} to {url} with an optional {reqBody}, if
 // there is no body pass nil, as well as a timeout can be specified.
-func DoTimedRequestBodyHeaders(s *gin.Context, method string, url string, reqBody io.Reader, headers map[string]string) ([]byte, error) {
+func DoTimedRequestBodyHeaders(s *gin.Context, method string, url string, reqBody io.Reader, headers map[string]string) ([]byte, error, int) {
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
 
@@ -69,28 +69,28 @@ func DoTimedRequestBodyHeaders(s *gin.Context, method string, url string, reqBod
 
 	if err != nil {
 		util.Error("DoTimedRequestBody", err.Error())
-		return []byte{}, err
+		return []byte{}, err, -1
 	}
 
 	resp, err := http.DefaultClient.Do(req.WithContext(ctx))
 	if err != nil {
 		util.Error("DoTimedRequestBody", err.Error())
-		return []byte{}, err
+		return []byte{}, err, resp.StatusCode
 	}
 
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		util.Error("DoTimedRequestBody", err.Error())
-		return []byte{}, err
+		return []byte{}, err, resp.StatusCode
 	}
 
-	return body, nil
+	return body, nil, resp.StatusCode
 }
 
 // DoTimedRequest is the same as DoTimedRequestBody, however it does not have
 // a body passed to the request.
-func DoTimedRequest(s *gin.Context, method string, url string) ([]byte, error) {
-	data, err := DoTimedRequestBody(s, method, url, nil)
-	return data, err
+func DoTimedRequest(s *gin.Context, method string, url string) ([]byte, error, int) {
+	data, err, status := DoTimedRequestBody(s, method, url, nil)
+	return data, err, status
 }

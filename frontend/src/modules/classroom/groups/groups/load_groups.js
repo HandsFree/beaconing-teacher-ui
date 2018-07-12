@@ -6,6 +6,26 @@ import GroupBox from './group_box';
 import nullishCheck from '../../../../core/util';
 
 class LoadGroups extends Component {
+    updateHooks = {
+        SearchDone: this.handleSearch,
+    };
+
+    async handleSearch(event: CustomEvent) {
+        const { detail } = event;
+
+        const { MatchedGroups } = detail;
+
+        if (Array.isArray(MatchedGroups) && MatchedGroups.length >= 1) {
+            this.emit('SearchResultsGiven');
+            this.state.groups = MatchedGroups;
+            await this.render() |> this.updateView;
+
+            return;
+        }
+
+        this.emit('SearchNoResults');
+    }
+
     async init() {
         this.state.groups = nullishCheck(await window.beaconingAPI.getGroups(), []);
     }

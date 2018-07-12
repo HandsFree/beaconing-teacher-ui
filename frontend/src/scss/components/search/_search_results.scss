@@ -18,10 +18,16 @@
             > .title {
                 margin: 0.5em;
         
-                h4 {
+                h3 {
                     margin: 0;
                     font-weight: 400;
                     font-size: 1.15em;
+                }
+
+                h4 {
+                    font-weight: 300;
+                    margin: 0;
+                    color: $primary_font_colour_faded;
                 }
             }
 

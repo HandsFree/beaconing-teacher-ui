@@ -9,7 +9,9 @@ class PlanOverview extends Component {
     async render() {
         const loading = new Loading();
 
-        const loadingEl = await loading.attach();
+        const loadingEl = await loading.attach({
+            msg: await window.bcnI18n.getPhrase('ld_plan'),
+        });
 
         return section(
             '.flex-column',

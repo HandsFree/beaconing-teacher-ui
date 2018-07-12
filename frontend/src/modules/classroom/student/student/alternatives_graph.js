@@ -1,5 +1,5 @@
 // @flow
-import { canvas } from '../../../../core/html';
+import { div, h2, canvas } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 
@@ -49,6 +49,11 @@ class AlternativesGraph extends Component {
             correct,
             incorrect,
         } = graphData;
+
+        if (correct === 0 && incorrect === 0) {
+            return div(h2('No data to display.'));
+        }
+
         const ctx: CanvasRenderingContext2D = this.view.getContext('2d');
 
         // console.log(ctx);

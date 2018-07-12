@@ -1,5 +1,5 @@
 // @flow
-import { div } from '../../../../core/html';
+import { div, h2, p } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 import AssignedGLPs from './assigned_glps';
@@ -57,6 +57,10 @@ class StudentMain extends Component {
 
         const el = div(
             '#pane-container.flex-column.flex-grow',
+            div('.student-analytics-title.margin-20',
+                h2('Student Analytics'),
+                p('Overall progress charts for students display progress accross all lesson plans assigned to them are only updated after the GLP has been fully played and finished.'),
+            ),
             analyticsEl,
         );
 

@@ -1,23 +1,16 @@
 // @flow
-import List from 'list.js';
-
 import { section } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 import Loading from '../../../loading';
 import LoadGroups from './load_groups';
 
-const listConfig = {
-    valueNames: ['name'],
-    indexAsync: true,
-};
-
 class GroupsContainer extends Component {
-    list: List;
-
     async render() {
         const loading = new Loading();
-        const loadingEl = await loading.attach();
+        const loadingEl = await loading.attach({
+            msg: await window.bcnI18n.getPhrase('ld_groups'),
+        });
 
         return section('.flex-column', loadingEl);
     }
@@ -30,10 +23,6 @@ class GroupsContainer extends Component {
         const element = section('.flex-column', loadGroupsEl);
 
         this.updateView(element);
-    }
-
-    async afterViewUpdate() {
-        this.list = new List('groups', listConfig);
     }
 }
 

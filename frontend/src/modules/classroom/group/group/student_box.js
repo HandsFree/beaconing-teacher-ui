@@ -5,6 +5,7 @@ import { div, figure, img, h4, a, h3 } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 import Status from '../../../status';
+import nullishCheck from '../../../../core/util';
 
 class StudentBox extends Component {
     async render() {
@@ -47,8 +48,31 @@ class StudentBox extends Component {
             return arr;
         };
 
+        let studentColour = randArray();
+
+        // fix this complexity
+        if (window.sessionStorage) {
+            if (!window.sessionStorage.getItem('student_colours')) {
+                const colours = {};
+
+                colours[username] = studentColour;
+
+                window.sessionStorage.setItem('student_colours', JSON.stringify(colours));
+            } else {
+                const colours = JSON.parse(window.sessionStorage.getItem('student_colours'));
+
+                if (nullishCheck(colours[username], false)) {
+                    studentColour = colours[username];
+                } else {
+                    colours[username] = studentColour;
+
+                    window.sessionStorage.setItem('student_colours', JSON.stringify(colours));
+                }
+            }
+        }
+
         const options = {
-            foreground: randArray(),
+            foreground: studentColour,
             background: [255, 255, 255, 255],
             margin: 0.1,
             size: 64,

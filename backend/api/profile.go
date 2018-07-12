@@ -2,6 +2,7 @@ package api
 
 import (
 	"bytes"
+	"net/http"
 
 	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
@@ -23,13 +24,16 @@ func PutProfile(s *gin.Context) (string, error) {
 		return "", err
 	}
 
-	resp, err := DoTimedRequestBody(s, "PUT",
+	resp, err, status := DoTimedRequestBody(s, "PUT",
 		API.getPath(s, "currentuser"),
 		bytes.NewBuffer(profilePut),
 	)
 	if err != nil {
 		util.Error("PutProfile", err.Error())
 		return "", err
+	}
+	if status != http.StatusOK {
+		return "", nil
 	}
 
 	// todo is this an activity or not?

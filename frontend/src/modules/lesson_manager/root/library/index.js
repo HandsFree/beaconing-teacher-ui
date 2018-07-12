@@ -7,7 +7,7 @@ import Footer from '../../../footer/root';
 import MainNav from '../../../nav/main';
 import SecondNav from '../../../nav/second';
 import InnerNav from '../../inner_nav';
-import BasicSearch from '../../../search/basic';
+import APISearch from '../../../search/api';
 import Sort from './sort';
 import GLPHandle from './glp_handle';
 import CreatePlanButton from './create_plan_button';
@@ -19,7 +19,7 @@ class Library extends RootComponent {
         const mainNav = new MainNav();
         const secondNav = new SecondNav();
         const innerNav = new InnerNav();
-        const search = new BasicSearch();
+        const search = new APISearch();
         const sort = new Sort();
         const glpHandle = new GLPHandle();
         const createPlanButton = new CreatePlanButton();

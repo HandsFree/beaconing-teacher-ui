@@ -98,11 +98,17 @@ Place `config.toml` in `backend/cfg/`.
 
 By default the server requests to the API and scripts will be loaded from the external IP address. 
 
-To provide a static URL enter one into the host variable under server without the protocol or trailing slash:
+To provide a static URL enter one into the host variable under server without the trailing slash:
 
 ```toml
 [server]
-host = "teacher.beaconing.eu"
+host = "example.com"
+```
+
+By default, the host will be prefixed with `https://`. If you wish to use `http://` instead, it's possible to add that to the host:
+```toml
+[server]
+host = "http://example.com"
 ```
 
 Changes to the host configuration will only take place once gin is running in Release Mode.

@@ -92,17 +92,6 @@
         'tr-TR': 'Sıra Önceliği',
         'pt-PT': 'Ordenar por',
     },
-    loading: {
-        'en-GB': 'Loading',
-        'fr-FR': 'Chargement',
-        'es-ES': 'Cargando',
-        'it-IT': 'Caricamento',
-        'de-DE': 'Lädt',
-        'ro-RO': 'Se încarcă',
-        'pl-PL': 'Ładowanie',
-        'tr-TR': 'Yüklüyor',
-        'pt-PT': 'A carregar',
-    },
     view: {
         'en-GB': 'View',
         'fr-FR': 'Voir',
@@ -1952,6 +1941,28 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+    lm_no_results: {
+        'en-GB': 'No Results',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    lm_no_plans_found: {
+        'en-GB': 'No Plans Found',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
 
     // Footer //
 
@@ -2087,6 +2098,44 @@
 
     confirm_delete_student: {
         'en-GB': 'Are you sure you wish to delete this student?',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',
+    },
+
+    // question overview
+
+    rw_question_overview: {
+        'en-GB': 'Question Overview',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',
+    },
+
+    rw_correct: {
+        'en-GB': 'Correct',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',
+    },
+
+    rw_incorrect: {
+        'en-GB': 'Incorrect',
         'fr-FR': '',
         'es-ES': '',
         'it-IT': '',
@@ -2954,5 +3003,63 @@
         'pl-PL': '',
         'tr-TR': '',
         'pt-PT': ''
+    },
+
+    // Loading Messages //
+
+    loading: {
+        'en-GB': 'Loading',
+        'fr-FR': 'Chargement',
+        'es-ES': 'Cargando',
+        'it-IT': 'Caricamento',
+        'de-DE': 'Lädt',
+        'ro-RO': 'Se încarcă',
+        'pl-PL': 'Ładowanie',
+        'tr-TR': 'Yüklüyor',
+        'pt-PT': 'A carregar',
+    },
+    ld_plans: {
+        'en-GB': 'Loading Plans',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',
+    },
+    ld_plan: {
+        'en-GB': 'Loading Plan',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',
+    },
+    ld_students: {
+        'en-GB': 'Loading Students',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',
+    },
+    ld_groups: {
+        'en-GB': 'Loading Groups',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',
     },
 }
