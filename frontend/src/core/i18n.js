@@ -1,17 +1,32 @@
 // @flow
 import i18nConfig from '../config/i18n.config.json5';
 import nullishCheck from './util';
+import APICore from './api';
 
 class I18n {
     language = 'en-GB';
+
     langFetched = false;
 
-    async fetchLang() {
-        const currUser = await window.beaconingAPI.getCurrentUser();
+    api = new APICore();
 
-        const lang = nullishCheck(currUser?.language, 'en-GB');
-        this.language = lang;
-        this.langFetched = true;
+    currUser = null;
+
+    async fetchLang() {
+        if (this.currUser === null) {
+            this.currUser = this.api.getCurrentUser();
+
+            const user = await this.currUser;
+
+            const lang = nullishCheck(await user?.language, 'en-GB');
+            this.language = lang;
+            this.langFetched = true;
+
+            return;
+        }
+
+        // stop data races
+        await this.currUser;
     }
 
     async getPhrase(key: string) {
