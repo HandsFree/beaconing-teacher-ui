@@ -87,6 +87,7 @@ func PutGLP(s *gin.Context) (string, error) {
 	}
 
 	if status != http.StatusOK {
+		util.Info("[PutGLP] Status Returned: ", status)
 		return "", nil
 	}
 
@@ -123,7 +124,8 @@ func CreateGLP(s *gin.Context) (string, error) {
 		return "", err
 	}
 
-	if status != http.StatusOK {
+	if status != http.StatusCreated {
+		util.Info("[CreateGLP] Status Returned: ", status)
 		return "", nil
 	}
 
@@ -251,6 +253,7 @@ func GetGLPS(s *gin.Context, minify bool) (string, error) {
 		return "", err
 	}
 	if status != http.StatusOK {
+		util.Info("[GetGLPS] Status Returned: ", status)
 		return "", nil
 	}
 
@@ -274,6 +277,7 @@ func GetGLP(s *gin.Context, id uint64, minify bool) (*entity.GLP, error) {
 	}
 
 	if status != http.StatusOK {
+		util.Info("[GetGLP] Status Returned: ", status)
 		return nil, nil
 	}
 
@@ -306,6 +310,7 @@ func DeleteGLP(s *gin.Context, id uint64) (string, error) {
 	}
 
 	if status != http.StatusOK {
+		util.Info("[DeleteGLP] Status Returned: ", status)
 		return "", nil
 	}
 
