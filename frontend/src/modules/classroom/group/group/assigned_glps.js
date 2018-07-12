@@ -9,7 +9,9 @@ class AssignedGLPs extends Component {
     async render() {
         const loading = new Loading();
 
-        const loadingEl = await loading.attach();
+        const loadingEl = await loading.attach({
+            msg: await window.bcnI18n.getPhrase('ld_plans'),
+        });
 
         return section(
             '.flex-column',

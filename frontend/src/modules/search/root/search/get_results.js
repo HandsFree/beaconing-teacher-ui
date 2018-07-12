@@ -1,5 +1,5 @@
 // @flow
-import { div, h4 } from '../../../../core/html';
+import { div, h4, h3 } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 import ResultBox from './result_box';
@@ -8,8 +8,9 @@ class SearchResults extends Component {
     async init() {
         const query = decodeURIComponent(this.props.query);
 
-        this.state.results = await window.beaconingAPI.getSearchResults(query);
+        this.state.results = await window.beaconingAPI.getSearchResults({ query });
     }
+
     async render() {
         const {
             MatchedGLPS,
@@ -20,14 +21,26 @@ class SearchResults extends Component {
         if (MatchedStudents.length > 0) {
             const promArr = [];
 
+            const studentUsernameStr = await window.bcnI18n.getPhrase('username');
             for (const student of MatchedStudents) {
                 const resultBox = new ResultBox();
                 const { profile } = student;
+
                 const studentName = do {
                     if (profile.firstName && profile.lastName) {
-                        `${profile.firstName} ${profile.lastName}`;
+                        div(
+                            '.flex-column',
+                            h3('.name', `${profile.firstName} ${profile.lastName}`),
+                            h4(
+                                '.username',
+                                {
+                                    title: studentUsernameStr,
+                                },
+                                student.username,
+                            ),
+                        );
                     } else {
-                        student.username;
+                        h3('.username', student.username);
                     }
                 };
 
@@ -62,8 +75,10 @@ class SearchResults extends Component {
             for (const glp of MatchedGLPS) {
                 const resultBox = new ResultBox();
 
+                const glpNameEl = h3(glp.name);
+
                 const resultBoxEl = resultBox.attach({
-                    title: glp.name,
+                    title: glpNameEl,
                     link: `//${window.location.host}/lesson_manager#view?id=${glp.id}&prev=search`,
                 });
 

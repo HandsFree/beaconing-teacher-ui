@@ -90,7 +90,9 @@ class StudentSelector extends Component {
     async render() {
         const loading = new Loading();
 
-        const loadingEl = await loading.attach();
+        const loadingEl = await loading.attach({
+            msg: await window.bcnI18n.getPhrase('ld_students'),
+        });
 
         return section(
             '.flex-column',
@@ -122,7 +124,9 @@ class GroupSelector extends Component {
     async render() {
         const loading = new Loading();
 
-        const loadingEl = await loading.attach();
+        const loadingEl = await loading.attach({
+            msg: await window.bcnI18n.getPhrase('ld_groups'),
+        });
 
         return section(
             '.flex-column',

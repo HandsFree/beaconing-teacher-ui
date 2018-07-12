@@ -6,6 +6,7 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
+	"net/http"
 
 	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
@@ -26,10 +27,14 @@ func GetUserID(s *gin.Context) (uint64, error) {
 // GetCurrentUser returns an object with information about the current
 // user, as well as the JSON string decoded from the object.
 func GetCurrentUser(s *gin.Context) (*entity.CurrentUser, error) {
-	resp, err := DoTimedRequest(s, "GET", API.getPath(s, "currentuser"))
+	resp, err, status := DoTimedRequest(s, "GET", API.getPath(s, "currentuser"))
 	if err != nil {
 		util.Error("GetCurrentUser", err.Error())
 		return nil, err
+	}
+
+	if status != http.StatusOK {
+		return nil, nil
 	}
 
 	teacher := &entity.CurrentUser{}

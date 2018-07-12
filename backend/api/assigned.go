@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"net/http"
 	"time"
 
 	"github.com/lib/pq"
@@ -90,10 +91,14 @@ func AssignStudentToGLP(s *gin.Context, studentID uint64, glpID uint64, from, to
 		return "", err
 	}
 
-	resp, err := DoTimedRequestBody(s, "POST",
+	resp, err, status := DoTimedRequestBody(s, "POST",
 		API.getPath(s, "students/", fmt.Sprintf("%d", studentID), "/assignedGlps"),
 		bytes.NewBuffer(assignJSON),
 	)
+
+	if status != http.StatusOK {
+		return "", nil
+	}
 
 	id, err := GetUserID(s)
 	if err != nil {
@@ -123,10 +128,14 @@ func AssignGroupToGLP(s *gin.Context, groupID uint64, glpID uint64, from, to tim
 		return "", err
 	}
 
-	resp, err := DoTimedRequestBody(s, "POST",
+	resp, err, status := DoTimedRequestBody(s, "POST",
 		API.getPath(s, "studentgroups/", fmt.Sprintf("%d", groupID), "/assignedGlps"),
 		bytes.NewBuffer(assignJSON),
 	)
+
+	if status != http.StatusOK {
+		return "", nil
+	}
 
 	id, err := GetUserID(s)
 	if err != nil {
@@ -146,12 +155,14 @@ func AssignGroupToGLP(s *gin.Context, groupID uint64, glpID uint64, from, to tim
 // GetAssignedGLPS returns a JSON string of all of the
 // glps that have been assigned to the given student {studentID}.
 func GetAssignedGLPS(s *gin.Context, studentID uint64) string {
-	resp, err := DoTimedRequest(s, "GET",
+	resp, err, status := DoTimedRequest(s, "GET",
 		API.getPath(s, "students/", fmt.Sprintf("%d", studentID), "/assignedGlps"),
 	)
-
 	if err != nil {
 		util.Error("GetAssignedGLPS", err.Error())
+		return ""
+	}
+	if status != http.StatusOK {
 		return ""
 	}
 	return string(resp)
@@ -159,12 +170,14 @@ func GetAssignedGLPS(s *gin.Context, studentID uint64) string {
 
 // GetStudentAssignedGLPS ...
 func GetStudentAssignedGLPS(s *gin.Context, studentID uint64) string {
-	resp, err := DoTimedRequest(s, "GET",
+	resp, err, status := DoTimedRequest(s, "GET",
 		API.getPath(s, "students/", fmt.Sprintf("%d", studentID), "/assignedGlps"),
 	)
-
 	if err != nil {
 		util.Error("GetStudentAssignedGLPS", err.Error())
+		return ""
+	}
+	if status != http.StatusOK {
 		return ""
 	}
 	return string(resp)
@@ -173,12 +186,14 @@ func GetStudentAssignedGLPS(s *gin.Context, studentID uint64) string {
 // GetGroupAssignedGLPS returns a JSON string of all of the
 // glps that have been assigned to the given group {groupID}.
 func GetGroupAssignedGLPS(s *gin.Context, groupID uint64) string {
-	resp, err := DoTimedRequest(s, "GET",
+	resp, err, status := DoTimedRequest(s, "GET",
 		API.getPath(s, "studentgroups/", fmt.Sprintf("%d", groupID), "/assignedGlps"),
 	)
-
 	if err != nil {
 		util.Error("GetGroupAssignedGLPS", err.Error())
+		return ""
+	}
+	if status != http.StatusOK {
 		return ""
 	}
 	return string(resp)
@@ -201,12 +216,16 @@ func DeleteAssignedGLP(s *gin.Context, studentID uint64, linkID uint64) string {
 		return ""
 	}
 
-	resp, err := DoTimedRequest(s, "DELETE",
+	resp, err, status := DoTimedRequest(s, "DELETE",
 		API.getPath(s, "students/", fmt.Sprintf("%d", studentID), "/assignedGlps/", fmt.Sprintf("%d", linkID)),
 	)
 
 	if err != nil {
 		util.Error("DeleteAssignedGLP", err.Error())
+		return ""
+	}
+
+	if status != http.StatusOK {
 		return ""
 	}
 
@@ -232,12 +251,16 @@ func DeleteGroupAssignedGLP(s *gin.Context, groupID uint64, glpID uint64) string
 	}
 	*/
 
-	resp, err := DoTimedRequest(s, "DELETE",
+	resp, err, status := DoTimedRequest(s, "DELETE",
 		API.getPath(s, "studentgroups/", fmt.Sprintf("%d", groupID), "/assignedGlps/", fmt.Sprintf("%d", glpID)),
 	)
 
 	if err != nil {
 		util.Error("DeleteGroupAssignedGLP", err.Error())
+		return ""
+	}
+
+	if status != http.StatusOK {
 		return ""
 	}
 

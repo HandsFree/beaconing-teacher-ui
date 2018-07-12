@@ -6,6 +6,7 @@ import (
 	"crypto/sha512"
 	"encoding/base64"
 	"fmt"
+	"net/http"
 
 	"github.com/HandsFree/beaconing-teacher-ui/backend/activity"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
@@ -24,10 +25,14 @@ import (
 // one thing I want to do is extract all the id's from the json
 // then we can do one big query to the database asking for all of the ids
 func GetStudents(s *gin.Context) (string, error) {
-	resp, err := DoTimedRequest(s, "GET", API.getPath(s, "students"))
+	resp, err, status := DoTimedRequest(s, "GET", API.getPath(s, "students"))
 	if err != nil {
 		util.Error("GetStudents", err.Error())
 		return "", err
+	}
+
+	if status != http.StatusOK {
+		return "", nil
 	}
 
 	students := []*entity.Student{}
@@ -70,10 +75,14 @@ func GetStudents(s *gin.Context) (string, error) {
 // re-encode it. if anything fails, including hashing the avatar,
 // this will return an empty string and an error.
 func GetStudent(s *gin.Context, studentID int) (string, error) {
-	data, err := DoTimedRequest(s, "GET", API.getPath(s, "students/", fmt.Sprintf("%d", studentID)))
+	data, err, status := DoTimedRequest(s, "GET", API.getPath(s, "students/", fmt.Sprintf("%d", studentID)))
 	if err != nil {
 		util.Error("GetStudent", err.Error())
 		return "", err
+	}
+
+	if status != http.StatusOK {
+		return "", nil
 	}
 
 	// turn into json and slap in the student encoding hash
@@ -113,13 +122,17 @@ func PostStudent(s *gin.Context) (string, error) {
 		return "", err
 	}
 
-	resp, err := DoTimedRequestBody(s, "POST",
+	resp, err, status := DoTimedRequestBody(s, "POST",
 		API.getPath(s, "students"),
 		bytes.NewBuffer(postStudent),
 	)
 	if err != nil {
 		util.Error("PostStudent", err.Error())
 		return "", err
+	}
+
+	if status != http.StatusOK {
+		return "", nil
 	}
 
 	currUserID, err := GetUserID(s)
@@ -146,13 +159,17 @@ func PutStudent(s *gin.Context, studentID int) (string, error) {
 		return "", err
 	}
 
-	resp, err := DoTimedRequestBody(s, "PUT",
+	resp, err, status := DoTimedRequestBody(s, "PUT",
 		API.getPath(s, "students/", fmt.Sprintf("%d", studentID)),
 		bytes.NewBuffer(putStudent),
 	)
 	if err != nil {
 		util.Error("PutStudent", err.Error())
 		return "", err
+	}
+
+	if status != http.StatusOK {
+		return "", nil
 	}
 
 	fmt.Println(string(resp))
@@ -162,13 +179,17 @@ func PutStudent(s *gin.Context, studentID int) (string, error) {
 
 // DeleteStudent handles the delete student request
 func DeleteStudent(s *gin.Context, studentID int) (string, error) {
-	data, err := DoTimedRequest(s, "DELETE",
+	data, err, status := DoTimedRequest(s, "DELETE",
 		API.getPath(s, "students/", fmt.Sprintf("%d", studentID)),
 	)
 
 	if err != nil {
 		util.Error("Delete Student", err.Error())
 		return "", err
+	}
+
+	if status != http.StatusOK {
+		return "", nil
 	}
 
 	return string(data), nil
