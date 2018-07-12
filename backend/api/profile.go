@@ -33,6 +33,7 @@ func PutProfile(s *gin.Context) (string, error) {
 		return "", err
 	}
 	if status != http.StatusOK {
+		util.Info("[PutProfile] Status Returned: ", status)
 		return "", nil
 	}
 

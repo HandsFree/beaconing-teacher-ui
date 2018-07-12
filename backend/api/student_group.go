@@ -47,7 +47,8 @@ func CreateStudentGroup(s *gin.Context) (string, error) {
 		return "", err
 	}
 
-	if status != http.StatusOK {
+	if status != http.StatusCreated {
+		util.Info("[CreateStudentGroup] Status Returned: ", status)
 		return "", nil
 	}
 
@@ -70,6 +71,7 @@ func GetStudentGroups(s *gin.Context) (string, error) {
 		return "", err
 	}
 	if status != http.StatusOK {
+		util.Info("[GetStudentGroups] Status Returned: ", status)
 		return "", nil
 	}
 	return string(resp), nil
@@ -88,6 +90,7 @@ func GetStudentGroup(s *gin.Context, groupID int) (string, error) {
 	}
 
 	if status != http.StatusOK {
+		util.Info("[GetStudentGroups] Status Returned: ", status)
 		return "", nil
 	}
 
@@ -106,6 +109,7 @@ func DeleteStudentGroup(s *gin.Context, id int64) (string, error) {
 	}
 
 	if status != http.StatusOK {
+		util.Info("[DeleteStudentGroups] Status Returned: ", status)
 		return "", nil
 	}
 
@@ -144,6 +148,7 @@ func PutStudentGroup(s *gin.Context, groupID int) (string, error) {
 	}
 
 	if status != http.StatusOK {
+		util.Info("[PutStudentGroup] Status Returned: ", status)
 		return "", nil
 	}
 

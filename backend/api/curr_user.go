@@ -34,6 +34,7 @@ func GetCurrentUser(s *gin.Context) (*entity.CurrentUser, error) {
 	}
 
 	if status != http.StatusOK {
+		util.Info("[GetCurrentUser] Status Returned: ", status)
 		return nil, nil
 	}
 

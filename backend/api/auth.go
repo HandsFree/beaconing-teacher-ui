@@ -41,6 +41,7 @@ func GetRefreshToken(s *gin.Context) error {
 	}
 
 	if status != http.StatusOK {
+		util.Info("[GetRefreshToken] Status Returned: ", status)
 		return nil
 	}
 

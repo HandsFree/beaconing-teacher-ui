@@ -32,6 +32,7 @@ func GetStudents(s *gin.Context) (string, error) {
 	}
 
 	if status != http.StatusOK {
+		util.Info("[GetStudents] Status Returned: ", status)
 		return "", nil
 	}
 
@@ -82,6 +83,7 @@ func GetStudent(s *gin.Context, studentID int) (string, error) {
 	}
 
 	if status != http.StatusOK {
+		util.Info("[GetStudent] Status Returned: ", status)
 		return "", nil
 	}
 
@@ -126,12 +128,14 @@ func PostStudent(s *gin.Context) (string, error) {
 		API.getPath(s, "students"),
 		bytes.NewBuffer(postStudent),
 	)
+
 	if err != nil {
 		util.Error("PostStudent", err.Error())
 		return "", err
 	}
 
-	if status != http.StatusOK {
+	if status != http.StatusCreated {
+		util.Info("[PostStudent] Status Returned: ", status)
 		return "", nil
 	}
 
@@ -163,12 +167,14 @@ func PutStudent(s *gin.Context, studentID int) (string, error) {
 		API.getPath(s, "students/", fmt.Sprintf("%d", studentID)),
 		bytes.NewBuffer(putStudent),
 	)
+
 	if err != nil {
 		util.Error("PutStudent", err.Error())
 		return "", err
 	}
 
 	if status != http.StatusOK {
+		util.Info("[PutStudent] Status Returned: ", status)
 		return "", nil
 	}
 
@@ -189,6 +195,7 @@ func DeleteStudent(s *gin.Context, studentID int) (string, error) {
 	}
 
 	if status != http.StatusOK {
+		util.Info("[DeleteStudent] Status Returned: ", status)
 		return "", nil
 	}
 
