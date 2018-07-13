@@ -60,6 +60,12 @@ class MissionHeader extends Component {
                     },
                     await window.bcnI18n.getPhrase('lm_assign'),
                 ),
+                a(
+                    {
+                        href: `//${window.location.host}/authoring_tool?id=${encodeURIComponent(this.state.glp.id)}`,
+                    },
+                    await window.bcnI18n.getPhrase('edit'),
+                ),
             ),
         );
     }
