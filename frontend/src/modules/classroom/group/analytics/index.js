@@ -1,5 +1,5 @@
 // @flow
-import { h1, h2, h3, h4, div, a, p, main, strong } from '../../../../core/html';
+import { h2, h3, h4, div, a, p, main } from '../../../../core/html';
 
 import { RootComponent, Component } from '../../../../core/component';
 import Header from '../../../header/root';
@@ -23,7 +23,7 @@ class QuestBox extends Component {
                 {
                     href: dashboardLink,
                 },
-                'Dashboard Link'
+                'Dashboard Link',
             )),
         );
     }
@@ -32,7 +32,6 @@ class QuestBox extends Component {
 class MissionBox extends Component {
     async render() {
         const {
-            id,
             name,
             dashboardLink,
             quests,
@@ -47,10 +46,11 @@ class MissionBox extends Component {
             '.mission-box.margin-block',
             h3(`${name}`),
             p(a(
+                '.link-underline',
                 {
                     href: dashboardLink,
                 },
-                'Mission Analytics',
+                'Mission Dashboard Link',
             )),
 
             h4('Quests:'),
@@ -62,7 +62,7 @@ class MissionBox extends Component {
     }
 }
 
-class AnalyticsMain extends Component {   
+class AnalyticsMain extends Component {
     async render() {
         const rawData = nullishCheck(window.sessionStorage.getItem('assignedAnalyticsData'), 'none');
         if (rawData === 'none') {
@@ -73,34 +73,34 @@ class AnalyticsMain extends Component {
 
         const glpAnalytics = nullishCheck(JSON.parse(rawData), []);
 
-        // manual linear search becuase it's not a map :(
-        const findGLP = () => {
-            for (const glp of glpAnalytics) {
-                const id = glp[0];
-                if (id == glpID) {
-                    // return the _value_
-                    return glp[1];
-                }
-            }
-        };
+        console.log(glpAnalytics);
 
-        const theGLP = findGLP();
+        // manual linear search becuase it's not a map :(
+
+        let theGLP = null;
+        for (const glp of glpAnalytics) {
+            const [id, glpObj] = glp;
+            if (id === glpID) {
+                theGLP = glpObj;
+                break;
+            }
+        }
+
+
         console.log(theGLP);
 
-        if (nullishCheck(theGLP.dashboardLink, '') === '') {
+        if (nullishCheck(theGLP?.dashboardLink, '') === '') {
             return h2('No analytics to display');
         }
 
         const {
             dashboardLink,
-            id,
-            missions, // key[0], value[1]
-            name
+            missions,
+            name,
         } = theGLP;
 
         const missionProms = [];
         for (const mission of missions) {
-            console.log("ze mission is", mission);
             missionProms.push(new MissionBox().attach(mission));
         }
 
@@ -110,12 +110,13 @@ class AnalyticsMain extends Component {
                 h2(`Analytics Overview: ${name}`),
                 p(
                     a(
+                        '.link-underline',
                         {
                             href: dashboardLink,
                         },
-                        'Kabina Dashboard'
+                        'Main Dashboard Link',
                     ),
-                )
+                ),
             ),
             await Promise.all(missionProms).then(el => el),
         ];
