@@ -5,6 +5,7 @@ import { Component } from '../../../../core/component';
 import StudentsList from './students_list';
 import Status from '../../../status';
 import PostCreation from './post_creation';
+import nullishCheck from '../../../../core/util';
 
 class GroupForm extends Component {
     studentList: Array<Object> = [];
@@ -62,6 +63,28 @@ class GroupForm extends Component {
             this.resetSubmit();
 
             return false;
+        }
+
+        const groups = await window.beaconingAPI.getGroups();
+
+        if (nullishCheck(groups, false)) {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'group-name',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('group_name_exists')),
+            });
+
+            for (const group of groups) {
+                if (group.name.toLowerCase() === this.state.groupName.toLowerCase()) {
+                    this.appendView(statusMessageEl);
+
+                    this.resetSubmit();
+
+                    return false;
+                }
+            }
         }
 
         if (this.studentList.length < 2) {

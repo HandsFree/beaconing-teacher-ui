@@ -16,6 +16,7 @@ import {
 import { Component } from '../../../core/component';
 import Status from '../../status';
 import PostCreation from './post_creation';
+import nullishCheck from '../../../core/util';
 
 class NewPlanForm extends Component {
     state = {
@@ -73,6 +74,28 @@ class NewPlanForm extends Component {
             this.resetSubmit();
 
             return false;
+        }
+
+        const glps = await window.beaconingAPI.getGLPs('owned', 'desc', true);
+
+        if (nullishCheck(glps, false)) {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'plan-name',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('glp_name_exists')),
+            });
+
+            for (const glp of glps) {
+                if (glp.name.toLowerCase() === this.state.planName.toLowerCase()) {
+                    this.appendView(statusMessageEl);
+
+                    this.resetSubmit();
+
+                    return false;
+                }
+            }
         }
 
         if (this.state.planDescription === '') {
