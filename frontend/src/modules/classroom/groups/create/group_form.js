@@ -222,7 +222,7 @@ class GroupForm extends Component {
                                 option({ value: 'course' }, await window.bcnI18n.getPhrase('course')),
                             ),
                         ),
-                        small(await window.bcnI18n.getPhrase('students')),
+                        small(`${await window.bcnI18n.getPhrase('students')} - ${await window.bcnI18n.getPhrase('min_students_group')}`),
                         studentsListEl,
                         div(
                             '.flex-justify-end.margin-top-10',

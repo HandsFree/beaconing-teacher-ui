@@ -1234,6 +1234,18 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+    min_students_group: {
+        'en-GB': 'minimum 2 students or 6 for student overview',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    
 
     // Lesson Manager //
 
