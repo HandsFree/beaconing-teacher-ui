@@ -26,7 +26,7 @@ func GetLogOutRequest() gin.HandlerFunc {
 			cfg.Beaconing.Auth.ID,
 			api.GetLogOutLink())
 
-		fmt.Println(logoutLink)
+		// fmt.Println(logoutLink)
 
 		s.Redirect(http.StatusTemporaryRedirect, logoutLink)
 	}
