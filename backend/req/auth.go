@@ -13,7 +13,7 @@ func GetCheckAuthRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
 		accessToken := api.GetAccessToken(s)
 		if accessToken == "" {
-			s.String(http.StatusBadRequest, "Unauthorised access: core")
+			s.String(http.StatusUnauthorized, "Unauthorised access: core")
 			return
 		}
 
