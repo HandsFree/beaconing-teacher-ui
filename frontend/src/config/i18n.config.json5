@@ -1080,6 +1080,17 @@
         'tr-TR': 'Öğrenci Görüntüle',
         'pt-PT': 'Ver aluno'
     },
+    cr_view_group: {
+        'en-GB': 'View Group',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
     cr_view_calendar: {
         'en-GB': 'View Calendar',
         'fr-FR': 'Voir le calendrier',
@@ -2636,6 +2647,75 @@
         'pt-PT': ''
     },
 
+    // Post Creation //
+
+    pc_next: {
+        'en-GB': 'Choose what to do next',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    pc_create_another: {
+        'en-GB': 'Create Another',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    pc_go_classroom: {
+        'en-GB': 'Go to Classroom',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    pc_go_library: {
+        'en-GB': 'Go to Library',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    view_glp: {
+        'en-GB': 'View Plan',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    edit_glp: {
+        'en-GB': 'Edit Plan',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+
     // Error Messages //
 
     no_group: {
@@ -2905,6 +2985,17 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+    student_cre: {
+        'en-GB': 'Student Created!',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
     group_del: {
         'en-GB': 'Group Deleted!',
         'fr-FR': '',
@@ -2916,8 +3007,30 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+    group_cre: {
+        'en-GB': 'Group Created!',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
     glp_del: {
         'en-GB': 'GLP deleted!',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    glp_cre: {
+        'en-GB': 'Plan Created!',
         'fr-FR': '',
         'es-ES': '',
         'it-IT': '',
