@@ -72,7 +72,7 @@ func GetRouterEngine() *gin.Engine {
 	})
 
 	// Load the main template file
-	router.LoadHTMLFiles("./../frontend/public/index.html")
+	router.LoadHTMLFiles("./templates/index.html", "./templates/unauthorised_user.html")
 
 	// Serve all static files
 	router.Static("/dist", "./../frontend/public/dist")
