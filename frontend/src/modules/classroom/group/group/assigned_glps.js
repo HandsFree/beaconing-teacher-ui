@@ -1,40 +1,44 @@
 // @flow
-import { section, div, p, a } from '../../../../core/html';
+import {
+    section,
+    div,
+    p,
+    a,
+} from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 import Loading from '../../../loading';
 import GLPBox from './glp_box';
-import { WSAEINVALIDPROCTABLE } from 'constants';
 import nullishCheck from '../../../../core/util';
 
 class QuestAnalytics {
-    constructor(name : string, dashboardLink : string) {
+    constructor(name: string, dashboardLink: string) {
         this.name = name;
         this.dashboardLink = dashboardLink;
     }
 }
 
 class MissionAnalytics {
-    constructor(name : string, dashboardLink : string) {
+    constructor(name: string, dashboardLink: string) {
         this.name = name;
         this.dashboardLink = dashboardLink;
         this.quests = [];
     }
 
-    registerQuest(quest : QuestAnalytics) {
+    registerQuest(quest: QuestAnalytics) {
         this.quests.push(quest);
     }
 }
 
 class GLPAnalyticsInfo {
-    constructor(id : number, name : string, dashboardLink : string) {
+    constructor(id: number, name: string, dashboardLink: string) {
         this.id = id;
         this.name = name;
         this.dashboardLink = dashboardLink;
         this.missions = [];
     }
 
-    registerMission(mission : MissionAnalytics) {
+    registerMission(mission: MissionAnalytics) {
         this.missions.push(mission);
     }
 }
@@ -64,45 +68,50 @@ class AssignedGLPs extends Component {
         // that's a bit more usable
         for (const assigned of assignedGLPs) {
             // some glps dont have this analyticsGlp available!
-            if (nullishCheck(assigned.analyticsGlp, 'none') === 'none') {
+            if (nullishCheck(assigned?.analyticsGlp, 'none') === 'none') {
                 continue;
             }
 
-            console.log("ze analyticsglp is ", assigned.analyticsGlp);
-            const { 
-                analytics,
-                id,
+            const {
+                analytics: glpAnalytics,
+                id: uglpID,
                 missions,
-                name,
+                name: glpName,
             } = assigned.analyticsGlp;
 
+            // some ids are string, some numbers
+            const glpID = parseInt(uglpID, 10);
+
             // lovely.
-            const mainDashboard = analytics?.json?.analytics?.dashboard ?? "";
-            const glpAnalyticsObj = new GLPAnalyticsInfo(id, name, mainDashboard);
-            
+            // even more lovely is that some analytics objects don't contain the 'json' field.
+            // such a mess
+            const mainDashboard = (glpAnalytics?.json?.analytics?.dashboard || glpAnalytics?.dashboard) ?? '';
+            const glpAnalyticsObj = new GLPAnalyticsInfo(glpID, glpName, mainDashboard);
+
             for (const mission of missions) {
-                const { 
-                    analytics, 
-                    description, 
-                    id, 
-                    name, 
+                const {
+                    analytics: missionAnalytics,
+                    name: missionName,
                     quests,
                 } = mission;
 
-                const missionDashboardLink = analytics?.json?.analytics?.dashboard ?? "";
+                const missionDashboardLink = (missionAnalytics?.json?.analytics?.dashboard || missionAnalytics?.dashboard) ?? '';
 
-                const missionAnalyticsObj = new MissionAnalytics(name, missionDashboardLink);
+                const missionAnalyticsObj = new MissionAnalytics(missionName, missionDashboardLink);
                 for (const quest of quests) {
-                    const { analytics, name } = quest;
-                    const questDashboardLink = analytics?.json?.analytics?.dashboard ?? "";
-                    missionAnalyticsObj.registerQuest(new QuestAnalytics(name, questDashboardLink));
+                    const {
+                        analytics: questAnalytics,
+                        name: questName,
+                    } = quest;
+                    const questDashboardLink = (questAnalytics?.json?.analytics?.dashboard || questAnalytics?.dashboard) ?? '';
+                    missionAnalyticsObj.registerQuest(new QuestAnalytics(questName, questDashboardLink));
                 }
 
                 glpAnalyticsObj.registerMission(missionAnalyticsObj);
             }
 
             // store glp id => glp data
-            glpAnalyticsNodes.set(id, glpAnalyticsObj);
+            glpAnalyticsNodes.set(glpID, glpAnalyticsObj);
         }
 
         // FIXME EASY
