@@ -2740,6 +2740,28 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+    group_name_exists: {
+        'en-GB': 'Group name already exists! Please choose another',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    glp_name_exists: {
+        'en-GB': 'Plan name already exists! Please choose another',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
     error_404: {
         'en-GB': 'Error (404): Page not found',
         'fr-FR': '',
