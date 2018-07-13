@@ -96,7 +96,10 @@ func AssignStudentToGLP(s *gin.Context, studentID uint64, glpID uint64, from, to
 		bytes.NewBuffer(assignJSON),
 	)
 
-	if status != http.StatusOK {
+	fmt.Println(status)
+
+	if status != http.StatusCreated {
+		util.Info("[AssignStudentToGLP] Status Returned: ", status)
 		return "", nil
 	}
 
@@ -133,7 +136,8 @@ func AssignGroupToGLP(s *gin.Context, groupID uint64, glpID uint64, from, to tim
 		bytes.NewBuffer(assignJSON),
 	)
 
-	if status != http.StatusOK {
+	if status != http.StatusCreated {
+		util.Info("[AssignGroupToGLP] Status Returned: ", status)
 		return "", nil
 	}
 
@@ -163,6 +167,7 @@ func GetAssignedGLPS(s *gin.Context, studentID uint64) string {
 		return ""
 	}
 	if status != http.StatusOK {
+		util.Info("[GetAssignedGLPS] Status Returned: ", status)
 		return ""
 	}
 	return string(resp)
@@ -178,6 +183,7 @@ func GetStudentAssignedGLPS(s *gin.Context, studentID uint64) string {
 		return ""
 	}
 	if status != http.StatusOK {
+		util.Info("[GetStudentAssignedGLPS] Status Returned: ", status)
 		return ""
 	}
 	return string(resp)
@@ -194,6 +200,7 @@ func GetGroupAssignedGLPS(s *gin.Context, groupID uint64) string {
 		return ""
 	}
 	if status != http.StatusOK {
+		util.Info("[GetGroupAssignedGLPS] Status Returned: ", status)
 		return ""
 	}
 	return string(resp)
@@ -226,6 +233,7 @@ func DeleteAssignedGLP(s *gin.Context, studentID uint64, linkID uint64) string {
 	}
 
 	if status != http.StatusOK {
+		util.Info("[DeleteAssignedGLP] Status Returned: ", status)
 		return ""
 	}
 
@@ -261,6 +269,7 @@ func DeleteGroupAssignedGLP(s *gin.Context, groupID uint64, glpID uint64) string
 	}
 
 	if status != http.StatusOK {
+		util.Info("[DeleteGroupAssignedGLP] Status Returned: ", status)
 		return ""
 	}
 
