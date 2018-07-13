@@ -66,10 +66,12 @@ class AnalyticsMain extends Component {
     async render() {
         const rawData = nullishCheck(window.sessionStorage.getItem('assignedAnalyticsData'), 'none');
         if (rawData === 'none') {
+            console.log('[AnalyticsMain] data not in session storage');
             return h2('No analytics to display');
         }
 
-        const glpID = this.props.id;
+        // avoid type issues
+        const glpID = parseInt(this.props.id, 10);
 
         const glpAnalytics = nullishCheck(JSON.parse(rawData), []);
 
@@ -90,6 +92,7 @@ class AnalyticsMain extends Component {
         console.log(theGLP);
 
         if (nullishCheck(theGLP?.dashboardLink, '') === '') {
+            console.log('[AnalyticsMain] no dashboard link');
             return h2('No analytics to display');
         }
 
