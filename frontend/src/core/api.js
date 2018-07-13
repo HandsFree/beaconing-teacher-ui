@@ -272,7 +272,7 @@ class APICore {
         const group = await this.post(`//${window.location.host}/api/v1/studentgroup`, groupJSON);
 
         if (typeof group === 'object' && group.id) {
-            groupStatus = true;
+            groupStatus = group;
         }
 
         return groupStatus;
@@ -317,7 +317,7 @@ class APICore {
         // console.log(student);
 
         if (typeof student === 'object' && student.id) {
-            studentStatus = true;
+            studentStatus = student;
         }
 
         return studentStatus;
@@ -376,7 +376,7 @@ class APICore {
         console.log('[API Core] addGLP result: ', glp);
 
         if (glp.name === data.name) {
-            glpStatus = true;
+            glpStatus = glp;
         }
 
         return glpStatus;

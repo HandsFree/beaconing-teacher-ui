@@ -4,12 +4,14 @@ import { section, div, a, i, h1, form, input, select, option, p, label, span, sm
 import { Component } from '../../../../core/component';
 import StudentsList from './students_list';
 import Status from '../../../status';
+import PostCreation from './post_creation';
 
 class GroupForm extends Component {
     studentList: Array<Object> = [];
 
     updateHooks = {
         StudentSelected: this.updateStudentList,
+        ResetForm: this.resetForm,
     };
 
     state = {
@@ -28,6 +30,15 @@ class GroupForm extends Component {
                 id: parseInt(el.value, 10),
             });
         }
+    }
+
+    async resetForm() {
+        this.state = {
+            groupName: '',
+            groupCategory: 'normal',
+        };
+
+        this.updateView(await this.render());
     }
 
     async resetSubmit() {
@@ -93,16 +104,8 @@ class GroupForm extends Component {
         // const status = false;
 
         if (status) {
-            const statusMessageEl = await statusMessage.attach({
-                elementID: false,
-                heading: 'Success',
-                type: 'success',
-                message: (await window.bcnI18n.getPhrase('group_created')).replace('%s', this.state.groupName),
-            });
-
-            this.appendView(statusMessageEl);
-
             this.resetSubmit();
+            this.afterCreation(status);
 
             return;
         }
@@ -117,6 +120,15 @@ class GroupForm extends Component {
         this.appendView(statusMessageEl);
 
         this.resetSubmit();
+    }
+
+    async afterCreation(group: Object) {
+        const pcEL = new PostCreation().attach({
+            title: await window.bcnI18n.getPhrase('group_cre'),
+            id: group.id,
+        });
+
+        this.updateView(await pcEL);
     }
 
     async render() {

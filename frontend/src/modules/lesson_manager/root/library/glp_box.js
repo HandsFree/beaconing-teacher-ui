@@ -73,7 +73,7 @@ class GLPBox extends Component {
                 a(
                     '.item',
                     {
-                        href: `#view?id=${id}&prev=lesson_manager`,
+                        href: `#view?id=${id}`,
                     },
                     await window.bcnI18n.getPhrase('view'),
                 ),

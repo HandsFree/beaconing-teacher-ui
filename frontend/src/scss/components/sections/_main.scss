@@ -3,4 +3,7 @@ section {
 	&.no-shrink {
 		flex-shrink: 0;
 	}
+	&.no-margin {
+		margin: 0;
+	}
 }

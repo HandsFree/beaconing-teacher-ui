@@ -3,8 +3,9 @@ import { section, div, a, i, h1, form, input, p, label, span, select, option } f
 
 import { Component } from '../../../../core/component';
 import Status from '../../../status';
+import PostCreation from './post_creation';
 
-class GroupForm extends Component {
+class StudentForm extends Component {
     state = {
         studentUsername: '',
         studentFirstName: '',
@@ -23,6 +24,33 @@ class GroupForm extends Component {
         studentGender: '',
         studentSchool: '',
     };
+
+    updateHooks = {
+        ResetForm: this.resetForm,
+    };
+
+    async resetForm() {
+        this.state = {
+            studentUsername: '',
+            studentFirstName: '',
+            studentLastName: '',
+            studentDOB: '',
+            studentEmail: '',
+            studentAddress: {
+                line1: '',
+                line2: '',
+                city: '',
+                country: '',
+                county: '',
+                postcode: '',
+            },
+            studentLang: 'en-GB',
+            studentGender: '',
+            studentSchool: '',
+        };
+
+        this.updateView(await this.render());
+    }
 
     async resetSubmit() {
         const studentButton = document.getElementById('create-student-button');
@@ -170,16 +198,8 @@ class GroupForm extends Component {
         // const status = false;
 
         if (status) {
-            const statusMessageEl = await statusMessage.attach({
-                elementID: false,
-                heading: 'Success',
-                type: 'success',
-                message: `student '${this.state.studentUsername}' created`,
-            });
-
-            this.appendView(statusMessageEl);
-
             this.resetSubmit();
+            this.afterCreation(status);
 
             return;
         }
@@ -194,6 +214,15 @@ class GroupForm extends Component {
         this.appendView(statusMessageEl);
 
         this.resetSubmit();
+    }
+
+    async afterCreation(student: Object) {
+        const pcEL = new PostCreation().attach({
+            title: await window.bcnI18n.getPhrase('student_cre'),
+            id: student.id,
+        });
+
+        this.updateView(await pcEL);
     }
 
     async render() {
@@ -503,4 +532,4 @@ class GroupForm extends Component {
     }
 }
 
-export default GroupForm;
+export default StudentForm;
