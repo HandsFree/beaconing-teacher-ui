@@ -69,7 +69,7 @@ class LoadGLPs extends Component {
             const loadMoreButton = document.getElementById('glpload');
 
             if (nullishCheck(loadMoreButton, false)) {
-                loadMoreButton.parentElement.removeChild(loadMoreButton);
+                loadMoreButton.style.visibility = 'hidden';
 
                 return true;
             }
@@ -93,6 +93,7 @@ class LoadGLPs extends Component {
     }
 
     async loadMoreGLPs() {
+        console.log(this.state);
         this.state.index += this.step;
         await this.updateGLPs();
 
