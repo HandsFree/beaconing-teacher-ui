@@ -1,0 +1,26 @@
+#post-create-title {
+    h1 {
+        margin: 0;
+        font-weight: 400;
+        font-size: 1.6em;
+        color: $primary_font_colour_alt;
+
+        @include for-tablet-portrait-up {
+            font-size: 2em;
+        }
+    }
+}
+
+#post-create-steps {
+    align-items: center;
+
+    #post-create-buttons {
+        flex-direction: column;
+
+        @include for-tablet-landscape-up {
+            flex-direction: row;
+        }
+    }
+}
+
+

@@ -1,8 +1,21 @@
 // @flow
-import { section, div, a, i, h1, form, input, p, label, span, textarea } from '../../../core/html';
+import {
+    section,
+    div,
+    a,
+    i,
+    h1,
+    form,
+    input,
+    p,
+    label,
+    span,
+    textarea,
+} from '../../../core/html';
 
 import { Component } from '../../../core/component';
 import Status from '../../status';
+import PostCreation from './post_creation';
 
 class NewPlanForm extends Component {
     state = {
@@ -17,6 +30,27 @@ class NewPlanForm extends Component {
         planCompetences: [''],
         planPublic: false,
     };
+
+    updateHooks = {
+        ResetForm: this.resetForm,
+    };
+
+    async resetForm() {
+        this.state = {
+            planName: '',
+            planCategory: 'default',
+            planDescription: '',
+            planDomain: '',
+            planTopic: '',
+            planAgeGroup: '',
+            planYear: '',
+            planLearningObjectives: [''],
+            planCompetences: [''],
+            planPublic: false,
+        };
+
+        this.updateView(await this.render());
+    }
 
     async resetSubmit() {
         const planButton = document.getElementById('create-plan-button');
@@ -150,16 +184,8 @@ class NewPlanForm extends Component {
         // const status = false;
 
         if (status) {
-            const statusMessageEl = await statusMessage.attach({
-                elementID: false,
-                heading: 'Success',
-                type: 'success',
-                message: (await window.bcnI18n.getPhrase('plan_created')).replace('%s', this.state.planName),
-            });
-
-            this.appendView(statusMessageEl);
-
             this.resetSubmit();
+            this.afterCreation(status);
 
             return;
         }
@@ -174,6 +200,15 @@ class NewPlanForm extends Component {
         this.appendView(statusMessageEl);
 
         this.resetSubmit();
+    }
+
+    async afterCreation(glp: Object) {
+        const pcEL = new PostCreation().attach({
+            title: await window.bcnI18n.getPhrase('glp_cre'),
+            id: glp.id,
+        });
+
+        this.updateView(await pcEL);
     }
 
     async render() {
