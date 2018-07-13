@@ -11,27 +11,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// SortOrder parses the given string into the given
-// order sorting option.
-// desc => Descending
-// asc => Ascending
-// will return Ascending by default for any other options.
-func SortOrder(opt string) SortingOption {
-	switch strings.ToLower(opt) {
-	case "desc":
-		return Descending
-	case "asc":
-		return Ascending
-	}
-
-	// Ascending by default
-	return Ascending
-}
-
-// SortOption parses the given string to the
+// SortOrder parses the given string to the
 // given sorting option. if the string fails to
 // parse, will return the "Undefined" sorting option
-func SortOption(opt string) SortingOption {
+func SortOrder(opt string) SortingOption {
 	switch strings.ToLower(opt) {
 	case "desc":
 		return Descending
