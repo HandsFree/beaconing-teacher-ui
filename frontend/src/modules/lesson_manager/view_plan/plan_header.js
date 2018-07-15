@@ -1,7 +1,8 @@
 // @flow
-import { div, a, i, h1, nav, span } from '../../../core/html';
+import { div, a, h1, nav, span } from '../../../core/html';
 
 import { Component } from '../../../core/component';
+import nullishCheck from '../../../core/util';
 
 class PlanHeader extends Component {
     async init() {
@@ -15,8 +16,8 @@ class PlanHeader extends Component {
     }
 
     async render() {
-        const glpName = this.state.glp.name ?? 'Unnamed GLP';
-        const playUrl = this.state.glp.playUrl ?? `http://gameplots.beaconing.eu/game/?externs=http://core.beaconing.eu/api/gamifiedlessonpaths/${this.state.glp.id}/externconfig`;
+        const glpName = nullishCheck(this.state.glp?.name, await window.bcnI18n.getPhrase('lm_unnamed_glp'));
+        const playUrl = nullishCheck(this.state.glp?.playUrl, `http://gameplots.beaconing.eu/game/?externs=http://core.beaconing.eu/api/gamifiedlessonpaths/${this.state.glp.id}/externconfig`);
 
         return div(
             '#plan-header',
@@ -27,9 +28,9 @@ class PlanHeader extends Component {
                     {
                         href: `//${window.location.host}/lesson_manager`,
                     },
-                    span('Library'),
+                    span(await window.bcnI18n.getPhrase('lm_library')),
                 ),
-                a('.current', 'Plan Overview'),
+                a('.current', await window.bcnI18n.getPhrase('lm_plan_overview')),
             ),
             h1(glpName),
             nav(
@@ -39,13 +40,19 @@ class PlanHeader extends Component {
                         href: playUrl,
                         target: '_blank',
                     },
-                    'Play',
+                    await window.bcnI18n.getPhrase('lm_play'),
                 ),
                 a(
                     {
                         href: `#assign?id=${this.state.glp.id}`,
                     },
-                    'Assign',
+                    await window.bcnI18n.getPhrase('lm_assign'),
+                ),
+                a(
+                    {
+                        href: `//${window.location.host}/authoring_tool?id=${encodeURIComponent(this.state.glp.id)}`,
+                    },
+                    await window.bcnI18n.getPhrase('edit'),
                 ),
             ),
         );

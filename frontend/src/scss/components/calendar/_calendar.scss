@@ -1,0 +1,122 @@
+.calendar-cell,
+.calendar-heading-cell {
+	display: flex;
+	flex-direction: column;
+
+	box-sizing: border-box;
+	flex-grow: 1;
+	width: 14.28%;
+
+	padding: 0 0.8em;
+	overflow: hidden;
+	list-style: none;
+}
+
+.calendar-cell {
+	height: 20vh;
+}
+
+.calendar-heading-cell {
+	background: #2d353e;
+	color: #fff;
+	font-size: 14pt;
+	border-bottom: 1px solid #a9b5c0;
+}
+
+.calendar-heading-cell p {
+	align-self: center;
+}
+
+.calendar-cell,
+.calendar-header {
+	border: 1px solid #f5f5f5;
+}
+
+.calendar-day {
+	font-size: 14pt;
+	font-weight: bold;
+	align-self: flex-end;
+}
+
+.current-day .calendar-day {
+	color: #fff;
+}
+.current-day {
+	// hm...
+	// border-bottom: 2.5px solid #fc3d39;
+	background:rgba(242, 108, 66, 0.7);
+}
+
+/*
+.current-day {
+	background: #fc3d39;
+	color: #fff;
+	text-align: center;
+	border-radius: 55%;
+	padding: 0.8em;
+	box-sizing: border-box;
+	
+	margin-left: 0.4em;
+    margin-top: 0.4em;
+}
+*/
+
+.calendar {
+	display: flex;
+	flex-wrap: wrap;
+	margin-bottom: 3em;
+	padding: 0;
+	border: 1px solid #f5f5f5;
+}
+
+.prev-month,
+.next-month {
+	color: #999;
+	background: #e5e5e5;
+}
+
+.outer-col {
+	display: grid;
+	grid-column-gap: 2em;
+	grid-template-columns: 25% 70%;
+}
+
+// this is a bit awkward
+.full-width,
+.student-list,
+.studentinfo-col,
+.calendar-col,
+.calendar-control {
+	display: block;
+}
+
+// fake link thing
+// TODO maybe we should dis-allow
+// selection on these too or is that too much?
+.fake-link {
+    cursor: pointer;
+}
+.fake-link:hover {
+	text-decoration: underline;
+}
+
+.student-info,
+.group-select {
+	display: block;
+}
+
+.calendar-meta-info {
+	// aligns the name and calendar
+	// date to the left/right
+	justify-content: space-between;
+}
+
+// TODO move this into the students selectiony css file but for now 
+// im gonna slap it here.
+
+.cal-sel-item {
+	border: 1px solid #e87f62;
+	padding: 0.5em 1em;
+	margin: 1em;
+	justify-content: space-between;
+}

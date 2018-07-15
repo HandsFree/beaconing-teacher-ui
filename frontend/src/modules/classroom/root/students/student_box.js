@@ -1,9 +1,10 @@
 // @flow
 import Identicon from 'identicon.js';
 
-import { div, figure, img, h4, a } from '../../../../core/html';
+import { div, figure, img, h4, a, h3 } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
+import nullishCheck from '../../../../core/util';
 
 class StudentBox extends Component {
     async render() {
@@ -17,9 +18,19 @@ class StudentBox extends Component {
 
         const studentName = do {
             if (firstName && lastName) {
-                `${firstName} ${lastName}`;
+                div(
+                    '.flex-column',
+                    h3('.name', `${firstName} ${lastName}`),
+                    h4(
+                        '.username',
+                        {
+                            title: await window.bcnI18n.getPhrase('username'),
+                        },
+                        username,
+                    ),
+                );
             } else {
-                username;
+                h3('.name', username);
             }
         };
 
@@ -36,8 +47,31 @@ class StudentBox extends Component {
             return arr;
         };
 
+        let studentColour = randArray();
+
+        // fix this complexity
+        if (window.sessionStorage) {
+            if (!window.sessionStorage.getItem('student_colours')) {
+                const colours = {};
+
+                colours[username] = studentColour;
+
+                window.sessionStorage.setItem('student_colours', JSON.stringify(colours));
+            } else {
+                const colours = JSON.parse(window.sessionStorage.getItem('student_colours'));
+
+                if (nullishCheck(colours[username], false)) {
+                    studentColour = colours[username];
+                } else {
+                    colours[username] = studentColour;
+
+                    window.sessionStorage.setItem('student_colours', JSON.stringify(colours));
+                }
+            }
+        }
+
         const options = {
-            foreground: randArray(),
+            foreground: studentColour,
             background: [255, 255, 255, 255],
             margin: 0.1,
             size: 64,
@@ -55,19 +89,13 @@ class StudentBox extends Component {
                 '.info.flex-column',
                 div(
                     '.title',
-                    h4('.name', studentName),
+                    studentName,
                 ),
                 a(
                     {
                         href: `//${window.location.host}/classroom/student?id=${id}`,
                     },
-                    'View Student',
-                ),
-                a(
-                    {
-                        href: `//${window.location.host}/calendar?id=${id}`,
-                    },
-                    'View Calendar',
+                    await window.bcnI18n.getPhrase('cr_view_student'),
                 ),
             ),
         );

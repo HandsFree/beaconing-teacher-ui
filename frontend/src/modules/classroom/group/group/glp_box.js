@@ -12,19 +12,6 @@ class GLPBox extends Component {
             dashboardLink,
         } = this.props;
 
-        const dashboardEl = do {
-            if (dashboardLink) {
-                a(
-                    '.item',
-                    {
-                        href: dashboardLink,
-                        target: '_blank',
-                    },
-                    'Analytics',
-                );
-            }
-        };
-
         return div(
             '.glp-assigned-box.flex-4.flex-column',
             div(
@@ -39,9 +26,16 @@ class GLPBox extends Component {
                 a(
                     '.item',
                     {
-                        href: `//${window.location.host}/lesson_manager#view?id=${glpID}&prev=classroom/groups`,
+                        href: `//${window.location.host}/lesson_manager#view?id=${glpID}`,
                     },
-                    'View',
+                    await window.bcnI18n.getPhrase('view'),
+                ),
+                a(
+                    '.item',
+                    {
+                        href: `//${window.location.host}/classroom/group#analytics?id=${glpID}`,
+                    },
+                    await window.bcnI18n.getPhrase('analytics'),
                 ),
                 a(
                     '.item',
@@ -50,14 +44,18 @@ class GLPBox extends Component {
                             this.unassignPlan();
                         },
                     },
-                    'Unassign',
+                    await window.bcnI18n.getPhrase('cr_unassign'),
                 ),
-                dashboardEl,
             ),
         );
     }
 
     async unassignPlan() {
+        const unassignGLPTransl = await window.bcnI18n.getPhrase('unassign_glp');
+        if (!confirm(unassignGLPTransl)) {
+            return;
+        }
+
         const {
             assignedGLPID,
             groupID,
@@ -75,7 +73,7 @@ class GLPBox extends Component {
                 elementID: false,
                 heading: 'Success',
                 type: 'success',
-                message: 'Unassigned!',
+                message: await window.bcnI18n.getPhrase('sa'),
             });
 
             document.body.appendChild(statusMessageEl);
@@ -89,7 +87,7 @@ class GLPBox extends Component {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: 'group not unassigned!',
+            message: await window.bcnI18n.getPhrase('group_una'),
         });
 
         document.body.appendChild(statusMessageEl);

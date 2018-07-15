@@ -3,6 +3,7 @@ import { div, span } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 import RecentActivityBox from './recent_activity_box';
+import nullishCheck from '../../../../core/util';
 
 class LoadRecentActivities extends Component {
     async init() {
@@ -37,7 +38,7 @@ class LoadRecentActivities extends Component {
             const raBoxProm = recentActivityBox.attach({
                 Message,
                 ExecutionTime,
-                GroupName: activity.GroupName ?? null,
+                GroupName: nullishCheck(activity?.GroupName, false),
             });
 
             promArr.push(raBoxProm);

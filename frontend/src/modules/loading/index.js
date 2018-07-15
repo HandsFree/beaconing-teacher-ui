@@ -4,6 +4,18 @@ import { div, img, span } from '../../core/html';
 import { Component } from '../../core/component';
 
 class Loading extends Component {
+    msg = '';
+
+    async init() {
+        if (this.props?.msg) {
+            this.msg = this.props.msg;
+
+            return;
+        }
+
+        this.msg = await window.bcnI18n.getPhrase('loading');
+    }
+
     async render() {
         return div(
             '.loading-container',
@@ -11,9 +23,9 @@ class Loading extends Component {
                 '.loading',
                 img({
                     src: `//${window.location.host}/dist/beaconing/images/loading.gif`,
-                    alt: 'Loading',
+                    alt: this.msg,
                 }),
-                span('Loading...'),
+                span(`${this.msg}...`),
             ),
         );
     }

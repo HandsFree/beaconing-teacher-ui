@@ -1,10 +1,10 @@
 package req
 
 import (
-	"log"
 	"net/http"
 
-	"git.juddus.com/HFC/beaconing/backend/api"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/api"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 )
@@ -32,7 +32,7 @@ func PutProfileRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
 		body, err := api.PutProfile(s)
 		if err != nil {
-			log.Println("PutProfileRequest", err.Error())
+			util.Error("PutProfileRequest", err.Error())
 			s.AbortWithError(http.StatusBadRequest, err)
 			return
 		}

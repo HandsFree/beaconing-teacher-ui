@@ -42,12 +42,14 @@ class Group extends RootComponent {
         const groupMain = new GroupMain();
         const groupAside = new GroupAside();
 
+        const noGroupMsg = await window.bcnI18n.getPhrase('no_group');
+
         return Promise.all([
             header.attach(),
             footer.attach(),
             mainNav.attach(),
             secondNav.attach({
-                title: 'Classroom',
+                title: await window.bcnI18n.getPhrase('classroom'),
                 innerNav: innerNav.attach(),
             }),
             groupMain.attach(this.params),
@@ -66,7 +68,7 @@ class Group extends RootComponent {
                 '#app',
                 headerEl,
                 div(
-                    '.flex-container.expand.margin-top-2',
+                    '.flex-container.expand',
                     mainNavEl,
                     secondNavEl,
                     main(
@@ -83,14 +85,14 @@ class Group extends RootComponent {
                 '#app',
                 headerEl,
                 div(
-                    '.flex-container.expand.margin-top-2',
+                    '.flex-container.expand',
                     mainNavEl,
                     secondNavEl,
                     main(
                         '#group.no-padding',
                         div(
                             '.flex-grow.flex-align-center.flex-justify-center',
-                            strong('Group does not exist!'),
+                            strong(noGroupMsg),
                         ),
                     ),
                 ),
@@ -105,11 +107,13 @@ class Group extends RootComponent {
         const secondNav = new SecondNav();
         const innerNav = new InnerNav();
 
+        const groupDelMsg = await window.bcnI18n.getPhrase('group_del');
+
         const el = await Promise.all([
             header.attach(),
             mainNav.attach(),
             secondNav.attach({
-                title: 'Classroom',
+                title: await window.bcnI18n.getPhrase('classroom'),
                 innerNav: innerNav.attach(),
             }),
         ]).then((values) => {
@@ -123,14 +127,14 @@ class Group extends RootComponent {
                 '#app',
                 headerEl,
                 div(
-                    '.flex-container.expand.margin-top-2',
+                    '.flex-container.expand',
                     mainNavEl,
                     secondNavEl,
                     main(
                         '#group.no-padding',
                         div(
                             '.flex-justify-center.flex-align-center.flex-grow',
-                            strong('Group Deleted!'),
+                            strong(groupDelMsg),
                         ),
                     ),
                 ),

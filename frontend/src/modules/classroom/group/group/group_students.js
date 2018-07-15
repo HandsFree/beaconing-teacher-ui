@@ -9,7 +9,9 @@ class GroupStudents extends Component {
     async render() {
         const loading = new Loading();
 
-        const loadingEl = await loading.attach();
+        const loadingEl = await loading.attach({
+            msg: await window.bcnI18n.getPhrase('ld_students'),
+        });
 
         return section(
             '.flex-column',
@@ -66,7 +68,7 @@ class GroupStudents extends Component {
 
         const el = div(
             '#group-students-container.status',
-            p('No Assigned Students!'),
+            p(await window.bcnI18n.getPhrase('no_students_assigned')),
         );
 
         this.updateView(el);

@@ -9,15 +9,17 @@ import SecondNav from '../../../nav/second';
 import InnerNav from '../../inner_nav';
 import StudentMain from './student_main';
 import StudentAside from './student_aside';
+// import StudentInfo from './student_info';
 
 class Student extends RootComponent {
     studentExists = true;
+
     updateHooks = {
         StudentDeleted: this.handleStudentDelete,
     };
 
     async init() {
-        const id = this.params.id;
+        const { id } = this.params;
 
         if (!id) {
             console.log('[View Student] No Student ID provided!');
@@ -31,7 +33,6 @@ class Student extends RootComponent {
 
         if (!student || student.id === 0) {
             this.studentExists = false;
-            return;
         }
     }
 
@@ -41,17 +42,21 @@ class Student extends RootComponent {
         const mainNav = new MainNav();
         const secondNav = new SecondNav();
         const innerNav = new InnerNav();
+        // const studentInfo = new StudentInfo();
         const studentMain = new StudentMain();
         const studentAside = new StudentAside();
+
+        const noStudentMsg = await window.bcnI18n.getPhrase('no_student');
 
         return Promise.all([
             header.attach(),
             footer.attach(),
             mainNav.attach(),
             secondNav.attach({
-                title: 'Classroom',
+                title: await window.bcnI18n.getPhrase('classroom'),
                 innerNav: innerNav.attach(),
             }),
+            // studentInfo.attach(this.params),
             studentMain.attach(this.params),
             studentAside.attach(this.params),
         ]).then((values) => {
@@ -60,6 +65,7 @@ class Student extends RootComponent {
                 footerEl,
                 mainNavEl,
                 secondNavEl,
+                // studentInfoEl,
                 studentMainEl,
                 studentAsideEl,
             ] = values;
@@ -68,7 +74,7 @@ class Student extends RootComponent {
                 '#app',
                 headerEl,
                 div(
-                    '.flex-container.expand.margin-top-2',
+                    '.flex-container.expand',
                     mainNavEl,
                     secondNavEl,
                     main(
@@ -85,14 +91,14 @@ class Student extends RootComponent {
                 '#app',
                 headerEl,
                 div(
-                    '.flex-container.expand.margin-top-2',
+                    '.flex-container.expand',
                     mainNavEl,
                     secondNavEl,
                     main(
                         '#student.no-padding',
                         div(
                             '.flex-grow.flex-align-center.flex-justify-center',
-                            strong('Student does not exist!'),
+                            strong(noStudentMsg),
                         ),
                     ),
                 ),
@@ -108,12 +114,14 @@ class Student extends RootComponent {
         const secondNav = new SecondNav();
         const innerNav = new InnerNav();
 
+        const studentDelMsg = await window.bcnI18n.getPhrase('student_del');
+
         const el = await Promise.all([
             header.attach(),
             footer.attach(),
             mainNav.attach(),
             secondNav.attach({
-                title: 'Classroom',
+                title: await window.bcnI18n.getPhrase('classroom'),
                 innerNav: innerNav.attach(),
             }),
         ]).then((values) => {
@@ -128,14 +136,14 @@ class Student extends RootComponent {
                 '#app',
                 headerEl,
                 div(
-                    '.flex-container.expand.margin-top-2',
+                    '.flex-container.expand',
                     mainNavEl,
                     secondNavEl,
                     main(
                         '#student.no-padding',
                         div(
                             '.flex-justify-center.flex-align-center.flex-grow',
-                            strong('Student Deleted!'),
+                            strong(studentDelMsg),
                         ),
                     ),
                 ),

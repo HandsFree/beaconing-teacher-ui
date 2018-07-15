@@ -1,3 +1,39 @@
 #student-analytics {
     padding: 1em;
 }
+
+.rw-question-container {
+    display: block;
+    padding: 5px;
+}
+
+.rw-question-set {
+    display: flex;
+    flex-direction: column;
+}
+
+.rw-box-answer {
+    display: block;
+}
+
+.rw-box {
+    display: block;   
+    padding: 20px;
+    width: 100%;
+}
+
+.rw-incorrect {
+    background: #c60026;
+}
+
+.rw-correct {
+    background: #4b893d;
+}
+
+.answer-list-box {
+    display: block;
+}
+
+.student-analytics-title {
+    display: block;
+}

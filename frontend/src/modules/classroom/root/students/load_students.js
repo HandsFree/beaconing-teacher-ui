@@ -3,11 +3,31 @@ import { section } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 import StudentBox from './student_box';
+import nullishCheck from '../../../../core/util';
 
 class LoadStudents extends Component {
+    updateHooks = {
+        SearchDone: this.handleSearch,
+    };
+
+    async handleSearch(event: CustomEvent) {
+        const { detail } = event;
+
+        const { MatchedStudents } = detail;
+
+        if (Array.isArray(MatchedStudents) && MatchedStudents.length >= 1) {
+            this.emit('SearchResultsGiven');
+            this.state.students = MatchedStudents;
+            await this.render() |> this.updateView;
+
+            return;
+        }
+
+        this.emit('SearchNoResults');
+    }
 
     async init() {
-        this.state.students = await window.beaconingAPI.getStudents() ?? [];
+        this.state.students = nullishCheck(await window.beaconingAPI.getStudents(), []);
     }
 
     async render() {

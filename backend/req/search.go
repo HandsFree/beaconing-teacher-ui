@@ -1,75 +1,81 @@
 package req
 
 import (
-	"errors"
 	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/felixangell/fuzzysearch/fuzzy"
 
-	"git.juddus.com/HFC/beaconing/backend/api"
-	"git.juddus.com/HFC/beaconing/backend/types"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/parse"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 )
 
-type SearchRequestQuery struct {
-	Query string
+type searchRequestQuery struct {
+	Query  string
+	Filter string
+	Sort   map[string]string
 }
 
-type SearchQueryResponse struct {
-	MatchedStudents []types.Student
-	MatchedGLPS     []types.GLP
+type searchQueryResponse struct {
+	MatchedStudents []*entity.Student
+	MatchedGroups   []*entity.StudentGroup
+	MatchedGLPS     []*entity.GLP
 }
 
-func processSearch(s *gin.Context, json SearchRequestQuery) (*SearchQueryResponse, error) {
-	studentsData, studentsCached := api.Fetch("students")
-	if !studentsCached {
-		// cache miss, force a fetch to cache students
-		studentsData, _ = api.GetStudents(s)
-		// handle error!
-	}
+func searchEverything(s *gin.Context, json searchRequestQuery) (*searchQueryResponse, error) {
+	studSet := make(chan []*entity.Student, 1)
+	groupSet := make(chan []*entity.StudentGroup, 1)
+	glpSet := make(chan []*entity.GLP, 1)
 
-	glpData, err := api.GetGLPS(s, true)
+	go func() {
+		studs, _ := searchStudents(s, json)
+		studSet <- studs
+	}()
+	go func() {
+		groups, _ := searchGroups(s, json)
+		groupSet <- groups
+	}()
+	go func() {
+		glps, _ := searchGLPS(s, json)
+		glpSet <- glps
+	}()
+
+	return &searchQueryResponse{
+		MatchedStudents: <-studSet,
+		MatchedGroups:   <-groupSet,
+		MatchedGLPS:     <-glpSet,
+	}, nil
+}
+
+func searchGLPS(s *gin.Context, query searchRequestQuery) ([]*entity.GLP, error) {
+	glps, err := parse.GLPS(s, true)
 	if err != nil {
-		log.Println("processSearch", err.Error())
+		util.Error("searchGLPS")
 		return nil, err
 	}
 
-	if studentsData == "" {
-		return nil, errors.New("No student data")
+	sortOrder := parse.Ascending
+	if sortOrderType, exists := query.Sort["order"]; exists {
+		sortOrder = parse.SortOrder(sortOrderType)
 	}
 
-	// conv json -> objects
-	var students []types.Student
-	if err := jsoniter.Unmarshal([]byte(studentsData), &students); err != nil {
-		log.Println("processSearch", err)
-		return nil, err
+	// apply any sort options to the glps
+	// _before_ we do the search:
+	if sortType, exists := query.Sort["type"]; exists {
+		sortedGlps, err := parse.SortGLPS(s, glps, sortType, sortOrder)
+		if err != nil {
+			util.Error("Failed to sort GLPS in searchGLPS query")
+			return []*entity.GLP{}, err
+		}
+		glps = sortedGlps
 	}
 
-	var glps []types.GLP
-	if err := jsoniter.Unmarshal([]byte(glpData), &glps); err != nil {
-		log.Println("processSearch", err)
-		return nil, err
+	if query.Query == "" {
+		return glps, nil
 	}
-
-	// TODO: optimize me!
-
-	// convert our json students array to
-	// a "SOA" like structure for that sweet
-	// sweet cache performance
-
-	// basically we need to make it into a format
-	// that our searching library will accept so
-	// we convert it into a bunch of arrays
-	//
-	// one optimisation is that we know the length
-	// of students so we can allocate a chunk of memory
-	// rather than an empty array and keep resizing it
-	studentUsernames := make([]string, len(students))
-	studentFullNames := make([]string, len(students))
-	studentPtrs := make([]int, len(students))
 
 	// likewise we allocate a chunk of memory for the glps
 	glpNames := make([]string, len(glps))
@@ -78,6 +84,33 @@ func processSearch(s *gin.Context, json SearchRequestQuery) (*SearchQueryRespons
 	// NOTE: we stored "ptrs"
 	// these are for index lookups because now that they
 	// are in this form we don't know their index
+
+	for idx, glp := range glps {
+		glpNames = append(glpNames, glp.Name)
+		glpPtrs = append(glpPtrs, idx)
+	}
+
+	matchedGLPS := []*entity.GLP{}
+
+	glpsSearches := fuzzy.RankFindFold(query.Query, glpNames)
+	for _, glpRank := range glpsSearches {
+		glpIndex := glpPtrs[glpRank.Index]
+		matchedGLPS = append(matchedGLPS, glps[glpIndex])
+	}
+
+	return matchedGLPS, nil
+}
+
+func searchStudents(s *gin.Context, query searchRequestQuery) ([]*entity.Student, error) {
+	students, err := parse.Students(s)
+	if err != nil {
+		util.Error(err)
+		return nil, err
+	}
+
+	studentUsernames := make([]string, len(students))
+	studentFullNames := make([]string, len(students))
+	studentPtrs := make([]int, len(students))
 
 	// Now we actually append all this data
 	// unfortunately there is no other way to do
@@ -88,45 +121,108 @@ func processSearch(s *gin.Context, json SearchRequestQuery) (*SearchQueryRespons
 		studentPtrs = append(studentPtrs, idx)
 	}
 
-	for idx, glp := range glps {
-		glpNames = append(glpNames, glp.Name)
-		glpPtrs = append(glpPtrs, idx)
-	}
+	// so we avoid duplicate students since we
+	// search both students and usernames.
+	encounteredStudents := map[uint64]bool{}
 
 	// we're probably only going to match a few
 	// students and glps here so there is no
-	// point over-allocating!
-	matchedStudents := []types.Student{}
-	matchedGLPS := []types.GLP{}
+	// point over-allocating extra space
+	matchedStudents := []*entity.Student{}
 
 	// now we invoke our fancy libraries to
 	// do the searches.
-	studentUsernameSearch := fuzzy.RankFindFold(json.Query, studentUsernames)
+	studentUsernameSearch := fuzzy.RankFindFold(query.Query, studentUsernames)
 	for _, studentRank := range studentUsernameSearch {
 		studentIndex := studentPtrs[studentRank.Index]
-		matchedStudents = append(matchedStudents, students[studentIndex])
+
+		student := students[studentIndex]
+		if _, ok := encounteredStudents[student.ID]; !ok {
+			matchedStudents = append(matchedStudents, student)
+			encounteredStudents[student.ID] = true
+		}
 	}
 
-	studentFullNameSearch := fuzzy.RankFindFold(json.Query, studentFullNames)
+	studentFullNameSearch := fuzzy.RankFindFold(query.Query, studentFullNames)
 	for _, studentRank := range studentFullNameSearch {
 		studentIndex := studentPtrs[studentRank.Index]
-		matchedStudents = append(matchedStudents, students[studentIndex])
+
+		student := students[studentIndex]
+		if _, ok := encounteredStudents[student.ID]; !ok {
+			matchedStudents = append(matchedStudents, student)
+			encounteredStudents[student.ID] = true
+		}
 	}
 
-	glpsSearches := fuzzy.RankFindFold(json.Query, glpNames)
-	for _, glpRank := range glpsSearches {
-		glpIndex := glpPtrs[glpRank.Index]
-		matchedGLPS = append(matchedGLPS, glps[glpIndex])
+	return matchedStudents, nil
+}
+
+func searchGroups(s *gin.Context, query searchRequestQuery) ([]*entity.StudentGroup, error) {
+	groups, err := parse.StudentGroups(s)
+	if err != nil {
+		util.Error(err)
+		return nil, err
 	}
 
-	return &SearchQueryResponse{matchedStudents, matchedGLPS}, nil
+	groupNames := make([]string, len(groups))
+	groupPtrs := make([]int, len(groups))
+
+	// Now we actually append all this data
+	// unfortunately there is no other way to do
+	// this than a linear scan over both of the students/glps
+	for idx, group := range groups {
+		groupNames = append(groupNames, group.Name)
+		groupPtrs = append(groupPtrs, idx)
+	}
+
+	// so we avoid duplicate students since we
+	// search both students and usernames.
+	encounteredGroups := map[uint64]bool{}
+
+	// we're probably only going to match a few
+	// students and glps here so there is no
+	// point over-allocating extra space
+	matchedGroups := []*entity.StudentGroup{}
+
+	// now we invoke our fancy libraries to
+	// do the searches.
+	groupNameSearch := fuzzy.RankFindFold(query.Query, groupNames)
+	for _, groupRank := range groupNameSearch {
+		groupIndex := groupPtrs[groupRank.Index]
+
+		group := groups[groupIndex]
+		if _, ok := encounteredGroups[group.ID]; !ok {
+			matchedGroups = append(matchedGroups, group)
+			encounteredGroups[group.ID] = true
+		}
+	}
+
+	return matchedGroups, nil
+}
+
+func processSearch(s *gin.Context, query searchRequestQuery) (*searchQueryResponse, error) {
+	resp := &searchQueryResponse{}
+
+	switch query.Filter {
+	case "glp":
+		resp.MatchedGLPS, _ = searchGLPS(s, query)
+		return resp, nil
+	case "student":
+		resp.MatchedStudents, _ = searchStudents(s, query)
+		return resp, nil
+	case "group":
+		resp.MatchedGroups, _ = searchGroups(s, query)
+		return resp, nil
+	default:
+		return searchEverything(s, query)
+	}
 }
 
 func PostSearchRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
-		var json SearchRequestQuery
+		var json searchRequestQuery
 		if err := s.ShouldBindJSON(&json); err != nil {
-			log.Println("SearchRequest", err.Error())
+			util.Error("SearchRequest", err.Error())
 			s.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
@@ -139,7 +235,7 @@ func PostSearchRequest() gin.HandlerFunc {
 
 		searchJSON, err := jsoniter.Marshal(&resp)
 		if err != nil {
-			log.Println(err.Error())
+			util.Error(err.Error())
 			return
 		}
 

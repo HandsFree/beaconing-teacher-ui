@@ -2,48 +2,44 @@ package req
 
 import (
 	"fmt"
-	"log"
 	"math"
 	"net/http"
 	"strconv"
 
-	"git.juddus.com/HFC/beaconing/backend/api"
-	"git.juddus.com/HFC/beaconing/backend/types"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/api"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 )
 
 func GetActiveLessonPlansWidget() gin.HandlerFunc {
 	return func(s *gin.Context) {
-		log.Println("ACTIVE LESSON PLANS GET REQ")
-
-		limitParam := s.DefaultQuery("limit", "3")
-		limitParamValue, err := strconv.Atoi(limitParam)
-		if err != nil || limitParamValue <= 0 {
-			limitParamValue = 3 // NaN
-			log.Println("warning ALP limit has illegal value, defaulting to 5")
+		limitParam, err := strconv.Atoi(s.DefaultQuery("limit", "3"))
+		if err != nil || limitParam <= 0 {
+			limitParam = 3 // NaN
+			util.Warn("ALP limit has illegal value, defaulting to 5")
 		}
 
-		lps := []types.LessonPlanWidget{}
+		lps := []entity.LessonPlanWidget{}
 
 		assignedPlans, err := api.GetRecentlyAssignedGLPS(s, true)
 		if err != nil {
-			log.Println("GetActiveLessonPlansWidget: ", err.Error())
+			util.Error("GetActiveLessonPlansWidget: ", err.Error())
 			return
 		}
 
 		for _, glp := range assignedPlans {
-			// log.Println("Displaying ", glp.Name, " as a lesson plan")
-			lessonPlan := NewLessonPlanWidget(glp.Name, glp.ID)
+			lessonPlan := NewLessonPlanWidget(glp.Name, glp.Desc, glp.ID)
 			lps = append(lps, lessonPlan)
 		}
 
-		lpsLen := len(lps)
-		size := int(math.Min(float64(limitParamValue), float64(lpsLen)))
+		lpsCount := float64(len(lps))
+		size := int(math.Min(float64(limitParam), lpsCount))
 
 		json, err := jsoniter.Marshal(lps[0:size])
 		if err != nil {
-			log.Println(err.Error())
+			util.Error(err.Error())
 			return
 		}
 
@@ -52,10 +48,10 @@ func GetActiveLessonPlansWidget() gin.HandlerFunc {
 	}
 }
 
-func NewLessonPlanWidget(name string, glpID uint64) types.LessonPlanWidget {
-	return types.LessonPlanWidget{
+func NewLessonPlanWidget(name string, desc string, glpID uint64) entity.LessonPlanWidget {
+	return entity.LessonPlanWidget{
 		Name: name,
-		Src:  "https://via.placeholder.com/512x512&text=" + name,
+		Desc: desc,
 		Link: "/lesson_manager#view?id=" + fmt.Sprintf("%d", glpID) + "&prev=lesson_manager",
 	}
 }

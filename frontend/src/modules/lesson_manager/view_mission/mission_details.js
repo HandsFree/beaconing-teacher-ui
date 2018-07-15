@@ -18,17 +18,17 @@ class MissionDetails extends Component {
     async render() {
         return div(
             '#mission-details',
-            div('.title', h4('Mission Details:')),
+            div('.title', h4(await window.bcnI18n.getPhrase('lm_mission_details'))),
             div(
                 '.large-details',
                 div(
                     '.detail',
-                    strong('Description:'),
+                    strong(`${await window.bcnI18n.getPhrase('description')}:`),
                     p(this.state.mission.description),
                 ),
                 div(
                     '.detail',
-                    strong('Skills:'),
+                    strong(`${await window.bcnI18n.getPhrase('lm_skills')}:`),
                     p(this.state.mission.skills),
                 ),
             ),

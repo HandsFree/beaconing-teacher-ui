@@ -3,8 +3,9 @@ import { section, div, a, i, h1, form, input, p, label, span, select, option } f
 
 import { Component } from '../../../../core/component';
 import Status from '../../../status';
+import PostCreation from './post_creation';
 
-class GroupForm extends Component {
+class StudentForm extends Component {
     state = {
         studentUsername: '',
         studentFirstName: '',
@@ -19,12 +20,153 @@ class GroupForm extends Component {
             county: '',
             postcode: '',
         },
-        studentLang: 'en-US',
+        studentLang: 'en-GB',
         studentGender: '',
         studentSchool: '',
     };
 
+    updateHooks = {
+        ResetForm: this.resetForm,
+    };
+
+    async resetForm() {
+        this.state = {
+            studentUsername: '',
+            studentFirstName: '',
+            studentLastName: '',
+            studentDOB: '',
+            studentEmail: '',
+            studentAddress: {
+                line1: '',
+                line2: '',
+                city: '',
+                country: '',
+                county: '',
+                postcode: '',
+            },
+            studentLang: 'en-GB',
+            studentGender: '',
+            studentSchool: '',
+        };
+
+        this.updateView(await this.render());
+    }
+
+    async resetSubmit() {
+        const studentButton = document.getElementById('create-student-button');
+        studentButton.textContent = await window.bcnI18n.getPhrase('cr_create_student');
+    }
+
+    async checkFields() {
+        // TODO: reduce duped code
+        if (this.state.studentUsername === '') {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'student-username',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('empty_field')).replace('%s', `'${await window.bcnI18n.getPhrase('cr_student_username')}'`),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.resetSubmit();
+
+            return false;
+        }
+
+        if (this.state.studentFirstName === '') {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'student-first-name',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('empty_field')).replace('%s', `'${await window.bcnI18n.getPhrase('cr_student_fn')}'`),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.resetSubmit();
+
+            return false;
+        }
+
+        if (this.state.studentLastName === '') {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'student-last-name',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('empty_field')).replace('%s', `'${await window.bcnI18n.getPhrase('cr_student_ln')}'`),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.resetSubmit();
+
+            return false;
+        }
+
+        if (this.state.studentDOB === '') {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'student-dob',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('empty_field')).replace('%s', `'${await window.bcnI18n.getPhrase('cr_student_dob')}'`),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.resetSubmit();
+
+            return false;
+        }
+
+        const now = new Date();
+        const parsedDate = new Date(this.state.studentDOB);
+
+        /* eslint-disable-next-line no-restricted-globals */
+        if (isNaN(parsedDate)) {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'student-dob',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('not_valid_dob')),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.resetSubmit();
+
+            return false;
+        }
+
+        if (parsedDate.getTime() > now.getTime()) {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'student-dob',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('not_valid_dob')),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.resetSubmit();
+
+            return false;
+        }
+
+        return true;
+    }
+
     async createStudent() {
+        if (await this.checkFields() === false) {
+            return;
+        }
+
         const obj = {
             username: this.state.studentUsername,
             email: this.state.studentEmail,
@@ -56,18 +198,8 @@ class GroupForm extends Component {
         // const status = false;
 
         if (status) {
-            const statusMessageEl = await statusMessage.attach({
-                elementID: false,
-                heading: 'Success',
-                type: 'success',
-                message: `student '${this.state.studentUsername}' created`,
-            });
-
-            this.appendView(statusMessageEl);
-
-            const studentButton = document.getElementById('create-student-button');
-
-            studentButton.textContent = 'Create Student';
+            this.resetSubmit();
+            this.afterCreation(status);
 
             return;
         }
@@ -76,17 +208,26 @@ class GroupForm extends Component {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: 'student not created!',
+            message: await window.bcnI18n.getPhrase('student_nc'),
         });
 
-        const studentButton = document.getElementById('create-student-button');
-
-        studentButton.textContent = 'Create Student';
-
         this.appendView(statusMessageEl);
+
+        this.resetSubmit();
+    }
+
+    async afterCreation(student: Object) {
+        const pcEL = new PostCreation().attach({
+            title: await window.bcnI18n.getPhrase('student_cre'),
+            id: student.id,
+        });
+
+        this.updateView(await pcEL);
     }
 
     async render() {
+        const creatingText = await window.bcnI18n.getPhrase('creating');
+
         return div(
             '.flex-column',
             section(
@@ -99,9 +240,9 @@ class GroupForm extends Component {
                             href: `//${window.location.host}/classroom`,
                         },
                         i('.icon-angle-left'),
-                        'Go Back',
+                        await window.bcnI18n.getPhrase('go_back'),
                     ),
-                    h1('Create Student'),
+                    h1(await window.bcnI18n.getPhrase('cr_create_student')),
                     div('.empty-spacer', ' '),
                 ),
             ),
@@ -111,58 +252,61 @@ class GroupForm extends Component {
                     '.margin-25.flex-column',
                     div(
                         '.general-info',
-                        p('Enter Student information:'),
+                        p(`${await window.bcnI18n.getPhrase('cr_enter_si')}:`),
                     ),
                     form(
                         '.create-student',
                         label(
-                            span('Student Username'),
+                            span(await window.bcnI18n.getPhrase('cr_student_username')),
                             input(
                                 '#student-username.text-field',
                                 {
                                     type: 'text',
-                                    placeholder: 'Enter Username',
+                                    placeholder: await window.bcnI18n.getPhrase('cr_enter_username'),
                                     oninput: (event) => {
                                         const { target } = event;
 
                                         this.state.studentUsername = target.value;
                                     },
+                                    required: true,
                                 },
                             ),
                         ),
                         label(
-                            span('Student First Name'),
+                            span(await window.bcnI18n.getPhrase('cr_student_fn')),
                             input(
                                 '#student-first-name.text-field',
                                 {
                                     type: 'text',
-                                    placeholder: 'Enter First Name',
+                                    placeholder: await window.bcnI18n.getPhrase('cr_enter_fn'),
                                     oninput: (event) => {
                                         const { target } = event;
 
                                         this.state.studentFirstName = target.value;
                                     },
+                                    required: true,
                                 },
                             ),
                         ),
                         label(
-                            span('Student Last Name'),
+                            span(await window.bcnI18n.getPhrase('cr_student_ln')),
                             input(
                                 '#student-last-name.text-field',
                                 {
                                     type: 'text',
-                                    placeholder: 'Enter Last Name',
+                                    placeholder: await window.bcnI18n.getPhrase('cr_enter_ln'),
                                     oninput: (event) => {
                                         const { target } = event;
 
                                         this.state.studentLastName = target.value;
                                     },
+                                    required: true,
                                 },
                             ),
                         ),
                         label(
                             '.select',
-                            span('Student Gender'),
+                            span(await window.bcnI18n.getPhrase('cr_student_gender')),
                             select(
                                 '#student-gender',
                                 {
@@ -172,29 +316,30 @@ class GroupForm extends Component {
                                         this.state.studentGender = target.value;
                                     },
                                 },
-                                option({ value: 'male' }, 'Male'),
-                                option({ value: 'female' }, 'Female'),
-                                option({ value: 'other' }, 'Other'),
+                                option({ value: 'female' }, await window.bcnI18n.getPhrase('female')),
+                                option({ value: 'male' }, await window.bcnI18n.getPhrase('male')),
+                                option({ value: 'other' }, await window.bcnI18n.getPhrase('other')),
                             ),
                         ),
                         label(
-                            span('Student Date of Birth'),
+                            span(await window.bcnI18n.getPhrase('cr_student_dob')),
                             input(
-                                '#student-dossignedb.text-field',
+                                '#student-dob.text-field',
                                 {
                                     type: 'date',
-                                    placeholder: 'Enter DoB',
+                                    placeholder: await window.bcnI18n.getPhrase('cr_enter_dob'),
                                     oninput: (event) => {
                                         const { target } = event;
 
                                         this.state.studentDOB = target.value;
                                     },
+                                    required: true,
                                 },
                             ),
                         ),
                         label(
                             '.select',
-                            span('Student Language'),
+                            span(await window.bcnI18n.getPhrase('cr_student_lang')),
                             select(
                                 '#student-lang',
                                 {
@@ -204,16 +349,69 @@ class GroupForm extends Component {
                                         this.state.studentLang = target.value;
                                     },
                                 },
-                                option({ value: 'en-US' }, 'English'),
+                                option(
+                                    {
+                                        value: 'en-GB',
+                                    },
+                                    'English',
+                                ),
+                                option(
+                                    {
+                                        value: 'fr-FR',
+                                    },
+                                    'Français',
+                                ),
+                                option(
+                                    {
+                                        value: 'es-ES',
+                                    },
+                                    'Español',
+                                ),
+                                option(
+                                    {
+                                        value: 'it-IT',
+                                    },
+                                    'Italiano',
+                                ),
+                                option(
+                                    {
+                                        value: 'de-DE',
+                                    },
+                                    'Deutsch',
+                                ),
+                                option(
+                                    {
+                                        value: 'ro-RO',
+                                    },
+                                    'Română',
+                                ),
+                                option(
+                                    {
+                                        value: 'pl-PL',
+                                    },
+                                    'Polskie',
+                                ),
+                                option(
+                                    {
+                                        value: 'tr-TR',
+                                    },
+                                    'Türk',
+                                ),
+                                option(
+                                    {
+                                        value: 'pt-PT',
+                                    },
+                                    'Português',
+                                ),
                             ),
                         ),
                         label(
-                            span('Student Email'),
+                            span(await window.bcnI18n.getPhrase('cr_student_email')),
                             input(
                                 '#student-email.text-field',
                                 {
                                     type: 'email',
-                                    placeholder: 'Enter Email',
+                                    placeholder: await window.bcnI18n.getPhrase('cr_enter_email'),
                                     oninput: (event) => {
                                         const { target } = event;
 
@@ -223,12 +421,12 @@ class GroupForm extends Component {
                             ),
                         ),
                         label(
-                            span('Student School'),
+                            span(await window.bcnI18n.getPhrase('cr_student_school')),
                             input(
                                 '#student-school.text-field',
                                 {
                                     type: 'text',
-                                    placeholder: 'Enter School Name',
+                                    placeholder: await window.bcnI18n.getPhrase('cr_enter_school'),
                                     oninput: (event) => {
                                         const { target } = event;
 
@@ -238,12 +436,12 @@ class GroupForm extends Component {
                             ),
                         ),
                         label(
-                            span('Student Address'),
+                            span(await window.bcnI18n.getPhrase('cr_student_address')),
                             input(
                                 '#student-address1.text-field',
                                 {
                                     type: 'text',
-                                    placeholder: 'Address Line 1',
+                                    placeholder: await window.bcnI18n.getPhrase('cr_student_adrs_ln1'),
                                     oninput: (event) => {
                                         const { target } = event;
 
@@ -255,7 +453,7 @@ class GroupForm extends Component {
                                 '#student-address2.text-field',
                                 {
                                     type: 'text',
-                                    placeholder: 'Address Line 2',
+                                    placeholder: await window.bcnI18n.getPhrase('cr_student_adrs_ln2'),
                                     oninput: (event) => {
                                         const { target } = event;
 
@@ -267,7 +465,7 @@ class GroupForm extends Component {
                                 '#student-address-city.text-field',
                                 {
                                     type: 'text',
-                                    placeholder: 'City',
+                                    placeholder: await window.bcnI18n.getPhrase('cr_student_adrs_city'),
                                     oninput: (event) => {
                                         const { target } = event;
 
@@ -279,7 +477,7 @@ class GroupForm extends Component {
                                 '#student-address-county.text-field',
                                 {
                                     type: 'text',
-                                    placeholder: 'Province/County',
+                                    placeholder: await window.bcnI18n.getPhrase('cr_student_adrs_county'),
                                     oninput: (event) => {
                                         const { target } = event;
 
@@ -291,7 +489,7 @@ class GroupForm extends Component {
                                 '#student-address-country.text-field',
                                 {
                                     type: 'text',
-                                    placeholder: 'Country',
+                                    placeholder: await window.bcnI18n.getPhrase('cr_student_adrs_country'),
                                     oninput: (event) => {
                                         const { target } = event;
 
@@ -303,7 +501,7 @@ class GroupForm extends Component {
                                 '#student-address-code.text-field',
                                 {
                                     type: 'text',
-                                    placeholder: 'Post Code',
+                                    placeholder: await window.bcnI18n.getPhrase('cr_student_adrs_pc'),
                                     oninput: (event) => {
                                         const { target } = event;
 
@@ -320,10 +518,10 @@ class GroupForm extends Component {
                                             const { target } = event;
                                             this.createStudent();
 
-                                            target.textContent = 'Creating...';
+                                            target.textContent = `${creatingText}...`;
                                         },
                                     },
-                                    'Create Student',
+                                    await window.bcnI18n.getPhrase('cr_create_student'),
                                 ),
                             ),
                         ),
@@ -334,4 +532,4 @@ class GroupForm extends Component {
     }
 }
 
-export default GroupForm;
+export default StudentForm;

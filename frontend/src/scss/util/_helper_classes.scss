@@ -31,6 +31,15 @@
 	display: none;
 }
 
+.empty-block {
+	display: block;
+}
+
+.margin-block {
+	display: block;
+	margin: 20px;
+}
+
 .expand {
 	height: 100%;
 	flex: 100%;
@@ -88,10 +97,6 @@
 	flex-grow: 1;
 }
 
-.flex-column {
-	flex-direction: column;
-}
-
 .flex-align-self-center {
 	align-self: center;
 }
@@ -114,6 +119,10 @@
 
 .flex-1 {
 	flex: 100%;
+}
+
+.flex-full {
+	flex: 0 0 100%;
 }
 
 // device restrictions

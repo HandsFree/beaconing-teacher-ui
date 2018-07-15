@@ -7,7 +7,7 @@ import Footer from '../../../footer/root';
 import MainNav from '../../../nav/main';
 import SecondNav from '../../../nav/second';
 import InnerNav from '../../inner_nav';
-import BasicSearch from '../../../search/basic';
+import APISearch from '../../../search/api';
 import StudentsContainer from './students_container';
 import CreateStudentButton from './create_student_button';
 
@@ -18,7 +18,7 @@ class Students extends RootComponent {
         const mainNav = new MainNav();
         const secondNav = new SecondNav();
         const innerNav = new InnerNav();
-        const search = new BasicSearch();
+        const search = new APISearch();
         const students = new StudentsContainer();
         const createStudentButton = new CreateStudentButton();
 
@@ -27,11 +27,15 @@ class Students extends RootComponent {
             footer.attach(),
             mainNav.attach(),
             secondNav.attach({
-                title: 'Classroom',
+                title: await window.bcnI18n.getPhrase('classroom'),
                 innerNav: innerNav.attach(),
             }),
             search.attach({
                 searchType: 'width-expand',
+                filterOptions: {
+                    filter: 'student',
+                    sort: {},
+                },
             }),
             students.attach(),
             createStudentButton.attach(),
@@ -50,7 +54,7 @@ class Students extends RootComponent {
                 '#app',
                 headerEl,
                 div(
-                    '.flex-container.expand.margin-top-2',
+                    '.flex-container.expand',
                     mainNavEl,
                     secondNavEl,
                     main(

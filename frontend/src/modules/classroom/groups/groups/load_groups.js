@@ -3,10 +3,31 @@ import { section } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 import GroupBox from './group_box';
+import nullishCheck from '../../../../core/util';
 
 class LoadGroups extends Component {
+    updateHooks = {
+        SearchDone: this.handleSearch,
+    };
+
+    async handleSearch(event: CustomEvent) {
+        const { detail } = event;
+
+        const { MatchedGroups } = detail;
+
+        if (Array.isArray(MatchedGroups) && MatchedGroups.length >= 1) {
+            this.emit('SearchResultsGiven');
+            this.state.groups = MatchedGroups;
+            await this.render() |> this.updateView;
+
+            return;
+        }
+
+        this.emit('SearchNoResults');
+    }
+
     async init() {
-        this.state.groups = await window.beaconingAPI.getGroups() ?? [];
+        this.state.groups = nullishCheck(await window.beaconingAPI.getGroups(), []);
     }
 
     async render() {
@@ -14,7 +35,7 @@ class LoadGroups extends Component {
         const promArr = [];
 
         for (const group of groups) {
-            const { 
+            const {
                 id,
                 name,
             } = group;

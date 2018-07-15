@@ -1,7 +1,7 @@
 package page
 
 import (
-	"git.juddus.com/HFC/beaconing/backend/api"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/api"
 )
 
 // Page represents a web page in the beaconing

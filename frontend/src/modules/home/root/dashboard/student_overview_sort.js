@@ -1,5 +1,5 @@
 // @flow
-import { div, span, a, option, select, label } from '../../../../core/html';
+import { div, span, option, select, label } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 
@@ -60,33 +60,52 @@ class Sort extends Component {
             ),
             div(
                 '#student-overview-sort.sort-menu',
-                span(`${await window.bcnI18n.getPhrase('sort_by')}: `),
-                a(
-                    this.state.sort === 'week' ? '.active' : '',
-                    {
-                        onclick: () => {
-                            this.emit('StudentOverviewSortWeekClicked');
+                label(
+                    '.select',
+                    span(`${await window.bcnI18n.getPhrase('sort_by')}: `),
+                    select(
+                        {
+                            onchange: (event) => {
+                                const { target } = event;
+
+                                switch (target.value) {
+                                case 'week':
+                                    this.emit('StudentOverviewSortWeekClicked');
+                                    break;
+                                case 'month':
+                                    this.emit('StudentOverviewSortMonthClicked');
+                                    break;
+                                case 'year':
+                                    this.emit('StudentOverviewSortYearClicked');
+                                    break;
+                                default:
+                                    this.emit('StudentOverviewSortWeekClicked');
+                                    break;
+                                }
+                            },
                         },
-                    },
-                    await window.bcnI18n.getPhrase('week'),
-                ),
-                a(
-                    this.state.sort === 'month' ? '.active' : '',
-                    {
-                        onclick: () => {
-                            this.emit('StudentOverviewSortMonthClicked');
-                        },
-                    },
-                    await window.bcnI18n.getPhrase('month'),
-                ),
-                a(
-                    this.state.sort === 'year' ? '.active' : '',
-                    {
-                        onclick: () => {
-                            this.emit('StudentOverviewSortYearClicked');
-                        },
-                    },
-                    await window.bcnI18n.getPhrase('year'),
+                        option(
+                            {
+                                selected: this.state.sort === 'week',
+                                value: 'week',
+                            },
+                            await window.bcnI18n.getPhrase('week'),
+                        ),
+                        option(
+                            {
+                                selected: this.state.sort === 'month',
+                                value: 'month',
+                            },
+                            await window.bcnI18n.getPhrase('month'),
+                        ),
+                        option(
+                            {
+                                selected: this.state.sort === 'year',
+                                value: 'year',
+                            },
+                            await window.bcnI18n.getPhrase('year'),
+                        ),
+                    ),
                 ),
             ),
         );

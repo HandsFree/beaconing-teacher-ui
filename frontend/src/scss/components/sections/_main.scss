@@ -1,4 +1,9 @@
 section {
 	margin: 1em 0;
-	flex-shrink: 0;
+	&.no-shrink {
+		flex-shrink: 0;
+	}
+	&.no-margin {
+		margin: 0;
+	}
 }

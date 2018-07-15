@@ -2,11 +2,11 @@ package api
 
 import (
 	"bytes"
-	"log"
 	"net/http"
 
-	"git.juddus.com/HFC/beaconing/backend/cfg"
-	"git.juddus.com/HFC/beaconing/backend/types"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/cfg"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
@@ -20,7 +20,7 @@ func GetRefreshToken(s *gin.Context) error {
 
 	accessToken := session.Get("access_token").(string)
 
-	message, err := jsoniter.Marshal(types.TokenRequest{
+	message, err := jsoniter.Marshal(entity.TokenRequest{
 		GrantType:    "authorization_code",
 		Code:         accessToken,
 		ClientID:     cfg.Beaconing.Auth.ID,
@@ -29,29 +29,33 @@ func GetRefreshToken(s *gin.Context) error {
 	})
 
 	if err != nil {
-		log.Println("GetRefreshToken", err.Error())
+		util.Error("GetRefreshToken", err.Error())
 		return err
 	}
 
 	const tokenRefreshLink = "https://core.beaconing.eu/auth/token"
-	resp, err := DoTimedRequestBody(s, "POST", tokenRefreshLink, bytes.NewBuffer(message))
+	resp, err, status := DoTimedRequestBody(s, "POST", tokenRefreshLink, bytes.NewBuffer(message))
 	if err != nil {
-		log.Println("GetRefreshToken", err.Error())
+		util.Error("GetRefreshToken", err.Error())
 		return err
 	}
 
-	var respToken types.TokenResponse
+	if status != http.StatusOK {
+		util.Info("[GetRefreshToken] Status Returned: ", status)
+		return nil
+	}
+
+	var respToken entity.TokenResponse
 	if err := jsoniter.Unmarshal(resp, &respToken); err != nil {
-		log.Println("GetRefreshToken", err.Error())
+		util.Error("GetRefreshToken", err.Error())
 		return err
 	}
 
-	log.Println("Auth: Set access token!")
 	session.Set("access_token", respToken.AccessToken)
 	session.Set("refresh_token", respToken.RefreshToken)
 	session.Set("token_type", respToken.TokenType)
 	if err := session.Save(); err != nil {
-		log.Println("GetRefreshToken", err.Error())
+		util.Error("GetRefreshToken", err.Error())
 	}
 
 	return nil
@@ -64,8 +68,6 @@ func GetAccessToken(s *gin.Context) string {
 	session := sessions.Default(s)
 	accessToken := session.Get("access_token")
 	if accessToken == nil {
-		s.String(http.StatusBadRequest, "Unauthorised access: core")
-		// NOTE: no return here due to redirect
 		return ""
 	}
 	return accessToken.(string)

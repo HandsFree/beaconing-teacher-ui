@@ -1,5 +1,5 @@
 // @flow
-import { div, h4, a } from '../../../../core/html';
+import { div, a } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 
@@ -14,13 +14,13 @@ class ResultBox extends Component {
             '.result',
             div(
                 '.title',
-                h4(title),
+                title,
             ),
             a(
                 {
                     href: link,
                 },
-                'View',
+                await window.bcnI18n.getPhrase('view'),
             ),
         );
     }

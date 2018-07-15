@@ -28,15 +28,25 @@ class StudentAside extends Component {
 
             this.state.studentName = do {
                 if (student.profile.firstName && student.profile.lastName) {
-                    `${student.profile.firstName} ${student.profile.lastName}`;
+                    div(
+                        '#student-name.flex-column',
+                        span('.name', `${student.profile.firstName} ${student.profile.lastName}`),
+                        span(
+                            '.username',
+                            {
+                                title: await window.bcnI18n.getPhrase('username'),
+                            },
+                            student.username,
+                        ),
+                    );
                 } else {
-                    student.username;
+                    span('#student-name.name', student.username);
                 }
             };
 
             const studentNameEl = document.getElementById('student-name');
 
-            studentNameEl.textContent = this.state.studentName;
+            studentNameEl.parentElement.replaceChild(this.state.studentName, studentNameEl);
         }
     }
 
@@ -76,6 +86,11 @@ class StudentAside extends Component {
             return;
         }
 
+        const delStudentTranslation = await window.bcnI18n.getPhrase('confirm_delete_student');
+        if (!confirm(delStudentTranslation)) {
+            return;
+        }
+
         const status = await window.beaconingAPI.deleteStudent(this.state.student.id);
         const statusMessage = new Status();
 
@@ -93,7 +108,7 @@ class StudentAside extends Component {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: 'student not deleted!',
+            message: await window.bcnI18n.getPhrase('student_nd'),
         });
 
         this.appendView(statusMessageEl);
@@ -106,9 +121,19 @@ class StudentAside extends Component {
             this.state.student = student;
             this.state.studentName = do {
                 if (student.profile.firstName && student.profile.lastName) {
-                    `${student.profile.firstName} ${student.profile.lastName}`;
+                    div(
+                        '#student-name.flex-column',
+                        span('.name', `${student.profile.firstName} ${student.profile.lastName}`),
+                        span(
+                            '.username',
+                            {
+                                title: await window.bcnI18n.getPhrase('username'),
+                            },
+                            student.username,
+                        ),
+                    );
                 } else {
-                    student.username;
+                    span('#student-name.name', student.username);
                 }
             };
         }
@@ -150,7 +175,7 @@ class StudentAside extends Component {
                 a(
                     '#student-edit-button',
                     {
-                        title: 'Edit',
+                        title: await window.bcnI18n.getPhrase('edit'),
                         onclick: () => {
                             this.handleEditClick();
                         },
@@ -164,7 +189,7 @@ class StudentAside extends Component {
                     img({
                         src: imgData,
                     }),
-                    figcaption('#student-name', this.state.studentName),
+                    figcaption(this.state.studentName),
                 ),
             ),
             nav(
@@ -179,7 +204,7 @@ class StudentAside extends Component {
                             this.emit('AssignedGLPsClicked');
                         },
                     },
-                    span('Assigned GLPs'),
+                    span(await window.bcnI18n.getPhrase('cr_assigned_glps')),
                 ),
                 a(
                     '.item',
@@ -191,15 +216,15 @@ class StudentAside extends Component {
                             this.emit('AnalyticsClicked');
                         },
                     },
-                    span('Analytics'),
+                    span(await window.bcnI18n.getPhrase('analytics')),
                 ),
             ),
         );
     }
 
     toggleActive(el: EventTarget) {
-        const nav = document.getElementById('student-nav');
-        const active = nav.querySelector('.active');
+        const studentNav = document.getElementById('student-nav');
+        const active = studentNav.querySelector('.active');
 
         active.classList.remove('active');
 

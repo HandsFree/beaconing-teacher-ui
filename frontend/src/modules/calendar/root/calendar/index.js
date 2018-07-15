@@ -1,4 +1,5 @@
 // @flow
+import moment from 'moment';
 import { div, main, section } from '../../../../core/html';
 
 import { RootComponent } from '../../../../core/component';
@@ -7,17 +8,14 @@ import MainNav from '../../../nav/main';
 
 import CalendarView from './calendar_view';
 import CalendarController from './calendar_controller';
-import { StudentSelector, StudentGroupSelector, SelectorPanel } from './student_selector';
+import SelectorPanel from './student_selector';
+import SecondNav from '../../../nav/second';
+import CalendarInnerNav from './calendar_inner_nav';
 
 class Calendar extends RootComponent {
-    state = {
-        id: 0,
-    };
-
     async init() {
-        if (this.params.id) {
-            this.state.id = this.params.id;
-        }
+        window.sessionStorage.setItem('calendarSelection', 'none');
+        window.sessionStorage.setItem('calendarDate', moment());
     }
 
     async render() {
@@ -25,14 +23,19 @@ class Calendar extends RootComponent {
         const mainNav = new MainNav();
 
         const calendarView = new CalendarView();
-        const studentSelector = new SelectorPanel(calendarView);
-        const calendarController = new CalendarController(calendarView);
+        const studentSelector = new SelectorPanel();
+        const calendarController = new CalendarController();
         
-        console.log("calendar index");
+        const secondNav = new SecondNav();
+        const calInnerNav = new CalendarInnerNav();
 
         return Promise.all([
             header.attach(),
             mainNav.attach(),
+            secondNav.attach({
+                title: 'Calendar',
+                innerNav: calInnerNav.attach(),
+            }),
             calendarController.attach(),
             calendarView.attach(),
             studentSelector.attach(),
@@ -40,25 +43,27 @@ class Calendar extends RootComponent {
             const [
                 headerEl,
                 mainNavEl,
-                calendarController,
-                calendarView,
-                studentSelector,
+                secondNavEl,
+                calendarControllerEl,
+                calendarViewEl,
+                studentSelectorEl,
             ] = values;
 
             return div(
                 '#app',
                 headerEl,
                 div(
-                    '.flex-container.expand.margin-top-2',
+                    '.flex-container.expand',
                     mainNavEl,
-                    main(
-                        section('.outer-col', 
-                            studentSelector,
-                            section(".full-width", 
-                                calendarController,
-                                calendarView
-                            )
-                        )
+                    secondNavEl,
+                    main('#calendar',
+                        section('.outer-col',
+                            studentSelectorEl,
+                            section('.full-width',
+                                calendarControllerEl,
+                                calendarViewEl,
+                            ),
+                        ),
                     ),
                 ),
             );

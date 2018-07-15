@@ -1,76 +1,138 @@
 // @flow
-import { div } from '../../../../core/html';
+import { div, span } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 import GLPBox from './glp_box';
+import nullishCheck from '../../../../core/util';
 
 class LoadGLPs extends Component {
-    step = 12;
     state = {
-        index: 0,
         glps: [],
         endReached: false,
     };
+
     updateHooks = {
-        LoadMoreClicked: this.loadMoreGLPs,
-        LoadAllClicked: this.loadAllGLPs,
+        SearchDone: this.handleSearch,
     };
 
     async init() {
+        if (window.sessionStorage) {
+            const obj = JSON.parse(window.sessionStorage.getItem('loaded_glps'));
+            this.state.glps = obj.glps;
+        }
+
+        const { loadAll } = this.props;
+
+        if (loadAll) {
+            await this.updateAllGLPs();
+            return;
+        }
+
         await this.updateGLPs();
-        window.more = this.loadMoreGLPs.bind(this);
+    }
+
+    async handleSearch(event: CustomEvent) {
+        const { detail } = event;
+
+        const { MatchedGLPS } = detail;
+
+        if (Array.isArray(MatchedGLPS) && MatchedGLPS.length >= 1) {
+            this.removeLoadButtons();
+            this.emit('SearchResultsGiven');
+            this.state.glps = MatchedGLPS;
+            this.updateView(await this.GLPList());
+
+            return;
+        }
+
+        this.emit('SearchNoResults');
     }
 
     async updateGLPs() {
-        const sortQuery = this.props.sort ?? 'default';
-        const orderQuery = this.props.order ?? 'default';
+        const typeQuery = nullishCheck(this.props?.type, 'default');
+        const orderQuery = nullishCheck(this.props?.order, 'default');
+        const index = nullishCheck(this.props?.index, 0);
+        const step = nullishCheck(this.props?.step, 12);
 
-        const glps = await window.beaconingAPI.getGLPs(sortQuery, orderQuery, true, this.state.index, this.step);
+        const glps = await window.beaconingAPI.getGLPs(typeQuery, orderQuery, true, index, step);
 
         if (glps.length < 12) {
             this.state.endReached = true;
         }
 
         this.state.glps = [...this.state.glps, ...glps];
+        if (window.sessionStorage) {
+            window.sessionStorage.setItem('loaded_glps', JSON.stringify({ glps: this.state.glps }));
+        }
     }
 
     async updateAllGLPs() {
-        const sortQuery = this.props.sort ?? 'default';
-        const orderQuery = this.props.order ?? 'default';
+        const typeQuery = nullishCheck(this.props?.type, 'default');
+        const orderQuery = nullishCheck(this.props?.order, 'default');
 
-        const glps = await window.beaconingAPI.getGLPs(sortQuery, orderQuery, true);
+        const glps = await window.beaconingAPI.getGLPs(typeQuery, orderQuery, true);
 
         this.state.glps = glps;
-    }
-
-    async loadMoreGLPs() {
-        this.state.index += this.step;
-        await this.updateGLPs();
-
-        if (this.state.endReached) {
-            const loadMoreButton = document.getElementById('glpload');
-
-            loadMoreButton.parentElement.removeChild(loadMoreButton);
+        if (window.sessionStorage) {
+            window.sessionStorage.setItem('loaded_glps', JSON.stringify({ glps: this.state.glps }));
         }
 
-        await this.GLPList() |> this.updateView;
+        this.state.endReached = true;
     }
 
-    async loadAllGLPs() {
-        this.state.index = 0;
-        await this.updateAllGLPs();
+    async removeLoadButtons() {
+        const buttonFunc = () => {
+            const loadMoreButton = document.getElementById('glpload');
 
-        this.state.endReached = true;
+            if (nullishCheck(loadMoreButton, false)) {
+                loadMoreButton.style.visibility = 'hidden';
 
-        const loadMoreButton = document.getElementById('glpload');
-        loadMoreButton.parentElement.removeChild(loadMoreButton);
+                return true;
+            }
 
-        await this.GLPList() |> this.updateView;
+            return false;
+        };
+
+        // little ugly
+
+        const timeoutFunc = () => {
+            if (!buttonFunc()) {
+                setTimeout(timeoutFunc, 100);
+            }
+        };
+
+        if (document.readyState !== 'complete' || document.readyState !== 'interactive') {
+            setTimeout(timeoutFunc, 100);
+        }
+
+        buttonFunc();
+    }
+
+    async noPlansFound() {
+        return div(
+            '.plans-container.list.flex-wrap',
+            div(
+                '.status',
+                span(await window.bcnI18n.getPhrase('lm_no_plans_found')),
+            ),
+        );
     }
 
     async GLPList() {
         const values = Object.values(this.state.glps);
         const promArr = [];
+
+        console.log(values);
+
+        if (values.length === 0) {
+            this.removeLoadButtons();
+
+            return this.noPlansFound();
+        }
+
+        if (this.state.endReached) {
+            this.removeLoadButtons();
+        }
 
         for (const glp of values) {
             // console.log(glp);

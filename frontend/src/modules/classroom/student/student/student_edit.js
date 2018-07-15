@@ -3,6 +3,7 @@ import { section, div, form, p, input, label, span, select, option } from '../..
 
 import { Component } from '../../../../core/component';
 import Status from '../../../status';
+import nullishCheck from '../../../../core/util';
 
 class StudentEdit extends Component {
     state = {
@@ -20,29 +21,186 @@ class StudentEdit extends Component {
             county: '',
             postcode: '',
         },
-        studentLang: 'en-US',
+        studentLang: 'en-GB',
         studentGender: '',
         studentSchool: '',
     };
 
     async init() {
         if (!this.props.id) {
-            throw new Error('[Student Edit] no student id provided');
+            throw new Error('[Student Edit] No student ID provided');
         }
 
         const student = await window.beaconingAPI.getStudent(this.props.id);
 
         if (student) {
             this.state.student = student;
-            this.state.studentGender = student.profile?.gender ?? 'male';
+
+            this.state.studentUsername = nullishCheck(student?.username, '');
+            this.state.studentFirstName = nullishCheck(student?.profile?.firstName, '');
+            this.state.studentLastName = nullishCheck(student?.profile?.lastName, '');
+            this.state.studentDOB = nullishCheck(student?.profile?.DOB, '');
+            this.state.studentEmail = nullishCheck(student?.email, '');
+            this.state.studentAddress = nullishCheck(student?.profile?.address, {
+                line1: '',
+                line2: '',
+                city: '',
+                country: '',
+                county: '',
+                postcode: '',
+            });
+            this.state.studentLang = nullishCheck(student?.language, 'en-GB');
+            this.state.studentGender = nullishCheck(student?.profile?.gender, 'male');
+            this.state.studentSchool = nullishCheck(student?.profile?.school, '');
 
             return;
         }
 
-        throw new Error('[Student Edit] student not found!');
+        throw new Error('[Student Edit] Student not found!');
     }
 
-    async updateStudent(studentButton: EventTarget) {
+    async changeButtons(completed: boolean) {
+        const doneButton = document.getElementById('edit-student-done');
+        const studentButton = document.getElementById('update-student-button');
+
+        if (completed) {
+            studentButton.textContent = await window.bcnI18n.getPhrase('cr_student_update');
+            doneButton.textContent = await window.bcnI18n.getPhrase('done');
+
+            return;
+        }
+
+        studentButton.textContent = await window.bcnI18n.getPhrase('cr_student_update');
+        doneButton.textContent = await window.bcnI18n.getPhrase('cancel');
+    }
+
+    async checkFields() {
+        // TODO: reduce duped code
+        if (this.state.studentUsername === '') {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'student-username',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('empty_field')).replace('%s', `'${await window.bcnI18n.getPhrase('cr_student_username')}'`),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.changeButtons(false);
+
+            return false;
+        }
+
+        if (this.state.studentFirstName === '') {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'student-first-name',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('empty_field')).replace('%s', `'${await window.bcnI18n.getPhrase('cr_student_fn')}'`),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.changeButtons(false);
+
+            return false;
+        }
+
+        if (this.state.studentLastName === '') {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'student-last-name',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('empty_field')).replace('%s', `'${await window.bcnI18n.getPhrase('cr_student_ln')}'`),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.changeButtons(false);
+
+            return false;
+        }
+
+        if (this.state.studentDOB === '') {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'student-dob',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('empty_field')).replace('%s', `'${await window.bcnI18n.getPhrase('cr_student_dob')}'`),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.changeButtons(false);
+
+            return false;
+        }
+
+        const now = new Date();
+        const parsedDate = new Date(this.state.studentDOB);
+
+        /* eslint-disable-next-line no-restricted-globals */
+        if (isNaN(parsedDate)) {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'student-dob',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('not_valid_dob')),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.changeButtons(false);
+
+            return false;
+        }
+
+        if (parsedDate.getTime() > now.getTime()) {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'student-dob',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('not_valid_dob')),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.changeButtons(false);
+
+            return false;
+        }
+
+        if ((now.getFullYear() - parsedDate.getFullYear()) >= 120
+            || (now.getFullYear() - parsedDate.getFullYear()) < 1) {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: 'student-dob',
+                heading: 'Error',
+                type: 'error',
+                message: (await window.bcnI18n.getPhrase('not_valid_dob')),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.changeButtons(false);
+
+            return false;
+        }
+
+        return true;
+    }
+
+    async updateStudent() {
+        if (await this.checkFields() === false) {
+            return;
+        }
+
         const { student } = this.state;
 
         const obj = {
@@ -81,15 +239,12 @@ class StudentEdit extends Component {
                 elementID: false,
                 heading: 'Success',
                 type: 'success',
-                message: 'student updated',
+                message: await window.bcnI18n.getPhrase('student_up'),
             });
 
             this.appendView(statusMessageEl);
 
-            const doneButton = document.getElementById('edit-student-done');
-
-            studentButton.textContent = 'Update Student';
-            doneButton.textContent = 'Done';
+            this.changeButtons(true);
 
             this.emit('StudentNameUpdate');
 
@@ -100,16 +255,18 @@ class StudentEdit extends Component {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: 'student not updated!',
+            message: await window.bcnI18n.getPhrase('student_nu'),
         });
 
-        studentButton.textContent = 'Update Student';
+        this.changeButtons(false);
 
         this.appendView(statusMessageEl);
     }
 
     async render() {
         const { student } = this.state;
+
+        const updatingText = await window.bcnI18n.getPhrase('updating');
 
         return div(
             '.flex-column',
@@ -119,16 +276,17 @@ class StudentEdit extends Component {
                     '.margin-25.flex-column',
                     div(
                         '.general-info',
-                        p('Edit Student information:'),
+                        p(`${await window.bcnI18n.getPhrase('cr_edit_student_info')}:`),
                     ),
                     form(
                         '.create-student',
                         label(
-                            span('Student Username'),
+                            span(await window.bcnI18n.getPhrase('cr_student_username')),
                             input(
                                 '#student-username.text-field',
                                 {
                                     type: 'text',
+                                    placeholder: await window.bcnI18n.getPhrase('cr_enter_username'),
                                     value: student.username,
                                     oninput: (event) => {
                                         const { target } = event;
@@ -139,11 +297,12 @@ class StudentEdit extends Component {
                             ),
                         ),
                         label(
-                            span('Student First Name'),
+                            span(await window.bcnI18n.getPhrase('cr_student_fn')),
                             input(
                                 '#student-first-name.text-field',
                                 {
                                     type: 'text',
+                                    placeholder: await window.bcnI18n.getPhrase('cr_enter_fn'),
                                     value: student.profile.firstName,
                                     oninput: (event) => {
                                         const { target } = event;
@@ -154,11 +313,12 @@ class StudentEdit extends Component {
                             ),
                         ),
                         label(
-                            span('Student Last Name'),
+                            span(await window.bcnI18n.getPhrase('cr_student_ln')),
                             input(
                                 '#student-last-name.text-field',
                                 {
                                     type: 'text',
+                                    placeholder: await window.bcnI18n.getPhrase('cr_enter_ln'),
                                     value: student.profile.lastName,
                                     oninput: (event) => {
                                         const { target } = event;
@@ -170,7 +330,7 @@ class StudentEdit extends Component {
                         ),
                         label(
                             '.select',
-                            span('Student Gender'),
+                            span(await window.bcnI18n.getPhrase('cr_student_gender')),
                             select(
                                 '#student-gender',
                                 {
@@ -182,33 +342,34 @@ class StudentEdit extends Component {
                                 },
                                 option(
                                     {
-                                        value: 'male',
-                                        selected: student.profile.gender === 'male',
-                                    },
-                                    'Male',
-                                ),
-                                option(
-                                    {
                                         value: 'female',
                                         selected: student.profile.gender === 'female',
                                     },
-                                    'Female',
+                                    await window.bcnI18n.getPhrase('female'),
+                                ),
+                                option(
+                                    {
+                                        value: 'male',
+                                        selected: student.profile.gender === 'male',
+                                    },
+                                    await window.bcnI18n.getPhrase('male'),
                                 ),
                                 option(
                                     {
                                         value: 'other',
                                         selected: student.profile.gender === 'other',
                                     },
-                                    'Other',
+                                    await window.bcnI18n.getPhrase('other'),
                                 ),
                             ),
                         ),
                         label(
-                            span('Student Date of Birth'),
+                            span(await window.bcnI18n.getPhrase('cr_student_dob')),
                             input(
                                 '#student-dob.text-field',
                                 {
                                     type: 'date',
+                                    placeholder: await window.bcnI18n.getPhrase('cr_enter_dob'),
                                     value: student.profile.DOB,
                                     oninput: (event) => {
                                         const { target } = event;
@@ -220,7 +381,7 @@ class StudentEdit extends Component {
                         ),
                         label(
                             '.select',
-                            span('Student Language'),
+                            span(await window.bcnI18n.getPhrase('cr_student_lang')),
                             select(
                                 '#student-lang',
                                 {
@@ -232,20 +393,76 @@ class StudentEdit extends Component {
                                 },
                                 option(
                                     {
-                                        value: 'en-US',
-                                        selected: student.language === 'en-US',
+                                        value: 'en-GB',
+                                        selected: student.language === 'en-GB',
                                     },
                                     'English',
+                                ),
+                                option(
+                                    {
+                                        value: 'fr-FR',
+                                        selected: student.language === 'fr_FR',
+                                    },
+                                    'Français',
+                                ),
+                                option(
+                                    {
+                                        value: 'es-ES',
+                                        selected: student.language === 'es-ES',
+                                    },
+                                    'Español',
+                                ),
+                                option(
+                                    {
+                                        value: 'it-IT',
+                                        selected: student.language === 'it-IT',
+                                    },
+                                    'Italiano',
+                                ),
+                                option(
+                                    {
+                                        value: 'de-DE',
+                                        selected: student.language === 'de-DE',
+                                    },
+                                    'Deutsch',
+                                ),
+                                option(
+                                    {
+                                        value: 'ro-RO',
+                                        selected: student.language === 'ro-RO',
+                                    },
+                                    'Română',
+                                ),
+                                option(
+                                    {
+                                        value: 'pl-PL',
+                                        selected: student.language === 'pl-PL',
+                                    },
+                                    'Polskie',
+                                ),
+                                option(
+                                    {
+                                        value: 'tr-TR',
+                                        selected: student.language === 'tr-TR',
+                                    },
+                                    'Türk',
+                                ),
+                                option(
+                                    {
+                                        value: 'pt-PT',
+                                        selected: student.language === 'pt-PT',
+                                    },
+                                    'Português',
                                 ),
                             ),
                         ),
                         label(
-                            span('Student Email'),
+                            span(await window.bcnI18n.getPhrase('cr_student_email')),
                             input(
                                 '#student-email.text-field',
                                 {
                                     type: 'email',
-                                    placeholder: 'Enter New Email (or leave blank)',
+                                    placeholder: await window.bcnI18n.getPhrase('cr_enter_new_email'),
                                     oninput: (event) => {
                                         const { target } = event;
 
@@ -255,11 +472,12 @@ class StudentEdit extends Component {
                             ),
                         ),
                         label(
-                            span('Student School'),
+                            span(await window.bcnI18n.getPhrase('cr_student_school')),
                             input(
                                 '#student-school.text-field',
                                 {
                                     type: 'text',
+                                    placeholder: await window.bcnI18n.getPhrase('cr_enter_school'),
                                     value: student.profile.school,
                                     oninput: (event) => {
                                         const { target } = event;
@@ -270,11 +488,12 @@ class StudentEdit extends Component {
                             ),
                         ),
                         label(
-                            span('Student Address'),
+                            span(await window.bcnI18n.getPhrase('cr_student_address')),
                             input(
                                 '#student-address1.text-field',
                                 {
                                     type: 'text',
+                                    placeholder: await window.bcnI18n.getPhrase('cr_student_adrs_ln1'),
                                     value: student.profile.address.line1,
                                     oninput: (event) => {
                                         const { target } = event;
@@ -287,6 +506,7 @@ class StudentEdit extends Component {
                                 '#student-address2.text-field',
                                 {
                                     type: 'text',
+                                    placeholder: await window.bcnI18n.getPhrase('cr_student_adrs_ln2'),
                                     value: student.profile.address.line2,
                                     oninput: (event) => {
                                         const { target } = event;
@@ -299,6 +519,7 @@ class StudentEdit extends Component {
                                 '#student-address-city.text-field',
                                 {
                                     type: 'text',
+                                    placeholder: await window.bcnI18n.getPhrase('cr_student_adrs_city'),
                                     value: student.profile.address.city,
                                     oninput: (event) => {
                                         const { target } = event;
@@ -311,6 +532,7 @@ class StudentEdit extends Component {
                                 '#student-address-county.text-field',
                                 {
                                     type: 'text',
+                                    placeholder: await window.bcnI18n.getPhrase('cr_student_adrs_county'),
                                     value: student.profile.address.county,
                                     oninput: (event) => {
                                         const { target } = event;
@@ -323,6 +545,7 @@ class StudentEdit extends Component {
                                 '#student-address-country.text-field',
                                 {
                                     type: 'text',
+                                    placeholder: await window.bcnI18n.getPhrase('cr_student_adrs_country'),
                                     value: student.profile.address.country,
                                     oninput: (event) => {
                                         const { target } = event;
@@ -335,6 +558,7 @@ class StudentEdit extends Component {
                                 '#student-address-code.text-field',
                                 {
                                     type: 'text',
+                                    placeholder: await window.bcnI18n.getPhrase('cr_student_adrs_pc'),
                                     value: student.profile.address.postcode,
                                     oninput: (event) => {
                                         const { target } = event;
@@ -352,19 +576,19 @@ class StudentEdit extends Component {
                                             this.emit('EditDoneClicked');
                                         },
                                     },
-                                    'Cancel',
+                                    await window.bcnI18n.getPhrase('cancel'),
                                 ),
                                 div(
                                     '#update-student-button.button-action',
                                     {
                                         onclick: (event) => {
                                             const { target } = event;
-                                            this.updateStudent(target);
+                                            this.updateStudent();
 
-                                            target.textContent = 'Updating...';
+                                            target.textContent = `${updatingText}...`;
                                         },
                                     },
-                                    'Update Student',
+                                    await window.bcnI18n.getPhrase('cr_student_update'),
                                 ),
                             ),
                         ),

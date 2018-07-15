@@ -1,13 +1,15 @@
 package req
 
 import (
-	"log"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 
-	"git.juddus.com/HFC/beaconing/backend/api"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/api"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/cfg"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 )
 
 func isLetterOrDigit(c rune) bool {
@@ -40,13 +42,47 @@ func GetTokenRequest() gin.HandlerFunc {
 		session.Set("access_token", accessToken)
 
 		if err := api.TryRefreshToken(s); err != nil {
-			log.Println("TokenRequest", err.Error())
-			s.String(http.StatusBadRequest, "Server Error: 500 Token Refresh Failed")
+			util.Error("TokenRequest", err.Error())
+			s.String(http.StatusBadRequest, "Server Error: 400 Token Refresh Failed")
+			return
+		}
+
+		user, err := api.GetCurrentUser(s)
+		if err != nil {
+			util.Error("TokenRequest", err.Error())
+			s.String(http.StatusInternalServerError, "Server Error: 500 Failed to get user")
+			return
+		}
+
+		roleTeacher := false
+		for _, v := range user.Roles {
+			if v == "teacher" {
+				roleTeacher = true
+				break
+			}
+		}
+
+		if !roleTeacher {
+			session.Clear()
+
+			if err := session.Save(); err != nil {
+				util.Error("GetTokenRequest", err.Error())
+			}
+
+			logoutLink := fmt.Sprintf("https://core.beaconing.eu/auth/logout?client_id=%s&redirect_uri=%s",
+				cfg.Beaconing.Auth.ID,
+				api.GetLogOutLink())
+
+			s.HTML(http.StatusUnauthorized, "unauthorised_user.html", gin.H{
+				"errorMessage": "Unauthorised access: not a teacher",
+				"logoutLink":   logoutLink,
+			})
+
 			return
 		}
 
 		if err := session.Save(); err != nil {
-			log.Println("TokenRequest", err.Error())
+			util.Error("TokenRequest", err.Error())
 			s.String(http.StatusBadRequest, "Failed to save session")
 			return
 		}

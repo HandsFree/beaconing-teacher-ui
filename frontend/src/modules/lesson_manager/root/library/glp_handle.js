@@ -1,5 +1,4 @@
 // @flow
-import List from 'list.js';
 
 import { div, a, small } from '../../../../core/html';
 
@@ -7,13 +6,16 @@ import { Component } from '../../../../core/component';
 import Loading from '../../../loading';
 import LoadGLPs from './load_glps';
 
-const listConfig = {
-    valueNames: ['name', 'domain', 'topic', 'description'],
-    indexAsync: true,
-};
-
 class GLPHandle extends Component {
-    list: List;
+    step = 12;
+
+    index: 0;
+
+    loadAll = false;
+
+    eventsLoaded: boolean = false;
+
+    filterOptions: ?Object = null;
 
     updateHooks = {
         SortActiveGLPsClicked: this.startActiveGLPs,
@@ -34,102 +36,148 @@ class GLPHandle extends Component {
         SortOwnedDescClicked: this.startOwnedDescGLPs,
     };
 
+    emitSearchFilter(type: string, order: string) {
+        const filterOptions = {
+            filter: 'glp',
+            sort: {
+                type,
+                order,
+            },
+        };
+
+        this.filterOptions = filterOptions;
+
+        this.emit('SearchFilterUpdate', filterOptions);
+
+        if (window.sessionStorage) {
+            window.sessionStorage.setItem('loaded_glps', JSON.stringify({ glps: [] }));
+        }
+
+        this.index = 0;
+    }
+
     startAddedDescendingGLPs() {
-        this.loadGLPs('created', 'desc', true);
+        this.emitSearchFilter('created', 'desc');
+        this.loadGLPs(true);
     }
 
     startAddedAscendingGLPs() {
-        this.loadGLPs('created', 'asc', true);
+        this.emitSearchFilter('created', 'asc');
+        this.loadGLPs(true);
     }
 
     startNameAscendingGLPs() {
-        this.loadGLPs('name', 'asc', true);
+        this.emitSearchFilter('name', 'asc');
+        this.loadGLPs(true);
     }
 
     startNameDescendingGLPs() {
-        this.loadGLPs('name', 'desc', true);
+        this.emitSearchFilter('name', 'desc');
+        this.loadGLPs(true);
     }
 
     startSTEMScienceGLPs() {
-        this.loadGLPs('stem', 'science', true);
+        this.emitSearchFilter('stem', 'science');
+        this.loadGLPs(true);
     }
 
     startSTEMTechnologyGLPs() {
-        this.loadGLPs('stem', 'technology', true);
+        this.emitSearchFilter('stem', 'technology');
+        this.loadGLPs(true);
     }
 
     startSTEMEngineeringGLPs() {
-        this.loadGLPs('stem', 'engineering', true);
+        this.emitSearchFilter('stem', 'engineering');
+        this.loadGLPs(true);
     }
 
     startSTEMMathsGLPs() {
-        this.loadGLPs('stem', 'maths', true);
+        this.emitSearchFilter('stem', 'maths');
+        this.loadGLPs(true);
     }
 
     startActiveGLPs() {
-        this.loadGLPs('assigned', null, true);
+        this.emitSearchFilter('assigned', '');
+        this.loadGLPs(true);
     }
 
     startRecentlyModifiedAscGLPs() {
-        this.loadGLPs('updated', 'asc', true);
+        this.emitSearchFilter('updated', 'asc');
+        this.loadGLPs(true);
     }
 
     startRecentlyModifiedDescGLPs() {
-        this.loadGLPs('updated', 'desc', true);
+        this.emitSearchFilter('updated', 'desc');
+        this.loadGLPs(true);
     }
 
     startMostAssignedGLPs() {
-        this.loadGLPs('popular', null, true);
+        this.emitSearchFilter('popular', '');
+        this.loadGLPs(true);
     }
 
     startPublicGLPs() {
-        this.loadGLPs('vis', 'public', true);
+        this.emitSearchFilter('vis', 'public');
+        this.loadGLPs(true);
     }
 
     startPrivateGLPs() {
-        this.loadGLPs('vis', 'private', true);
+        this.emitSearchFilter('vis', 'private');
+        this.loadGLPs(true);
     }
 
     startOwnedAscGLPs() {
-        this.loadGLPs('owned', 'asc', true);
+        this.emitSearchFilter('owned', 'asc');
+        this.loadGLPs(true);
     }
 
     startOwnedDescGLPs() {
-        this.loadGLPs('owned', 'desc', true);
+        this.emitSearchFilter('owned', 'desc');
+        this.loadGLPs(true);
+    }
+
+    async loadMoreGLPs() {
+        this.index += this.step;
+        this.loadAll = false;
+        this.loadGLPs(false);
+    }
+
+    async loadAllGLPs() {
+        this.index = 0;
+        this.loadAll = true;
+        this.loadGLPs(false);
     }
 
     async startLoad() {
         const loading = new Loading();
 
-        const loadingEl = await loading.attach();
+        const loadingEl = await loading.attach({
+            msg: await window.bcnI18n.getPhrase('ld_plans'),
+        });
 
         const el = div('.plans.flex-column.flex-grow.margin-20', loadingEl);
 
         this.updateView(el);
     }
 
-    // async startActiveGLPs() {
-    //     this.startLoad();
-
-    //     const glps = new ActiveGLPs();
-
-    //     const glpsEl = await glps.attach();
-
-    //     const element = div('.plans.flex-column.flex-grow.margin-20', glpsEl);
-
-    //     this.updateView(element);
-    // }
-
-    async loadGLPs(sort: string, order: ?string, withLoad: boolean) {
+    async loadGLPs(withLoad: boolean) {
         if (withLoad) {
             this.startLoad();
         }
 
         const glps = new LoadGLPs();
 
-        const glpsEl = await glps.attach({
-            sort,
+        const {
+            type,
             order,
+        } = this.filterOptions.sort;
+
+        const glpsEl = await glps.attach({
+            type,
+            order,
+            loadAll: this.loadAll,
+            index: this.index,
+            step: this.step,
         });
 
         const element = div(
@@ -141,19 +189,19 @@ class GLPHandle extends Component {
                     '.button-action',
                     {
                         onclick: () => {
-                            this.emit('LoadMoreClicked');
+                            this.loadMoreGLPs();
                         },
                     },
-                    'Load More',
+                    await window.bcnI18n.getPhrase('lm_load_more'),
                 ),
                 small(
                     '.pointer-hover',
                     {
                         onclick: () => {
-                            this.emit('LoadAllClicked');
+                            this.loadAllGLPs();
                         },
                     },
-                    'Load All',
+                    await window.bcnI18n.getPhrase('lm_load_all'),
                 ),
             ),
         );
@@ -164,7 +212,9 @@ class GLPHandle extends Component {
     async render() {
         const loading = new Loading();
 
-        const loadingEl = await loading.attach();
+        const loadingEl = await loading.attach({
+            msg: await window.bcnI18n.getPhrase('ld_plans'),
+        });
 
         return div('.plans.flex-column.flex-grow.margin-20', loadingEl);
     }
@@ -176,55 +226,72 @@ class GLPHandle extends Component {
             if (page) {
                 switch (page) {
                 case 'science':
-                    this.loadGLPs('stem', 'science', false);
+                    this.emitSearchFilter('stem', 'science');
+                    this.loadGLPs(false);
                     break;
                 case 'technology':
-                    this.loadGLPs('stem', 'technology', false);
+                    this.emitSearchFilter('stem', 'technology');
+                    this.loadGLPs(false);
                     break;
                 case 'engineering':
-                    this.loadGLPs('stem', 'engineering', false);
+                    this.emitSearchFilter('stem', 'engineering');
+                    this.loadGLPs(false);
                     break;
                 case 'maths':
-                    this.loadGLPs('stem', 'maths', false);
+                    this.emitSearchFilter('stem', 'maths');
+                    this.loadGLPs(false);
                     break;
                 case 'addedAsc':
-                    this.loadGLPs('created', 'asc', false);
+                    this.emitSearchFilter('created', 'asc');
+                    this.loadGLPs(false);
                     break;
                 case 'addedDesc':
-                    this.loadGLPs('created', 'desc', false);
+                    this.emitSearchFilter('created', 'desc');
+                    this.loadGLPs(false);
                     break;
                 case 'active':
-                    this.loadGLPs('assigned', null, false);
+                    this.emitSearchFilter('assigned', '');
+                    this.loadGLPs(false);
                     break;
                 case 'recentModAsc':
-                    this.loadGLPs('updated', 'asc', false);
+                    this.emitSearchFilter('updated', 'asc');
+                    this.loadGLPs(false);
                     break;
                 case 'recentModDesc':
-                    this.loadGLPs('updated', 'desc', false);
+                    this.emitSearchFilter('updated', 'desc');
+                    this.loadGLPs(false);
                     break;
                 case 'nameAsc':
-                    this.loadGLPs('name', 'asc', false);
+                    this.emitSearchFilter('name', 'asc');
+                    this.loadGLPs(false);
                     break;
                 case 'nameDesc':
-                    this.loadGLPs('name', 'desc', false);
+                    this.emitSearchFilter('name', 'desc');
+                    this.loadGLPs(false);
                     break;
                 case 'mostAssigned':
-                    this.loadGLPs('popular', null, false);
+                    this.emitSearchFilter('popular', '');
+                    this.loadGLPs(false);
                     break;
                 case 'public':
-                    this.loadGLPs('vis', 'public', false);
+                    this.emitSearchFilter('vis', 'public');
+                    this.loadGLPs(false);
                     break;
                 case 'private':
-                    this.loadGLPs('vis', 'private', false);
+                    this.emitSearchFilter('vis', 'private');
+                    this.loadGLPs(false);
                     break;
                 case 'ownedAsc':
-                    this.loadGLPs('owned', 'asc', false);
+                    this.emitSearchFilter('owned', 'asc');
+                    this.loadGLPs(false);
                     break;
                 case 'ownedDesc':
-                    this.loadGLPs('owned', 'desc', false);
+                    this.emitSearchFilter('owned', 'desc');
+                    this.loadGLPs(false);
                     break;
                 default:
-                    this.loadGLPs('owned', 'desc', false);
+                    this.emitSearchFilter('owned', 'desc');
+                    this.loadGLPs(false);
                     break;
                 }
 
@@ -232,11 +299,23 @@ class GLPHandle extends Component {
             }
         }
 
-        this.loadGLPs('owned', 'desc', false);
+        this.emitSearchFilter('owned', 'desc');
+        this.loadGLPs(false);
+    }
+
+    loadEvents() {
+        if (!this.eventsLoaded) {
+            window.addEventListener('pageshow', () => {
+                this.startLoad();
+                this.afterMount();
+            });
+
+            this.eventsLoaded = true;
+        }
     }
 
     async afterViewUpdate() {
-        this.list = new List('new-plans', listConfig);
+        this.loadEvents();
     }
 }
 

@@ -3,20 +3,29 @@ import { canvas } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 
-const config = (yours, others) => {
+const config = async (yours, others) => {
+    console.log("configurating ", yours, " vs ", others);
+
+    // if the average is over > 100
+    // we say it's 100, i.e. average is 100% complete
+    const avg = Math.min(others, 100);
+
+    const studentScore = (Math.abs(yours-avg) / yours) * 100;
+    const averageScore = avg;
+
     return {
         type: 'polarArea',
         data: {
             labels: [
-                'Student Progress',
-                'Avg. Students Progress',
+                await window.bcnI18n.getPhrase('cr_analytics_sp'),
+                await window.bcnI18n.getPhrase('cr_analytics_asp'),
             ],
             datasets: [
                 {
-                    label: 'Progress',
+                    label: await window.bcnI18n.getPhrase('cr_analytics_p'),
                     data: [
-                        (yours * 100),
-                        (others * 100),
+                        studentScore,
+                        averageScore,
                     ],
                     backgroundColor: [
                         'rgba(249, 168, 37, 0.75)',
@@ -38,6 +47,7 @@ const config = (yours, others) => {
                     max: 100,
                     stepSize: 25,
                     showLabelBackdrop: false,
+                    callback: value => `${value}%`,
                 },
                 reverse: false,
             },
@@ -63,7 +73,7 @@ class CompletionGraph extends Component {
         const ctx: CanvasRenderingContext2D = this.view.getContext('2d');
 
         // console.log(ctx);
-        this.chartObj = new window.Chart(ctx, config(yours, others));
+        this.chartObj = new window.Chart(ctx, await config(yours, others));
     }
 }
 

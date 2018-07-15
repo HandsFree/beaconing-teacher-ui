@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/BurntSushi/toml"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 )
 
 type tomlConfig struct {
@@ -15,20 +16,22 @@ type tomlConfig struct {
 }
 
 type databaseInfo struct {
-	Username string
-	Password string
-	Name     string
-	SSL      bool
+	Username string `toml:"username"`
+	Password string `toml:"password"`
+	Name     string `toml:"name"`
+	SSL      bool   `toml:"ssl"`
 }
 
 type authInfo struct {
-	ID     string
-	Secret string
+	ID     string `toml:"id"`
+	Secret string `toml:"secret"`
 }
 
 type serverInfo struct {
-	Host string
-	Port uint16
+	Host         string `toml:"host"`
+	Port         uint16 `toml:"port"`
+	RootPath     string `toml:"root_path"`
+	GlpFilesPath string `toml:"glp_files_path"`
 }
 
 // Beaconing is the instance of the main toml
@@ -42,11 +45,11 @@ var Beaconing tomlConfig
 func LoadConfig() {
 	filePath := "cfg/config.toml"
 
-	log.Println("Loading configuration file from ", filePath)
+	util.Verbose("Loading configuration file from ", filePath)
 
 	configFileData, fileReadErr := ioutil.ReadFile(filePath)
 	if fileReadErr != nil {
-		log.Fatal("Failed to read file", filePath, "\n", fileReadErr.Error())
+		log.Fatal("Failed to read file ", filePath, "\n- error: ", fileReadErr.Error())
 		return
 	}
 

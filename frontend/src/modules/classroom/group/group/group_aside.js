@@ -6,6 +6,7 @@ import Status from '../../../status';
 
 class GroupAside extends Component {
     editMode: boolean = false;
+
     updateHooks = {
         GroupNameUpdate: this.updateName,
         EditDoneClicked: this.toggleEditButton,
@@ -14,18 +15,18 @@ class GroupAside extends Component {
         AnalyticsClicked: this.resetEditButton,
     };
 
-    async updateName() {
-        const group = await window.beaconingAPI.getGroup(this.props.id);
+    async updateName(event: CustomEvent) {
+        const { detail } = event;
+        const {
+            groupName,
+            groupCategory,
+        } = detail;
 
-        if (group) {
-            this.state.group = group;
+        const groupNameEl = document.getElementById('group-aside-name');
+        const groupCategoryEl = document.getElementById('group-aside-category');
 
-            const groupNameEl = document.getElementById('group-aside-name');
-            const groupCategoryEl = document.getElementById('group-aside-category');
-
-            groupNameEl.textContent = group.name;
-            groupCategoryEl.textContent = group.category;
-        }
+        groupNameEl.textContent = groupName;
+        groupCategoryEl.textContent = groupCategory;
     }
 
     toggleEditButton() {
@@ -64,6 +65,11 @@ class GroupAside extends Component {
             return;
         }
 
+        const delGroupTranslation = await window.bcnI18n.getPhrase('confirm_delete_group');
+        if (!confirm(delGroupTranslation)) {
+            return;
+        }
+
         const status = await window.beaconingAPI.deleteGroup(this.state.group.id);
         const statusMessage = new Status();
 
@@ -81,7 +87,7 @@ class GroupAside extends Component {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: 'group not deleted!',
+            message: await window.bcnI18n.getPhrase('group_nd'),
         });
 
         this.appendView(statusMessageEl);
@@ -107,7 +113,7 @@ class GroupAside extends Component {
                 a(
                     '#group-edit-button',
                     {
-                        title: 'Edit',
+                        title: await window.bcnI18n.getPhrase('edit'),
                         onclick: () => {
                             this.handleEditClick();
                         },
@@ -132,7 +138,7 @@ class GroupAside extends Component {
                             this.emit('GroupStudentsClicked');
                         },
                     },
-                    span('Students'),
+                    span(await window.bcnI18n.getPhrase('students')),
                 ),
                 a(
                     '.item',
@@ -144,7 +150,7 @@ class GroupAside extends Component {
                             this.emit('AssignedGLPsClicked');
                         },
                     },
-                    span('Assigned GLPs'),
+                    span(await window.bcnI18n.getPhrase('cr_assigned_glps')),
                 ),
                 // a(
                 //     '.item',

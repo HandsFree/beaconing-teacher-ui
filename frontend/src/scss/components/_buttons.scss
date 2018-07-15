@@ -72,9 +72,9 @@
 	margin: 0.75em;
 	padding: 0.75em;
 	color: white;
-	background: $secondary_element_colour;
+	border: 2px solid darken($secondary_element_colour, 10%);
+	background: darken($secondary_element_colour, 5%);
 	text-shadow: 0 0 1px rgba($primary_font_colour, 0.15);
-	border: none;
 
 	&.no-left-margin {
 		margin-left: 0;
@@ -82,7 +82,7 @@
 
 	&:hover {
 		cursor: pointer;
-		background: lighten($secondary_element_colour, 10%);
+		background: $secondary_element_colour;
 	}
 }
 
@@ -90,26 +90,13 @@
 	margin: 0.75em;
 	padding: 0.75em;
 	color: white;
-	background: darken($bcn_light_orange, 10%);
+	border: 2px solid darken($bcn_light_orange, 30%);
+	background: darken($bcn_light_orange, 20%);
 	text-shadow: 0 0 1px rgba($primary_font_colour, 0.15);
-	border: none;
+	// border: none;
 
 	&:hover {
 		cursor: pointer;
-		background: $bcn_light_orange;
-	}
-}
-
-.button-danger {
-	margin: 0.75em;
-	padding: 0.75em;
-	color: white;
-	background: #b71c1c;
-	text-shadow: 0 0 1px rgba($primary_font_colour, 0.15);
-	border: none;
-
-	&:hover {
-		cursor: pointer;
-		background: $bcn_light_orange;
+		background: darken($bcn_light_orange, 15%);
 	}
 }

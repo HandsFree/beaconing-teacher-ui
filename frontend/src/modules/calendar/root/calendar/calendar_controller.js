@@ -1,121 +1,114 @@
 // @flow
+import moment from 'moment';
 
-import { section, h1, h2, p, div, a, ul, li, span, select, option } from '../../../../core/html';
-import component, { Component } from '../../../../core/component';
-
-// the left pane which has the controls for the calendar
-// regarding students/groups
-class CalendarStudentSelector extends Component {
-
-}
+import { a, h2, p, div } from '../../../../core/html';
+import { Component } from '../../../../core/component';
+import nullishCheck from '../../../../core/util';
 
 // the top menu options above the calendar
-class CalendarController extends Component {    
+class CalendarController extends Component {
     updateHooks = {
         RefreshCalendarController: this.refresh,
     };
-    
-    constructor(view) {
-        super();
-        
-        this.state = {
-            calendarView: view,
-            currDate: new Date(),
-        }
-    }
 
     async refresh() {
-        this.emitCurrMonth();
+        this.updateCalendar('CurrMonth');
     }
 
-    async emitPrevMonth() {
-        this.emit('PrevMonth');
-
-        // FIXME
-        // duplicate logic here but it will do for now.
-        // this is to keep track of the calendar dates, whatever
-        // we do in the calendar view we do here. there is likely
-        // a cleaner way to do this, e.g. passing a param to an emit call?
-        const date = this.state.currDate;
-		const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
-    	this.state.currDate = new Date(firstDay - 1);
-        
+    async updateCalendar(updateHook: string) {
+        this.emit(updateHook);
         this.updateView(await this.render());
     }
 
-    async emitCurrMonth() {
-        this.emit('CurrMonth');
-        this.state.currDate = new Date();
-        this.updateView(await this.render());
-    }
-
-    async emitNextMonth() {
-        this.emit('NextMonth');
-
-        const date = this.state.currDate;
-		const lastDay = new Date(date.getFullYear(), date.getMonth(), date.daysInMonth()+1);
-    	this.state.currDate = new Date(lastDay + 1);
-
-        this.updateView(await this.render());
+    // FIXME
+    async getTranslatedMonthName(date) {
+        const monthNames = [
+            'cal_jan', 'cal_feb', 'cal_mar', 'cal_apr', 'cal_may', 'cal_jun', 'cal_jul', 'cal_aug',
+            'cal_sept', 'cal_oct', 'cal_nov', 'cal_dec',
+        ];
+        const monthIndex = date.month();
+        return window.bcnI18n.getPhrase(monthNames[monthIndex]);   
     }
 
     async render() {
-        let studentId = -1;
-        if (this.state.calendarView) {
-            const view = this.state.calendarView;
-            // wewlad
-            studentId = view.state.studentId;
+        const calTranslation = await window.bcnI18n.getPhrase('calendar');
+
+        let controllerTitle = calTranslation;
+        
+        const calendarSelection = nullishCheck(window.sessionStorage.getItem('calendarSelection'), 'none');
+        if (calendarSelection !== 'none') {
+            const calendarSelObj = JSON.parse(calendarSelection);
+
+            controllerTitle = do {
+                if (calendarSelObj.student !== null) {
+                    const { id, username } = calendarSelObj.student;
+
+                    const student = await window.beaconingAPI.getStudent(id);
+                    const { firstName, lastName } = student;
+
+                    if (firstName !== '') {
+                        `${username}'s ${calTranslation}`;
+                    } else {
+                        `${firstName} ${lastName}'s ${calTranslation}`;
+                    }
+                } else if (calendarSelObj.group !== null) {
+                    const { name } = calendarSelObj.group;
+                    `${name}'s ${calTranslation}`;
+                }
+            };
         }
 
-        const student = await window.beaconingAPI.getStudent(studentId);
-
-        let studentGreet = "";
-        if (studentId != -1) {
-            studentGreet = `${student.username}'s calendar`;
+        let currDate = moment();
+        if (window.sessionStorage) {
+            currDate = moment(window.sessionStorage.getItem('calendarDate'));
         }
 
-        let monthName = "";
-        let year = "";
+        const monthName = await this.getTranslatedMonthName(currDate);
 
-        if (this.state.currDate) {
-            const currDate = this.state.currDate;
-            monthName = currDate.getMonthName();            
-            year = currDate.getFullYear();
-        }
+        const year = currDate.format('YYYY');
 
-        return div('.calendar-control',
-            h2(".calendar-date", `${studentGreet} ${monthName}, ${year}`),
+        const prevMonthTranslation = await window.bcnI18n.getPhrase('cal_prev');
+        const currMonthTranslation = await window.bcnI18n.getPhrase('cal_current');
+        const nextMonthTranslation = await window.bcnI18n.getPhrase('cal_next');
 
-            p(
-                span(".fake-link", {
-                    onclick: () => this.emitPrevMonth()
-                }, "prev"),
+        return div(
+            '.calendar-control',
+            div(
+                '.calendar-meta-info',
+                h2('.calendar-name', `${controllerTitle}`),
+                h2('.calendar-date', `${monthName} ${year}`),
+            ),
 
-                " ",
+            div('.calendar-buttons',
+                p(a(
+                    '.btn', 
+                    {
+                        role: 'button',
+                        onclick: () => this.updateCalendar('PrevMonth'),
+                    }, prevMonthTranslation)
+                ),
+                ' ',
 
-                span(".fake-link", {
-                    href: '',
-                    onclick: () => this.emitCurrMonth()
-                }, "today"),
-
-                " ",
-
-                span(".fake-link", {
-                    href: '',
-                    onclick: () => this.emitNextMonth()
-                }, "next")
-            )
+                !currDate.isSame(moment(), 'D') ?
+                p(a(
+                    '.btn', 
+                    {
+                        role: 'button',
+                        onclick: () => this.updateCalendar('CurrMonth'),
+                    }, currMonthTranslation)
+                ) : div(),
+                
+                ' ',
+                p(a(
+                    '.btn', 
+                    {
+                        role: 'button',
+                        onclick: () => this.updateCalendar('NextMonth'),
+                    }, nextMonthTranslation)
+                ),
+            ),
         );
     }
-}
-
-Date.prototype.getMonthName = function() {
-    var d = new Date(this);
-    const monthNames = [
-        "January", "February", "March", "April", "May", "June", "July", "August",
-        "September", "October", "November", "December"
-    ];
-    return monthNames[d.getMonth()];
 }
 
 export default CalendarController;

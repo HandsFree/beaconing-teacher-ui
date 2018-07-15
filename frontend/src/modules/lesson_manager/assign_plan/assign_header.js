@@ -24,20 +24,20 @@ class AssignHeader extends Component {
                     {
                         href: `//${window.location.host}/lesson_manager`,
                     },
-                    span('Library'),
+                    span(await window.bcnI18n.getPhrase('lm_library')),
                 ),
                 a(
                     '.crumb',
                     {
-                       href: `//${window.location.host}/lesson_manager#view?id=${this.state.glp.id}`,
+                        href: `//${window.location.host}/lesson_manager#view?id=${this.state.glp.id}`,
                     },
-                    span('Plan Overview'),
+                    span(await window.bcnI18n.getPhrase('lm_plan_overview')),
                 ),
-                a('.current', 'Assign'),
+                a('.current', await window.bcnI18n.getPhrase('lm_assign')),
             ),
             div(
                 '.name-group',
-                h1('Assigning:'),
+                h1(await window.bcnI18n.getPhrase('lm_assigning')),
                 h2(this.state.glp.name),
             ),
             div('.header-spacer'),

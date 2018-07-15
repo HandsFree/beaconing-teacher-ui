@@ -15,7 +15,7 @@ class Footer extends Component {
                         '.social',
                         a(
                             {
-                                title: 'Visit Beaconing',
+                                title: await window.bcnI18n.getPhrase('ft_visit_beaconing'),
                                 href: 'http://beaconing.eu',
                                 target: '_blank',
                             },
@@ -47,7 +47,7 @@ class Footer extends Component {
                         ),
                     ),
                     span('.cr', '© Beaconing 2018'),
-                    span('.version', 'v0.6.0-pre'),
+                    span('.version', 'v0.6.0'),
                 ),
                 nav(
                     '.fmenu',

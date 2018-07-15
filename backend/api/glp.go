@@ -5,18 +5,18 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"log"
-	"os"
+	"net/http"
 	"strconv"
+	"time"
 
-	"git.juddus.com/HFC/beaconing/backend/activities"
-	"git.juddus.com/HFC/beaconing/backend/types"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/activity"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
-	"github.com/olekukonko/tablewriter"
 )
 
-func containsGLP(glpID uint64, glpArr []*types.GLP) bool {
+func containsGLP(glpID uint64, glpArr []*entity.GLP) bool {
 	for _, glp := range glpArr {
 		if glp.ID == glpID {
 			return true
@@ -24,6 +24,29 @@ func containsGLP(glpID uint64, glpArr []*types.GLP) bool {
 	}
 
 	return false
+}
+
+type glpPutJSON struct {
+	ID                 uint64    `json:"id"`
+	Name               string    `json:"name"`
+	Desc               string    `json:"description"`
+	Author             string    `json:"author"`
+	Category           string    `json:"category"`
+	Domain             string    `json:"domain"`
+	Topic              string    `json:"topic"`
+	AgeGroup           string    `json:"ageGroup"`
+	Year               int       `json:"year"`
+	LearningObjectives []string  `json:"learningObjectives"`
+	Competences        []string  `json:"competences"`
+	Content            string    `json:"content"`
+	Public             bool      `json:"public"`
+	GamePlotID         int       `json:"gamePlotId"`
+	ExternConfig       string    `json:"externConfig"`
+	CreatedAt          time.Time `json:"createdAt"`
+	UpdatedAt          time.Time `json:"updatedAt"`
+	Owner              string    `json:"owner"`
+	OwnedByMe          bool      `json:"ownedByMe"`
+	ReadOnly           bool      `json:"readOnly"`
 }
 
 type glpPostJSON struct {
@@ -40,62 +63,106 @@ type glpPostJSON struct {
 	Public             bool     `json:"public"`
 }
 
+// PutGLP ...
+func PutGLP(s *gin.Context) (string, error) {
+	var json glpPutJSON
+	if err := s.ShouldBindJSON(&json); err != nil {
+		util.Error("PutGLP", err.Error())
+		return "", err
+	}
+
+	glpPut, err := jsoniter.Marshal(json)
+	if err != nil {
+		util.Error("PutGLP", err.Error())
+		return "", err
+	}
+
+	resp, err, status := DoTimedRequestBody(s, "PUT",
+		API.getPath(s, "gamifiedlessonpaths"),
+		bytes.NewBuffer(glpPut),
+	)
+	if err != nil {
+		util.Error("PutGLP", err.Error())
+		return "", err
+	}
+
+	if status != http.StatusOK {
+		util.Info("[PutGLP] Status Returned: ", status)
+		return "", nil
+	}
+
+	id, err := GetUserID(s)
+	if err != nil {
+		util.Error("No such current user", err.Error())
+		return string(resp), err
+	}
+
+	API.WriteActivity(id, activity.PutGLPActivity, resp)
+	return string(resp), nil
+}
+
+// CreateGLP handles the CreateGLP POST request.
 func CreateGLP(s *gin.Context) (string, error) {
 	var json glpPostJSON
 	if err := s.ShouldBindJSON(&json); err != nil {
-		log.Println("CreateGLP", err.Error())
+		util.Error("CreateGLP", err.Error())
 		return "", err
 	}
 
 	glpPost, err := jsoniter.Marshal(json)
 	if err != nil {
-		log.Println("CreateGLP", err.Error())
+		util.Error("CreateGLP", err.Error())
 		return "", err
 	}
 
-	resp, err := DoTimedRequestBody(s, "POST",
+	resp, err, status := DoTimedRequestBody(s, "POST",
 		API.getPath(s, "gamifiedlessonpaths"),
 		bytes.NewBuffer(glpPost),
 	)
 	if err != nil {
-		log.Println("CreateGLP", err.Error())
+		util.Error("CreateGLP", err.Error())
 		return "", err
+	}
+
+	if status != http.StatusCreated {
+		util.Info("[CreateGLP] Status Returned: ", status)
+		return "", nil
 	}
 
 	id, err := GetUserID(s)
 	if err != nil {
-		log.Println("No such current user", err.Error())
+		util.Error("No such current user", err.Error())
 		return string(resp), err
 	}
 
-	API.WriteActivity(id, activities.CreateGLPActivity, resp)
+	API.WriteActivity(id, activity.CreateGLPActivity, resp)
 	return string(resp), nil
 }
 
-// most assigned by the current user.
-func GetMostAssigned(s *gin.Context) ([]*types.GLP, error) {
+// GetMostAssigned most assigned by the current user.
+func GetMostAssigned(s *gin.Context) ([]*entity.GLP, error) {
 	if API.db == nil {
-		log.Println("-- No database connection has been established")
+		util.Error("No database connection has been established")
 		return nil, errors.New("No database connection")
 	}
 
-	teacherId, err := GetUserID(s)
+	teacherID, err := GetUserID(s)
 	if err != nil {
-		log.Println("No such current user", err.Error())
-		return []*types.GLP{}, err
+		util.Error("No such current user", err.Error())
+		return []*entity.GLP{}, err
 	}
 
 	// we only want to select the plans that are active
 	// that have been created by the teacher that is currently
 	// active
 	query := "SELECT plan, count(*) FROM active_plan WHERE teacher_id = $1 GROUP BY plan ORDER BY count(*) DESC"
-	rows, err := API.db.Query(query, fmt.Sprintf("%d", teacherId))
+	rows, err := API.db.Query(query, fmt.Sprintf("%d", teacherID))
 	if err != nil {
-		log.Println("-- ", err.Error())
+		util.Error(err.Error())
 		return nil, err
 	}
 
-	popular := []*types.GLP{}
+	popular := []*entity.GLP{}
 	defer rows.Close()
 	for rows.Next() {
 		var glpID uint64
@@ -103,13 +170,13 @@ func GetMostAssigned(s *gin.Context) ([]*types.GLP, error) {
 
 		err = rows.Scan(&glpID, &count)
 		if err != nil {
-			log.Println("-- Failed to request row in GetRecentlyAssigned query!", err.Error())
+			util.Error("Failed to request row in GetRecentlyAssigned query!", err.Error())
 			continue
 		}
 
 		glp, err := GetGLP(s, glpID, true)
 		if err != nil {
-			log.Println("GetRecentlyAssigned", err.Error())
+			util.Error("GetRecentlyAssigned", err.Error())
 			continue
 		}
 
@@ -119,16 +186,17 @@ func GetMostAssigned(s *gin.Context) ([]*types.GLP, error) {
 	return popular, nil
 }
 
-func GetRecentlyAssignedGLPS(s *gin.Context, reverse bool) ([]*types.GLP, error) {
+// GetRecentlyAssignedGLPS ...
+func GetRecentlyAssignedGLPS(s *gin.Context, reverse bool) ([]*entity.GLP, error) {
 	if API.db == nil {
-		log.Println("-- No database connection has been established")
+		util.Error("No database connection has been established")
 		return nil, errors.New("No database connection")
 	}
 
-	teacherId, err := GetUserID(s)
+	teacherID, err := GetUserID(s)
 	if err != nil {
-		log.Println("No such current user", err.Error())
-		return []*types.GLP{}, err
+		util.Error("No such current user", err.Error())
+		return []*entity.GLP{}, err
 	}
 
 	// we only want to select the plans that are active
@@ -139,13 +207,13 @@ func GetRecentlyAssignedGLPS(s *gin.Context, reverse bool) ([]*types.GLP, error)
 		query = "SELECT plan FROM active_plan WHERE teacher_id = $1 GROUP BY plan, creation_date ORDER BY creation_date DESC"
 	}
 
-	rows, err := API.db.Query(query, fmt.Sprintf("%d", teacherId))
+	rows, err := API.db.Query(query, fmt.Sprintf("%d", teacherID))
 	if err != nil {
-		log.Println("-- ", err.Error())
+		util.Error(err.Error())
 		return nil, err
 	}
 
-	recentlyAssigned := []*types.GLP{}
+	recentlyAssigned := []*entity.GLP{}
 
 	defer rows.Close()
 	for rows.Next() {
@@ -153,13 +221,13 @@ func GetRecentlyAssignedGLPS(s *gin.Context, reverse bool) ([]*types.GLP, error)
 
 		err = rows.Scan(&glpID)
 		if err != nil {
-			log.Println("-- Failed to request row in GetRecentlyAssigned query!", err.Error())
+			util.Error("Failed to request row in GetRecentlyAssigned query!", err.Error())
 			continue
 		}
 
 		glp, err := GetGLP(s, glpID, true)
 		if err != nil {
-			log.Println("GetRecentlyAssigned", err.Error())
+			util.Error("GetRecentlyAssigned", err.Error())
 			continue
 		}
 
@@ -167,16 +235,9 @@ func GetRecentlyAssignedGLPS(s *gin.Context, reverse bool) ([]*types.GLP, error)
 	}
 
 	if err := rows.Err(); err != nil {
-		log.Println("GetRecentlyAssignedGLPS DB Error", err.Error())
+		util.Error("GetRecentlyAssignedGLPS DB Error", err.Error())
 		return nil, err
 	}
-
-	table := tablewriter.NewWriter(os.Stdout)
-	table.SetHeader([]string{"Active GLPs"})
-	for _, glp := range recentlyAssigned {
-		table.Append([]string{fmt.Sprintf("%d", glp.ID)})
-	}
-	table.Render()
 
 	return recentlyAssigned, nil
 }
@@ -184,13 +245,16 @@ func GetRecentlyAssignedGLPS(s *gin.Context, reverse bool) ([]*types.GLP, error)
 // GetGLPS requests all of the GLPs from the core
 // API returned as a json string
 func GetGLPS(s *gin.Context, minify bool) (string, error) {
-	resp, err := DoTimedRequest(s, "GET",
+	resp, err, status := DoTimedRequest(s, "GET",
 		API.getPath(s, "gamifiedlessonpaths/", fmt.Sprintf("?noContent=%s", strconv.FormatBool(minify))),
 	)
-
 	if err != nil {
-		log.Println("GetGLPS", err.Error())
+		util.Error("GetGLPS", err.Error())
 		return "", err
+	}
+	if status != http.StatusOK {
+		util.Info("[GetGLPS] Status Returned: ", status)
+		return "", nil
 	}
 
 	response := string(resp)
@@ -200,27 +264,35 @@ func GetGLPS(s *gin.Context, minify bool) (string, error) {
 
 // GetGLP requests the GLP with the given id, this function returns
 // the string of json retrieved _as well as_ the parsed json object
-// see types.GLP
-func GetGLP(s *gin.Context, id uint64, minify bool) (*types.GLP, error) {
-	resp, err := DoTimedRequest(s, "GET",
-		API.getPath(s, "gamifiedlessonpaths/", fmt.Sprintf("%d", id), fmt.Sprintf("?noContent=%s", strconv.FormatBool(minify))),
+// see entity.GLP
+func GetGLP(s *gin.Context, id uint64, minify bool) (*entity.GLP, error) {
+	resp, err, status := DoTimedRequest(s, "GET",
+		API.getPath(s, "gamifiedlessonpaths/",
+			fmt.Sprintf("%d", id),
+			fmt.Sprintf("?noContent=%s", strconv.FormatBool(minify))),
 	)
-
 	if err != nil {
-		log.Println("GetGLP", err.Error())
+		util.Error("GetGLP", err.Error())
 		return nil, err
 	}
 
-	data := &types.GLP{}
+	if status != http.StatusOK {
+		util.Info("[GetGLP] Status Returned: ", status)
+		return nil, nil
+	}
+
+	data := &entity.GLP{}
 	if err := jsoniter.Unmarshal(resp, data); err != nil {
-		log.Println("GetGLP", err.Error())
+		util.Error("GetGLP", err.Error())
+		return nil, err
 	}
 
 	// should we compact everything?
 	// we do here because the json for glps request is stupidly long
 	buffer := new(bytes.Buffer)
 	if err := json.Compact(buffer, resp); err != nil {
-		log.Println("GetGLP", err.Error())
+		util.Error("GetGLP", err.Error())
+		return nil, err
 	}
 
 	return data, nil
@@ -229,21 +301,25 @@ func GetGLP(s *gin.Context, id uint64, minify bool) (*types.GLP, error) {
 // DeleteGLP deletes the given GLP of {id} from the
 // core database.
 func DeleteGLP(s *gin.Context, id uint64) (string, error) {
-	resp, err := DoTimedRequest(s, "DELETE",
+	resp, err, status := DoTimedRequest(s, "DELETE",
 		API.getPath(s, "gamifiedlessonpaths/", fmt.Sprintf("%d", id)),
 	)
-
 	if err != nil {
-		fmt.Println(err)
+		util.Error(err)
 		return "", err
 	}
 
-	teacherId, err := GetUserID(s)
+	if status != http.StatusOK {
+		util.Info("[DeleteGLP] Status Returned: ", status)
+		return "", nil
+	}
+
+	teacherID, err := GetUserID(s)
 	if err != nil {
-		log.Println("No such current user", err.Error())
+		util.Error("No such current user", err.Error())
 		return string(resp), err
 	}
 
-	API.WriteActivity(teacherId, activities.DeleteGLPActivity, resp)
+	API.WriteActivity(teacherID, activity.DeleteGLPActivity, resp)
 	return string(resp), nil
 }

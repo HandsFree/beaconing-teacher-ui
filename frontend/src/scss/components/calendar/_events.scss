@@ -1,3 +1,22 @@
+.calendar-buttons {
+	display: flex;
+	justify-content: space-between;
+	border: 1px solid none;
+}
+
+.btn {
+	display: inline-block;
+    padding: 0.5em 2em;
+    background: rgba(242, 108, 66, 0.7);
+    color: white;
+	cursor: pointer;
+	user-select: none;
+}
+
+.btn:focus {
+	background: #e87f62
+}
+
 .events {
 	display: block;
 	padding: 0;
@@ -6,146 +25,26 @@
 
 .event {
 	display: block;
-	text-align: left;
-
-	border-radius: 4px;
 	margin-bottom: 5px;
-
 	background: #e4f2f2;
 	text-decoration: none;
+	text-align: center;
+	padding: 0.25em;
 }
 
-.event-name, .event-desc {
+.due-event {
+	background: #2d353e;
+	cursor: pointer;
+	color: #fff;
+}
+
+.event-name, 
+.event-desc {
 	width: 100%;
-	padding: 0 0.2em;
+	overflow-wrap: break-word;
 }
 
 .event-desc {
 	color: #666;
-	text-decoration: none;	
-}
-
-.calendar-cell,
-.calendar-heading-cell {
-	display: flex;
-	flex-direction: column;
-
-	box-sizing: border-box;
-	flex-grow: 1;
-	width: 14.28%;
-
-	padding: 0 0.8em;
-	overflow: hidden;
-	list-style: none;
-}
-
-.calendar-cell {
-	height: 20vh;
-}
-
-.calendar-heading-cell {
-	background: #2d353e;
-	color: #fff;
-	font-size: 14pt;
-	border: none !important;
-}
-
-.calendar-heading-cell p {
-	align-self: center;
-}
-
-.calendar-header {
-	
-}
-
-.calendar-cell,
-.calendar-header {
-	border: 1px solid #f5f5f5;
-}
-
-.calendar-day {
-	font-size: 14pt;
-	font-weight: bold;
-	align-self: flex-end;
-}
-
-.current-day .calendar-day {
-	color: #fff;
-}
-.current-day {
-	/* hmm */
-	// border-bottom: 2.5px solid #fc3d39;
-	background:rgba(242, 108, 66, 0.7);
-}
-
-/*
-.current-day {
-	background: #fc3d39;
-	color: #fff;
-	text-align: center;
-	border-radius: 55%;
-	padding: 0.8em;
-	box-sizing: border-box;
-	
-	margin-left: 0.4em;
-    margin-top: 0.4em;
-}
-*/
-
-.calendar {
-	display: flex;
-	flex-wrap: wrap;
-	margin: 0 0 3em 0;
-	padding: 0;
-	border: 1px solid #f5f5f5;
-}
-
-.prev-month, .next-month {
-	color: #999;
-	background: #e5e5e5;
-}
-
-.outer-col {
-	display: grid;
-	grid-template-columns: 30% 70%;
-}
-
-.full-width {
-	display: block;
-}
-
-.student-list {
-	display: block;
-}
-
-.studentinfo-col {
-	display: block;
-}
-
-.calendar-col {
-	display: block;
-}
-
-.calendar-control {
-	display: block;
-}
-
-.calendar-date {
-	text-align: right;
-}
-
-.fake-link {
-    cursor: pointer;
-}
-
-.fake-link:hover {
-	text-decoration: underline;
-}
-
-.student-info {
-	display: block;
-}
-
-.group-select {
-	display: block;
+	text-decoration: none;
 }

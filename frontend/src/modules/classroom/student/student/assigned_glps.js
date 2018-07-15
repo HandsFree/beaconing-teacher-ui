@@ -1,5 +1,5 @@
 // @flow
-import { section, div, p } from '../../../../core/html';
+import { section, div, p, a } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 import Loading from '../../../loading';
@@ -9,7 +9,9 @@ class AssignedGLPs extends Component {
     async render() {
         const loading = new Loading();
 
-        const loadingEl = await loading.attach();
+        const loadingEl = await loading.attach({
+            msg: await window.bcnI18n.getPhrase('ld_plans'),
+        });
 
         return section(
             '.flex-column',
@@ -58,8 +60,15 @@ class AssignedGLPs extends Component {
         }
 
         const el = div(
-            '#assigned-plans-container.status',
-            p('No Assigned GLPs!'),
+            '#assigned-plans-container.status.flex-column.flex-align-center',
+            p(await window.bcnI18n.getPhrase('no_assigned_glps')),
+            a(
+                '.link-underline',
+                {
+                    href: `//${window.location.host}/lesson_manager`,
+                },
+                await window.bcnI18n.getPhrase('cr_go_to_lib'),
+            ),
         );
 
         this.updateView(el);

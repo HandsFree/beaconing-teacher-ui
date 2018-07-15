@@ -1,5 +1,5 @@
 // @flow
-import { div, h4, a } from '../../../../core/html';
+import { div, h3, a } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 
@@ -14,13 +14,13 @@ class GroupBox extends Component {
             '.small-box',
             div(
                 '.title',
-                h4('.name', name),
+                h3('.name', name),
             ),
             a(
                 {
                     href: `//${window.location.host}/classroom/group?id=${id}`,
                 },
-                'View',
+                await window.bcnI18n.getPhrase('view'),
             ),
         );
     }

@@ -1,10 +1,10 @@
 package req
 
 import (
-	"log"
 	"net/http"
 
-	"git.juddus.com/HFC/beaconing/backend/api"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/api"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 )
@@ -12,12 +12,16 @@ import (
 func GetCheckAuthRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
 		accessToken := api.GetAccessToken(s)
+		if accessToken == "" {
+			s.String(http.StatusUnauthorized, "Unauthorised access: core")
+			return
+		}
 
 		json, err := jsoniter.Marshal(&CheckAuthJSON{
 			Token: accessToken,
 		})
 		if err != nil {
-			log.Println(err.Error())
+			util.Error(err.Error())
 			return
 		}
 

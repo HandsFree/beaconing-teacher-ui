@@ -21,7 +21,7 @@ class SearchResults extends Component {
             '.results.margin-20',
             div(
                 '.status',
-                span('Type in the Search Box above, and press Enter'),
+                span(await window.bcnI18n.getPhrase('search_msg_type')),
             ),
         );
     }

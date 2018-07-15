@@ -23,7 +23,7 @@ class CreateStudent extends RootComponent {
             footer.attach(),
             mainNav.attach(),
             secondNav.attach({
-                title: 'Classroom',
+                title: await window.bcnI18n.getPhrase('classroom'),
                 innerNav: innerNav.attach(),
             }),
             studentForm.attach(),
@@ -40,7 +40,7 @@ class CreateStudent extends RootComponent {
                 '#app',
                 headerEl,
                 div(
-                    '.flex-container.expand.margin-top-2',
+                    '.flex-container.expand',
                     mainNavEl,
                     secondNavEl,
                     main(

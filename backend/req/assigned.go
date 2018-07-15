@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"git.juddus.com/HFC/beaconing/backend/api"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/api"
 	"github.com/gin-gonic/gin"
 )
 
@@ -16,15 +16,13 @@ import (
 // - glp id
 func DeleteAssignedGLPsRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
-		studentIDParam := s.Param("id")
-		studentID, err := strconv.ParseUint(studentIDParam, 10, 64)
+		studentID, err := strconv.ParseUint(s.Param("id"), 10, 64)
 		if err != nil {
 			s.String(http.StatusBadRequest, "No such ID thing!")
 			return
 		}
 
-		glpIDParam := s.Param("glp")
-		glpID, err := strconv.ParseUint(glpIDParam, 10, 64)
+		glpID, err := strconv.ParseUint(s.Param("glp"), 10, 64)
 		if err != nil {
 			s.String(http.StatusBadRequest, "No such ID thing!")
 			return
@@ -38,8 +36,7 @@ func DeleteAssignedGLPsRequest() gin.HandlerFunc {
 
 func GetAssignedGLPsRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
-		studentIDParam := s.Param("id")
-		studentID, err := strconv.ParseUint(studentIDParam, 10, 64)
+		studentID, err := strconv.ParseUint(s.Param("id"), 10, 64)
 		if err != nil {
 			s.String(http.StatusBadRequest, "No such ID thing!")
 			return
@@ -53,15 +50,13 @@ func GetAssignedGLPsRequest() gin.HandlerFunc {
 
 func DeleteGroupAssignedRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
-		groupIDParam := s.Param("id")
-		groupID, err := strconv.ParseUint(groupIDParam, 10, 64)
+		groupID, err := strconv.ParseUint(s.Param("id"), 10, 64)
 		if err != nil {
 			s.String(http.StatusBadRequest, "No such ID thing!")
 			return
 		}
 
-		glpIDParam := s.Param("glp")
-		glpID, err := strconv.ParseUint(glpIDParam, 10, 64)
+		glpID, err := strconv.ParseUint(s.Param("glp"), 10, 64)
 		if err != nil {
 			s.String(http.StatusBadRequest, "No such ID thing!")
 			return
@@ -75,8 +70,7 @@ func DeleteGroupAssignedRequest() gin.HandlerFunc {
 
 func GetStudentGroupAssignedRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
-		groupIDParam := s.Param("id")
-		groupID, err := strconv.ParseUint(groupIDParam, 10, 64)
+		groupID, err := strconv.ParseUint(s.Param("id"), 10, 64)
 		if err != nil {
 			s.String(http.StatusBadRequest, "No such ID thing!")
 			return

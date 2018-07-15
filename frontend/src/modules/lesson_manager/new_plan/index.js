@@ -23,7 +23,7 @@ class NewPlan extends RootComponent {
             footer.attach(),
             mainNav.attach(),
             secondNav.attach({
-                title: 'Lesson Manager',
+                title: await window.bcnI18n.getPhrase('lesson_manager'),
                 innerNav: innerNav.attach(),
             }),
             newPlanForm.attach(),
@@ -40,7 +40,7 @@ class NewPlan extends RootComponent {
                 '#app',
                 headerEl,
                 div(
-                    '.flex-container.expand.margin-top-2',
+                    '.flex-container.expand',
                     mainNavEl,
                     secondNavEl,
                     main(

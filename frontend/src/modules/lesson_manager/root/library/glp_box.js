@@ -18,7 +18,7 @@ class GLPBox extends Component {
                 elementID: false,
                 heading: 'Success',
                 type: 'success',
-                message: 'GLP deleted!',
+                message: await window.bcnI18n.getPhrase('glp_del'),
             });
 
             document.body.appendChild(statusMessageEl);
@@ -32,7 +32,7 @@ class GLPBox extends Component {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: 'GLP not deleted!',
+            message: await window.bcnI18n.getPhrase('glp_nd'),
         });
 
         document.body.appendChild(statusMessageEl);
@@ -49,9 +49,9 @@ class GLPBox extends Component {
             owner,
         } = this.props;
 
-        let dateCreatedText = 'Not recorded';
+        let dateCreatedText = await window.bcnI18n.getPhrase('lm_not_rec');
         let timeCreatedText = '';
-        let dateUpdatedText = 'Never';
+        let dateUpdatedText = await window.bcnI18n.getPhrase('lm_never');
         let timeUpdatedText = '';
 
         if (creationDate && creationDate !== '0001-01-01T00:00:00Z') {
@@ -73,30 +73,39 @@ class GLPBox extends Component {
                 a(
                     '.item',
                     {
-                        href: `#view?id=${id}&prev=lesson_manager`,
+                        href: `#view?id=${id}`,
                     },
-                    'View',
+                    await window.bcnI18n.getPhrase('view'),
                 ),
                 a(
                     '.item',
                     {
                         href: `//${window.location.host}/authoring_tool?id=${encodeURIComponent(id)}`,
                     },
-                    'Edit',
+                    await window.bcnI18n.getPhrase('edit'),
                 ),
                 a(
                     '.item',
                     {
                         href: `#assign?id=${encodeURIComponent(id)}`,
                     },
-                    'Assign',
+                    await window.bcnI18n.getPhrase('lm_assign'),
                 ),
                 a(
                     '.item',
                     {
-                        ondblclick: () => this.deleteGLP(),
+                        onclick: async () => {
+                            const confirmDelGLPTranslation = await window.bcnI18n.getPhrase('confirm_delete_glp');
+
+                            // https://eslint.org/docs/rules/no-alert
+                            // breaking the rules for now!
+                            const doDelete = confirm(confirmDelGLPTranslation);
+                            if (doDelete) {
+                                this.deleteGLP();
+                            }
+                        },
                     },
-                    'Delete',
+                    await window.bcnI18n.getPhrase('delete'),
                 ),
             ),
             div(
@@ -110,17 +119,17 @@ class GLPBox extends Component {
                 '.content.flex-column',
                 div(
                     '.domain',
-                    strong('Domain:'),
+                    strong(`${await window.bcnI18n.getPhrase('lm_domain')}:`),
                     p(domain),
                 ),
                 div(
                     '.topic',
-                    strong('Topic:'),
+                    strong(`${await window.bcnI18n.getPhrase('lm_topic')}:`),
                     p(topic),
                 ),
                 div(
                     '.created',
-                    strong('Created:'),
+                    strong(`${await window.bcnI18n.getPhrase('lm_created')}:`),
                     p(
                         {
                             title: timeCreatedText,
@@ -130,7 +139,7 @@ class GLPBox extends Component {
                 ),
                 div(
                     '.modified',
-                    strong('Modified:'),
+                    strong(`${await window.bcnI18n.getPhrase('lm_mod')}:`),
                     p(
                         {
                             title: timeUpdatedText,
@@ -140,7 +149,7 @@ class GLPBox extends Component {
                 ),
                 div(
                     '.owner',
-                    strong('Owner:'),
+                    strong(`${await window.bcnI18n.getPhrase('lm_owner')}:`),
                     p(owner),
                 ),
             ),

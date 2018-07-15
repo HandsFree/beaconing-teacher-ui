@@ -1,55 +1,42 @@
 package req
 
 import (
-	"log"
 	"net/http"
-	_ "time"
 
-	"git.juddus.com/HFC/beaconing/backend/activities"
-	"git.juddus.com/HFC/beaconing/backend/api"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/activity"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/api"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 )
 
-/*
-
-CREATE TABLE activities (
-    id serial PRIMARY KEY,
-	teacher_id integer NOT NULL,
-    creation_date date NOT NULL,
-    activity_type integer NOT NULL,
-	api_req jsonb NOT NULL
-);
-
-*/
-
-func getLastActivities(s *gin.Context, n int) ([]activities.Activity, error) {
-	currUserId, err := api.GetUserID(s)
+func getLastActivities(s *gin.Context, n int) ([]activity.Activity, error) {
+	currUserID, err := api.GetUserID(s)
 	if err != nil {
-		log.Println("No such current user!", err.Error())
-		return []activities.Activity{}, err
+		util.Error("No such current user!", err.Error())
+		return []activity.Activity{}, err
 	}
-	return api.GetActivities(currUserId, n)
+	return api.GetActivities(currUserID, n)
 }
 
 func GetRecentActivities() gin.HandlerFunc {
-	return func(s *gin.Context) {
-		/*
-			first we get the current user using the current_user api
+	/*
+		first we get the current user using the current_user api
 
-			then we look up all of the activities in the local
-			database with the ID of the current_user
-		*/
+		then we look up all of the activities in the local
+		database with the ID of the current_user
+	*/
+	return func(s *gin.Context) {
 		activities, err := getLastActivities(s, 4)
 		if err != nil {
-			log.Println("GetRecentActivities", err.Error())
+			util.Error("GetRecentActivities", err.Error())
 			s.AbortWithError(http.StatusBadRequest, err)
 			return
 		}
 
 		json, err := jsoniter.Marshal(activities)
 		if err != nil {
-			log.Println("GetRecentActivities", err.Error())
+			util.Error("GetRecentActivities", err.Error())
 			s.AbortWithError(http.StatusBadRequest, err)
 			return
 		}

@@ -1,5 +1,5 @@
 // @flow
-import { div, img, a } from '../../../../core/html';
+import { p, div, img, a } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 
@@ -7,22 +7,23 @@ class ActivePlanBox extends Component {
     async render() {
         const {
             name,
-            src,
+            description,
             link,
         } = this.props;
+
+        const glpDesc = do {
+            if (description.length > 200) {
+                p(`${description.substr(0, 200)}...`);
+            } else {
+                p(description);
+            }
+        };
 
         return div(
             '.plan',
             div(
-                '.image',
-                img({
-                    src,
-                    alt: name,
-                }),
-            ),
-            div(
                 '.info',
-                div(
+                p(
                     '.name',
                     a(
                         {
@@ -31,6 +32,10 @@ class ActivePlanBox extends Component {
                         name,
                     ),
                 ),
+            ),
+            div(
+                '.desc',
+                glpDesc,
             ),
         );
     }

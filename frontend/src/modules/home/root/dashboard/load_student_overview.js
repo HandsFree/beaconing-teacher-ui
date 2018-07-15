@@ -5,6 +5,7 @@ import { div, p } from '../../../../core/html';
 import { Component } from '../../../../core/component';
 import Sort from './student_overview_sort';
 import Panel from './student_overview_panel';
+import nullishCheck from '../../../../core/util';
 
 class LoadStudentOverview extends Component {
     state = {
@@ -27,7 +28,7 @@ class LoadStudentOverview extends Component {
         this.state.classes = groups; // groups.filter(classObj => classObj?.category === 'class');
 
         if (this.state.classes && this.state.classes.length > 0) {
-            const classID = id ?? this.state.classes[0]?.id;
+            const classID = nullishCheck(id, this.state.classes[0]?.id);
 
             // console.log(classID);
 
@@ -109,7 +110,7 @@ class LoadStudentOverview extends Component {
             sortEl,
             div(
                 '.flex-container',
-                p('This group has too few students! (needs 6 or more)'),
+                p(await window.bcnI18n.getPhrase('widget_so_few')),
             ),
         );
     }

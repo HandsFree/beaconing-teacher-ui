@@ -1,159 +1,183 @@
 // @flow
+import { a, section, p, div } from '../../../../core/html';
+import { Component } from '../../../../core/component';
+import Loading from '../../../loading';
+import nullishCheck from '../../../../core/util';
 
-import { section, h1, h2, p, div, a, ul, li, span, select, option } from '../../../../core/html';
-import component, { Component } from '../../../../core/component';
+class CalendarSelectedGroup extends Component {
+    async render() {
+        const {
+            id,
+            name,
+        } = this.props;
+
+        return div('.cal-sel-item',
+            p('.item-name', `${name}`),
+            p(a('.fake-link',
+                {
+                    onclick: () => {
+                        // don't do anything if we've already selected
+                        // this group
+                        if (window.sessionStorage.getItem('calendarSelectionType') === 'groups') {
+                            const data = nullishCheck(window.sessionStorage.getItem('calendarSelection'), 'none');
+                            if (data !== 'none') {
+                                const groupData = JSON.parse(data);
+                                if (groupData.group !== null && groupData.group.id === id) {
+                                    return;
+                                }
+                            }
+                        }
+
+                        window.sessionStorage.setItem('calendarSelection', JSON.stringify({
+                            student: null,
+                            group: {
+                                id,
+                                name,
+                            },
+                        }));
+                        this.emit('RefreshCalendarController');
+                        this.emit('RefreshCalendarView');
+                    },
+                },
+                await window.bcnI18n.getPhrase('view'),
+            )),
+        );
+    }
+}
+
+class CalendarSelectedStudent extends Component {
+    async render() {
+        const {
+            id,
+            username,
+        } = this.props;
+
+        return div('.cal-sel-item',
+            p('.item-name', `${username}`),
+            p(a('.fake-link',
+                {
+                    onclick: () => {
+                        // don't do anything if we've already selected
+                        // this group
+                        if (window.sessionStorage.getItem('calendarSelectionType') === 'students') {
+                            const data = nullishCheck(window.sessionStorage.getItem('calendarSelection'), 'none');
+                            if (data !== 'none') {
+                                const studentData = JSON.parse(data);
+                                if (studentData.student !== null && studentData.student.id === id) {
+                                    return;
+                                }
+                            }
+                        }
+
+                        window.sessionStorage.setItem('calendarSelection', JSON.stringify({
+                            student: {
+                                id,
+                                username,
+                            },
+                            group: null,
+                        }));
+                        this.emit('RefreshCalendarController');
+                        this.emit('RefreshCalendarView');
+                    },
+                },
+                await window.bcnI18n.getPhrase('view'),
+            )),
+        );
+    }
+}
 
 class StudentSelector extends Component {
-    constructor(calendarView) {
-        super();
-        this.state = {
-            calendarView: calendarView,
-        };
+    async render() {
+        const loading = new Loading();
+
+        const loadingEl = await loading.attach({
+            msg: await window.bcnI18n.getPhrase('ld_students'),
+        });
+
+        return section(
+            '.flex-column',
+            loadingEl,
+        );
     }
 
-    async refresh(groupId, studentsList) {
-        const oldCalendarView = this.state.calendarView;
-        this.state = {
-            groupId: groupId,
-            studentsList: studentsList ?? [],
-            calendarView: oldCalendarView, // set this again.
-        };
+    async afterMount() {
+        const studentsSet = await window.beaconingAPI.getStudents();
+        const selItemsProm = [];
+
+        for (const student of studentsSet) {
+            const selItem = new CalendarSelectedStudent();
+            console.log(student);
+            const selItemEl = selItem.attach({
+                id: student.id,
+                username: student.username,
+            });
+
+            selItemsProm.push(selItemEl);
+        }
+
+        const studentsEl = await Promise.all(selItemsProm).then(elements => elements);
+        this.updateView(studentsEl);
+    }
+}
+
+class GroupSelector extends Component {
+    async render() {
+        const loading = new Loading();
+
+        const loadingEl = await loading.attach({
+            msg: await window.bcnI18n.getPhrase('ld_groups'),
+        });
+
+        return section(
+            '.flex-column',
+            loadingEl,
+        );
+    }
+
+    async afterMount() {
+        const groupSet = await window.beaconingAPI.getGroups();
+        const selItemsProm = [];
+
+        for (const group of groupSet) {
+            const selItem = new CalendarSelectedGroup();
+            const selItemEl = selItem.attach({
+                id: group.id,
+                name: group.name,
+            });
+
+            selItemsProm.push(selItemEl);
+        }
+
+        const groupsEl = await Promise.all(selItemsProm).then(elements => elements);
+        this.updateView(groupsEl);
+    }
+}
+
+class SelectorPanel extends Component {
+    updateHooks = {
+        RefreshPanel: this.refreshPanel,
+    };
+
+    async refreshPanel() {
         this.updateView(await this.render());
     }
 
-    async setStudent(id) {
-        console.log("setting student to", id);
-        const calendarView = this.state.calendarView;
-        calendarView.state.studentId = id;
-
-        // refresh glps in teh calendar view
-        calendarView.refreshGLPS();
-
-        // set the current month on the calendar
-        // comtroller, this updates the student greeting too
-        // the fact that we have to do this feels kind of messy
-        // like there is a flaw in how i implement the architecture
-        // for the calendar.. but hey ho. this will update
-        // the calendar controller view.
-        this.emit('RefreshCalendarController');
-
-        // refresh the calendar view with the updated
-        // student id set.
-        calendarView.updateView(await calendarView.render());
-    }
-
     async render() {
-        const { groupId } = this.state;
-        if (!groupId) {
-            return p("no group selected");
-        }
-
-        const studentsList = this.state.studentsList;
-
-        const students = [];
-        for (const student of studentsList) {
-            const studentId = student.id;
-
-            // cache this in local storage or something?
-            students.push(await window.beaconingAPI.getStudent(studentId));
-        }
-
-        const studentLinks = [];
-        for (const student of students) {
-            studentLinks.push(
-                li(span(".fake-link",
-                    {
-                        onclick: () => {
-                            this.setStudent(student.id);
-                        },
-                    },
-                    student.username
-                )),
-            );
-        }
-
-        let studentSet = p("no students for this group.");
-        if (studentLinks.length > 0) {
-            studentSet = ul(studentLinks);
-        }
-
-        return div(".full-width",
-            h2("Inspect student:"),
-            studentSet);
-    }
-}
-
-class StudentGroupSelector extends Component {
-    constructor(calendarView) {
-        super();
-        this.state = {
-            groupId: 0,
-            calendarView: calendarView,
-        };
-    }
-    
-    async render() {
-        let options = [];
-        
-        const groups = Object.values(await window.beaconingAPI.getGroups()) ?? [];
-        console.log("hi we're just debugging ", groups);
-
-        for (const group of groups) {
-            let isSelected = "";
-            if (this.state.groupId == group.id) {
-                isSelected = "selected";
+        const selType = window.sessionStorage.getItem('calendarSelectionType');
+        switch (selType) {
+            case 'students': {
+                const studentsEl = await new StudentSelector().attach();
+                return section('.full-width', studentsEl);
             }
-            
-            options.push(
-                option(isSelected, {
-                    value: `${group.id}`,
-                    students: group.students,
-                }, `${group.name}`)
-            );
+            case 'groups': {
+                const groupEl = await new GroupSelector().attach();
+                return section('.full-width', groupEl);
+            }
+            default: {
+                return section('.full-width');
+            }
         }
-
-        const studentSel = new StudentSelector(this.state.calendarView);
-
-        return Promise.all([
-            studentSel.attach(this.state),
-        ]).then((values) => {
-            const [
-                studentSelEl
-            ] = values;
-
-            return div(".group-select", 
-                h2("Select group:"),
-                select({
-                    onchange: (event) => {
-                        const self = event.target;
-                        const selectedOption = self.options[self.selectedIndex];
-                        const groupId = selectedOption.value;
-                        studentSel.refresh(groupId, selectedOption.students);
-                    },
-                }, options), 
-                studentSelEl);
-        });
     }
 }
 
-export class SelectorPanel extends Component {
-    constructor(view) {
-        super();
-        this.state = {
-            view: view,
-        }
-    }
-
-    async render() {
-        const studentGroupSelector = new StudentGroupSelector(this.state.view);
-
-        return Promise.all([
-            studentGroupSelector.attach(),
-        ]).then(((values) => {
-            const [
-                studentGroupSelEl
-            ] = values;
-            return section(".full-width", studentGroupSelEl);
-        }));
-    }
-}
+export default SelectorPanel;

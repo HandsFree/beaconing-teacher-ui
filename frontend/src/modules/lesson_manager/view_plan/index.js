@@ -23,7 +23,7 @@ class ViewPlan extends RootComponent {
             footer.attach(),
             mainNav.attach(),
             secondNav.attach({
-                title: 'Lesson Manager',
+                title: await window.bcnI18n.getPhrase('lesson_manager'),
                 innerNav: innerNav.attach(),
             }),
             planOverview.attach(this.params),
@@ -40,7 +40,7 @@ class ViewPlan extends RootComponent {
                 '#app',
                 headerEl,
                 div(
-                    '.flex-container.expand.margin-top-2',
+                    '.flex-container.expand',
                     mainNavEl,
                     secondNavEl,
                     main(

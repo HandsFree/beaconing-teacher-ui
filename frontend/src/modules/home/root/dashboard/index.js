@@ -35,7 +35,7 @@ class Dashboard extends RootComponent {
                 '#app',
                 headerEl,
                 div(
-                    '.flex-container.expand.margin-top-2',
+                    '.flex-container.expand',
                     mainNavEl,
                     main(
                         // section('.flex-column', dashboardNavEl),

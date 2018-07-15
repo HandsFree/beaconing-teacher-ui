@@ -1,4 +1,6 @@
 // @flow
+import nullishCheck from './util';
+
 export interface RootComponentInterface {
     // render(): Promise<HTMLElement>;
     start(): void;
@@ -36,11 +38,17 @@ export interface ComponentInterface {
 
 class RootComponent implements RootComponentInterface {
     containerID: string = 'app';
+
     view: HTMLElement | Array<HTMLElement>;
+
     state: { [string]: any } = {};
+
     params: { [string]: string } = {};
+
     loadEvent: Event = new Event('UILoaded');
+
     loadDone: boolean = false;
+
     updateHooks: { [string]: Function } = {};
 
     updateView(view: HTMLElement) {
@@ -52,7 +60,15 @@ class RootComponent implements RootComponentInterface {
             }
 
             this.view = view;
-            document.body.insertAdjacentElement('afterbegin', this.view);
+
+            if (nullishCheck(document.body?.insertAdjacentElement, false)) {
+                document.body.insertAdjacentElement('afterbegin', this.view);
+                return;
+            }
+
+            const { firstChild } = document.body;
+
+            document.body.insertBefore(view, firstChild);
         } else {
             throw new Error('[Beaconing] Document Body not found');
         }
@@ -102,7 +118,14 @@ class RootComponent implements RootComponentInterface {
         }
     }
 
-    emit(name: string) {
+    emit(name: string, data: ?Object = null) {
+        if (data) {
+            const ev = new CustomEvent(name, { detail: data });
+            window.dispatchEvent(ev);
+
+            return;
+        }
+
         const ev = new Event(name);
         window.dispatchEvent(ev);
     }
@@ -138,13 +161,17 @@ class RootComponent implements RootComponentInterface {
 
 class Component implements ComponentInterface {
     state: { [string]: any } = {};
+
     view: HTMLElement;
+
     props: { [string]: any } = {};
+
     updateHooks: { [string]: Function } = {};
 
+    // TODO Reduce complexity
     updateView(view: HTMLElement) {
         const func = () => {
-            let parent = this.view.parentElement ?? null;
+            let parent = nullishCheck(this.view?.parentElement, false);
 
             if (Array.isArray(this.view)) {
                 parent = this.view[0].parentElement;
@@ -164,10 +191,20 @@ class Component implements ComponentInterface {
                 if (Array.isArray(view)) {
                     const firstEl = view[0];
 
-                    parent.insertAdjacentElement('afterbegin', firstEl);
+                    if (nullishCheck(parent.insertAdjacentElement, false)) {
+                        parent.insertAdjacentElement('afterbegin', firstEl);
 
-                    for (let i = 1; i < view.length; i++) {
-                        view[i - 1].insertAdjacentElement('afterend', view[i]);
+                        for (let i = 1; i < view.length; i++) {
+                            view[i - 1].insertAdjacentElement('afterend', view[i]);
+                        }
+                    } else {
+                        const { firstChild } = parent;
+
+                        parent.insertBefore(firstEl, firstChild);
+
+                        for (let i = 1; i < view.length; i++) {
+                            parent.insertBefore(view[i], view[i - 1]);
+                        }
                     }
 
                     this.view = view;
@@ -175,7 +212,13 @@ class Component implements ComponentInterface {
                 }
 
                 if (!Array.isArray(view) && Array.isArray(this.view)) {
-                    parent.insertAdjacentElement('afterbegin', view);
+                    if (nullishCheck(parent.insertAdjacentElement, false)) {
+                        parent.insertAdjacentElement('afterbegin', view);
+                    } else {
+                        const { firstChild } = parent;
+
+                        parent.insertBefore(view, firstChild);
+                    }
 
                     this.view = view;
                 }
@@ -221,7 +264,7 @@ class Component implements ComponentInterface {
     }
 
     removeSelf() {
-        let parent = this.view.parentElement ?? null;
+        let parent = nullishCheck(this.view.parentElement, false);
 
         if (Array.isArray(this.view)) {
             parent = this.view[0].parentElement;
@@ -238,7 +281,14 @@ class Component implements ComponentInterface {
         }
     }
 
-    emit(name: string) {
+    emit(name: string, data: ?Object = null) {
+        if (data) {
+            const ev = new CustomEvent(name, { detail: data });
+            window.dispatchEvent(ev);
+
+            return;
+        }
+
         const ev = new Event(name);
         window.dispatchEvent(ev);
     }
@@ -281,7 +331,7 @@ class Component implements ComponentInterface {
         }
     }
 
-    // TODO: refine 
+    // TODO: refine
     async* start(): AsyncGenerator<> {
         if (this.updateHooks) {
             this.handleHooks();

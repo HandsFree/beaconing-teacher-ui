@@ -6,6 +6,8 @@ image/*.png
 image/*.jpg
 image/*.jpeg
 
+
+
 ### macOS ###
 *.DS_Store
 .AppleDouble
@@ -99,6 +101,7 @@ frontend/public/dist/beaconing/*.css
 frontend/public/dist/beaconing/*.js
 frontend/public/dist/beaconing/*.map
 frontend/public/dist/beaconing/pages
+frontend/public/dist/glp_files/
 
 # vendor
 vendor/

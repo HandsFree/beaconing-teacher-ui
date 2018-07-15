@@ -3,13 +3,15 @@ package req
 import (
 	"encoding/gob"
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 	"strconv"
 	"time"
 
-	"git.juddus.com/HFC/beaconing/backend/api"
+	"github.com/lib/pq"
+
+	"github.com/HandsFree/beaconing-teacher-ui/backend/api"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/olekukonko/tablewriter"
@@ -26,51 +28,60 @@ func init() {
 // - glp id
 func GetAssignRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
-		studentID := s.Param("student")
-		studentIDValue, err := strconv.ParseUint(studentID, 10, 64)
-		if err != nil || studentIDValue < 0 {
+		studentID, err := strconv.ParseUint(s.Param("student"), 10, 64)
+		if err != nil || studentID < 0 {
 			s.String(http.StatusBadRequest, "Client Error: Invalid student ID")
 			return
 		}
 
-		glpID := s.Param("glp")
-		glpIDValue, err := strconv.ParseUint(glpID, 10, 64)
-		if err != nil || glpIDValue < 0 {
+		glpID, err := strconv.ParseUint(s.Param("glp"), 10, 64)
+		if err != nil || glpID < 0 {
 			s.String(http.StatusBadRequest, "Client Error: Invalid GLP ID")
 			return
 		}
 
-		fromParam := s.Param("from")
-		from, err := time.Parse(time.RFC3339, fromParam)
-		if err != nil {
-			log.Println("assign from time is bad", err.Error())
-			from = time.Now()
+		// FIXME clean this up.
 
-			// we aren't going to error here since we can
-			// just say it's been assigned from the current
-			// time.
+		fromParam := s.Param("from")
+
+		var from pq.NullTime
+		if fromParam != "" {
+			fromTime, err := time.Parse(time.RFC3339, fromParam)
+			if err != nil {
+				util.Error("assign from time is bad", err.Error())
+				fromTime = time.Now()
+
+				// we aren't going to error here since we can
+				// just say it's been assigned from the current
+				// time.
+			}
+			from = pq.NullTime{Time: fromTime, Valid: true}
+		} else {
+			from = pq.NullTime{Time: time.Now(), Valid: true}
 		}
 
 		toParam := s.Param("to")
-		var to time.Time
+
+		var to pq.NullTime
 		if toParam != "" {
-			var err error
-			to, err = time.Parse(time.RFC3339, toParam)
+			toTime, err := time.Parse(time.RFC3339, toParam)
 			if err != nil {
-				log.Println("assign to time is bad", err.Error())
+				util.Error("assign to time is bad", err.Error())
 				s.AbortWithError(http.StatusBadRequest, err)
 				return
 			}
+			to = pq.NullTime{
+				Time:  toTime,
+				Valid: true,
+			}
 		}
 
-		log.Println("THIS IS AN ASSIGN REQUEST ! ", studentIDValue, glpIDValue)
-
 		// register the GLP in the session
-		registerGLP(s, glpIDValue)
+		registerGLP(s, glpID)
 
 		// do the post request to the beaconing API
 		// saying we're assigning said student to glp.
-		resp, err := api.AssignStudentToGLP(s, studentIDValue, glpIDValue, from, to)
+		resp, err := api.AssignStudentToGLP(s, studentID, glpID, from, to)
 		if err != nil {
 			s.String(http.StatusBadRequest, "Failed to assign student to glp")
 			return
@@ -83,16 +94,14 @@ func GetAssignRequest() gin.HandlerFunc {
 
 func GetGroupAssignRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
-		groupID := s.Param("group")
-		groupIDValue, err := strconv.ParseUint(groupID, 10, 64)
-		if err != nil || groupIDValue < 0 {
+		groupID, err := strconv.ParseUint(s.Param("group"), 10, 64)
+		if err != nil || groupID < 0 {
 			s.String(http.StatusBadRequest, "Client Error: Invalid group ID")
 			return
 		}
 
-		glpID := s.Param("glp")
-		glpIDValue, err := strconv.ParseUint(glpID, 10, 64)
-		if err != nil || glpIDValue < 0 {
+		glpID, err := strconv.ParseUint(s.Param("glp"), 10, 64)
+		if err != nil || glpID < 0 {
 			s.String(http.StatusBadRequest, "Client Error: Invalid GLP ID")
 			return
 		}
@@ -100,7 +109,7 @@ func GetGroupAssignRequest() gin.HandlerFunc {
 		fromParam := s.Param("from")
 		from, err := time.Parse(time.RFC3339, fromParam)
 		if err != nil {
-			log.Println("assign from time is bad", err.Error())
+			util.Error("assign from time is bad", err.Error())
 			from = time.Now()
 
 			// we aren't going to error here since we can
@@ -114,17 +123,15 @@ func GetGroupAssignRequest() gin.HandlerFunc {
 			var err error
 			to, err = time.Parse(time.RFC3339, toParam)
 			if err != nil {
-				log.Println("assign to time is bad", err.Error())
+				util.Error("assign to time is bad", err.Error())
 				s.AbortWithError(http.StatusBadRequest, err)
 				return
 			}
 		}
 
-		log.Println("THIS IS A GROUP ASSIGN REQUEST ! ", groupIDValue, glpIDValue)
+		registerGLP(s, glpID)
 
-		registerGLP(s, glpIDValue)
-
-		resp, err := api.AssignGroupToGLP(s, groupIDValue, glpIDValue, from, to)
+		resp, err := api.AssignGroupToGLP(s, groupID, glpID, from, to)
 		if err != nil {
 			s.String(http.StatusBadRequest, "Failed to assign group to glp")
 			return
@@ -144,12 +151,12 @@ func registerGLP(s *gin.Context, glpID uint64) {
 	assignedPlans := session.Get("assigned_plans")
 
 	if assignedPlans == nil {
-		log.Println("session assigned_plans doesn't exist")
+		util.Error("session assigned_plans doesn't exist")
 	}
 
 	assignedPlansTable := map[uint64]bool{}
 	if assignedPlans != nil {
-		log.Println("restoring old ALP assignments table from session")
+		util.Error("restoring old ALP assignments table from session")
 		assignedPlansTable, _ = assignedPlans.(map[uint64]bool)
 	}
 
@@ -170,6 +177,6 @@ func registerGLP(s *gin.Context, glpID uint64) {
 
 	session.Set("assigned_plans", assignedPlansTable)
 	if err := session.Save(); err != nil {
-		log.Println("registerGLP", err.Error())
+		util.Error("registerGLP", err.Error())
 	}
 }

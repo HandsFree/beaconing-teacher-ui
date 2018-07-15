@@ -2,14 +2,14 @@ package req
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 
-	"git.juddus.com/HFC/beaconing/backend/api"
-	"git.juddus.com/HFC/beaconing/backend/cfg"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/api"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/cfg"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 )
 
 func GetLogOutRequest() gin.HandlerFunc {
@@ -18,7 +18,7 @@ func GetLogOutRequest() gin.HandlerFunc {
 		session.Clear()
 
 		if err := session.Save(); err != nil {
-			log.Println("LogOutRequest", err.Error())
+			util.Error("LogOutRequest", err.Error())
 			return
 		}
 
@@ -26,7 +26,7 @@ func GetLogOutRequest() gin.HandlerFunc {
 			cfg.Beaconing.Auth.ID,
 			api.GetLogOutLink())
 
-		fmt.Println(logoutLink)
+		// fmt.Println(logoutLink)
 
 		s.Redirect(http.StatusTemporaryRedirect, logoutLink)
 	}

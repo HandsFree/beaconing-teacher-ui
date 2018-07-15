@@ -18,10 +18,6 @@ class RecentActivityBox extends Component {
         return div(
             '.activity',
             div(
-                '.info',
-                p(text),
-            ),
-            div(
                 '.time',
                 p(
                     {
@@ -29,6 +25,10 @@ class RecentActivityBox extends Component {
                     },
                     time.toDateString(),
                 ),
+            ),
+            div(
+                '.info',
+                p(text),
             ),
         );
     }

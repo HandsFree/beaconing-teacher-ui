@@ -25,9 +25,9 @@ class GLPBox extends Component {
                 a(
                     '.item',
                     {
-                        href: `//${window.location.host}/lesson_manager#view?id=${glpID}&prev=classroom`,
+                        href: `//${window.location.host}/lesson_manager#view?id=${glpID}`,
                     },
-                    'View',
+                    await window.bcnI18n.getPhrase('view'),
                 ),
                 a(
                     '.item',
@@ -36,13 +36,18 @@ class GLPBox extends Component {
                             this.unassignPlan();
                         },
                     },
-                    'Unassign',
+                    await window.bcnI18n.getPhrase('cr_unassign'),
                 ),
             ),
         );
     }
 
     async unassignPlan() {
+        const unassignGLPTransl = await window.bcnI18n.getPhrase('unassign_glp');
+        if (!confirm(unassignGLPTransl)) {
+            return;
+        }
+
         const {
             assignedGLPID,
             studentID,
@@ -60,7 +65,7 @@ class GLPBox extends Component {
                 elementID: false,
                 heading: 'Success',
                 type: 'success',
-                message: 'Unassigned!',
+                message: await window.bcnI18n.getPhrase('sa'),
             });
 
             document.body.appendChild(statusMessageEl);
@@ -74,7 +79,7 @@ class GLPBox extends Component {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: 'student not unassigned!',
+            message: await window.bcnI18n.getPhrase('student_una'),
         });
 
         document.body.appendChild(statusMessageEl);

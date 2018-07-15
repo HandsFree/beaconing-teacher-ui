@@ -1,23 +1,22 @@
 package req
 
 import (
-	"log"
 	"math/rand"
 	"net/http"
 	"strconv"
 
+	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 )
 
 func GetStudentOverview() gin.HandlerFunc {
 	return func(s *gin.Context) {
-		countParam := s.DefaultQuery("count", "3")
-		fetchCount, err := strconv.Atoi(countParam)
+		fetchCount, err := strconv.Atoi(s.DefaultQuery("count", "3"))
 		if err != nil || fetchCount <= 0 {
 			// NaN or improper data
 			fetchCount = 3
-			log.Println("warning, fetchCount has an illegal value")
+			util.Warn("warning, fetchCount has an illegal value")
 		}
 
 		// TODO: request students, make sure they are sorted
@@ -30,7 +29,7 @@ func GetStudentOverview() gin.HandlerFunc {
 
 		json, err := jsoniter.Marshal(req)
 		if err != nil {
-			log.Println(err.Error())
+			util.Error(err.Error())
 			return
 		}
 

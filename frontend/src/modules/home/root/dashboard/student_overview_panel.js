@@ -43,7 +43,7 @@ class Panel extends Component {
                 if (score <= 0) {
                     div(
                         '.progress-bar',
-                        span('No Data'),
+                        await window.bcnI18n.getPhrase('no_data'),
                     );
                 } else {
                     div(
@@ -63,19 +63,6 @@ class Panel extends Component {
 
             studentsEl.push(div(
                 '.student',
-                div(
-                    '.flex-container.tablet-hide',
-                    div(
-                        '.student-profile-image',
-                        img(
-                            '.profile-blue',
-                            {
-                                src: `//${window.location.host}/dist/beaconing/images/profile.png`,
-                                alt: username,
-                            },
-                        ),
-                    ),
-                ),
                 div(
                     '.flex-container.flex-column.flex-spacearound.flex-grow',
                     div(

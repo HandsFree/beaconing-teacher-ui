@@ -1,5 +1,5 @@
 // @flow
-import { div, h4, a } from '../../../core/html';
+import { div, h3, a } from '../../../core/html';
 
 import { Component } from '../../../core/component';
 import Status from '../../status';
@@ -12,7 +12,7 @@ class GroupBox extends Component {
             '.small-box',
             div(
                 '.title',
-                h4('.name', group.name),
+                h3('.name', group.name),
             ),
             a(
                 {
@@ -21,18 +21,23 @@ class GroupBox extends Component {
                         this.assignGroup(target);
                     },
                 },
-                'Assign',
+                await window.bcnI18n.getPhrase('lm_assign'),
             ),
         );
     }
 
     async assignGroup(assignButton: HTMLElement) {
+        const assignGroupTransl = await window.bcnI18n.getPhrase('assign_group');
+        if (!confirm(assignGroupTransl)) {
+            return;
+        }
+
         const {
             glpID,
             group,
         } = this.props;
 
-        assignButton.textContent = 'Assigning...';
+        assignButton.textContent = `${await window.bcnI18n.getPhrase('lm_assigning')}...`;
 
         const status = await window.beaconingAPI.assignGroup(group.id, glpID);
         const statusMessage = new Status();
@@ -46,7 +51,7 @@ class GroupBox extends Component {
                 elementID: false,
                 heading: 'Success',
                 type: 'success',
-                message: 'group assigned!',
+                message: await window.bcnI18n.getPhrase('group_asg'),
             });
 
             document.body.appendChild(statusMessageEl);
@@ -60,10 +65,10 @@ class GroupBox extends Component {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: 'group not assigned!',
+            message: await window.bcnI18n.getPhrase('group_na'),
         });
 
-        assignButton.textContent = 'Assign';
+        assignButton.textContent = await window.bcnI18n.getPhrase('lm_assign');
 
         document.body.appendChild(statusMessageEl);
     }

@@ -1,6 +1,12 @@
+-- This schema assumes you've already created the database.
+-- You should be connected to the database beforehand, or apply the schema directly to the database
+
 CREATE ROLE beaconing_db_user WITH LOGIN PASSWORD '123ABCCBA';
 
-\connect beaconing
+CREATE TABLE glp_files (
+    glp_id serial PRIMARY KEY,
+    hash bytea NOT NULL
+);
 
 -- the GLPs that have been assigned
 -- the gist here is that we store all the glps
@@ -34,6 +40,7 @@ CREATE TABLE student_avatar (
     avatar_blob bytea NOT NULL
 );
 
+GRANT ALL PRIVILEGES ON TABLE glp_files TO beaconing_db_user;
 GRANT ALL PRIVILEGES ON TABLE activity TO beaconing_db_user;
 GRANT ALL PRIVILEGES ON TABLE student_avatar TO beaconing_db_user;
 GRANT ALL PRIVILEGES ON TABLE active_plan TO beaconing_db_user;

@@ -29,11 +29,13 @@ class MissionDetails extends Component {
     
                 missionsProm.push(missionEl);
             }
+
+            const missionsText = await window.bcnI18n.getPhrase('lm_missions');
     
             return Promise.all(missionsProm)
                 .then(missionsEl => div(
                     '#missions-details',
-                    div('.title', h4('Missions:')),
+                    div('.title', h4(`${missionsText}:`)),
                     div(
                         '.details-container',
                         missionsEl,
@@ -43,7 +45,7 @@ class MissionDetails extends Component {
 
         return div(
             '#missions-details',
-            div('.title', h4('Missions:')),
+            div('.title', h4(`${await window.bcnI18n.getPhrase('lm_missions')}:`)),
         );
     }
 }

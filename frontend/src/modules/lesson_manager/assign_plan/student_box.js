@@ -1,10 +1,11 @@
 // @flow
 import Identicon from 'identicon.js';
 
-import { div, figure, img, h4, a, span } from '../../../core/html';
+import { div, figure, img, h4, a, h3 } from '../../../core/html';
 
 import { Component } from '../../../core/component';
 import Status from '../../status';
+import nullishCheck from '../../../core/util';
 
 class StudentBox extends Component {
     state = {
@@ -32,8 +33,31 @@ class StudentBox extends Component {
             return arr;
         };
 
+        let studentColour = randArray();
+
+        // fix this complexity
+        if (window.sessionStorage) {
+            if (!window.sessionStorage.getItem('student_colours')) {
+                const colours = {};
+
+                colours[student.username] = studentColour;
+
+                window.sessionStorage.setItem('student_colours', JSON.stringify(colours));
+            } else {
+                const colours = JSON.parse(window.sessionStorage.getItem('student_colours'));
+
+                if (nullishCheck(colours[student.username], false)) {
+                    studentColour = colours[student.username];
+                } else {
+                    colours[student.username] = studentColour;
+
+                    window.sessionStorage.setItem('student_colours', JSON.stringify(colours));
+                }
+            }
+        }
+
         const options = {
-            foreground: randArray(),
+            foreground: studentColour,
             background: [255, 255, 255, 255],
             margin: 0.1,
             size: 64,
@@ -44,12 +68,17 @@ class StudentBox extends Component {
     }
 
     async assign(assignButton: HTMLElement) {
+        const assignStudentTransl = await window.bcnI18n.getPhrase('assign_student');
+        if (!confirm(assignStudentTransl)) {
+            return;
+        }
+
         const {
             glpID,
             student,
         } = this.props;
 
-        assignButton.textContent = 'Assigning...';
+        assignButton.textContent = `${await window.bcnI18n.getPhrase('lm_assigning')}...`;
 
         const status = await window.beaconingAPI.assignStudent(student.id, glpID);
         const statusMessage = new Status();
@@ -63,7 +92,7 @@ class StudentBox extends Component {
                 elementID: false,
                 heading: 'Success',
                 type: 'success',
-                message: 'student assigned!',
+                message: await window.bcnI18n.getPhrase('student_asg'),
             });
 
             document.body.appendChild(statusMessageEl);
@@ -77,10 +106,10 @@ class StudentBox extends Component {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: 'student not assigned!',
+            message: await window.bcnI18n.getPhrase('student_na'),
         });
 
-        assignButton.textContent = 'Assign';
+        assignButton.textContent = await window.bcnI18n.getPhrase('lm_assign');
 
         document.body.appendChild(statusMessageEl);
     }
@@ -89,11 +118,21 @@ class StudentBox extends Component {
         const { student } = this.props;
         const { profile } = student;
 
-        const name = do {
+        const studentName = do {
             if (profile.firstName && profile.lastName) {
-                `${profile.firstName} ${profile.lastName}`;
+                div(
+                    '.flex-column',
+                    h3('.name', `${profile.firstName} ${profile.lastName}`),
+                    h4(
+                        '.username',
+                        {
+                            title: await window.bcnI18n.getPhrase('username'),
+                        },
+                        student.username,
+                    ),
+                );
             } else {
-                student.username;
+                h3('.username', student.username);
             }
         };
 
@@ -106,7 +145,7 @@ class StudentBox extends Component {
                 '.info.flex-column',
                 div(
                     '.title',
-                    h4('.name', name),
+                    studentName,
                 ),
                 a(
                     {
@@ -115,7 +154,7 @@ class StudentBox extends Component {
                             this.assign(target);
                         },
                     },
-                    'Assign',
+                    await window.bcnI18n.getPhrase('lm_assign'),
                 ),
             ),
         );
