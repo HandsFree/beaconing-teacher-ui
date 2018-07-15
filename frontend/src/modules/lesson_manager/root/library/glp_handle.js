@@ -7,6 +7,12 @@ import Loading from '../../../loading';
 import LoadGLPs from './load_glps';
 
 class GLPHandle extends Component {
+    step = 12;
+
+    index: 0;
+
+    loadAll = false;
+
     eventsLoaded: boolean = false;
 
     filterOptions: ?Object = null;
@@ -42,86 +48,104 @@ class GLPHandle extends Component {
         this.filterOptions = filterOptions;
 
         this.emit('SearchFilterUpdate', filterOptions);
+
+        if (window.sessionStorage) {
+            window.sessionStorage.setItem('loaded_glps', JSON.stringify({ glps: [] }));
+        }
+
+        this.index = 0;
     }
 
     startAddedDescendingGLPs() {
         this.emitSearchFilter('created', 'desc');
-        this.loadGLPs('created', 'desc', true);
+        this.loadGLPs(true);
     }
 
     startAddedAscendingGLPs() {
         this.emitSearchFilter('created', 'asc');
-        this.loadGLPs('created', 'asc', true);
+        this.loadGLPs(true);
     }
 
     startNameAscendingGLPs() {
         this.emitSearchFilter('name', 'asc');
-        this.loadGLPs('name', 'asc', true);
+        this.loadGLPs(true);
     }
 
     startNameDescendingGLPs() {
         this.emitSearchFilter('name', 'desc');
-        this.loadGLPs('name', 'desc', true);
+        this.loadGLPs(true);
     }
 
     startSTEMScienceGLPs() {
         this.emitSearchFilter('stem', 'science');
-        this.loadGLPs('stem', 'science', true);
+        this.loadGLPs(true);
     }
 
     startSTEMTechnologyGLPs() {
         this.emitSearchFilter('stem', 'technology');
-        this.loadGLPs('stem', 'technology', true);
+        this.loadGLPs(true);
     }
 
     startSTEMEngineeringGLPs() {
         this.emitSearchFilter('stem', 'engineering');
-        this.loadGLPs('stem', 'engineering', true);
+        this.loadGLPs(true);
     }
 
     startSTEMMathsGLPs() {
         this.emitSearchFilter('stem', 'maths');
-        this.loadGLPs('stem', 'maths', true);
+        this.loadGLPs(true);
     }
 
     startActiveGLPs() {
         this.emitSearchFilter('assigned', '');
-        this.loadGLPs('assigned', null, true);
+        this.loadGLPs(true);
     }
 
     startRecentlyModifiedAscGLPs() {
         this.emitSearchFilter('updated', 'asc');
-        this.loadGLPs('updated', 'asc', true);
+        this.loadGLPs(true);
     }
 
     startRecentlyModifiedDescGLPs() {
         this.emitSearchFilter('updated', 'desc');
-        this.loadGLPs('updated', 'desc', true);
+        this.loadGLPs(true);
     }
 
     startMostAssignedGLPs() {
         this.emitSearchFilter('popular', '');
-        this.loadGLPs('popular', null, true);
+        this.loadGLPs(true);
     }
 
     startPublicGLPs() {
         this.emitSearchFilter('vis', 'public');
-        this.loadGLPs('vis', 'public', true);
+        this.loadGLPs(true);
     }
 
     startPrivateGLPs() {
         this.emitSearchFilter('vis', 'private');
-        this.loadGLPs('vis', 'private', true);
+        this.loadGLPs(true);
     }
 
     startOwnedAscGLPs() {
         this.emitSearchFilter('owned', 'asc');
-        this.loadGLPs('owned', 'asc', true);
+        this.loadGLPs(true);
     }
 
     startOwnedDescGLPs() {
         this.emitSearchFilter('owned', 'desc');
-        this.loadGLPs('owned', 'desc', true);
+        this.loadGLPs(true);
+    }
+
+    async loadMoreGLPs() {
+        this.index += this.step;
+        this.loadAll = false;
+        this.loadGLPs(false);
+    }
+
+    async loadAllGLPs() {
+        this.index = 0;
+        this.loadAll = true;
+        this.loadGLPs(false);
     }
 
     async startLoad() {
@@ -136,16 +160,24 @@ class GLPHandle extends Component {
         this.updateView(el);
     }
 
-    async loadGLPs(sort: string, order: ?string, withLoad: boolean) {
+    async loadGLPs(withLoad: boolean) {
         if (withLoad) {
             this.startLoad();
         }
 
         const glps = new LoadGLPs();
 
-        const glpsEl = await glps.attach({
-            sort,
+        const {
+            type,
             order,
+        } = this.filterOptions.sort;
+
+        const glpsEl = await glps.attach({
+            type,
+            order,
+            loadAll: this.loadAll,
+            index: this.index,
+            step: this.step,
         });
 
         const element = div(
@@ -157,7 +189,7 @@ class GLPHandle extends Component {
                     '.button-action',
                     {
                         onclick: () => {
-                            this.emit('LoadMoreClicked');
+                            this.loadMoreGLPs();
                         },
                     },
                     await window.bcnI18n.getPhrase('lm_load_more'),
@@ -166,7 +198,7 @@ class GLPHandle extends Component {
                     '.pointer-hover',
                     {
                         onclick: () => {
-                            this.emit('LoadAllClicked');
+                            this.loadAllGLPs();
                         },
                     },
                     await window.bcnI18n.getPhrase('lm_load_all'),
@@ -195,71 +227,71 @@ class GLPHandle extends Component {
                 switch (page) {
                 case 'science':
                     this.emitSearchFilter('stem', 'science');
-                    this.loadGLPs('stem', 'science', false);
+                    this.loadGLPs(false);
                     break;
                 case 'technology':
                     this.emitSearchFilter('stem', 'technology');
-                    this.loadGLPs('stem', 'technology', false);
+                    this.loadGLPs(false);
                     break;
                 case 'engineering':
                     this.emitSearchFilter('stem', 'engineering');
-                    this.loadGLPs('stem', 'engineering', false);
+                    this.loadGLPs(false);
                     break;
                 case 'maths':
                     this.emitSearchFilter('stem', 'maths');
-                    this.loadGLPs('stem', 'maths', false);
+                    this.loadGLPs(false);
                     break;
                 case 'addedAsc':
                     this.emitSearchFilter('created', 'asc');
-                    this.loadGLPs('created', 'asc', false);
+                    this.loadGLPs(false);
                     break;
                 case 'addedDesc':
                     this.emitSearchFilter('created', 'desc');
-                    this.loadGLPs('created', 'desc', false);
+                    this.loadGLPs(false);
                     break;
                 case 'active':
                     this.emitSearchFilter('assigned', '');
-                    this.loadGLPs('assigned', null, false);
+                    this.loadGLPs(false);
                     break;
                 case 'recentModAsc':
                     this.emitSearchFilter('updated', 'asc');
-                    this.loadGLPs('updated', 'asc', false);
+                    this.loadGLPs(false);
                     break;
                 case 'recentModDesc':
                     this.emitSearchFilter('updated', 'desc');
-                    this.loadGLPs('updated', 'desc', false);
+                    this.loadGLPs(false);
                     break;
                 case 'nameAsc':
                     this.emitSearchFilter('name', 'asc');
-                    this.loadGLPs('name', 'asc', false);
+                    this.loadGLPs(false);
                     break;
                 case 'nameDesc':
                     this.emitSearchFilter('name', 'desc');
-                    this.loadGLPs('name', 'desc', false);
+                    this.loadGLPs(false);
                     break;
                 case 'mostAssigned':
                     this.emitSearchFilter('popular', '');
-                    this.loadGLPs('popular', null, false);
+                    this.loadGLPs(false);
                     break;
                 case 'public':
                     this.emitSearchFilter('vis', 'public');
-                    this.loadGLPs('vis', 'public', false);
+                    this.loadGLPs(false);
                     break;
                 case 'private':
                     this.emitSearchFilter('vis', 'private');
-                    this.loadGLPs('vis', 'private', false);
+                    this.loadGLPs(false);
                     break;
                 case 'ownedAsc':
                     this.emitSearchFilter('owned', 'asc');
-                    this.loadGLPs('owned', 'asc', false);
+                    this.loadGLPs(false);
                     break;
                 case 'ownedDesc':
                     this.emitSearchFilter('owned', 'desc');
-                    this.loadGLPs('owned', 'desc', false);
+                    this.loadGLPs(false);
                     break;
                 default:
                     this.emitSearchFilter('owned', 'desc');
-                    this.loadGLPs('owned', 'desc', false);
+                    this.loadGLPs(false);
                     break;
                 }
 
@@ -268,7 +300,7 @@ class GLPHandle extends Component {
         }
 
         this.emitSearchFilter('owned', 'desc');
-        this.loadGLPs('owned', 'desc', false);
+        this.loadGLPs(false);
     }
 
     loadEvents() {
