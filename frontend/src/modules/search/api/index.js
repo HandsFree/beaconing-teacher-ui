@@ -63,7 +63,6 @@ class APISearchStatic extends Component {
     }
 
     updateFilter(event: CustomEvent) {
-        console.log(event);
         const { detail } = event;
 
         if (nullishCheck(detail?.filter, false)) {

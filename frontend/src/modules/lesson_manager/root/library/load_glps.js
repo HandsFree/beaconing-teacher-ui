@@ -6,23 +6,29 @@ import GLPBox from './glp_box';
 import nullishCheck from '../../../../core/util';
 
 class LoadGLPs extends Component {
-    step = 12;
-
     state = {
-        index: 0,
         glps: [],
         endReached: false,
     };
 
     updateHooks = {
-        LoadMoreClicked: this.loadMoreGLPs,
-        LoadAllClicked: this.loadAllGLPs,
         SearchDone: this.handleSearch,
     };
 
     async init() {
+        if (window.sessionStorage) {
+            const obj = JSON.parse(window.sessionStorage.getItem('loaded_glps'));
+            this.state.glps = obj.glps;
+        }
+
+        const { loadAll } = this.props;
+
+        if (loadAll) {
+            await this.updateAllGLPs();
+            return;
+        }
+
         await this.updateGLPs();
-        window.more = this.loadMoreGLPs.bind(this);
     }
 
     async handleSearch(event: CustomEvent) {
@@ -34,7 +40,7 @@ class LoadGLPs extends Component {
             this.removeLoadButtons();
             this.emit('SearchResultsGiven');
             this.state.glps = MatchedGLPS;
-            await this.GLPList() |> this.updateView;
+            this.updateView(await this.GLPList());
 
             return;
         }
@@ -43,25 +49,35 @@ class LoadGLPs extends Component {
     }
 
     async updateGLPs() {
-        const sortQuery = nullishCheck(this.props?.sort, 'default');
+        const typeQuery = nullishCheck(this.props?.type, 'default');
         const orderQuery = nullishCheck(this.props?.order, 'default');
+        const index = nullishCheck(this.props?.index, 0);
+        const step = nullishCheck(this.props?.step, 12);
 
-        const glps = await window.beaconingAPI.getGLPs(sortQuery, orderQuery, true, this.state.index, this.step);
+        const glps = await window.beaconingAPI.getGLPs(typeQuery, orderQuery, true, index, step);
 
         if (glps.length < 12) {
             this.state.endReached = true;
         }
 
         this.state.glps = [...this.state.glps, ...glps];
+        if (window.sessionStorage) {
+            window.sessionStorage.setItem('loaded_glps', JSON.stringify({ glps: this.state.glps }));
+        }
     }
 
     async updateAllGLPs() {
-        const sortQuery = nullishCheck(this.props?.sort, 'default');
+        const typeQuery = nullishCheck(this.props?.type, 'default');
         const orderQuery = nullishCheck(this.props?.order, 'default');
 
-        const glps = await window.beaconingAPI.getGLPs(sortQuery, orderQuery, true);
+        const glps = await window.beaconingAPI.getGLPs(typeQuery, orderQuery, true);
 
         this.state.glps = glps;
+        if (window.sessionStorage) {
+            window.sessionStorage.setItem('loaded_glps', JSON.stringify({ glps: this.state.glps }));
+        }
+
+        this.state.endReached = true;
     }
 
     async removeLoadButtons() {
@@ -92,29 +108,6 @@ class LoadGLPs extends Component {
         buttonFunc();
     }
 
-    async loadMoreGLPs() {
-        console.log(this.state);
-        this.state.index += this.step;
-        await this.updateGLPs();
-
-        if (this.state.endReached) {
-            this.removeLoadButtons();
-        }
-
-        await this.GLPList() |> this.updateView;
-    }
-
-    async loadAllGLPs() {
-        this.state.index = 0;
-        await this.updateAllGLPs();
-
-        this.state.endReached = true;
-
-        this.removeLoadButtons();
-
-        await this.GLPList() |> this.updateView;
-    }
-
     async noPlansFound() {
         return div(
             '.plans-container.list.flex-wrap',
@@ -135,6 +128,10 @@ class LoadGLPs extends Component {
             this.removeLoadButtons();
 
             return this.noPlansFound();
+        }
+
+        if (this.state.endReached) {
+            this.removeLoadButtons();
         }
 
         for (const glp of values) {
