@@ -12,8 +12,15 @@ class CalendarSelectedGroup extends Component {
         } = this.props;
 
         return div('.cal-sel-item',
-            p('.item-name', `${name}`),
-            p(a('.fake-link',
+            p('.item-name.fake-link', a(
+                {
+                    title: await window.bcnI18n.getPhrase('cal_view_in_classroom'),
+                    href: `//${window.location.host}/classroom/group?id=${id}`,
+                },
+                `${name}`,
+            )),
+            p(a(
+                '.fake-link',
                 {
                     onclick: () => {
                         // don't do anything if we've already selected
@@ -53,7 +60,13 @@ class CalendarSelectedStudent extends Component {
         } = this.props;
 
         return div('.cal-sel-item',
-            p('.item-name', `${username}`),
+            p('.item-name.fake-link', a(
+                {
+                    title: await window.bcnI18n.getPhrase('cal_view_in_classroom'),
+                    href: `//${window.location.host}/classroom/student?id=${id}`,
+                },
+                `${username}`,
+            )),
             p(a('.fake-link',
                 {
                     onclick: () => {

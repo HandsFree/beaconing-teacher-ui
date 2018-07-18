@@ -2171,6 +2171,18 @@
 
     // Calendar //
 
+    cal_view_in_classroom: {
+        'en-GB': 'View in Classroom',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',
+    },
+
     cal_go_to_due_date: {
         'en-GB': 'Go to due date',
         'fr-FR': '',
