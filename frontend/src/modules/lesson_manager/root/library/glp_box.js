@@ -47,6 +47,7 @@ class GLPBox extends Component {
             updateDate,
             id,
             owner,
+            currentUser,
         } = this.props;
 
         let dateCreatedText = await window.bcnI18n.getPhrase('lm_not_rec');
@@ -91,7 +92,7 @@ class GLPBox extends Component {
                     },
                     await window.bcnI18n.getPhrase('lm_assign'),
                 ),
-                a(
+                currentUser === owner ? a(
                     '.item',
                     {
                         onclick: async () => {
@@ -106,7 +107,7 @@ class GLPBox extends Component {
                         },
                     },
                     await window.bcnI18n.getPhrase('delete'),
-                ),
+                ) : [],
             ),
             div(
                 '.title',

@@ -121,6 +121,7 @@ class LoadGLPs extends Component {
     async GLPList() {
         const values = Object.values(this.state.glps);
         const promArr = [];
+        const { currentUser } = this.props;
 
         console.log(values);
 
@@ -148,6 +149,7 @@ class LoadGLPs extends Component {
                     updateDate: glp.updatedAt,
                     id: glp.id,
                     owner: glp.owner,
+                    currentUser,
                 });
 
                 promArr.push(glpBoxProm);

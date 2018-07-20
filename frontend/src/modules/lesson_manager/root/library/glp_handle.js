@@ -17,6 +17,8 @@ class GLPHandle extends Component {
 
     filterOptions: ?Object = null;
 
+    currentUser = null;
+
     updateHooks = {
         SortActiveGLPsClicked: this.startActiveGLPs,
         RecentDescendingClicked: this.startAddedDescendingGLPs,
@@ -178,6 +180,7 @@ class GLPHandle extends Component {
             loadAll: this.loadAll,
             index: this.index,
             step: this.step,
+            currentUser: this.currentUser,
         });
 
         const element = div(
@@ -220,6 +223,11 @@ class GLPHandle extends Component {
     }
 
     async afterMount() {
+        const user = await window.beaconingAPI.getCurrentUser();
+        if (user) {
+            this.currentUser = user.username;
+        }
+
         if (window.sessionStorage) {
             const page = window.sessionStorage.getItem('library_init');
 
