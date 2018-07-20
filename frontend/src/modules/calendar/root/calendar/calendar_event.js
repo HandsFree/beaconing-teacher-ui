@@ -102,6 +102,7 @@ class CalendarEventList extends Component {
                     href: '#',
                     onclick: () => {
                         window.sessionStorage.setItem('calendarDayData', jsonifiedEvents);
+                        this.emit('UpdateCalendarContainer');
                     }
                 }, 
                 'View day'

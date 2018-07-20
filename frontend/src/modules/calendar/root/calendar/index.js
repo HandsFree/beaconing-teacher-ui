@@ -16,9 +16,10 @@ import nullishCheck from '../../../../core/util';
 class CalendarDaySlot extends Component {
     async render() {
         const { date } = this.props;
+        // FIXME this event prop is wrong.
         return div(
             '.calendar-day-slot',
-            p(`hello world ${date}`),
+            p(`${date}`),
         );
     }
 }
@@ -30,8 +31,10 @@ class CalendarDayView extends Component {
             return div();
         }
 
+        // FIXME the events we're passed here are wrong?
+        // there is only a date passed.
+
         const eventsObj = nullishCheck(JSON.parse(data), []);
-        console.log("the events obj is", eventsObj);
 
         const calendarEventSet = [];
         for (const event of eventsObj) {
@@ -47,6 +50,7 @@ class CalendarDayView extends Component {
                     role: 'button',
                     onclick: () => {
                         window.sessionStorage.setItem('calendarDayData', 'none');
+                        this.emit('UpdateCalendarContainer');
                     },
                     href: '#',
                 }, 
@@ -68,6 +72,14 @@ class CalendarDayView extends Component {
 // calendar day view
 // calendar view (student selector, calendar itself, and a controller)
 class CalendarContainer extends Component {
+    updateHooks = {
+        UpdateCalendarContainer: this.update,
+    };
+
+    async update() {
+        this.updateView(await this.render());
+    }
+
     async render() {
         // check for calendar day view
         if (nullishCheck(window.sessionStorage.getItem('calendarDayData'), 'none') !== 'none') {
