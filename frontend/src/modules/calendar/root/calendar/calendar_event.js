@@ -86,8 +86,30 @@ class CalendarEvent extends Component {
 class CalendarEventList extends Component {
     async render() {
         const { events } = this.props;
-        const el = await Promise.all(events).then(evts => evts);
-        return div('.events', el);
+
+        const jsonifiedEvents = JSON.stringify(events);
+
+        const renderList = [];
+
+        renderList.push(await Promise.resolve(events[0]).then(el => el));
+
+        // if we have more than one event we show
+        // a link that will take the user to a 
+        // view day page.
+        if (events.length > 1) {
+            const viewDayEl = div(p(a(
+                {
+                    href: '#',
+                    onclick: () => {
+                        window.sessionStorage.setItem('calendarDayData', jsonifiedEvents);
+                    }
+                }, 
+                'View day'
+            )));
+            renderList.push(viewDayEl);
+        }
+
+        return div('.events', renderList);
     }
 }
 

@@ -1,8 +1,8 @@
 // @flow
 import moment from 'moment';
-import { div, main, section } from '../../../../core/html';
+import { div, main, section, p, a } from '../../../../core/html';
 
-import { RootComponent } from '../../../../core/component';
+import { RootComponent, Component } from '../../../../core/component';
 import Header from '../../../header/root';
 import MainNav from '../../../nav/main';
 
@@ -11,6 +11,95 @@ import CalendarController from './calendar_controller';
 import SelectorPanel from './student_selector';
 import SecondNav from '../../../nav/second';
 import CalendarInnerNav from './calendar_inner_nav';
+import nullishCheck from '../../../../core/util';
+
+class CalendarDaySlot extends Component {
+    async render() {
+        const { date } = this.props;
+        return div(
+            '.calendar-day-slot',
+            p(`hello world ${date}`),
+        );
+    }
+}
+
+class CalendarDayView extends Component {
+    async render() {
+        const data = window.sessionStorage.getItem('calendarDayData');
+        if (data === 'none') {
+            return div();
+        }
+
+        const eventsObj = nullishCheck(JSON.parse(data), []);
+        console.log("the events obj is", eventsObj);
+
+        const calendarEventSet = [];
+        for (const event of eventsObj) {
+            calendarEventSet.push(new CalendarDaySlot().attach(event));
+        }
+
+        return div(
+            '.calendar-day-container',
+
+            p(a(
+                '.btn', 
+                {
+                    role: 'button',
+                    onclick: () => {
+                        window.sessionStorage.setItem('calendarDayData', 'none');
+                    },
+                    href: '#',
+                }, 
+                'Back to Calendar')
+            ),
+
+            div(
+                '.calendar-day-heading',
+                p('Monday'),
+            ),
+            await Promise.all(calendarEventSet).then(el => el),
+        );
+    }
+}
+
+// Wrapper around the calendar views
+// two views right now:
+//
+// calendar day view
+// calendar view (student selector, calendar itself, and a controller)
+class CalendarContainer extends Component {
+    async render() {
+        // check for calendar day view
+        if (nullishCheck(window.sessionStorage.getItem('calendarDayData'), 'none') !== 'none') {
+            const calDayView = new CalendarDayView().attach();
+            return Promise.resolve(calDayView).then(el => el);
+        }
+
+        const calendarView = new CalendarView();
+        const studentSelector = new SelectorPanel();
+        const calendarController = new CalendarController();
+
+        return Promise.all([
+            calendarController.attach(),
+            calendarView.attach(),
+            studentSelector.attach(),
+        ]).then((values) => {
+            const [
+                calendarControllerEl,
+                calendarViewEl,
+                studentSelectorEl,
+            ] = values;
+
+            return section('.outer-col',
+                studentSelectorEl,
+                section('.full-width',
+                    calendarControllerEl,
+                    calendarViewEl,
+                ),
+            );
+        });
+    }
+}
 
 class Calendar extends RootComponent {
     async init() {
@@ -22,12 +111,10 @@ class Calendar extends RootComponent {
         const header = new Header();
         const mainNav = new MainNav();
 
-        const calendarView = new CalendarView();
-        const studentSelector = new SelectorPanel();
-        const calendarController = new CalendarController();
-        
         const secondNav = new SecondNav();
         const calInnerNav = new CalendarInnerNav();
+
+        const calContainer = new CalendarContainer();
 
         return Promise.all([
             header.attach(),
@@ -36,17 +123,13 @@ class Calendar extends RootComponent {
                 title: 'Calendar',
                 innerNav: calInnerNav.attach(),
             }),
-            calendarController.attach(),
-            calendarView.attach(),
-            studentSelector.attach(),
+            calContainer.attach(),
         ]).then((values) => {
             const [
                 headerEl,
                 mainNavEl,
                 secondNavEl,
-                calendarControllerEl,
-                calendarViewEl,
-                studentSelectorEl,
+                calContainerEl,
             ] = values;
 
             return div(
@@ -57,13 +140,7 @@ class Calendar extends RootComponent {
                     mainNavEl,
                     secondNavEl,
                     main('#calendar',
-                        section('.outer-col',
-                            studentSelectorEl,
-                            section('.full-width',
-                                calendarControllerEl,
-                                calendarViewEl,
-                            ),
-                        ),
+                        calContainerEl,
                     ),
                 ),
             );

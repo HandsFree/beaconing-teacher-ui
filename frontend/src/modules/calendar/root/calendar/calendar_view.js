@@ -1,7 +1,7 @@
 // @flow
 import moment from 'moment';
 
-import { div } from '../../../../core/html';
+import { div, p, a } from '../../../../core/html';
 import { Component } from '../../../../core/component';
 
 import { CalendarEvent, CalendarDueEvent, CalendarEventList } from './calendar_event';
@@ -12,12 +12,6 @@ import nullishCheck from '../../../../core/util';
 // we could abstract cells to avoid the event list
 // stuff and fetch events for each cell including prev
 // and next month ones.
-
-class CalendarDayView extends Component {
-    async render() {
-        return div();
-    }
-}
 
 // the actual calendar
 class CalendarView extends Component {
