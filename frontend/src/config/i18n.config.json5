@@ -1986,6 +1986,39 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+    lm_cac: {
+        'en-GB': 'Communication and Collaboration',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    lm_ps: {
+        'en-GB': 'Problem Solving',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    lm_if: {
+        'en-GB': 'Information Fluency',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
 
     // Footer //
 
