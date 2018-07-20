@@ -290,7 +290,7 @@ class GLPHandle extends Component {
                     this.loadGLPs(false);
                     break;
                 default:
-                    this.emitSearchFilter('owned', 'desc');
+                    this.emitSearchFilter('updated', 'desc');
                     this.loadGLPs(false);
                     break;
                 }
@@ -299,7 +299,7 @@ class GLPHandle extends Component {
             }
         }
 
-        this.emitSearchFilter('owned', 'desc');
+        this.emitSearchFilter('updated', 'desc');
         this.loadGLPs(false);
     }
 
