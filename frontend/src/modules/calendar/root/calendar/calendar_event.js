@@ -87,29 +87,10 @@ class CalendarEventList extends Component {
     async render() {
         const { events } = this.props;
 
-        const jsonifiedEvents = JSON.stringify(events);
+        // we only show one event for now
 
         const renderList = [];
-
         renderList.push(await Promise.resolve(events[0]).then(el => el));
-
-        // if we have more than one event we show
-        // a link that will take the user to a 
-        // view day page.
-        if (events.length > 1) {
-            const viewDayEl = div(p(a(
-                {
-                    href: '#',
-                    onclick: () => {
-                        window.sessionStorage.setItem('calendarDayData', jsonifiedEvents);
-                        this.emit('UpdateCalendarContainer');
-                    }
-                }, 
-                'View day'
-            )));
-            renderList.push(viewDayEl);
-        }
-
         return div('.events', renderList);
     }
 }

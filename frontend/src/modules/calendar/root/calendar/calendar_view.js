@@ -147,10 +147,12 @@ class CalendarView extends Component {
     async loadStudentEvents(studentId: number) {
         console.log(`[Calendar] writing events for student ${studentId}`);
 
+        // TODO cache this...?
         const glpBoxes = await this.getStudentGLPS(studentId);
         for (const glpBox of glpBoxes) {
             const { glp } = glpBox;
 
+            // TODO optimize me!
             if (nullishCheck(glp, false) && glpBox.availableFrom) {
                 const availDate = moment(glpBox.availableFrom).startOf('D');
 
@@ -285,6 +287,8 @@ class CalendarView extends Component {
                 }
             }
 
+            const encodedEvents = JSON.stringify(eventsProm);
+
             const eventList = new CalendarEventList().attach({
                 events: eventsProm,
             });
@@ -292,6 +296,7 @@ class CalendarView extends Component {
                 dayNumber,
                 cellDate,
                 eventList,
+                encodedEvents,
             });
             rows.push(cell);
         }

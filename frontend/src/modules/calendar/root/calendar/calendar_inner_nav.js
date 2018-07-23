@@ -11,14 +11,20 @@ class CalendarInnerNav extends Component {
     }
 
     async showStudents() {
+        window.sessionStorage.setItem('calendarDayData', 'none');
         window.sessionStorage.setItem('calendarSelectionType', 'students');
-        this.emit('RefreshPanel');
+        
+        await this.emit('UpdateCalendarContainer');
+        await this.emit('RefreshPanel');
         this.updateView(await this.render());
     }
 
     async showGroups() {
+        window.sessionStorage.setItem('calendarDayData', 'none');
         window.sessionStorage.setItem('calendarSelectionType', 'groups');
-        this.emit('RefreshPanel');
+
+        await this.emit('UpdateCalendarContainer');
+        await this.emit('RefreshPanel');
         this.updateView(await this.render());
     }
 

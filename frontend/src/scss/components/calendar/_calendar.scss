@@ -32,10 +32,21 @@
 	border: 1px solid #f5f5f5;
 }
 
+.calendar-cell-meta {
+	display: flex;
+	justify-content: space-between;
+}
+
 .calendar-day {
 	font-size: 14pt;
 	font-weight: bold;
 	align-self: flex-end;
+}
+
+.view-calendar-day {
+	font-size: 14pt;
+	font-weight: bold;
+	align-self: flex-start;
 }
 
 .current-day .calendar-day {
