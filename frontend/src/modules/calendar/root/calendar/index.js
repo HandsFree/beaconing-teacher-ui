@@ -15,11 +15,19 @@ import nullishCheck from '../../../../core/util';
 
 class CalendarDaySlot extends Component {
     async render() {
-        const { date } = this.props;
-        // FIXME this event prop is wrong.
+        const { name, desc, id, date } = this.props;
         return div(
             '.calendar-day-slot',
-            p(`${date}`),
+            p(
+                a(
+                    '.fake-link',
+                    {
+                        href: `//${window.location.host}/lesson_manager/#view?id=${id}`,
+                    },
+                    name
+                ),
+            ),
+            p(desc),
         );
     }
 }
@@ -36,9 +44,16 @@ class CalendarDayView extends Component {
 
         const eventsObj = nullishCheck(JSON.parse(data), []);
 
+        let dateSample = null;
+
         const calendarEventSet = [];
         for (const event of eventsObj) {
             calendarEventSet.push(new CalendarDaySlot().attach(event));
+
+            // sample a date. these events should all be the
+            // same day so we just take the last event in the list
+            const { date } = event;
+            dateSample = date;
         }
 
         return div(
@@ -59,7 +74,7 @@ class CalendarDayView extends Component {
 
             div(
                 '.calendar-day-heading',
-                p('Monday'),
+                p(moment(dateSample).format('dddd - Do of MMMM, YYYY')),
             ),
             await Promise.all(calendarEventSet).then(el => el),
         );

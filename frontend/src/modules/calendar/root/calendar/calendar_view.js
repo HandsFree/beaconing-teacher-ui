@@ -86,7 +86,7 @@ class CalendarView extends Component {
     // array or we insert an array when writing an event.
     // note that we strip the time from the date given
     // so that we can index the hashmap just from mm/dd/yyyy
-    async writeEvent(eventDate, event: Component) {
+    async writeEvent(eventDate, event : Object) {
         // store the date in the event object
         // WITH the time included.
         event.date = eventDate.toDate();
@@ -133,13 +133,13 @@ class CalendarView extends Component {
 
                 console.log(`[Calendar] writing GROUP event ${availDate.format()}`);
 
-                this.writeEvent(availDate, new CalendarEvent().attach({
+                this.writeEvent(availDate, {
                     name: glp.name,
                     desc: glp.description,
                     id: glp.id,
                     due: glp.availableUntil,
                     avail: glp.availableFrom,
-                }));
+                });
             }
         }
     }
@@ -158,13 +158,13 @@ class CalendarView extends Component {
 
                 console.log(`[Calendar] writing event ${availDate.format()}`);
 
-                this.writeEvent(availDate, new CalendarEvent().attach({
+                this.writeEvent(availDate, {
                     name: glp.name,
                     desc: glp.description,
                     id: glp.id,
                     due: glp.availableUntil,
                     avail: glp.availableFrom,
-                }));
+                });
             }
         }
     }
@@ -268,6 +268,7 @@ class CalendarView extends Component {
             // here we attach the event components
             // if there are any events for this day.
             const eventsProm = [];
+            const rawEventsList = [];
 
             const eventDateKey = cellDate.clone().startOf('D').format();
 
@@ -275,7 +276,8 @@ class CalendarView extends Component {
                 const storedEvents = eventMap.get(eventDateKey);
 
                 for (const event of storedEvents) {
-                    eventsProm.push(event);
+                    rawEventsList.push(event);
+                    eventsProm.push(new CalendarEvent().attach(event));
                 }
             }
 
@@ -287,7 +289,7 @@ class CalendarView extends Component {
                 }
             }
 
-            const encodedEvents = JSON.stringify(eventsProm);
+            const encodedEvents = JSON.stringify(rawEventsList);
 
             const eventList = new CalendarEventList().attach({
                 events: eventsProm,

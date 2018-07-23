@@ -1,15 +1,18 @@
 // @flow
 import moment from 'moment';
 
-import { div, p, a } from '../../../../core/html';
+import { div, p, a, i } from '../../../../core/html';
 import { Component } from '../../../../core/component';
+import nullishCheck from '../../../../core/util';
 
 // an individual cell in the calendar
 class CalendarCell extends Component {
     async render() {
         const { dayNumber, cellDate, eventList, encodedEvents } = this.props;
 
-        const eventsData = JSON.parse(encodedEvents);
+        console.log("ZE ENCODED EVTS ", encodedEvents);
+
+        const eventsData = JSON.parse(nullishCheck(encodedEvents, '[]'));
 
         let classList = '.calendar-cell';
         if (moment().isSame(cellDate, 'D')) {
@@ -26,8 +29,9 @@ class CalendarCell extends Component {
                         window.sessionStorage.setItem('calendarDayData', encodedEvents);
                         this.emit('UpdateCalendarContainer');
                     },
+                    title: await window.bcnI18n.getPhrase('view'),
                 }, 
-                '?'
+                i('.icon-link-ext-alt'),
             )
         );
 
@@ -36,11 +40,11 @@ class CalendarCell extends Component {
             div(
                 '.calendar-cell-meta',
 
+                p('.calendar-day', dayNumber),
+
                 // we only show this button if we have
                 // more than 0 events.
                 eventsData.length === 0 ? [] : viewDayEl,
-
-                p('.calendar-day', dayNumber),
             ), 
             el
         );
