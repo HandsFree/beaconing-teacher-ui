@@ -34,7 +34,8 @@ class GLPDetails extends Component {
 
         const competences = do {
             if (this.state.glp.competences) {
-                ul(listify(this.state.glp.competences));
+                const arr = this.state.glp.competences.map(value => value.replace((/-/g), ' '));
+                ul(listify(arr));
             } else {
                 p('');
             }

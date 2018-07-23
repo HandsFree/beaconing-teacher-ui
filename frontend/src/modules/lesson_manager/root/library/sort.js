@@ -60,14 +60,14 @@ class Sort extends Component {
                 this.initPage = 'ownedDesc';
                 break;
             default:
-                this.initPage = 'ownedDesc';
+                this.initPage = 'recentModDesc';
                 break;
             }
 
             return;
         }
 
-        this.initPage = 'ownedDesc';
+        this.initPage = 'recentModDesc';
     }
 
     async render() {

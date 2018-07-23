@@ -9,6 +9,7 @@ class IFrame extends Component {
             '#authoring-tool',
             {
                 src: `https://authoring-qa.beaconing.eu/glp/${decodeURIComponent(this.props.id)}`,
+                allow: 'geolocation; microphone; camera',
             },
         );
     }

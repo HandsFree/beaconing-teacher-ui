@@ -28,7 +28,11 @@ class NewPlanForm extends Component {
         planAgeGroup: '',
         planYear: '',
         planLearningObjectives: [''],
-        planCompetences: [''],
+        planCompetences: {
+            'communication-and-collaboration': false,
+            'problem-solving': false,
+            'information-fluency': false,
+        },
         planPublic: false,
     };
 
@@ -186,6 +190,13 @@ class NewPlanForm extends Component {
             return;
         }
 
+        const comps = [];
+        for (const [key, value] of Object.entries(this.state.planCompetences)) {
+            if (value) {
+                comps.push(key);
+            }
+        }
+
         const obj = {
             name: this.state.planName,
             category: this.state.planCategory,
@@ -195,7 +206,7 @@ class NewPlanForm extends Component {
             ageGroup: this.state.planAgeGroup,
             year: parseInt(this.state.planYear, 10),
             learningObjectives: this.state.planLearningObjectives,
-            competences: this.state.planCompetences,
+            competences: comps,
             public: this.state.planPublic,
         };
 
@@ -379,24 +390,75 @@ class NewPlanForm extends Component {
                         ),
                         label(
                             span(await window.bcnI18n.getPhrase('lm_plan_comps')),
-                            textarea(
-                                '#plan-competences',
-                                {
-                                    placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_comps'),
-                                    oninput: (event) => {
-                                        const { target } = event;
-                                        const values = target.value.split('\n');
+                            div(
+                                '.radio',
+                                span(await window.bcnI18n.getPhrase('lm_cac')),
+                                input(
+                                    '#plan-lo-cac',
+                                    {
+                                        type: 'checkbox',
+                                        onchange: (event) => {
+                                            const { target } = event;
 
-                                        this.state.planCompetences = values;
+                                            if (target.checked) {
+                                                this.state.planCompetences['communication-and-collaboration'] = true;
+
+                                                return;
+                                            }
+
+                                            this.state.planCompetences['communication-and-collaboration'] = false;
+                                        },
                                     },
-                                },
+                                ),
+                            ),
+                            div(
+                                '.radio',
+                                span(await window.bcnI18n.getPhrase('lm_ps')),
+                                input(
+                                    '#plan-lo-ps',
+                                    {
+                                        type: 'checkbox',
+                                        onchange: (event) => {
+                                            const { target } = event;
+
+                                            if (target.checked) {
+                                                this.state.planCompetences['problem-solving'] = true;
+
+                                                return;
+                                            }
+
+                                            this.state.planCompetences['problem-solving'] = false;
+                                        },
+                                    },
+                                ),
+                            ),
+                            div(
+                                '.radio',
+                                span(await window.bcnI18n.getPhrase('lm_if')),
+                                input(
+                                    '#plan-lo-if',
+                                    {
+                                        type: 'checkbox',
+                                        onchange: (event) => {
+                                            const { target } = event;
+
+                                            if (target.checked) {
+                                                this.state.planCompetences['information-fluency'] = true;
+
+                                                return;
+                                            }
+
+                                            this.state.planCompetences['information-fluency'] = false;
+                                        },
+                                    },
+                                ),
                             ),
                         ),
                         label(
                             span(await window.bcnI18n.getPhrase('lm_vis')),
                             div(
                                 '.radio',
-                                span('Public'),
+                                span(await window.bcnI18n.getPhrase('lm_public')),
                                 input(
                                     '#plan-vis-public',
                                     {
@@ -417,7 +479,7 @@ class NewPlanForm extends Component {
                             ),
                             div(
                                 '.radio',
-                                span('Private'),
+                                span(await window.bcnI18n.getPhrase('lm_private')),
                                 input(
                                     '#plan-vis-private',
                                     {

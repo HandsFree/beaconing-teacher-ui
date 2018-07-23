@@ -52,6 +52,6 @@ func NewLessonPlanWidget(name string, desc string, glpID uint64) entity.LessonPl
 	return entity.LessonPlanWidget{
 		Name: name,
 		Desc: desc,
-		Link: "/lesson_manager#view?id=" + fmt.Sprintf("%d", glpID) + "&prev=lesson_manager",
+		Link: "/lesson_manager#view?id=" + fmt.Sprintf("%d", glpID),
 	}
 }
