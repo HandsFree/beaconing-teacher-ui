@@ -10,8 +10,6 @@ class CalendarCell extends Component {
     async render() {
         const { dayNumber, cellDate, eventList, encodedEvents } = this.props;
 
-        console.log("ZE ENCODED EVTS ", encodedEvents);
-
         const eventsData = JSON.parse(nullishCheck(encodedEvents, '[]'));
 
         let classList = '.calendar-cell';
