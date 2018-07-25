@@ -29,9 +29,9 @@ class NewPlanForm extends Component {
         planYear: '',
         planLearningObjectives: [''],
         planCompetences: {
-            'communication-and-collaboration': false,
-            'problem-solving': false,
-            'information-fluency': false,
+            communicationAndCollaboration: false,
+            problemSolving: false,
+            informationFluency: false,
         },
         planPublic: false,
     };
@@ -401,12 +401,12 @@ class NewPlanForm extends Component {
                                             const { target } = event;
 
                                             if (target.checked) {
-                                                this.state.planCompetences['communication-and-collaboration'] = true;
+                                                this.state.planCompetences.communicationAndCollaboration = true;
 
                                                 return;
                                             }
 
-                                            this.state.planCompetences['communication-and-collaboration'] = false;
+                                            this.state.planCompetences.communicationAndCollaboration = false;
                                         },
                                     },
                                 ),
@@ -422,12 +422,12 @@ class NewPlanForm extends Component {
                                             const { target } = event;
 
                                             if (target.checked) {
-                                                this.state.planCompetences['problem-solving'] = true;
+                                                this.state.planCompetences.problemSolving = true;
 
                                                 return;
                                             }
 
-                                            this.state.planCompetences['problem-solving'] = false;
+                                            this.state.planCompetences.problemSolving = false;
                                         },
                                     },
                                 ),
@@ -443,12 +443,12 @@ class NewPlanForm extends Component {
                                             const { target } = event;
 
                                             if (target.checked) {
-                                                this.state.planCompetences['information-fluency'] = true;
+                                                this.state.planCompetences.informationFluency = true;
 
                                                 return;
                                             }
 
-                                            this.state.planCompetences['information-fluency'] = false;
+                                            this.state.planCompetences.informationFluency = false;
                                         },
                                     },
                                 ),
