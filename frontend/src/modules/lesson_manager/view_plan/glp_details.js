@@ -32,9 +32,27 @@ class GLPDetails extends Component {
             }
         };
 
+        const cac = await window.bcnI18n.getPhrase('lm_cac');
+        const ps = await window.bcnI18n.getPhrase('lm_ps');
+        const info = await window.bcnI18n.getPhrase('lm_if');
+
         const competences = do {
             if (this.state.glp.competences) {
-                const arr = this.state.glp.competences.map(value => value.replace((/-/g), ' '));
+                const arr = this.state.glp.competences.map((value) => {
+                    if (value === 'communicationAndCollaboration') {
+                        return cac;
+                    }
+
+                    if (value === 'problemSolving') {
+                        return ps;
+                    }
+
+                    if (value === 'informationFluency') {
+                        return info;
+                    }
+
+                    return value;
+                });
                 ul(listify(arr));
             } else {
                 p('');
