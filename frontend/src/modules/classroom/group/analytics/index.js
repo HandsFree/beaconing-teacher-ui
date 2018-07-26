@@ -22,6 +22,7 @@ class QuestBox extends Component {
             p(a(
                 {
                     href: dashboardLink,
+                    target: '_BLANK',
                 },
                 'Dashboard Link',
             )),
@@ -49,6 +50,7 @@ class MissionBox extends Component {
                 '.link-underline',
                 {
                     href: dashboardLink,
+                    target: '_BLANK',
                 },
                 'Mission Dashboard Link',
             )),
@@ -67,7 +69,7 @@ class AnalyticsMain extends Component {
         const rawData = nullishCheck(window.sessionStorage.getItem('assignedAnalyticsData'), 'none');
         if (rawData === 'none') {
             console.log('[AnalyticsMain] data not in session storage');
-            return h2('No analytics to display');
+            return h2(await window.bcnI18n.getPhrase('cr_no_analytics'));
         }
 
         // avoid type issues
@@ -93,7 +95,7 @@ class AnalyticsMain extends Component {
 
         if (nullishCheck(theGLP?.dashboardLink, '') === '') {
             console.log('[AnalyticsMain] no dashboard link');
-            return h2('No analytics to display');
+            return h2(await window.bcnI18n.getPhrase('cr_no_analytics'));
         }
 
         const {
@@ -116,6 +118,7 @@ class AnalyticsMain extends Component {
                         '.link-underline',
                         {
                             href: dashboardLink,
+                            target: '_BLANK',
                         },
                         'Main Dashboard Link',
                     ),

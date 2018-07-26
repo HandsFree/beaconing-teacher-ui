@@ -1080,6 +1080,17 @@
         'tr-TR': 'Öğrenci Görüntüle',
         'pt-PT': 'Ver aluno'
     },
+    cr_no_analytics: {
+        'en-GB': 'No analytics to display',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
     cr_view_group: {
         'en-GB': 'View Group',
         'fr-FR': '',

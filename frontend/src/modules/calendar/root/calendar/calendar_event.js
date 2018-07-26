@@ -86,8 +86,12 @@ class CalendarEvent extends Component {
 class CalendarEventList extends Component {
     async render() {
         const { events } = this.props;
-        const el = await Promise.all(events).then(evts => evts);
-        return div('.events', el);
+
+        // we only show one event for now
+
+        const renderList = [];
+        renderList.push(await Promise.resolve(events[0]).then(el => el));
+        return div('.events', renderList);
     }
 }
 

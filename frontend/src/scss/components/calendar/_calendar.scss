@@ -13,7 +13,7 @@
 }
 
 .calendar-cell {
-	height: 20vh;
+	min-height: 20vh;
 }
 
 .calendar-heading-cell {
@@ -32,10 +32,21 @@
 	border: 1px solid #f5f5f5;
 }
 
+.calendar-cell-meta {
+	display: flex;
+	justify-content: space-between;
+}
+
 .calendar-day {
 	font-size: 14pt;
 	font-weight: bold;
 	align-self: flex-end;
+}
+
+.view-calendar-day {
+	font-size: 14pt;
+	align-self: flex-start;
+	color: #e87f62;
 }
 
 .current-day .calendar-day {
@@ -119,4 +130,24 @@
 	padding: 0.5em 1em;
 	margin: 1em;
 	justify-content: space-between;
+}
+
+// TODO
+// this should go in _calendar_day.scss or something
+
+.calendar-day-container {
+	display: block;
+}
+
+.calendar-day-heading {
+	background: #2d353e;
+	border-bottom: 1px solid #a9b5c0;
+	color: #fff;
+	padding: 0 0.8em;
+}
+
+.calendar-day-slot {
+	display: block;
+	border: 1px solid #f5f5f5;
+	padding: 0 0.8em;
 }

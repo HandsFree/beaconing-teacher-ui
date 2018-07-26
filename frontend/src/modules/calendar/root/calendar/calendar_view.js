@@ -1,7 +1,7 @@
 // @flow
 import moment from 'moment';
 
-import { div } from '../../../../core/html';
+import { div, p, a } from '../../../../core/html';
 import { Component } from '../../../../core/component';
 
 import { CalendarEvent, CalendarDueEvent, CalendarEventList } from './calendar_event';
@@ -12,12 +12,6 @@ import nullishCheck from '../../../../core/util';
 // we could abstract cells to avoid the event list
 // stuff and fetch events for each cell including prev
 // and next month ones.
-
-class CalendarDayView extends Component {
-    async render() {
-        return div();
-    }
-}
 
 // the actual calendar
 class CalendarView extends Component {
@@ -92,7 +86,7 @@ class CalendarView extends Component {
     // array or we insert an array when writing an event.
     // note that we strip the time from the date given
     // so that we can index the hashmap just from mm/dd/yyyy
-    async writeEvent(eventDate, event: Component) {
+    async writeEvent(eventDate, event : Object) {
         // store the date in the event object
         // WITH the time included.
         event.date = eventDate.toDate();
@@ -139,13 +133,13 @@ class CalendarView extends Component {
 
                 console.log(`[Calendar] writing GROUP event ${availDate.format()}`);
 
-                this.writeEvent(availDate, new CalendarEvent().attach({
+                this.writeEvent(availDate, {
                     name: glp.name,
                     desc: glp.description,
                     id: glp.id,
                     due: glp.availableUntil,
                     avail: glp.availableFrom,
-                }));
+                });
             }
         }
     }
@@ -153,22 +147,24 @@ class CalendarView extends Component {
     async loadStudentEvents(studentId: number) {
         console.log(`[Calendar] writing events for student ${studentId}`);
 
+        // TODO cache this...?
         const glpBoxes = await this.getStudentGLPS(studentId);
         for (const glpBox of glpBoxes) {
             const { glp } = glpBox;
 
+            // TODO optimize me!
             if (nullishCheck(glp, false) && glpBox.availableFrom) {
                 const availDate = moment(glpBox.availableFrom).startOf('D');
 
                 console.log(`[Calendar] writing event ${availDate.format()}`);
 
-                this.writeEvent(availDate, new CalendarEvent().attach({
+                this.writeEvent(availDate, {
                     name: glp.name,
                     desc: glp.description,
                     id: glp.id,
                     due: glp.availableUntil,
                     avail: glp.availableFrom,
-                }));
+                });
             }
         }
     }
@@ -272,6 +268,7 @@ class CalendarView extends Component {
             // here we attach the event components
             // if there are any events for this day.
             const eventsProm = [];
+            const rawEventsList = [];
 
             const eventDateKey = cellDate.clone().startOf('D').format();
 
@@ -279,7 +276,8 @@ class CalendarView extends Component {
                 const storedEvents = eventMap.get(eventDateKey);
 
                 for (const event of storedEvents) {
-                    eventsProm.push(event);
+                    rawEventsList.push(event);
+                    eventsProm.push(new CalendarEvent().attach(event));
                 }
             }
 
@@ -291,6 +289,8 @@ class CalendarView extends Component {
                 }
             }
 
+            const encodedEvents = JSON.stringify(rawEventsList);
+
             const eventList = new CalendarEventList().attach({
                 events: eventsProm,
             });
@@ -298,6 +298,7 @@ class CalendarView extends Component {
                 dayNumber,
                 cellDate,
                 eventList,
+                encodedEvents,
             });
             rows.push(cell);
         }
