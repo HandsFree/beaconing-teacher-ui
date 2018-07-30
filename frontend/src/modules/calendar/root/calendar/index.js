@@ -59,17 +59,19 @@ class CalendarDayView extends Component {
         return div(
             '.calendar-day-container',
 
-            p(a(
-                '.btn', 
-                {
-                    role: 'button',
-                    onclick: () => {
-                        window.sessionStorage.setItem('calendarDayData', 'none');
-                        this.emit('UpdateCalendarContainer');
+            p(
+                a(
+                    '.btn',
+                    {
+                        role: 'button',
+                        onclick: () => {
+                            window.sessionStorage.setItem('calendarDayData', 'none');
+                            this.emit('UpdateCalendarContainer');
+                        },
+                        href: '#',
                     },
-                    href: '#',
-                }, 
-                'Back to Calendar')
+                    'Back to Calendar',
+                ),
             ),
 
             div(

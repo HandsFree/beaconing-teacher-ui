@@ -17,14 +17,15 @@ class QuestBox extends Component {
         } = this.props;
 
         return div(
-            '.small-box',
+            '.quest-box.flex-spacebetween',
             p(name),
             p(a(
                 {
                     href: dashboardLink,
                     target: '_BLANK',
+                    title: 'Quest specific tracking',
                 },
-                'Dashboard Link',
+                await window.bcnI18n.getPhrase('dashboard_link'),
             )),
         );
     }
@@ -41,23 +42,30 @@ class MissionBox extends Component {
         const questProms = [];
         for (const quest of quests) {
             questProms.push(new QuestBox().attach(quest));
+            questProms.push(new QuestBox().attach(quest));
+            questProms.push(new QuestBox().attach(quest));
+            questProms.push(new QuestBox().attach(quest));
+            questProms.push(new QuestBox().attach(quest));
         }
 
         return div(
-            '.mission-box.margin-block',
-            h3(`${name}`),
-            p(a(
-                '.link-underline',
-                {
-                    href: dashboardLink,
-                    target: '_BLANK',
-                },
-                'Mission Dashboard Link',
-            )),
-
-            h4('Quests:'),
+            '.mission-box.margin-block.small-box',
+            
             div(
-                '.flex-spacebetween.flex-align-stretch.flex-grow',
+                '.flex-spacebetween',
+                h3(`${name}`),
+                p(a(
+                    '.link-underline.btn',
+                    {
+                        href: dashboardLink,
+                        target: '_BLANK',
+                        title: 'Mission specific tracking',
+                    },
+                    'Dashboard',
+                )),
+            ),
+            div(
+                '.quest-box-container',
                 await Promise.all(questProms).then((el => el)),
             ),
         );
@@ -112,18 +120,27 @@ class AnalyticsMain extends Component {
         return [
             div(
                 '.empty-block',
-                h2(`Analytics Overview: ${name}`),
-                p(
-                    a(
-                        '.link-underline',
-                        {
-                            href: dashboardLink,
-                            target: '_BLANK',
-                        },
-                        'Main Dashboard Link',
+
+                div(
+                    '.flex-spacebetween',
+                    h2('.upper', name),
+                    p(
+                        a(
+                            '.btn.link-underline',
+                            {
+                                href: dashboardLink,
+                                target: '_BLANK',
+                            },
+                            await window.bcnI18n.getPhrase('main_dashboard_link'),
+                        ),
                     ),
+                    h2('Analytics Overview'),
                 ),
+
+                p(await window.bcnI18n.getPhrase('main_dashboard_desc')),
             ),
+
+            h3('Missions'),
             await Promise.all(missionProms).then(el => el),
         ];
     }
@@ -166,7 +183,7 @@ class AnalyticsOverview extends RootComponent {
                     main(
                         '#group.no-padding',
                         div(
-                            '.margin-block',
+                            '.margin-block.margin-20',
                             mainEl,
                         ),
                     ),

@@ -160,3 +160,15 @@
 .pointer-hover:hover {
 	cursor: pointer;
 }
+
+.upper {
+	text-transform: uppercase;
+}
+
+.lower {
+	text-transform: lowercase;
+}
+
+.capitalized {
+	text-transform: capitalize;
+}

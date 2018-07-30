@@ -2213,6 +2213,80 @@
         'pt-PT': '',
     },
 
+    // Analytics Page //
+
+    analytics_overview: {
+        'en-GB': 'Analytics Overview',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',        
+    },
+
+    main_dashboard_link: {
+        'en-GB': 'Main Dashboard',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',        
+    },
+
+    main_dashboard_desc: {
+        'en-GB': 'The dashboard links will allow you to track the progress and results for students.',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',        
+    },
+
+    mission_dashboard_desc: {
+        'en-GB': 'This set of dashboards allows you to track the progress and results for students for each individual mini game contained in the mission. You can view overall student progress in the group as well as filter the results by time and student.',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',        
+    },
+
+    quest_dashboard_desc: {
+        'en-GB': 'Similar to the mission Dashboard, the Quest dashboards can track the progress and results of students in a group within a particular mini game at quest level',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',        
+    },
+
+    dashboard_link: {
+        'en-GB': 'Dashboard',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',        
+    },
+
     // Calendar //
 
     cal_view_in_classroom: {

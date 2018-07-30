@@ -37,3 +37,16 @@
 .student-analytics-title {
     display: block;
 }
+
+.quest-box-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+.quest-box {
+    flex: 1 0 20%;
+    margin: 0.25em;
+    background: #f5f5f5;
+    padding: 1em;   
+}
