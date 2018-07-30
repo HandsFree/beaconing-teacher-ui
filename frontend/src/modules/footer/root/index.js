@@ -47,7 +47,7 @@ class Footer extends Component {
                         ),
                     ),
                     span('.cr', '© Beaconing 2018'),
-                    span('.version', 'v0.6.1'),
+                    span('.version', 'v0.6.3'),
                 ),
                 nav(
                     '.fmenu',
