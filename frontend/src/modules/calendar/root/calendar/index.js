@@ -33,6 +33,13 @@ class CalendarDaySlot extends Component {
 }
 
 class CalendarDayView extends Component {
+    async hide() {
+        window.sessionStorage.setItem('calendarDayData', 'none');
+
+        this.emit('UpdateCalendarContainer');
+        this.emit('RefreshCalendarView');
+    }
+    
     async render() {
         const data = window.sessionStorage.getItem('calendarDayData');
         if (data === 'none') {
@@ -65,12 +72,11 @@ class CalendarDayView extends Component {
                     {
                         role: 'button',
                         onclick: () => {
-                            window.sessionStorage.setItem('calendarDayData', 'none');
-                            this.emit('UpdateCalendarContainer');
+                            this.hide();
                         },
                         href: '#',
                     },
-                    'Back to Calendar',
+                    await window.bcnI18n.getPhrase('cal_back_to_calendar'),
                 ),
             ),
 
@@ -132,7 +138,6 @@ class CalendarContainer extends Component {
 
 class Calendar extends RootComponent {
     async init() {
-        window.sessionStorage.setItem('calendarSelection', 'none');
         window.sessionStorage.setItem('calendarDate', moment());
     }
 

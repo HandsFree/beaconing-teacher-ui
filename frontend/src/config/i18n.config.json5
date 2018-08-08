@@ -2289,6 +2289,18 @@
 
     // Calendar //
 
+    cal_back_to_calendar: {
+        'en-GB': 'Back to Calendar',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',
+    },
+
     cal_view_in_classroom: {
         'en-GB': 'View in Classroom',
         'fr-FR': '',

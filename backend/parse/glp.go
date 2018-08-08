@@ -12,13 +12,15 @@ import (
 // all of the glps and then parse the request into a
 // list of entity.GLP's
 func GLPS(s *gin.Context, shouldMinify bool) ([]*entity.GLP, error) {
+
 	resp, err := api.GetGLPS(s, shouldMinify)
 	if err != nil {
 		util.Error("loadPlans", err.Error())
-		return []*entity.GLP{}, err
+		return nil, err
 	}
 
 	var plans []*entity.GLP
+
 	if err := jsoniter.Unmarshal([]byte(resp), &plans); err != nil {
 		util.Error(err.Error())
 		return []*entity.GLP{}, err

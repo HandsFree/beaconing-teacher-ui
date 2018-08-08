@@ -34,7 +34,6 @@ class CalendarEvent extends Component {
         const inspectGLPButtonEl = a(
             {
                 href: `//${window.location.host}/lesson_manager/#view?id=${id}`,
-                target: '_blank',
             }, 
             span(
                 {

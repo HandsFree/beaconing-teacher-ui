@@ -65,14 +65,23 @@ func CreateStudentGroup(s *gin.Context) (string, error) {
 // GetStudentGroups gets all of the student groups
 // currently registered.
 func GetStudentGroups(s *gin.Context) (string, error) {
-	resp, err, status := DoTimedRequest(s, "GET", API.getPath(s, "studentgroups"))
+	cache := BigCacheInstance()
+
+	resp, err := cache.Get("studentgroups")
 	if err != nil {
-		util.Error("GetStudentGroups", err.Error())
-		return "", err
-	}
-	if status != http.StatusOK {
-		util.Info("[GetStudentGroups] Status Returned: ", status)
-		return "", nil
+		resp = func() []byte {
+			resp, err, status := DoTimedRequest(s, "GET", API.getPath(s, "studentgroups"))
+			if err != nil {
+				util.Error("GetStudentGroups", err.Error())
+				return []byte{}
+			}
+			if status != http.StatusOK {
+				util.Info("[GetStudentGroups] Status Returned: ", status)
+				return []byte{}
+			}
+			cache.Set("studentgroups", resp)
+			return resp
+		}()
 	}
 	return string(resp), nil
 }
@@ -80,10 +89,15 @@ func GetStudentGroups(s *gin.Context) (string, error) {
 // GetStudentGroup gets all of the student groups
 // currently registered.
 func GetStudentGroup(s *gin.Context, groupID int) (string, error) {
-	resp, err, status := DoTimedRequest(s, "GET",
-		API.getPath(s, "studentgroups/", fmt.Sprintf("%d", groupID)),
-	)
+	cache := LittleCacheInstance()
 
+	apiPath := API.getPath(s, "studentgroups/", fmt.Sprintf("%d", groupID))
+
+	if resp, err := cache.Get(apiPath); err == nil {
+		return string(resp), nil
+	}
+
+	resp, err, status := DoTimedRequest(s, "GET", apiPath)
 	if err != nil {
 		util.Error("GetStudentGroup", err.Error())
 		return "", err
@@ -94,6 +108,7 @@ func GetStudentGroup(s *gin.Context, groupID int) (string, error) {
 		return "", nil
 	}
 
+	cache.Set(apiPath, resp)
 	return string(resp), nil
 }
 

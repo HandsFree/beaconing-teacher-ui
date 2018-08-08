@@ -10,6 +10,7 @@ import (
 
 	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
+	"github.com/allegro/bigcache"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 )
@@ -27,15 +28,27 @@ func GetUserID(s *gin.Context) (uint64, error) {
 // GetCurrentUser returns an object with information about the current
 // user, as well as the JSON string decoded from the object.
 func GetCurrentUser(s *gin.Context) (*entity.CurrentUser, error) {
-	resp, err, status := DoTimedRequest(s, "GET", API.getPath(s, "currentuser"))
-	if err != nil {
-		util.Error("GetCurrentUser", err.Error())
-		return nil, err
+	cache := LittleCacheInstance()
+
+	doCache := func(cache *bigcache.BigCache) []byte {
+		resp, err, status := DoTimedRequest(s, "GET", API.getPath(s, "currentuser"))
+		if err != nil {
+			util.Error("GetCurrentUser", err.Error())
+			return []byte{}
+		}
+
+		if status != http.StatusOK {
+			util.Info("[GetCurrentUser] Status Returned: ", status)
+			return []byte{}
+		}
+
+		cache.Set("profile", resp)
+		return resp
 	}
 
-	if status != http.StatusOK {
-		util.Info("[GetCurrentUser] Status Returned: ", status)
-		return nil, nil
+	resp, err := cache.Get("profile")
+	if err != nil {
+		resp = doCache(cache)
 	}
 
 	teacher := &entity.CurrentUser{}
@@ -67,6 +80,13 @@ func GetCurrentUser(s *gin.Context) (*entity.CurrentUser, error) {
 }
 
 func getUserAvatar(s *gin.Context, id uint64) (string, error) {
+	cache := LittleCacheInstance()
+
+	avatar, err := cache.Get("avatar")
+	if err == nil {
+		return string(avatar), nil
+	}
+
 	query := "SELECT avatar_blob FROM student_avatar WHERE student_id = $1"
 	rows, err := API.db.Query(query, id)
 	if err != nil {
@@ -84,7 +104,9 @@ func getUserAvatar(s *gin.Context, id uint64) (string, error) {
 			continue
 		}
 
-		return string(avatarHash), nil
+		data := avatarHash
+		cache.Set("avatar", data)
+		return string(data), nil
 	}
 
 	if err := rows.Err(); err != nil {

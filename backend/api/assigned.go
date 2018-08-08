@@ -159,17 +159,27 @@ func AssignGroupToGLP(s *gin.Context, groupID uint64, glpID uint64, from, to tim
 // GetAssignedGLPS returns a JSON string of all of the
 // glps that have been assigned to the given student {studentID}.
 func GetAssignedGLPS(s *gin.Context, studentID uint64) string {
-	resp, err, status := DoTimedRequest(s, "GET",
-		API.getPath(s, "students/", fmt.Sprintf("%d", studentID), "/assignedGlps"),
-	)
+	cache := BigCacheInstance()
+
+	apiPath := API.getPath(s, "students/", fmt.Sprintf("%d", studentID), "/assignedGlps")
+
+	resp, err := cache.Get(apiPath)
 	if err != nil {
-		util.Error("GetAssignedGLPS", err.Error())
-		return ""
+		resp, err, status := DoTimedRequest(s, "GET", apiPath)
+		if err != nil {
+			util.Error("GetAssignedGLPS", err.Error())
+			return ""
+		}
+
+		if status != http.StatusOK {
+			util.Info("[GetAssignedGLPS] Status Returned: ", status)
+			return ""
+		}
+
+		cache.Set(apiPath, []byte(resp))
+		return string(resp)
 	}
-	if status != http.StatusOK {
-		util.Info("[GetAssignedGLPS] Status Returned: ", status)
-		return ""
-	}
+
 	return string(resp)
 }
 
@@ -192,9 +202,14 @@ func GetStudentAssignedGLPS(s *gin.Context, studentID uint64) string {
 // GetGroupAssignedGLPS returns a JSON string of all of the
 // glps that have been assigned to the given group {groupID}.
 func GetGroupAssignedGLPS(s *gin.Context, groupID uint64) string {
-	resp, err, status := DoTimedRequest(s, "GET",
-		API.getPath(s, "studentgroups/", fmt.Sprintf("%d", groupID), "/assignedGlps"),
-	)
+	cache := LittleCacheInstance()
+	apiPath := API.getPath(s, "studentgroups/", fmt.Sprintf("%d", groupID), "/assignedGlps")
+
+	if resp, err := cache.Get(apiPath); err == nil {
+		return string(resp)
+	}
+
+	resp, err, status := DoTimedRequest(s, "GET", apiPath)
 	if err != nil {
 		util.Error("GetGroupAssignedGLPS", err.Error())
 		return ""
@@ -203,6 +218,8 @@ func GetGroupAssignedGLPS(s *gin.Context, groupID uint64) string {
 		util.Info("[GetGroupAssignedGLPS] Status Returned: ", status)
 		return ""
 	}
+
+	cache.Set(apiPath, resp)
 	return string(resp)
 }
 
@@ -252,7 +269,6 @@ func DeleteAssignedGLP(s *gin.Context, studentID uint64, linkID uint64) string {
 func DeleteGroupAssignedGLP(s *gin.Context, groupID uint64, glpID uint64) string {
 	/* TODO
 
-	?!?!?!?!?!? FIXMEFIFXME ?!
 	if err := removeActivePlan(s, glpID); err != nil {
 		util.Error("Failed to remove active plan", err.Error())
 		return ""

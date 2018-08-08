@@ -12,6 +12,7 @@ import (
 	"github.com/HandsFree/beaconing-teacher-ui/backend/activity"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
+	"github.com/allegro/bigcache"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 )
@@ -245,9 +246,15 @@ func GetRecentlyAssignedGLPS(s *gin.Context, reverse bool) ([]*entity.GLP, error
 // GetGLPS requests all of the GLPs from the core
 // API returned as a json string
 func GetGLPS(s *gin.Context, minify bool) (string, error) {
-	resp, err, status := DoTimedRequest(s, "GET",
-		API.getPath(s, "gamifiedlessonpaths/", fmt.Sprintf("?noContent=%s", strconv.FormatBool(minify))),
-	)
+	cache := BigCacheInstance()
+	apiPath := API.getPath(s, "gamifiedlessonpaths/", fmt.Sprintf("?noContent=%s", strconv.FormatBool(minify)))
+
+	resp, err := cache.Get(apiPath)
+	if err == nil {
+		return string(resp), nil
+	}
+
+	resp, err, status := DoTimedRequest(s, "GET", apiPath)
 	if err != nil {
 		util.Error("GetGLPS", err.Error())
 		return "", err
@@ -257,32 +264,48 @@ func GetGLPS(s *gin.Context, minify bool) (string, error) {
 		return "", nil
 	}
 
-	response := string(resp)
-	cacheData("glps", response)
-	return response, nil
+	cache.Set(apiPath, resp)
+	return string(resp), nil
 }
 
 // GetGLP requests the GLP with the given id, this function returns
 // the string of json retrieved _as well as_ the parsed json object
 // see entity.GLP
 func GetGLP(s *gin.Context, id uint64, minify bool) (*entity.GLP, error) {
-	resp, err, status := DoTimedRequest(s, "GET",
-		API.getPath(s, "gamifiedlessonpaths/",
-			fmt.Sprintf("%d", id),
-			fmt.Sprintf("?noContent=%s", strconv.FormatBool(minify))),
-	)
-	if err != nil {
-		util.Error("GetGLP", err.Error())
-		return nil, err
+	cache := LittleCacheInstance()
+
+	apiPath := API.getPath(s, "gamifiedlessonpaths/",
+		fmt.Sprintf("%d", id),
+		fmt.Sprintf("?noContent=%s", strconv.FormatBool(minify)))
+
+	doCache := func(cache *bigcache.BigCache) []byte {
+		resp, err, status := DoTimedRequest(s, "GET", apiPath)
+
+		if err != nil {
+			util.Error("GetGLP", err.Error())
+			return []byte{}
+		}
+
+		if status != http.StatusOK {
+			util.Info("[GetGLP] Status Returned: ", status)
+			return []byte{}
+		}
+
+		payLoad := []byte(resp)
+		cache.Set(apiPath, payLoad)
+		return payLoad
 	}
 
-	if status != http.StatusOK {
-		util.Info("[GetGLP] Status Returned: ", status)
-		return nil, nil
+	resp, err := cache.Get(apiPath)
+	if err != nil {
+		resp = doCache(cache)
 	}
 
 	data := &entity.GLP{}
 	if err := jsoniter.Unmarshal(resp, data); err != nil {
+		// bad cache data. recache
+		doCache(cache)
+
 		util.Error("GetGLP", err.Error())
 		return nil, err
 	}
