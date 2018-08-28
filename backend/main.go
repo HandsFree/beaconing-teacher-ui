@@ -9,6 +9,8 @@ import (
 	"os/signal"
 	"time"
 
+	"github.com/bcicen/grmon/agent"
+
 	"github.com/HandsFree/beaconing-teacher-ui/backend/api"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/cfg"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/serv"
@@ -17,6 +19,11 @@ import (
 
 func main() {
 	cfg.LoadConfig()
+	if cfg.Beaconing.Debug.Grmon {
+		grmon.Start()
+		util.Log(util.VerboseLog, "grmon started")
+	}
+
 	api.SetupAPIHelper()
 
 	server := &http.Server{
