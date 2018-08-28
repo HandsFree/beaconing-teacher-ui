@@ -75,6 +75,7 @@
 	border: 2px solid darken($secondary_element_colour, 10%);
 	background: darken($secondary_element_colour, 5%);
 	text-shadow: 0 0 1px rgba($primary_font_colour, 0.15);
+	font-weight: 400;
 
 	&.no-left-margin {
 		margin-left: 0;
@@ -93,10 +94,35 @@
 	border: 2px solid darken($bcn_light_orange, 30%);
 	background: darken($bcn_light_orange, 20%);
 	text-shadow: 0 0 1px rgba($primary_font_colour, 0.15);
-	// border: none;
+	font-weight: 400;
 
 	&:hover {
 		cursor: pointer;
 		background: darken($bcn_light_orange, 15%);
+	}
+}
+
+.button-submit {
+	margin: 0.75em;
+	padding: 0.75em;
+	color: white;
+	border: 2px solid darken(#17783a, 5%);
+	background: #17783a;
+	text-shadow: 0 0 1px rgba($primary_font_colour, 0.15);
+	font-weight: 400;
+
+	&.disabled {
+		border: 2px solid #b4b4b4;
+		background: #d8d8d8;
+
+		&:hover {
+			cursor: not-allowed;
+			background: #d8d8d8;
+		}
+	}
+
+	&:hover {
+		cursor: pointer;
+		background: lighten(#17783a, 5%);
 	}
 }
