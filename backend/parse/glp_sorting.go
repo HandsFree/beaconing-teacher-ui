@@ -158,7 +158,14 @@ func SortByOwnedByMe(s *gin.Context, plans []*entity.GLP, order SortingOption) (
 	result := []*entity.GLP{}
 	for _, pl := range plans {
 		if pl.OwnedByMe {
-			result = append(result, pl)
+			switch order {
+			case Ascending:
+				result = append(result, pl)
+			case Descending:
+				result = append([]*entity.GLP{pl}, result...)
+			default:
+				result = append(result, pl)
+			}
 		}
 	}
 	return result, nil
