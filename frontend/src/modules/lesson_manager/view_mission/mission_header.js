@@ -62,7 +62,7 @@ class MissionHeader extends Component {
                 ),
                 a(
                     {
-                        href: `//${window.location.host}/authoring_tool?id=${encodeURIComponent(this.state.glp.id)}`,
+                        href: `#edit?id=${encodeURIComponent(this.state.glp.id)}`,
                     },
                     await window.bcnI18n.getPhrase('edit'),
                 ),
