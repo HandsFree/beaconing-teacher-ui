@@ -30,8 +30,16 @@ type GLPModel struct {
 
 func PutGLPRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
-		resp, err := api.PutGLP(s)
+		glpID, err := strconv.Atoi(s.Param("id"))
 		if err != nil {
+			util.Error("PutGLPRequest", err.Error())
+			s.AbortWithError(http.StatusBadRequest, err)
+			return
+		}
+
+		resp, err := api.PutGLP(s, glpID)
+		if err != nil {
+			util.Error("PutGLPRequest", err.Error())
 			s.AbortWithError(http.StatusBadRequest, err)
 			return
 		}

@@ -56,11 +56,6 @@ func registerAPI(router *gin.Engine) {
 		students.GET("/", req.GetStudentsRequest())
 		students.GET("/:id/assignedglps", req.GetAssignedGLPsRequest())
 		students.DELETE("/:id/assignedglps/:glp", req.DeleteAssignedGLPsRequest())
-
-		// TODO!
-		// PUT
-		// POST id/assigned glps
-		// students.POST("/", req.PostStudentsRequest())
 	}
 
 	profile := v1.Group("profile")
@@ -81,6 +76,7 @@ func registerAPI(router *gin.Engine) {
 
 		glp.DELETE("/:id", req.DeleteGLPRequest())
 		glp.POST("/", req.PostGLPRequest())
+		glp.PUT("/:id", req.PutGLPRequest())
 	}
 
 	studentGroups := v1.Group("studentgroups")
