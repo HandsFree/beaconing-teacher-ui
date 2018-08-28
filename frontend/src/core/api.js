@@ -179,6 +179,22 @@ class APICore {
         return glpStatus;
     }
 
+    async updateGLP(glpID: number, data: { [string]: string | Object }) {
+        const glpJSON = JSON.stringify(data);
+
+        let glpStatus = false;
+
+        const glp = await this.put(`//${window.location.host}/api/v1/glp/${glpID}`, glpJSON);
+
+        console.log(glp);
+
+        if (typeof glp === 'object' && glp.success) {
+            glpStatus = true;
+        }
+
+        return glpStatus;
+    }
+
     async getStudents() {
         const students = await this.get(`//${window.location.host}/api/v1/students`);
 
