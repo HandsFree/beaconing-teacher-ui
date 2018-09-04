@@ -7,10 +7,11 @@ import {
     h1,
     form,
     input,
-    p,
     label,
     span,
     textarea,
+    select,
+    option,
 } from '../../../core/html';
 
 import { Component } from '../../../core/component';
@@ -19,9 +20,9 @@ import PostCreation from './post_creation';
 import nullishCheck from '../../../core/util';
 
 class NewPlanForm extends Component {
-    state = {
+    stateObj = {
         planName: '',
-        planCategory: 'default',
+        planCategory: 'science',
         planDescription: '',
         planDomain: '',
         planTopic: '',
@@ -36,9 +37,42 @@ class NewPlanForm extends Component {
         planPublic: false,
     };
 
+    stateProxy = {
+        set(obj, prop, value) {
+            let trimmedValue = value;
+
+            if (typeof value === 'string') {
+                trimmedValue = value.trim();
+            }
+
+            if (Array.isArray(value)) {
+                trimmedValue = value.map(v => v.trim())
+                    .filter(v => v !== '');
+            }
+
+            // console.log(trimmedValue);
+
+            return Reflect.set(obj, prop, trimmedValue);
+        },
+    };
+
+    state = new Proxy(this.stateObj, this.stateProxy);
+
     updateHooks = {
         ResetForm: this.resetForm,
     };
+
+    enabledErrors = [];
+
+    glps = {};
+
+    async init() {
+        const glps = await window.beaconingAPI.getGLPs('owned', 'desc', true);
+
+        if (glps) {
+            this.glps = glps;
+        }
+    }
 
     async resetForm() {
         this.state = {
@@ -49,10 +83,16 @@ class NewPlanForm extends Component {
             planTopic: '',
             planAgeGroup: '',
             planYear: '',
-            planLearningObjectives: [''],
-            planCompetences: [''],
+            planLearningObjectives: [],
+            planCompetences: {
+                communicationAndCollaboration: false,
+                problemSolving: false,
+                informationFluency: false,
+            },
             planPublic: false,
         };
+
+        this.removeErrors();
 
         this.updateView(await this.render());
     }
@@ -62,117 +102,180 @@ class NewPlanForm extends Component {
         planButton.textContent = await window.bcnI18n.getPhrase('lm_create_plan');
     }
 
-    async checkFields() {
-        // TODO: reduce duped code
-        if (this.state.planName === '') {
-            const statusMessage = new Status();
-            const statusMessageEl = await statusMessage.attach({
-                elementID: 'plan-name',
-                heading: 'Error',
-                type: 'error',
-                message: (await window.bcnI18n.getPhrase('empty_field')).replace('%s', `'${await window.bcnI18n.getPhrase('lm_plan_name')}'`),
-            });
+    removeErrors() {
+        for (const v of this.enabledErrors) {
+            this.removeError(v);
+        }
+    }
 
-            this.appendView(statusMessageEl);
+    addError(elementID: string, errMsg: string) {
+        const el = document.getElementById(elementID);
+        const labelGroup = el?.parentElement?.parentElement;
+        const errEl = div(
+            '.flex-align-center',
+            i('.icon-cancel', { attrs: { 'aria-hidden': true } }),
+            span(errMsg),
+        );
 
-            this.resetSubmit();
-
-            return false;
+        if (this.enabledErrors.indexOf(elementID) === -1) {
+            this.enabledErrors.push(elementID);
         }
 
-        const glps = await window.beaconingAPI.getGLPs('owned', 'desc', true);
+        if (nullishCheck(el, false) && nullishCheck(labelGroup, false)) {
+            labelGroup.classList.remove('loading');
+            labelGroup.classList.remove('success');
+            labelGroup.classList.add('error');
+            // console.log(el);
+            if (el.childElementCount > 0) {
+                el.replaceChild(errEl, el.firstElementChild);
+            }
 
-        if (nullishCheck(glps, false)) {
-            const statusMessage = new Status();
-            const statusMessageEl = await statusMessage.attach({
-                elementID: 'plan-name',
-                heading: 'Error',
-                type: 'error',
-                message: (await window.bcnI18n.getPhrase('glp_name_exists')),
-            });
+            el.appendChild(errEl);
+        }
+    }
 
-            for (const glp of glps) {
-                if (glp.name.toLowerCase() === this.state.planName.toLowerCase()) {
-                    this.appendView(statusMessageEl);
+    addLoading(elementID: string) {
+        const el = document.getElementById(elementID);
+        const labelGroup = el?.parentElement?.parentElement;
+        const loadingEl = i('.icon-load', { attrs: { 'aria-hidden': true } });
 
-                    this.resetSubmit();
+        if (nullishCheck(el, false) && nullishCheck(labelGroup, false)) {
+            labelGroup.classList.remove('error');
+            labelGroup.classList.remove('success');
+            labelGroup.classList.add('loading');
+            if (el.childElementCount > 0) {
+                el.replaceChild(loadingEl, el.firstElementChild);
+            }
 
-                    return false;
-                }
+            el.appendChild(loadingEl);
+        }
+    }
+
+    addSuccess(elementID: string) {
+        const el = document.getElementById(elementID);
+        const labelGroup = el?.parentElement?.parentElement;
+        const successEl = i('.icon-ok', { attrs: { 'aria-hidden': true } });
+
+        if (nullishCheck(el, false) && nullishCheck(labelGroup, false)) {
+            if (this.enabledErrors.indexOf(elementID) !== -1) {
+                delete this.enabledErrors[elementID];
+                labelGroup.classList.remove('error');
+            }
+
+            labelGroup.classList.remove('loading');
+            labelGroup.classList.add('success');
+            if (el.childElementCount > 0) {
+                el.replaceChild(successEl, el.firstElementChild);
+            }
+
+            el.appendChild(successEl);
+        }
+    }
+
+    removeError(elementID: string) {
+        if (this.enabledErrors.indexOf(elementID) !== -1) {
+            const el = document.getElementById(elementID);
+            const labelGroup = el?.parentElement?.parentElement;
+
+            if (nullishCheck(el, false) && nullishCheck(labelGroup, false)) {
+                labelGroup.classList.remove('error');
+                el.innerHTML = '';
+            }
+
+            delete this.enabledErrors[elementID];
+        }
+    }
+
+    removeAll(elementID: string) {
+        const el = document.getElementById(elementID);
+        const labelGroup = el?.parentElement?.parentElement;
+
+        if (nullishCheck(el, false) && nullishCheck(labelGroup, false)) {
+            labelGroup.classList.remove('loading');
+            labelGroup.classList.remove('success');
+
+            if (this.enabledErrors.indexOf(elementID) !== -1) {
+                delete this.enabledErrors[elementID];
+                labelGroup.classList.remove('error');
+            }
+
+            el.innerHTML = '';
+        }
+    }
+
+    async checkGLPName() {
+        const errMsg = await window.bcnI18n.getPhrase('glp_name_exists');
+
+        if (this.state.planName === '') {
+            this.removeAll('plan-name-status');
+
+            return true;
+        }
+
+        for (const glp of this.glps) {
+            if (glp.name.toLowerCase() === this.state.planName.toLowerCase()) {
+                this.addError('plan-name-status', errMsg);
+                this.resetSubmit();
+
+                return false;
             }
         }
 
+        this.addSuccess('plan-name-status');
+        return true;
+    }
+
+    async checkFields() {
+        let success = true;
+        const emptyMsg = await window.bcnI18n.getPhrase('required_empty');
+
+        if (this.state.planName === '') {
+            this.addError('plan-name-status', emptyMsg);
+            success = false;
+        }
+
+        if (this.state.planName !== '' && !(await this.checkGLPName())) {
+            success = false;
+        }
+
         if (this.state.planDescription === '') {
-            const statusMessage = new Status();
-            const statusMessageEl = await statusMessage.attach({
-                elementID: 'plan-description',
-                heading: 'Error',
-                type: 'error',
-                message: (await window.bcnI18n.getPhrase('empty_field')).replace('%s', `'${await window.bcnI18n.getPhrase('lm_plan_desc')}'`),
-            });
-
-            this.appendView(statusMessageEl);
-
-            this.resetSubmit();
-
-            return false;
+            this.addError('plan-desc-status', emptyMsg);
+            success = false;
         }
 
         if (this.state.planDomain === '') {
-            const statusMessage = new Status();
-            const statusMessageEl = await statusMessage.attach({
-                elementID: 'plan-domain',
-                heading: 'Error',
-                type: 'error',
-                message: (await window.bcnI18n.getPhrase('empty_field')).replace('%s', `'${await window.bcnI18n.getPhrase('lm_plan_domain')}'`),
-            });
-
-            this.appendView(statusMessageEl);
-
-            this.resetSubmit();
-
-            return false;
+            this.addError('plan-domain-status', emptyMsg);
+            success = false;
         }
 
         if (this.state.planTopic === '') {
-            const statusMessage = new Status();
-            const statusMessageEl = await statusMessage.attach({
-                elementID: 'plan-topic',
-                heading: 'Error',
-                type: 'error',
-                message: (await window.bcnI18n.getPhrase('empty_field')).replace('%s', `'${await window.bcnI18n.getPhrase('lm_plan_topic')}'`),
-            });
-
-            this.appendView(statusMessageEl);
-
-            this.resetSubmit();
-
-            return false;
+            this.addError('plan-topic-status', emptyMsg);
+            success = false;
         }
 
         if (this.state.planAgeGroup === '') {
-            const statusMessage = new Status();
-            const statusMessageEl = await statusMessage.attach({
-                elementID: 'plan-age-group',
-                heading: 'Error',
-                type: 'error',
-                message: (await window.bcnI18n.getPhrase('empty_field')).replace('%s', `'${await window.bcnI18n.getPhrase('lm_plan_ag')}'`),
-            });
-
-            this.appendView(statusMessageEl);
-
-            this.resetSubmit();
-
-            return false;
+            this.addError('plan-ag-status', emptyMsg);
+            success = false;
         }
 
         if (this.state.planYear === '') {
+            this.addError('plan-year-status', emptyMsg);
+            success = false;
+        }
+
+        if (this.state.planYear !== '' && !(/^[0-9]{4}$/).test(this.state.planYear)) {
+            const errMsg = await window.bcnI18n.getPhrase('plan_year_not_valid');
+            this.addError('plan-year-status', errMsg);
+            success = false;
+        }
+
+        if (!success) {
             const statusMessage = new Status();
             const statusMessageEl = await statusMessage.attach({
-                elementID: 'plan-year',
+                elementID: false,
                 heading: 'Error',
                 type: 'error',
-                message: (await window.bcnI18n.getPhrase('empty_field')).replace('%s', `'${await window.bcnI18n.getPhrase('lm_plan_year')}'`),
+                message: await window.bcnI18n.getPhrase('form_error'),
             });
 
             this.appendView(statusMessageEl);
@@ -269,241 +372,386 @@ class NewPlanForm extends Component {
             section(
                 '.flex-column',
                 div(
-                    '.margin-25.flex-column',
-                    div(
-                        '.general-info',
-                        p(await window.bcnI18n.getPhrase('lm_enter_plan_info')),
-                    ),
+                    '.flex-column',
                     form(
                         '.create-new-plan',
-                        label(
-                            span(await window.bcnI18n.getPhrase('lm_plan_name')),
-                            input(
-                                '#plan-name.text-field',
-                                {
-                                    type: 'text',
-                                    placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_name'),
-                                    oninput: (event) => {
-                                        const { target } = event;
+                        div(
+                            '.label-group',
+                            div(
+                                '.split',
+                                div('.title-area', span(await window.bcnI18n.getPhrase('lm_plan_name'))),
+                                div('.desc-area', await window.bcnI18n.getPhrase('lm_plan_name_desc')),
+                                div(
+                                    '.input-area',
+                                    label(
+                                        '.required',
+                                        input(
+                                            '#plan-name.text-field',
+                                            {
+                                                type: 'text',
+                                                placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_name'),
+                                                oninput: (event) => {
+                                                    const { target } = event;
 
-                                        this.state.planName = target.value;
-                                    },
-                                    required: true,
-                                },
+                                                    this.state.planName = target.value;
+                                                    this.addLoading('plan-name-status');
+                                                    this.checkGLPName();
+                                                },
+                                                required: true,
+                                            },
+                                        ),
+                                    ),
+                                ),
+                                div('#plan-name-status.status-area'),
                             ),
                         ),
-                        label(
-                            span(await window.bcnI18n.getPhrase('lm_plan_desc')),
-                            textarea(
-                                '#plan-description',
-                                {
-                                    placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_desc'),
-                                    oninput: (event) => {
-                                        const { target } = event;
+                        div(
+                            '.label-group',
+                            div(
+                                '.split',
+                                div('.title-area', span(await window.bcnI18n.getPhrase('lm_plan_desc'))),
+                                div('.desc-area', await window.bcnI18n.getPhrase('lm_plan_desc_desc')),
+                                div(
+                                    '.input-area',
+                                    label(
+                                        '.required.word-count',
+                                        textarea(
+                                            '#plan-description',
+                                            {
+                                                placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_desc'),
+                                                oninput: (event) => {
+                                                    const { target } = event;
+                                                    const { value } = target;
+                                                    const { length } = value.replace((/\n/g), '');
+                                                    const countEl = document.querySelector('#plan-description ~ span');
 
-                                        this.state.planDescription = target.value;
-                                    },
-                                    required: true,
-                                },
+                                                    this.state.planDescription = value;
+                                                    countEl.textContent = length;
+                                                },
+                                                required: true,
+                                            },
+                                        ),
+                                        span('.count', '0'),
+                                    ),
+                                ),
+                                div('#plan-desc-status.status-area'),
                             ),
                         ),
-                        label(
-                            span(await window.bcnI18n.getPhrase('lm_plan_domain')),
-                            input(
-                                '#plan-domain.text-field',
-                                {
-                                    type: 'text',
-                                    placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_domain'),
-                                    oninput: (event) => {
-                                        const { target } = event;
+                        div(
+                            '.label-group',
+                            div(
+                                '.split',
+                                div('.title-area', span(await window.bcnI18n.getPhrase('lm_plan_cat'))),
+                                div('.desc-area', await window.bcnI18n.getPhrase('lm_plan_cat_desc')),
+                                div(
+                                    '.input-area',
+                                    label(
+                                        '.select.required',
+                                        select(
+                                            '#plan-category',
+                                            {
+                                                onchange: (event) => {
+                                                    const { target } = event;
 
-                                        this.state.planDomain = target.value;
-                                    },
-                                    required: true,
-                                },
+                                                    this.state.planCategory = target.value;
+                                                },
+                                                required: true,
+                                            },
+                                            option(await window.bcnI18n.getPhrase('lm_science'), { value: 'science' }),
+                                            option(await window.bcnI18n.getPhrase('lm_tech'), { value: 'technology' }),
+                                            option(await window.bcnI18n.getPhrase('lm_eng'), { value: 'engineering' }),
+                                            option(await window.bcnI18n.getPhrase('lm_maths'), { value: 'maths' }),
+                                        ),
+                                    ),
+                                ),
+                                div('#plan-category-status.status-area'),
                             ),
                         ),
-                        label(
-                            span(await window.bcnI18n.getPhrase('lm_plan_topic')),
-                            input(
-                                '#plan-topic.text-field',
-                                {
-                                    type: 'text',
-                                    placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_topic'),
-                                    oninput: (event) => {
-                                        const { target } = event;
+                        div(
+                            '.label-group',
+                            div(
+                                '.split',
+                                div('.title-area', span(await window.bcnI18n.getPhrase('lm_plan_domain'))),
+                                div('.desc-area', await window.bcnI18n.getPhrase('lm_plan_domain_desc')),
+                                div(
+                                    '.input-area',
+                                    label(
+                                        '.required',
+                                        input(
+                                            '#plan-domain.text-field',
+                                            {
+                                                type: 'text',
+                                                placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_domain'),
+                                                oninput: (event) => {
+                                                    const { target } = event;
 
-                                        this.state.planTopic = target.value;
-                                    },
-                                    required: true,
-                                },
+                                                    this.state.planDomain = target.value;
+                                                },
+                                                required: true,
+                                            },
+                                        ),
+                                    ),
+                                ),
+                                div('#plan-domain-status.status-area'),
                             ),
                         ),
-                        label(
-                            span(await window.bcnI18n.getPhrase('lm_plan_ag')),
-                            input(
-                                '#plan-age-group.text-field',
-                                {
-                                    type: 'text',
-                                    placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_ag'),
-                                    oninput: (event) => {
-                                        const { target } = event;
+                        div(
+                            '.label-group',
+                            div(
+                                '.split',
+                                div('.title-area', span(await window.bcnI18n.getPhrase('lm_plan_topic'))),
+                                div('.desc-area', await window.bcnI18n.getPhrase('lm_plan_topic_desc')),
+                                div(
+                                    '.input-area',
+                                    label(
+                                        '.required',
+                                        input(
+                                            '#plan-topic.text-field',
+                                            {
+                                                type: 'text',
+                                                placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_topic'),
+                                                oninput: (event) => {
+                                                    const { target } = event;
 
-                                        this.state.planAgeGroup = target.value;
-                                    },
-                                    required: true,
-                                },
+                                                    this.state.planTopic = target.value;
+                                                },
+                                                required: true,
+                                            },
+                                        ),
+                                    ),
+                                ),
+                                div('#plan-topic-status.status-area'),
                             ),
                         ),
-                        label(
-                            span(await window.bcnI18n.getPhrase('lm_plan_year')),
-                            input(
-                                '#plan-year.text-field',
-                                {
-                                    type: 'text',
-                                    placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_year'),
-                                    pattern: '[0-9]{4}',
-                                    oninput: (event) => {
-                                        const { target } = event;
+                        div(
+                            '.label-group',
+                            div(
+                                '.split',
+                                div('.title-area', span(await window.bcnI18n.getPhrase('lm_plan_ag'))),
+                                div('.desc-area', await window.bcnI18n.getPhrase('lm_plan_ag_desc')),
+                                div(
+                                    '.input-area',
+                                    label(
+                                        '.required',
+                                        input(
+                                            '#plan-age-group.text-field',
+                                            {
+                                                type: 'text',
+                                                placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_ag'),
+                                                oninput: (event) => {
+                                                    const { target } = event;
 
-                                        this.state.planYear = target.value;
-                                    },
-                                    required: true,
-                                },
+                                                    this.state.planAgeGroup = target.value;
+                                                },
+                                                required: true,
+                                            },
+                                        ),
+                                    ),
+                                ),
+                                div('#plan-ag-status.status-area'),
+                            ),
+                        ),
+                        div(
+                            '.label-group',
+                            div(
+                                '.split',
+                                div('.title-area', span(await window.bcnI18n.getPhrase('lm_plan_year'))),
+                                div('.desc-area', await window.bcnI18n.getPhrase('lm_plan_year_desc')),
+                                div(
+                                    '.input-area',
+                                    label(
+                                        '.required',
+                                        input(
+                                            '#plan-year.text-field',
+                                            {
+                                                type: 'text',
+                                                placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_year'),
+                                                pattern: '[0-9]{4}',
+                                                oninput: (event) => {
+                                                    const { target } = event;
+
+                                                    this.state.planYear = target.value;
+                                                },
+                                                required: true,
+                                            },
+                                        ),
+                                    ),
+                                ),
+                                div('#plan-year-status.status-area'),
                             ),
                         ),
                         // TODO: change to more user friendly solution
-                        label(
-                            span(await window.bcnI18n.getPhrase('lm_plan_los')),
-                            textarea(
-                                '#plan-learning-objectives',
-                                {
-                                    placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_los'),
-                                    oninput: (event) => {
-                                        const { target } = event;
-                                        const values = target.value.split('\n');
+                        div(
+                            '.label-group',
+                            div(
+                                '.split',
+                                div('.title-area', span(await window.bcnI18n.getPhrase('lm_plan_los'))),
+                                div('.desc-area', await window.bcnI18n.getPhrase('lm_plan_los_desc')),
+                                div(
+                                    '.input-area',
+                                    label(
+                                        '.word-count',
+                                        textarea(
+                                            '#plan-learning-objectives',
+                                            {
+                                                placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_los'),
+                                                oninput: (event) => {
+                                                    const { target } = event;
+                                                    const { value } = target;
+                                                    const { length } = value.replace((/\n/g), '');
+                                                    const countEl = document.querySelector('#plan-learning-objectives ~ span');
+                                                    const values = value.split('\n');
 
-                                        this.state.planLearningObjectives = values;
-                                    },
-                                },
+                                                    this.state.planLearningObjectives = values;
+                                                    countEl.textContent = length;
+                                                },
+                                            },
+                                        ),
+                                        span('.count', '0'),
+                                    ),
+                                ),
+                                div('.status-area'),
                             ),
                         ),
-                        label(
-                            span(await window.bcnI18n.getPhrase('lm_plan_comps')),
+                        div(
+                            '.label-group',
                             div(
-                                '.radio',
-                                span(await window.bcnI18n.getPhrase('lm_cac')),
-                                input(
-                                    '#plan-lo-cac',
-                                    {
-                                        type: 'checkbox',
-                                        onchange: (event) => {
-                                            const { target } = event;
+                                '.split',
+                                div('.title-area', span(await window.bcnI18n.getPhrase('lm_plan_comps'))),
+                                div('.desc-area', await window.bcnI18n.getPhrase('lm_plan_comps_desc')),
+                                div(
+                                    '.input-area.flex-column',
+                                    label(
+                                        '.inline',
+                                        input(
+                                            '#plan-lo-cac',
+                                            {
+                                                type: 'checkbox',
+                                                onchange: (event) => {
+                                                    const { target } = event;
 
-                                            if (target.checked) {
-                                                this.state.planCompetences.communicationAndCollaboration = true;
+                                                    if (target.checked) {
+                                                        this.state.planCompetences.communicationAndCollaboration = true;
 
-                                                return;
-                                            }
+                                                        return;
+                                                    }
 
-                                            this.state.planCompetences.communicationAndCollaboration = false;
-                                        },
-                                    },
+                                                    this.state.planCompetences.communicationAndCollaboration = false;
+                                                },
+                                            },
+                                        ),
+                                        div('.check-box'),
+                                        span(await window.bcnI18n.getPhrase('lm_cac')),
+                                    ),
+                                    label(
+                                        '.inline',
+                                        input(
+                                            '#plan-lo-ps',
+                                            {
+                                                type: 'checkbox',
+                                                onchange: (event) => {
+                                                    const { target } = event;
+
+                                                    if (target.checked) {
+                                                        this.state.planCompetences.problemSolving = true;
+
+                                                        return;
+                                                    }
+
+                                                    this.state.planCompetences.problemSolving = false;
+                                                },
+                                            },
+                                        ),
+                                        div('.check-box'),
+                                        span(await window.bcnI18n.getPhrase('lm_ps')),
+                                    ),
+                                    label(
+                                        '.inline',
+                                        input(
+                                            '#plan-lo-if',
+                                            {
+                                                type: 'checkbox',
+                                                onchange: (event) => {
+                                                    const { target } = event;
+
+                                                    if (target.checked) {
+                                                        this.state.planCompetences.informationFluency = true;
+
+                                                        return;
+                                                    }
+
+                                                    this.state.planCompetences.informationFluency = false;
+                                                },
+                                            },
+                                        ),
+                                        div('.check-box'),
+                                        span(await window.bcnI18n.getPhrase('lm_if')),
+                                    ),
                                 ),
-                            ),
-                            div(
-                                '.radio',
-                                span(await window.bcnI18n.getPhrase('lm_ps')),
-                                input(
-                                    '#plan-lo-ps',
-                                    {
-                                        type: 'checkbox',
-                                        onchange: (event) => {
-                                            const { target } = event;
-
-                                            if (target.checked) {
-                                                this.state.planCompetences.problemSolving = true;
-
-                                                return;
-                                            }
-
-                                            this.state.planCompetences.problemSolving = false;
-                                        },
-                                    },
-                                ),
-                            ),
-                            div(
-                                '.radio',
-                                span(await window.bcnI18n.getPhrase('lm_if')),
-                                input(
-                                    '#plan-lo-if',
-                                    {
-                                        type: 'checkbox',
-                                        onchange: (event) => {
-                                            const { target } = event;
-
-                                            if (target.checked) {
-                                                this.state.planCompetences.informationFluency = true;
-
-                                                return;
-                                            }
-
-                                            this.state.planCompetences.informationFluency = false;
-                                        },
-                                    },
-                                ),
+                                div('.status-area'),
                             ),
                         ),
-                        label(
-                            span(await window.bcnI18n.getPhrase('lm_vis')),
+                        div(
+                            '.label-group',
                             div(
-                                '.radio',
-                                span(await window.bcnI18n.getPhrase('lm_public')),
-                                input(
-                                    '#plan-vis-public',
-                                    {
-                                        type: 'radio',
-                                        onchange: (event) => {
-                                            const { target } = event;
+                                '.split',
+                                div('.title-area', span(await window.bcnI18n.getPhrase('lm_vis'))),
+                                div('.desc-area', await window.bcnI18n.getPhrase('lm_plan_vis_desc')),
+                                div(
+                                    '.input-area.flex-column',
+                                    label(
+                                        '.inline',
+                                        input(
+                                            '#plan-vis-public',
+                                            {
+                                                type: 'radio',
+                                                onchange: (event) => {
+                                                    const { target } = event;
 
-                                            if (target.checked) {
-                                                const radioEl = document.getElementById('plan-vis-private');
+                                                    if (target.checked) {
+                                                        const radioEl = document.getElementById('plan-vis-private');
 
-                                                radioEl.checked = false;
+                                                        radioEl.checked = false;
 
-                                                this.state.planPublic = true;
-                                            }
-                                        },
-                                    },
+                                                        this.state.planPublic = true;
+                                                    }
+                                                },
+                                            },
+                                        ),
+                                        div('.radio-box'),
+                                        span(await window.bcnI18n.getPhrase('lm_public')),
+                                    ),
+                                    label(
+                                        '.inline',
+                                        input(
+                                            '#plan-vis-private',
+                                            {
+                                                type: 'radio',
+                                                onchange: (event) => {
+                                                    const { target } = event;
+
+                                                    if (target.checked) {
+                                                        const radioEl = document.getElementById('plan-vis-public');
+
+                                                        radioEl.checked = false;
+
+                                                        this.state.planPublic = false;
+                                                    }
+                                                },
+                                                checked: true,
+                                            },
+                                        ),
+                                        div('.radio-box'),
+                                        span(await window.bcnI18n.getPhrase('lm_private')),
+                                    ),
                                 ),
-                            ),
-                            div(
-                                '.radio',
-                                span(await window.bcnI18n.getPhrase('lm_private')),
-                                input(
-                                    '#plan-vis-private',
-                                    {
-                                        type: 'radio',
-                                        onchange: (event) => {
-                                            const { target } = event;
-
-                                            if (target.checked) {
-                                                const radioEl = document.getElementById('plan-vis-public');
-
-                                                radioEl.checked = false;
-
-                                                this.state.planPublic = false;
-                                            }
-                                        },
-                                        checked: true,
-                                    },
-                                ),
+                                div('.status-area'),
                             ),
                         ),
                         div(
                             '.flex-justify-end.margin-top-10',
                             div(
-                                '#create-plan-button.button-action',
+                                '#create-plan-button.button-submit',
                                 {
                                     onclick: (event) => {
                                         const { target } = event;
