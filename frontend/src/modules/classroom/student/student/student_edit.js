@@ -1,30 +1,59 @@
 // @flow
-import { section, div, form, p, input, label, span, select, option } from '../../../../core/html';
+import {
+    section,
+    div,
+    form,
+    p,
+    input,
+    label,
+    span,
+    select,
+    option,
+    i,
+} from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 import Status from '../../../status';
 import nullishCheck from '../../../../core/util';
 
 class StudentEdit extends Component {
-    state = {
-        student: {},
+    student = {};
+
+    students = [];
+
+    stateObj = {
         studentUsername: '',
         studentFirstName: '',
         studentLastName: '',
-        studentDOB: '',
-        studentEmail: '',
-        studentAddress: {
-            line1: '',
-            line2: '',
-            city: '',
-            country: '',
-            county: '',
-            postcode: '',
-        },
         studentLang: 'en-GB',
-        studentGender: '',
-        studentSchool: '',
+        studentYearGroup: '',
     };
+
+    stateProxy = {
+        set(obj, prop, value) {
+            let trimmedValue = value;
+
+            if (typeof value === 'string') {
+                trimmedValue = value.trim();
+            }
+
+            // console.log(trimmedValue);
+
+            return Reflect.set(obj, prop, trimmedValue);
+        },
+    };
+
+    state = new Proxy(this.stateObj, this.stateProxy);
+
+    enabledErrors = [];
+
+    processStudents(studentsArr) {
+        for (const obj of studentsArr) {
+            this.students.push(obj?.username);
+        }
+
+        // console.log(this.students);
+    }
 
     async init() {
         if (!this.props.id) {
@@ -32,28 +61,24 @@ class StudentEdit extends Component {
         }
 
         const student = await window.beaconingAPI.getStudent(this.props.id);
+        const students = await window.beaconingAPI.getStudents();
 
         if (student) {
-            this.state.student = student;
+            this.student = student;
 
-            this.state.studentUsername = nullishCheck(student?.username, '');
-            this.state.studentFirstName = nullishCheck(student?.profile?.firstName, '');
-            this.state.studentLastName = nullishCheck(student?.profile?.lastName, '');
-            this.state.studentDOB = nullishCheck(student?.profile?.DOB, '');
-            this.state.studentEmail = nullishCheck(student?.email, '');
-            this.state.studentAddress = nullishCheck(student?.profile?.address, {
-                line1: '',
-                line2: '',
-                city: '',
-                country: '',
-                county: '',
-                postcode: '',
-            });
-            this.state.studentLang = nullishCheck(student?.language, 'en-GB');
-            this.state.studentGender = nullishCheck(student?.profile?.gender, 'male');
-            this.state.studentSchool = nullishCheck(student?.profile?.school, '');
+            this.state = {
+                studentUsername: student?.username || '',
+                studentFirstName: student?.profile?.firstName || '',
+                studentLastName: student?.profile?.lastName || '',
+                studentLang: student?.language || 'en-GB',
+                studentYearGroup: student?.profile?.yearGroup || '',
+            };
 
             return;
+        }
+
+        if (students) {
+            this.processStudents(students);
         }
 
         throw new Error('[Student Edit] Student not found!');
@@ -74,116 +99,162 @@ class StudentEdit extends Component {
         doneButton.textContent = await window.bcnI18n.getPhrase('cancel');
     }
 
-    async checkFields() {
-        // TODO: reduce duped code
+    removeErrors() {
+        for (const v of this.enabledErrors) {
+            this.removeError(v);
+        }
+    }
+
+    addError(elementID: string, errMsg: string) {
+        const el = document.getElementById(elementID);
+        const labelGroup = el?.parentElement?.parentElement;
+        const errEl = div(
+            '.flex-align-center',
+            i('.icon-cancel', { attrs: { 'aria-hidden': true } }),
+            span(errMsg),
+        );
+
+        if (this.enabledErrors.indexOf(elementID) === -1) {
+            this.enabledErrors.push(elementID);
+        }
+
+        if (nullishCheck(el, false) && nullishCheck(labelGroup, false)) {
+            labelGroup.classList.remove('loading');
+            labelGroup.classList.remove('success');
+            labelGroup.classList.add('error');
+            // console.log(el);
+            if (el.childElementCount > 0) {
+                el.replaceChild(errEl, el.firstElementChild);
+            }
+
+            el.appendChild(errEl);
+        }
+    }
+
+    addLoading(elementID: string) {
+        const el = document.getElementById(elementID);
+        const labelGroup = el?.parentElement?.parentElement;
+        const loadingEl = i('.icon-load', { attrs: { 'aria-hidden': true } });
+
+        if (nullishCheck(el, false) && nullishCheck(labelGroup, false)) {
+            labelGroup.classList.remove('error');
+            labelGroup.classList.remove('success');
+            labelGroup.classList.add('loading');
+            if (el.childElementCount > 0) {
+                el.replaceChild(loadingEl, el.firstElementChild);
+            }
+
+            el.appendChild(loadingEl);
+        }
+    }
+
+    addSuccess(elementID: string) {
+        const el = document.getElementById(elementID);
+        const labelGroup = el?.parentElement?.parentElement;
+        const successEl = i('.icon-ok', { attrs: { 'aria-hidden': true } });
+
+        if (nullishCheck(el, false) && nullishCheck(labelGroup, false)) {
+            if (this.enabledErrors.indexOf(elementID) !== -1) {
+                delete this.enabledErrors[elementID];
+                labelGroup.classList.remove('error');
+            }
+
+            labelGroup.classList.remove('loading');
+            labelGroup.classList.add('success');
+            if (el.childElementCount > 0) {
+                el.replaceChild(successEl, el.firstElementChild);
+            }
+
+            el.appendChild(successEl);
+        }
+    }
+
+    removeError(elementID: string) {
+        if (this.enabledErrors.indexOf(elementID) !== -1) {
+            const el = document.getElementById(elementID);
+            const labelGroup = el?.parentElement?.parentElement;
+
+            if (nullishCheck(el, false) && nullishCheck(labelGroup, false)) {
+                labelGroup.classList.remove('error');
+                el.innerHTML = '';
+            }
+
+            delete this.enabledErrors[elementID];
+        }
+    }
+
+    removeAll(elementID: string) {
+        const el = document.getElementById(elementID);
+        const labelGroup = el?.parentElement?.parentElement;
+
+        if (nullishCheck(el, false) && nullishCheck(labelGroup, false)) {
+            labelGroup.classList.remove('loading');
+            labelGroup.classList.remove('success');
+
+            if (this.enabledErrors.indexOf(elementID) !== -1) {
+                delete this.enabledErrors[elementID];
+                labelGroup.classList.remove('error');
+            }
+
+            el.innerHTML = '';
+        }
+    }
+
+    async checkUsername() {
         if (this.state.studentUsername === '') {
-            const statusMessage = new Status();
-            const statusMessageEl = await statusMessage.attach({
-                elementID: 'student-username',
-                heading: 'Error',
-                type: 'error',
-                message: (await window.bcnI18n.getPhrase('empty_field')).replace('%s', `'${await window.bcnI18n.getPhrase('cr_student_username')}'`),
-            });
+            this.removeAll('student-username-status');
 
-            this.appendView(statusMessageEl);
+            return true;
+        }
 
-            this.changeButtons(false);
+        if (this.state.studentUsername !== this.student.username && this.students.indexOf(this.state.studentUsername) !== -1) {
+            const errMsg = await window.bcnI18n.getPhrase('username_exists');
+            this.addError('student-username-status', errMsg);
 
             return false;
+        }
+
+        this.addSuccess('student-username-status');
+        return true;
+    }
+
+    async checkFields() {
+        let success = true;
+        const emptyMsg = await window.bcnI18n.getPhrase('required_empty');
+
+        this.removeErrors();
+
+        if (this.state.studentUsername === '') {
+            this.addError('student-username-status', emptyMsg);
+            success = false;
+        }
+
+        if (this.state.studentUsername !== '' && !(await this.checkUsername())) {
+            success = false;
         }
 
         if (this.state.studentFirstName === '') {
-            const statusMessage = new Status();
-            const statusMessageEl = await statusMessage.attach({
-                elementID: 'student-first-name',
-                heading: 'Error',
-                type: 'error',
-                message: (await window.bcnI18n.getPhrase('empty_field')).replace('%s', `'${await window.bcnI18n.getPhrase('cr_student_fn')}'`),
-            });
-
-            this.appendView(statusMessageEl);
-
-            this.changeButtons(false);
-
-            return false;
+            this.addError('student-fn-status', emptyMsg);
+            success = false;
         }
 
         if (this.state.studentLastName === '') {
-            const statusMessage = new Status();
-            const statusMessageEl = await statusMessage.attach({
-                elementID: 'student-last-name',
-                heading: 'Error',
-                type: 'error',
-                message: (await window.bcnI18n.getPhrase('empty_field')).replace('%s', `'${await window.bcnI18n.getPhrase('cr_student_ln')}'`),
-            });
-
-            this.appendView(statusMessageEl);
-
-            this.changeButtons(false);
-
-            return false;
+            this.addError('student-ln-status', emptyMsg);
+            success = false;
         }
 
-        if (this.state.studentDOB === '') {
-            const statusMessage = new Status();
-            const statusMessageEl = await statusMessage.attach({
-                elementID: 'student-dob',
-                heading: 'Error',
-                type: 'error',
-                message: (await window.bcnI18n.getPhrase('empty_field')).replace('%s', `'${await window.bcnI18n.getPhrase('cr_student_dob')}'`),
-            });
-
-            this.appendView(statusMessageEl);
-
-            this.changeButtons(false);
-
-            return false;
+        if (this.state.studentYearGroup === '') {
+            this.addError('student-yg-status', emptyMsg);
+            success = false;
         }
 
-        const now = new Date();
-        const parsedDate = new Date(this.state.studentDOB);
-
-        /* eslint-disable-next-line no-restricted-globals */
-        if (isNaN(parsedDate)) {
+        if (!success) {
             const statusMessage = new Status();
             const statusMessageEl = await statusMessage.attach({
-                elementID: 'student-dob',
+                elementID: false,
                 heading: 'Error',
                 type: 'error',
-                message: (await window.bcnI18n.getPhrase('not_valid_dob')),
-            });
-
-            this.appendView(statusMessageEl);
-
-            this.changeButtons(false);
-
-            return false;
-        }
-
-        if (parsedDate.getTime() > now.getTime()) {
-            const statusMessage = new Status();
-            const statusMessageEl = await statusMessage.attach({
-                elementID: 'student-dob',
-                heading: 'Error',
-                type: 'error',
-                message: (await window.bcnI18n.getPhrase('not_valid_dob')),
-            });
-
-            this.appendView(statusMessageEl);
-
-            this.changeButtons(false);
-
-            return false;
-        }
-
-        if ((now.getFullYear() - parsedDate.getFullYear()) >= 120
-            || (now.getFullYear() - parsedDate.getFullYear()) < 1) {
-            const statusMessage = new Status();
-            const statusMessageEl = await statusMessage.attach({
-                elementID: 'student-dob',
-                heading: 'Error',
-                type: 'error',
-                message: (await window.bcnI18n.getPhrase('not_valid_dob')),
+                message: await window.bcnI18n.getPhrase('form_error'),
             });
 
             this.appendView(statusMessageEl);
@@ -201,33 +272,20 @@ class StudentEdit extends Component {
             return;
         }
 
-        const { student } = this.state;
-
         const obj = {
-            id: student.id,
-            username: this.state.studentUsername === '' ? student.username : this.state.studentUsername,
-            email: this.state.studentEmail === '' ? null : this.state.studentEmail,
+            id: this.student.id,
+            username: this.state.studentUsername,
             language: this.state.studentLang,
             profile: {
-                firstName: this.state.studentFirstName === '' ? student.profile.firstName : this.state.studentFirstName,
-                lastName: this.state.studentLastName === '' ? student.profile.lastName : this.state.studentLastName,
-                DOB: this.state.studentDOB === '' ? student.profile.DOB : this.state.studentDOB,
-                gender: this.state.studentGender === '' ? student.profile.studentGender : this.state.studentGender,
-                school: this.state.studentSchool === '' ? student.profile.studentSchool : this.state.studentSchool,
-                address: {
-                    line1: this.state.studentAddress.line1 === '' ? student.profile.address.line1 : this.state.studentAddress.line1,
-                    line2: this.state.studentAddress.line2 === '' ? student.profile.address.line2 : this.state.studentAddress.line2,
-                    city: this.state.studentAddress.city === '' ? student.profile.address.city : this.state.studentAddress.city,
-                    country: this.state.studentAddress.country === '' ? student.profile.address.country : this.state.studentAddress.country,
-                    county: this.state.studentAddress.county === '' ? student.profile.address.county : this.state.studentAddress.county,
-                    postcode: this.state.studentAddress.postcode === '' ? student.profile.address.postcode : this.state.studentAddress.postcode,
-                },
+                firstName: this.state.studentFirstName,
+                lastName: this.state.studentLastName,
+                yearGroup: this.state.studentYearGroup,
             },
         };
 
-        console.log(obj);
+        // console.log(obj);
 
-        const status = await window.beaconingAPI.updateStudent(this.state.student.id, obj);
+        const status = await window.beaconingAPI.updateStudent(this.student.id, obj);
         const statusMessage = new Status();
 
         console.log('[Update Student] status:', status ? 'success!' : 'failed!');
@@ -264,8 +322,6 @@ class StudentEdit extends Component {
     }
 
     async render() {
-        const { student } = this.state;
-
         const updatingText = await window.bcnI18n.getPhrase('updating');
 
         return div(
@@ -280,316 +336,234 @@ class StudentEdit extends Component {
                     ),
                     form(
                         '.create-student',
-                        label(
-                            span(await window.bcnI18n.getPhrase('cr_student_username')),
-                            input(
-                                '#student-username.text-field',
-                                {
-                                    type: 'text',
-                                    placeholder: await window.bcnI18n.getPhrase('cr_enter_username'),
-                                    value: student.username,
-                                    oninput: (event) => {
-                                        const { target } = event;
+                        div(
+                            '.label-group',
+                            div(
+                                '.split',
+                                div('.title-area', span(await window.bcnI18n.getPhrase('cr_student_username'))),
+                                div('.desc-area', await window.bcnI18n.getPhrase('cr_student_username_desc')),
+                                div(
+                                    '.input-area',
+                                    label(
+                                        '.required',
+                                        input(
+                                            '#student-username.text-field',
+                                            {
+                                                type: 'text',
+                                                placeholder: await window.bcnI18n.getPhrase('cr_enter_username'),
+                                                value: this.state.studentUsername,
+                                                oninput: (event) => {
+                                                    const { target } = event;
 
-                                        this.state.studentUsername = target.value;
-                                    },
-                                },
+                                                    this.state.studentUsername = target.value;
+                                                    this.addLoading('student-username-status');
+                                                    this.checkUsername();
+                                                },
+                                                required: true,
+                                            },
+                                        ),
+                                    ),
+                                ),
+                                div('#student-username-status.status-area'),
                             ),
                         ),
-                        label(
-                            span(await window.bcnI18n.getPhrase('cr_student_fn')),
-                            input(
-                                '#student-first-name.text-field',
-                                {
-                                    type: 'text',
-                                    placeholder: await window.bcnI18n.getPhrase('cr_enter_fn'),
-                                    value: student.profile.firstName,
-                                    oninput: (event) => {
-                                        const { target } = event;
+                        div(
+                            '.label-group',
+                            div(
+                                '.split',
+                                div('.title-area', span(await window.bcnI18n.getPhrase('cr_student_fn'))),
+                                div('.desc-area', await window.bcnI18n.getPhrase('cr_student_fn_desc')),
+                                div(
+                                    '.input-area',
+                                    label(
+                                        '.required',
+                                        input(
+                                            '#student-first-name.text-field',
+                                            {
+                                                type: 'text',
+                                                placeholder: await window.bcnI18n.getPhrase('cr_enter_fn'),
+                                                value: this.state.studentFirstName,
+                                                oninput: (event) => {
+                                                    const { target } = event;
 
-                                        this.state.studentFirstName = target.value;
-                                    },
-                                },
+                                                    this.state.studentFirstName = target.value;
+                                                },
+                                                required: true,
+                                            },
+                                        ),
+                                    ),
+                                ),
+                                div('#student-fn-status.status-area'),
                             ),
                         ),
-                        label(
-                            span(await window.bcnI18n.getPhrase('cr_student_ln')),
-                            input(
-                                '#student-last-name.text-field',
-                                {
-                                    type: 'text',
-                                    placeholder: await window.bcnI18n.getPhrase('cr_enter_ln'),
-                                    value: student.profile.lastName,
-                                    oninput: (event) => {
-                                        const { target } = event;
+                        div(
+                            '.label-group',
+                            div(
+                                '.split',
+                                div('.title-area', span(await window.bcnI18n.getPhrase('cr_student_ln'))),
+                                div('.desc-area', await window.bcnI18n.getPhrase('cr_student_ln_desc')),
+                                div(
+                                    '.input-area',
+                                    label(
+                                        '.required',
+                                        input(
+                                            '#student-last-name.text-field',
+                                            {
+                                                type: 'text',
+                                                placeholder: await window.bcnI18n.getPhrase('cr_enter_ln'),
+                                                value: this.state.studentLastName,
+                                                oninput: (event) => {
+                                                    const { target } = event;
 
-                                        this.state.studentLastName = target.value;
-                                    },
-                                },
+                                                    this.state.studentLastName = target.value;
+                                                },
+                                                required: true,
+                                            },
+                                        ),
+                                    ),
+                                ),
+                                div('#student-ln-status.status-area'),
                             ),
                         ),
-                        label(
-                            '.select',
-                            span(await window.bcnI18n.getPhrase('cr_student_gender')),
-                            select(
-                                '#student-gender',
-                                {
-                                    onchange: (event) => {
-                                        const { target } = event;
+                        div(
+                            '.label-group',
+                            div(
+                                '.split',
+                                div('.title-area', span(await window.bcnI18n.getPhrase('cr_student_yg'))),
+                                div('.desc-area', await window.bcnI18n.getPhrase('cr_student_yg_desc')),
+                                div(
+                                    '.input-area',
+                                    label(
+                                        '.required',
+                                        input(
+                                            '#student-year-group.text-field',
+                                            {
+                                                type: 'text',
+                                                placeholder: await window.bcnI18n.getPhrase('cr_enter_yg'),
+                                                value: this.state.studentYearGroup,
+                                                oninput: (event) => {
+                                                    const { target } = event;
 
-                                        this.state.studentGender = target.value;
-                                    },
-                                },
-                                option(
-                                    {
-                                        value: 'female',
-                                        selected: student.profile.gender === 'female',
-                                    },
-                                    await window.bcnI18n.getPhrase('female'),
+                                                    this.state.studentYearGroup = target.value;
+                                                },
+                                                required: true,
+                                            },
+                                        ),
+                                    ),
                                 ),
-                                option(
-                                    {
-                                        value: 'male',
-                                        selected: student.profile.gender === 'male',
-                                    },
-                                    await window.bcnI18n.getPhrase('male'),
-                                ),
-                                option(
-                                    {
-                                        value: 'other',
-                                        selected: student.profile.gender === 'other',
-                                    },
-                                    await window.bcnI18n.getPhrase('other'),
-                                ),
+                                div('#student-yg-status.status-area'),
                             ),
                         ),
-                        label(
-                            span(await window.bcnI18n.getPhrase('cr_student_dob')),
-                            input(
-                                '#student-dob.text-field',
-                                {
-                                    type: 'date',
-                                    placeholder: await window.bcnI18n.getPhrase('cr_enter_dob'),
-                                    value: student.profile.DOB,
-                                    oninput: (event) => {
-                                        const { target } = event;
+                        div(
+                            '.label-group',
+                            div(
+                                '.split',
+                                div('.title-area', span(await window.bcnI18n.getPhrase('cr_student_lang'))),
+                                div('.desc-area', await window.bcnI18n.getPhrase('cr_student_lang_desc')),
+                                div(
+                                    '.input-area',
+                                    label(
+                                        '.select',
+                                        select(
+                                            '#student-lang',
+                                            {
+                                                onchange: (event) => {
+                                                    const { target } = event;
 
-                                        this.state.studentDOB = target.value;
-                                    },
-                                },
+                                                    this.state.studentLang = target.value;
+                                                },
+                                            },
+                                            option(
+                                                {
+                                                    value: 'en-GB',
+                                                    selected: this.state.studentLanguage === 'en-GB',
+                                                },
+                                                'English',
+                                            ),
+                                            option(
+                                                {
+                                                    value: 'fr-FR',
+                                                    selected: this.state.studentLanguage === 'fr_FR',
+                                                },
+                                                'Français',
+                                            ),
+                                            option(
+                                                {
+                                                    value: 'es-ES',
+                                                    selected: this.state.studentLanguage === 'es-ES',
+                                                },
+                                                'Español',
+                                            ),
+                                            option(
+                                                {
+                                                    value: 'it-IT',
+                                                    selected: this.state.studentLanguage === 'it-IT',
+                                                },
+                                                'Italiano',
+                                            ),
+                                            option(
+                                                {
+                                                    value: 'de-DE',
+                                                    selected: this.state.studentLanguage === 'de-DE',
+                                                },
+                                                'Deutsch',
+                                            ),
+                                            option(
+                                                {
+                                                    value: 'ro-RO',
+                                                    selected: this.state.studentLanguage === 'ro-RO',
+                                                },
+                                                'Română',
+                                            ),
+                                            option(
+                                                {
+                                                    value: 'pl-PL',
+                                                    selected: this.state.studentLanguage === 'pl-PL',
+                                                },
+                                                'Polskie',
+                                            ),
+                                            option(
+                                                {
+                                                    value: 'tr-TR',
+                                                    selected: this.state.studentLanguage === 'tr-TR',
+                                                },
+                                                'Türk',
+                                            ),
+                                            option(
+                                                {
+                                                    value: 'pt-PT',
+                                                    selected: this.state.studentLanguage === 'pt-PT',
+                                                },
+                                                'Português',
+                                            ),
+                                        ),
+                                    ),
+                                ),
+                                div('.status-area'),
                             ),
                         ),
-                        label(
-                            '.select',
-                            span(await window.bcnI18n.getPhrase('cr_student_lang')),
-                            select(
-                                '#student-lang',
+                        div(
+                            '.flex-justify-end.margin-top-10',
+                            div(
+                                '#edit-student-done.button-passive',
                                 {
-                                    onchange: (event) => {
-                                        const { target } = event;
-
-                                        this.state.studentLang = target.value;
+                                    onclick: () => {
+                                        this.emit('EditDoneClicked');
                                     },
                                 },
-                                option(
-                                    {
-                                        value: 'en-GB',
-                                        selected: student.language === 'en-GB',
-                                    },
-                                    'English',
-                                ),
-                                option(
-                                    {
-                                        value: 'fr-FR',
-                                        selected: student.language === 'fr_FR',
-                                    },
-                                    'Français',
-                                ),
-                                option(
-                                    {
-                                        value: 'es-ES',
-                                        selected: student.language === 'es-ES',
-                                    },
-                                    'Español',
-                                ),
-                                option(
-                                    {
-                                        value: 'it-IT',
-                                        selected: student.language === 'it-IT',
-                                    },
-                                    'Italiano',
-                                ),
-                                option(
-                                    {
-                                        value: 'de-DE',
-                                        selected: student.language === 'de-DE',
-                                    },
-                                    'Deutsch',
-                                ),
-                                option(
-                                    {
-                                        value: 'ro-RO',
-                                        selected: student.language === 'ro-RO',
-                                    },
-                                    'Română',
-                                ),
-                                option(
-                                    {
-                                        value: 'pl-PL',
-                                        selected: student.language === 'pl-PL',
-                                    },
-                                    'Polskie',
-                                ),
-                                option(
-                                    {
-                                        value: 'tr-TR',
-                                        selected: student.language === 'tr-TR',
-                                    },
-                                    'Türk',
-                                ),
-                                option(
-                                    {
-                                        value: 'pt-PT',
-                                        selected: student.language === 'pt-PT',
-                                    },
-                                    'Português',
-                                ),
-                            ),
-                        ),
-                        label(
-                            span(await window.bcnI18n.getPhrase('cr_student_email')),
-                            input(
-                                '#student-email.text-field',
-                                {
-                                    type: 'email',
-                                    placeholder: await window.bcnI18n.getPhrase('cr_enter_new_email'),
-                                    oninput: (event) => {
-                                        const { target } = event;
-
-                                        this.state.studentEmail = target.value;
-                                    },
-                                },
-                            ),
-                        ),
-                        label(
-                            span(await window.bcnI18n.getPhrase('cr_student_school')),
-                            input(
-                                '#student-school.text-field',
-                                {
-                                    type: 'text',
-                                    placeholder: await window.bcnI18n.getPhrase('cr_enter_school'),
-                                    value: student.profile.school,
-                                    oninput: (event) => {
-                                        const { target } = event;
-
-                                        this.state.studentSchool = target.value;
-                                    },
-                                },
-                            ),
-                        ),
-                        label(
-                            span(await window.bcnI18n.getPhrase('cr_student_address')),
-                            input(
-                                '#student-address1.text-field',
-                                {
-                                    type: 'text',
-                                    placeholder: await window.bcnI18n.getPhrase('cr_student_adrs_ln1'),
-                                    value: student.profile.address.line1,
-                                    oninput: (event) => {
-                                        const { target } = event;
-
-                                        this.state.studentAddress.line1 = target.value;
-                                    },
-                                },
-                            ),
-                            input(
-                                '#student-address2.text-field',
-                                {
-                                    type: 'text',
-                                    placeholder: await window.bcnI18n.getPhrase('cr_student_adrs_ln2'),
-                                    value: student.profile.address.line2,
-                                    oninput: (event) => {
-                                        const { target } = event;
-
-                                        this.state.studentAddress.line2 = target.value;
-                                    },
-                                },
-                            ),
-                            input(
-                                '#student-address-city.text-field',
-                                {
-                                    type: 'text',
-                                    placeholder: await window.bcnI18n.getPhrase('cr_student_adrs_city'),
-                                    value: student.profile.address.city,
-                                    oninput: (event) => {
-                                        const { target } = event;
-
-                                        this.state.studentAddress.city = target.value;
-                                    },
-                                },
-                            ),
-                            input(
-                                '#student-address-county.text-field',
-                                {
-                                    type: 'text',
-                                    placeholder: await window.bcnI18n.getPhrase('cr_student_adrs_county'),
-                                    value: student.profile.address.county,
-                                    oninput: (event) => {
-                                        const { target } = event;
-
-                                        this.state.studentAddress.county = target.value;
-                                    },
-                                },
-                            ),
-                            input(
-                                '#student-address-country.text-field',
-                                {
-                                    type: 'text',
-                                    placeholder: await window.bcnI18n.getPhrase('cr_student_adrs_country'),
-                                    value: student.profile.address.country,
-                                    oninput: (event) => {
-                                        const { target } = event;
-
-                                        this.state.studentAddress.country = target.value;
-                                    },
-                                },
-                            ),
-                            input(
-                                '#student-address-code.text-field',
-                                {
-                                    type: 'text',
-                                    placeholder: await window.bcnI18n.getPhrase('cr_student_adrs_pc'),
-                                    value: student.profile.address.postcode,
-                                    oninput: (event) => {
-                                        const { target } = event;
-
-                                        this.state.studentAddress.postcode = target.value;
-                                    },
-                                },
+                                await window.bcnI18n.getPhrase('cancel'),
                             ),
                             div(
-                                '.flex-justify-end.margin-top-10',
-                                div(
-                                    '#edit-student-done.button-passive',
-                                    {
-                                        onclick: () => {
-                                            this.emit('EditDoneClicked');
-                                        },
-                                    },
-                                    await window.bcnI18n.getPhrase('cancel'),
-                                ),
-                                div(
-                                    '#update-student-button.button-action',
-                                    {
-                                        onclick: (event) => {
-                                            const { target } = event;
-                                            this.updateStudent();
+                                '#update-student-button.button-action',
+                                {
+                                    onclick: (event) => {
+                                        const { target } = event;
+                                        this.updateStudent();
 
-                                            target.textContent = `${updatingText}...`;
-                                        },
+                                        target.textContent = `${updatingText}...`;
                                     },
-                                    await window.bcnI18n.getPhrase('cr_student_update'),
-                                ),
+                                },
+                                await window.bcnI18n.getPhrase('cr_student_update'),
                             ),
                         ),
                     ),
