@@ -19,7 +19,7 @@ import PostCreation from './post_creation';
 import nullishCheck from '../../../../core/util';
 
 class StudentForm extends Component {
-    state = {
+    stateObj = {
         studentUsername: '',
         studentFirstName: '',
         studentLastName: '',
@@ -27,23 +27,29 @@ class StudentForm extends Component {
         studentYearGroup: '',
     };
 
+    stateProxy = {
+        set(obj, prop, value) {
+            let trimmedValue = value;
+
+            if (typeof value === 'string') {
+                trimmedValue = value.trim();
+            }
+
+            // console.log(trimmedValue);
+
+            return Reflect.set(obj, prop, trimmedValue);
+        },
+    };
+
+    state = new Proxy(this.stateObj, this.stateProxy);
+
     updateHooks = {
         ResetForm: this.resetForm,
     };
 
     enabledErrors = [];
 
-    usernameExists = false;
-
     students = [];
-
-    async init() {
-        const students = await window.beaconingAPI.getStudents();
-
-        if (nullishCheck(students, false)) {
-            this.processStudents(students);
-        }
-    }
 
     processStudents(studentsArr) {
         for (const obj of studentsArr) {
@@ -51,6 +57,14 @@ class StudentForm extends Component {
         }
 
         // console.log(this.students);
+    }
+
+    async init() {
+        const students = await window.beaconingAPI.getStudents();
+
+        if (students) {
+            this.processStudents(students);
+        }
     }
 
     async resetForm() {
@@ -173,21 +187,22 @@ class StudentForm extends Component {
         }
     }
 
-    async checkUsername(username: string) {
-        if (username === '') {
+    async checkUsername() {
+        if (this.state.studentUsername === '') {
             this.removeAll('student-username-status');
 
-            return;
+            return true;
         }
 
-        if (this.students.indexOf(username) !== -1) {
+        if (this.students.indexOf(this.state.studentUsername) !== -1) {
             const errMsg = await window.bcnI18n.getPhrase('username_exists');
             this.addError('student-username-status', errMsg);
 
-            return;
+            return false;
         }
 
         this.addSuccess('student-username-status');
+        return true;
     }
 
     async checkFields() {
@@ -196,9 +211,12 @@ class StudentForm extends Component {
 
         this.removeErrors();
 
-        // TODO: reduce duped code
         if (this.state.studentUsername === '') {
             this.addError('student-username-status', emptyMsg);
+            success = false;
+        }
+
+        if (this.state.studentUsername !== '' && !(await this.checkUsername())) {
             success = false;
         }
 
@@ -209,6 +227,11 @@ class StudentForm extends Component {
 
         if (this.state.studentLastName === '') {
             this.addError('student-ln-status', emptyMsg);
+            success = false;
+        }
+
+        if (this.state.studentYearGroup === '') {
+            this.addError('student-yg-status', emptyMsg);
             success = false;
         }
 
@@ -330,7 +353,7 @@ class StudentForm extends Component {
 
                                                     this.state.studentUsername = target.value;
                                                     this.addLoading('student-username-status');
-                                                    this.checkUsername(target.value);
+                                                    this.checkUsername();
                                                 },
                                                 required: true,
                                             },
@@ -405,6 +428,7 @@ class StudentForm extends Component {
                                 div(
                                     '.input-area',
                                     label(
+                                        '.required',
                                         input(
                                             '#student-year-group.text-field',
                                             {
@@ -420,7 +444,7 @@ class StudentForm extends Component {
                                         ),
                                     ),
                                 ),
-                                div('.status-area'),
+                                div('#student-yg-status.status-area'),
                             ),
                         ),
                         div(
