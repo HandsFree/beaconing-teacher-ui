@@ -22,7 +22,6 @@
     "b:wv": "./node_modules/.bin/webpack-dashboard -- ./node_modules/.bin/parallel-webpack --watch -- --env.mode='development' --env.dash='enabled' --env.verbose='enabled'",
     "server": "yarn s",
     "s": "./node_modules/.bin/webpack-dashboard -- ./node_modules/.bin/webpack-dev-server --env.mode='development' --env.server='enabled' --env.dash='enabled'",
-    "build:production": "yarn bp",
     "bp": "./node_modules/.bin/parallel-webpack -- --env.mode='production'",
     "bp:v": "./node_modules/.bin/parallel-webpack -- --env.mode='production' --env.verbose='enabled'",
     "bp:w": "./node_modules/.bin/webpack-dashboard -- ./node_modules/.bin/parallel-webpack --watch -- --env.mode='production' --env.dash='enabled'",
