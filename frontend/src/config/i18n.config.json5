@@ -323,6 +323,17 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+    saving: {
+        'en-GB': 'Saving',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
     delete: {
         'en-GB': 'Delete',
         'fr-FR': 'Effacer',
@@ -402,6 +413,39 @@
     },
     username: {
         'en-GB': 'Username',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    details: {
+        'en-GB': 'Details',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    assignees: {
+        'en-GB': 'Assignees',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    files: {
+        'en-GB': 'Files',
         'fr-FR': '',
         'es-ES': '',
         'it-IT': '',
@@ -695,6 +739,17 @@
         'tr-TR': 'Kullanıcı Adı Girin',
         'pt-PT': 'Introduzir o nome de utilizador'
     },
+    cr_student_username_desc: {
+        'en-GB': 'The student will log in with this username. The username should be easy to remember. Username must be alphanumeric and contain no spaces.',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
     cr_student_fn: {
         'en-GB': 'Student First name',
         'fr-FR': 'Prénom',
@@ -716,6 +771,17 @@
         'pl-PL': 'Wprowadź pierwsze imię',
         'tr-TR': 'Öğrenci Adını Girin',
         'pt-PT': 'Introduzir o nome próprio'
+    },
+    cr_student_fn_desc: {
+        'en-GB': 'First name of the student.',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
     },
     cr_student_ln: {
         'en-GB': 'Student Last Name',
@@ -739,6 +805,17 @@
         'tr-TR': 'Öğrenci Soyadını Girin',
         'pt-PT': 'Introduzir o apelido'
     },
+    cr_student_ln_desc: {
+        'en-GB': 'Last name of the student.',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
     cr_student_gender: {
         'en-GB': 'Student Gender',
         'fr-FR': 'Civilité',
@@ -749,6 +826,17 @@
         'pl-PL': 'Płeć ucznia',
         'tr-TR': 'Cinsiyeti',
         'pt-PT': 'Género do aluno'
+    },
+    cr_student_gender_desc: {
+        'en-GB': 'Gender of the student. Student does not need to disclose their gender if preferred.',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
     },
     cr_student_dob: {
         'en-GB': 'Student Date of Birth',
@@ -761,6 +849,50 @@
         'tr-TR': 'Öğrenci Doğum Tarihi',
         'pt-PT': 'Data de nascimento do aluno'
     },
+    cr_student_yg: {
+        'en-GB': 'Student Year Group',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    cr_enter_yg: {
+        'en-GB': 'Enter Year Group',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    cr_student_yg_desc: {
+        'en-GB': 'Year group or grade the student belongs to.',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    cr_student_dob_desc: {
+        'en-GB': 'Student\'s Date of Birth. Must be a valid date in the past 120 years.',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
     cr_student_lang: {
         'en-GB': 'Student Language',
         'fr-FR': 'Langue',
@@ -771,6 +903,17 @@
         'pl-PL': 'Język ucznia',
         'tr-TR': 'Öğrenci Dili',
         'pt-PT': 'Idioma do aluno'
+    },
+    cr_student_lang_desc: {
+        'en-GB': 'Student\'s interface will be translated to the chosen language',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
     },
     cr_student_email: {
         'en-GB': 'Student Email',
@@ -794,6 +937,17 @@
         'tr-TR': 'ePosta Girin',
         'pt-PT': 'Introduzir o e-mail'
     },
+    cr_student_email_desc: {
+        'en-GB': 'If an email address is provided, the student will recieve email notifications about new and existing assigned lesson plans.',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
     cr_student_school: {
         'en-GB': 'Student School',
         'fr-FR': 'Etablissement scolaire',
@@ -816,6 +970,17 @@
         'tr-TR': 'Okul Adı Girin',
         'pt-PT': 'Introduzir o nome da escola'
     },
+    cr_student_school_desc: {
+        'en-GB': 'School the student goes to. Will appear on their profile.',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
     cr_student_address: {
         'en-GB': 'Student Address',
         'fr-FR': 'Adresse de l’étudiant',
@@ -826,6 +991,17 @@
         'pl-PL': 'Adres studenta',
         'tr-TR': 'Öğrenci Adresi',
         'pt-PT': 'Morada do aluno'
+    },
+    cr_student_address_desc: {
+        'en-GB': 'Address of the student.',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
     },
     cr_student_adrs_ln1: {
         'en-GB': 'Address Line 1',
@@ -1733,6 +1909,17 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+    lm_save_plan: {
+        'en-GB': 'Save Plan',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
     lm_create_plan: {
         'en-GB': 'Create Plan',
         'fr-FR': '',
@@ -1788,6 +1975,17 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+    lm_plan_name_desc: {
+        'en-GB': 'Name for the new lesson plan. You cannot use a name you\'ve already used.',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
     lm_plan_desc: {
         'en-GB': 'Plan Description',
         'fr-FR': '',
@@ -1810,8 +2008,30 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+    lm_plan_desc_desc: {
+        'en-GB': 'Description should describe the plan concisely for students and other teachers.',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
     lm_plan_cat: {
         'en-GB': 'Plan Category',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    lm_plan_cat_desc: {
+        'en-GB': 'Choose the STEM category the lesson plan falls under.',
         'fr-FR': '',
         'es-ES': '',
         'it-IT': '',
@@ -1843,6 +2063,17 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+    lm_plan_domain_desc: {
+        'en-GB': 'Subject areas that will be covered in this lesson plan under the chosen STEM category.',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
     lm_plan_topic: {
         'en-GB': 'Plan Topic',
         'fr-FR': '',
@@ -1856,6 +2087,17 @@
     },
     lm_enter_plan_topic: {
         'en-GB': 'Enter Plan Topic',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    lm_plan_topic_desc: {
+        'en-GB': 'Topic the lesson plan will surround.',
         'fr-FR': '',
         'es-ES': '',
         'it-IT': '',
@@ -1887,6 +2129,17 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+    lm_plan_ag_desc: {
+        'en-GB': 'Age group the lesson plan will target. Example: 16-18',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
     lm_plan_year: {
         'en-GB': 'Plan Year',
         'fr-FR': '',
@@ -1900,6 +2153,17 @@
     },
     lm_enter_plan_year: {
         'en-GB': 'Enter Plan Year',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    lm_plan_year_desc: {
+        'en-GB': 'Year the lesson plan content applies to. Must be a valid 4 digit year.',
         'fr-FR': '',
         'es-ES': '',
         'it-IT': '',
@@ -1931,6 +2195,17 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+    lm_plan_los_desc: {
+        'en-GB': 'Learning objectives for the lesson plan. Enter each learning objective on a new line. Aim for 4 to 6 objectives.',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
     lm_plan_comps: {
         'en-GB': 'Plan Competences',
         'fr-FR': '',
@@ -1944,6 +2219,17 @@
     },
     lm_enter_plan_comps: {
         'en-GB': 'Enter Competences (one per line)',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    lm_plan_comps_desc: {
+        'en-GB': 'Choose up to 3 competences that are relevant for the lesson plan.',
         'fr-FR': '',
         'es-ES': '',
         'it-IT': '',
@@ -2030,6 +2316,29 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+    lm_plan_vis_desc: {
+        'en-GB': 'Choose who can view the lesson plan. Public will allow other teachers to use the plan. Private will allow only you to use the plan',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    lm_open_at: {
+        'en-GB': 'Open in AT',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    
 
     // Footer //
 
@@ -2906,7 +3215,7 @@
         'pt-PT': ''
     },
     glp_name_exists: {
-        'en-GB': 'Plan name already exists! Please choose another',
+        'en-GB': 'Plan name already exists!',
         'fr-FR': '',
         'es-ES': '',
         'it-IT': '',
@@ -3127,6 +3436,61 @@
     },
     not_valid_dob: {
         'en-GB': 'Please enter a valid date of birth!',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    no_empty: {
+        'en-GB': 'Cannot be empty!',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    required_empty: {
+        'en-GB': 'Required field is empty!',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    plan_year_not_valid: {
+        'en-GB': 'Year must be valid!',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    form_error: {
+        'en-GB': 'Please check form for errors!',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    username_exists: {
+        'en-GB': 'Username exists!',
         'fr-FR': '',
         'es-ES': '',
         'it-IT': '',
