@@ -2,6 +2,7 @@ package parse
 
 import (
 	"errors"
+	"fmt"
 	"sort"
 	"strings"
 
@@ -14,27 +15,41 @@ import (
 // SortOrder parses the given string to the
 // given sorting option. if the string fails to
 // parse, will return the "Undefined" sorting option
-func SortOrder(opt string) SortingOption {
-	switch strings.ToLower(opt) {
-	case "desc":
-		return Descending
-	case "asc":
-		return Ascending
-	case "science":
-		return Sci
-	case "technology":
-		return Tech
-	case "engineering":
-		return Eng
-	case "maths":
-		return Maths
-	case "public":
-		return Public
-	case "private":
-		return Private
-	default:
-		return Undefined
+func SortOrder(opt string) []SortingOption {
+	sorts := strings.Split(opt, ",")
+
+	results := []SortingOption{}
+
+	for _, sort := range sorts {
+		result := func(opt string) SortingOption {
+			switch strings.ToLower(opt) {
+			case "desc":
+				return Descending
+			case "asc":
+				return Ascending
+			case "science":
+				return Sci
+			case "technology":
+				return Tech
+			case "engineering":
+				return Eng
+			case "maths":
+				return Maths
+			case "public":
+				return Public
+			case "private":
+				return Private
+			case "null":
+				fallthrough
+			default:
+				return Undefined
+			}
+		}(sort)
+
+		results = append(results, result)
 	}
+
+	return results
 }
 
 type SortingOption uint
@@ -55,7 +70,7 @@ const (
 )
 
 func SortByName(s *gin.Context, plans []*entity.GLP, order SortingOption) ([]*entity.GLP, error) {
-	sort.SliceStable(plans, func(i, j int) bool {
+	sort.Slice(plans, func(i, j int) bool {
 		if order == Descending {
 			return plans[i].Name > plans[j].Name
 		}
@@ -87,7 +102,6 @@ func SortBySTEM(s *gin.Context, plans []*entity.GLP, order SortingOption) ([]*en
 
 	for _, plan := range plans {
 		if isSTEM(plan.Domain) {
-			util.Verbose("Matched plan", plan.Name, " to STEM")
 			results = append(results, plan)
 		}
 	}
@@ -184,33 +198,93 @@ func SortByRecentlyAssigned(s *gin.Context, plans []*entity.GLP, order SortingOp
 	return glps, nil
 }
 
+type sortable []string
+
+// the lower the value, the higher
+// the precedence.
+var precedence = map[string]int{
+	"name":     7,
+	"stem":     1,
+	"created":  6,
+	"updated":  5,
+	"assigned": 4,
+	"popular":  3,
+	"vis":      2,
+	"owned":    0,
+}
+
+func (s sortable) Len() int { return len(s) }
+
+func (s sortable) Swap(i, j int) {
+	s[i], s[j] = s[j], s[i]
+}
+
+func (s sortable) Less(i, j int) bool {
+	a, b := s[i], s[j]
+	aPrec, _ := precedence[a]
+	bPrec, _ := precedence[b]
+	return aPrec < bPrec
+}
+
 // SortGLPS invoke sort plan with query
 // ?sort=name, ?sort=stem, ?sort=created, etc.
-func SortGLPS(s *gin.Context, plans []*entity.GLP, sortType string, order SortingOption) ([]*entity.GLP, error) {
+func SortGLPS(s *gin.Context, plans []*entity.GLP, sortType string, orders []SortingOption) ([]*entity.GLP, error) {
 	// TODO
 	// sort by most assigned "popular"
 	// sort by deadline soonest/further "deadline"
 	// sort by recently modified "modified"
 	// sort by draft? whats this.
 
-	switch strings.ToLower(sortType) {
-	case "name":
-		return SortByName(s, plans[:], order)
-	case "stem":
-		return SortBySTEM(s, plans[:], order)
-	case "created":
-		return SortByCreationTime(s, plans[:], order)
-	case "updated":
-		return SortByRecentlyUpdated(s, plans[:], order)
-	case "assigned":
-		return SortByRecentlyAssigned(s, plans[:], order)
-	case "popular":
-		return SortByMostAssigned(s, plans[:], order)
-	case "vis":
-		return SortByAvailability(s, plans[:], order)
-	case "owned":
-		return SortByOwnedByMe(s, plans[:], order)
-	default:
-		return nil, errors.New("No such sort type '" + sortType + "'")
+	doSort := func(planSet []*entity.GLP, sortType string, order SortingOption) ([]*entity.GLP, error) {
+		switch strings.ToLower(sortType) {
+		case "name":
+			return SortByName(s, planSet[:], order)
+		case "stem":
+			return SortBySTEM(s, planSet[:], order)
+		case "created":
+			return SortByCreationTime(s, planSet[:], order)
+		case "updated":
+			return SortByRecentlyUpdated(s, planSet[:], order)
+		case "assigned":
+			return SortByRecentlyAssigned(s, planSet[:], order)
+		case "popular":
+			return SortByMostAssigned(s, planSet[:], order)
+		case "vis":
+			return SortByAvailability(s, planSet[:], order)
+		case "owned":
+			return SortByOwnedByMe(s, planSet[:], order)
+		default:
+			return nil, errors.New("No such sort type '" + sortType + "'")
+		}
 	}
+
+	// cut all of the sorting options out.
+	sorts := strings.Split(sortType, ",")
+
+	fmt.Println("SORTED FROM ", sorts)
+
+	// sort the sorting options! so that we
+	// do things in a certain precedence, for example
+	// we want to check the STEM plans first
+
+	sort.Sort(sortable(sorts))
+
+	fmt.Println("SORTED INTO ", sorts)
+
+	var anyError error
+	startingPlans := plans
+
+	for i, sort := range sorts {
+		result, err := doSort(startingPlans, sort, orders[i])
+		if err != nil {
+			util.Error("Failed to do sort ", err)
+			// skip the phase.
+			anyError = err
+			continue
+		}
+		// success! mutate the starting plans
+		startingPlans = result
+	}
+
+	return startingPlans, anyError
 }

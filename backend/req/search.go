@@ -59,13 +59,13 @@ func searchGLPS(s *gin.Context, query searchRequestQuery) ([]*entity.GLP, error)
 
 	sortOrder := parse.Ascending
 	if sortOrderType, exists := query.Sort["order"]; exists {
-		sortOrder = parse.SortOrder(sortOrderType)
+		sortOrder = parse.SortOrder(sortOrderType)[0]
 	}
 
 	// apply any sort options to the glps
 	// _before_ we do the search:
 	if sortType, exists := query.Sort["type"]; exists {
-		sortedGlps, err := parse.SortGLPS(s, glps, sortType, sortOrder)
+		sortedGlps, err := parse.SortGLPS(s, glps, sortType, []parse.SortingOption{sortOrder})
 		if err != nil {
 			util.Error("Failed to sort GLPS in searchGLPS query")
 			return []*entity.GLP{}, err
@@ -73,8 +73,43 @@ func searchGLPS(s *gin.Context, query searchRequestQuery) ([]*entity.GLP, error)
 		glps = sortedGlps
 	}
 
+	// we have no query to search by so
+	// we ignore it!
 	if query.Query == "" {
 		return glps, nil
+	}
+
+	var searchQuery string
+
+	// parsing
+	// we first parse the query string to see if we have
+	// anything e.g.
+	// name:"datas"
+	{
+		fmt.Println("checking query ", query.Query)
+		tokens := lexSearchQuery(query.Query)
+		fmt.Println("matched ", len(tokens), " tokens: ", tokens)
+
+		nodes := parseTokens(tokens)
+		fmt.Println("finished parsing search query")
+
+		// NOTE we can parse multiple queries
+		// so for now we take the first one
+
+		for _, node := range nodes {
+			if n, ok := node.(*searchTerm); ok {
+				searchQuery = n.Query
+				break
+			}
+		}
+
+		// TODO apply all of the filters
+
+		for _, node := range nodes {
+			if _, ok := node.(*filterOption); ok {
+				// TODO: do stuff!
+			}
+		}
 	}
 
 	// likewise we allocate a chunk of memory for the glps
@@ -92,7 +127,8 @@ func searchGLPS(s *gin.Context, query searchRequestQuery) ([]*entity.GLP, error)
 
 	matchedGLPS := []*entity.GLP{}
 
-	glpsSearches := fuzzy.RankFindFold(query.Query, glpNames)
+	// Process the actual search here!
+	glpsSearches := fuzzy.RankFindFold(searchQuery, glpNames)
 	for _, glpRank := range glpsSearches {
 		glpIndex := glpPtrs[glpRank.Index]
 		matchedGLPS = append(matchedGLPS, glps[glpIndex])
