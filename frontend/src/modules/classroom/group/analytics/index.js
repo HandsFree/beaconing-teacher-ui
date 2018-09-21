@@ -42,10 +42,6 @@ class MissionBox extends Component {
         const questProms = [];
         for (const quest of quests) {
             questProms.push(new QuestBox().attach(quest));
-            questProms.push(new QuestBox().attach(quest));
-            questProms.push(new QuestBox().attach(quest));
-            questProms.push(new QuestBox().attach(quest));
-            questProms.push(new QuestBox().attach(quest));
         }
 
         return div(
@@ -97,9 +93,6 @@ class AnalyticsMain extends Component {
                 break;
             }
         }
-
-
-        console.log(theGLP);
 
         if (nullishCheck(theGLP?.dashboardLink, '') === '') {
             console.log('[AnalyticsMain] no dashboard link');

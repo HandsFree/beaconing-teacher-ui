@@ -63,6 +63,10 @@ class AssignedGLPs extends Component {
 
         const glpAnalyticsNodes = new Map();
 
+        // FIXME !
+        // Need to make a GH issue for this
+        // it works for now but it's very messy.
+
         // we're basically taking this janky json
         // format and converting it into a nice tree data structure
         // that's a bit more usable

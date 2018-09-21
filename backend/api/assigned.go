@@ -161,6 +161,9 @@ func AssignGroupToGLP(s *gin.Context, groupID uint64, glpID uint64, from, to tim
 func GetAssignedGLPS(s *gin.Context, studentID uint64) string {
 	cache := BigCacheInstance()
 
+	// FIXME shall we support this:
+	// NOTE we can set the ?includeAnalytics=true flag here if necessary.
+
 	apiPath := API.getPath(s, "students/", fmt.Sprintf("%d", studentID), "/assignedGlps")
 
 	resp, err := cache.Get(apiPath)
@@ -202,6 +205,10 @@ func GetStudentAssignedGLPS(s *gin.Context, studentID uint64) string {
 // GetGroupAssignedGLPS returns a JSON string of all of the
 // glps that have been assigned to the given group {groupID}.
 func GetGroupAssignedGLPS(s *gin.Context, groupID uint64) string {
+	// NOTE / FIXME
+	// we can do the following for this req:
+	// includeAnalytics=true
+
 	cache := LittleCacheInstance()
 	apiPath := API.getPath(s, "studentgroups/", fmt.Sprintf("%d", groupID), "/assignedGlps")
 
