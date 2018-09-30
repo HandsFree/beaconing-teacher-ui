@@ -40,6 +40,8 @@ class GroupBox extends Component {
         assignButton.textContent = `${await window.bcnI18n.getPhrase('lm_assigning')}...`;
 
         const status = await window.beaconingAPI.assignGroup(group.id, glpID);
+        console.log("assigning ", group.id, " aka ", group, " to ", glpID);
+
         const statusMessage = new Status();
 
         console.log('[Assign Group] status:', status ? 'success!' : 'failed!');

@@ -21,7 +21,7 @@ class APICore {
     async handleRequest(link: string, req: Object) {
         const res = await this.doRequest(link, req);
 
-        const jsonObj = await res.json();
+        const jsonObj = res.json();
 
         console.log(link, jsonObj);
 
