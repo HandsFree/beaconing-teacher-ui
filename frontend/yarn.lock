@@ -1364,10 +1364,10 @@ babel-eslint@8.2.5:
     eslint-scope "~3.7.1"
     eslint-visitor-keys "^1.0.0"
 
-babel-loader@8.0.0-beta.4:
-  version "8.0.0-beta.4"
-  resolved "https://registry.yarnpkg.com/babel-loader/-/babel-loader-8.0.0-beta.4.tgz#c3fab00696c385c70c04dbe486391f0eb996f345"
-  integrity sha512-fQMCj8jRpF/2CPuVnpFrOb8+8pRuquKqoC+tspy5RWBmL37/2qc104sLLLqpwWltrFzpYb30utPpKc3H6P3ETQ==
+babel-loader@8.0.4:
+  version "8.0.4"
+  resolved "https://registry.yarnpkg.com/babel-loader/-/babel-loader-8.0.4.tgz#7bbf20cbe4560629e2e41534147692d3fecbdce6"
+  integrity sha512-fhBhNkUToJcW9nV46v8w87AJOwAJDz84c1CL57n3Stj73FANM/b9TbCUK4YhdOwEyZ+OxhYpdeZDNzSI29Firw==
   dependencies:
     find-cache-dir "^1.0.0"
     loader-utils "^1.0.2"
