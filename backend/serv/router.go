@@ -2,9 +2,11 @@ package serv
 
 import (
 	"crypto/rand"
-	"errors"
 	"fmt"
 	"net/http"
+
+	raven "github.com/getsentry/raven-go"
+	"github.com/gin-contrib/sentry"
 
 	"github.com/HandsFree/beaconing-teacher-ui/backend/api"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/cfg"
@@ -61,14 +63,17 @@ func GetRouterEngine() *gin.Engine {
 	router.Use(gzip.Gzip(gzip.BestSpeed))
 
 	// Add favicon
-	router.Use(favicon.New("../frontend/public/favicon.ico"))
+	router.Use(favicon.New("./favicon.ico"))
 
 	// token auth middleware
 	router.Use(TokenAuth())
 
+	// Add sentry for development
+	router.Use(sentry.Recovery(raven.DefaultClient, false))
+
 	// 404 page.
 	router.NoRoute(func(c *gin.Context) {
-		c.AbortWithError(404, errors.New("404 Page Not Found"))
+		c.AbortWithStatus(http.StatusNotFound)
 	})
 
 	// Load the main template file
