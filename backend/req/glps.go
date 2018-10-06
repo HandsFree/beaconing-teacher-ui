@@ -69,10 +69,7 @@ func GetGLPSRequest() gin.HandlerFunc {
 		}
 
 		// defaults to Ascending order.
-		order := parse.SortOrder(s.Query("order"))
-		if order == parse.Undefined {
-			order = parse.Ascending
-		}
+		orders := parse.SortOrder(s.Query("order"))
 
 		plans, err := parse.GLPS(s, shouldMinify)
 		if err != nil {
@@ -81,10 +78,13 @@ func GetGLPSRequest() gin.HandlerFunc {
 			return
 		}
 
-		if sortQuery := s.Query("sort"); sortQuery != "" {
-			plans, err = parse.SortGLPS(s, plans, sortQuery, order)
+		sortQuery := s.Query("sort")
+		log.Println("the sort query is '", sortQuery, "'")
+
+		if sortQuery != "" {
+			plans, err = parse.SortGLPS(s, plans, sortQuery, orders)
 			if err != nil {
-				util.Error("Failed to sort GLPs by ", sortQuery, " in order ", order, "\n"+err.Error())
+				util.Error("Failed to sort GLPs by ", sortQuery, " in order ", orders, "\n"+err.Error())
 				s.AbortWithError(http.StatusBadRequest, err)
 				return
 			}

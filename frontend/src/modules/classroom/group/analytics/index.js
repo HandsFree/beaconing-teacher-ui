@@ -1,5 +1,5 @@
 // @flow
-import { h2, h3, h4, div, a, p, main } from '../../../../core/html';
+import { h2, h3, h4, h5, div, a, p, main } from '../../../../core/html';
 
 import { RootComponent, Component } from '../../../../core/component';
 import Header from '../../../header/root';
@@ -14,19 +14,81 @@ class QuestBox extends Component {
         const {
             name,
             dashboardLink,
+            scenes,
         } = this.props;
 
+        const sceneList = [];
+        
+        for (const [id, scene] of scenes) {
+            const { lbgs, name } = scene;
+
+            const lbgList = [];
+            for (const lbg of lbgs) {
+                const { desc, name, type, dashboardLink } = lbg;
+
+                let lbgName = name;
+                if (type) {
+                    lbgName += ' - ' + type;
+                }
+
+                const dashboardLinkEl = p(a(
+                    '.link-underline.btn',
+                    {
+                        href: dashboardLink,
+                        target: '_BLANK',
+                        title: 'LBG specific tracking',
+                    },
+                    'Dashboard',
+                ));
+
+                lbgList.push(
+                    div(
+                        '.empty-block',
+                        p(lbgName),
+                        nullishCheck(dashboardLink, false) ? dashboardLinkEl : p('No analytics available'),
+                        p(desc)
+                    )
+                );
+            }
+
+            // we only add the scene
+            // if at has some LBGs which have dashboard links!
+            if (lbgs.lengths > 0) {
+                sceneList.push(
+                    div(
+                        '.empty-block.scene-box',
+                        h5(name),
+                        lbgList,
+                    )
+                );
+            }
+        }
+
         return div(
-            '.quest-box.flex-spacebetween',
-            p(name),
-            p(a(
-                {
-                    href: dashboardLink,
-                    target: '_BLANK',
-                    title: 'Quest specific tracking',
-                },
-                await window.bcnI18n.getPhrase('dashboard_link'),
-            )),
+            '.quest-box',
+           
+            div(
+                '.flex-spacebetween',
+                h3(name),
+                p(a(
+                    '.btn.link-underline',
+                    {
+                        href: dashboardLink,
+                        target: '_BLANK',
+                        title: 'Quest specific tracking',
+                    },
+                    await window.bcnI18n.getPhrase('dashboard_link'),
+                )),
+            ),
+
+            // we only show this section
+            // if there are scenes.
+            sceneList.length > 0 ? div(
+                '.margin-block',
+                h4('Scenes'),
+                p('The set of scenes in this quest - scenes without analytical information are hidden.'), 
+                div('.scenes-container', sceneList),
+            ) : [],
         );
     }
 }
@@ -40,11 +102,7 @@ class MissionBox extends Component {
         } = this.props;
 
         const questProms = [];
-        for (const quest of quests) {
-            questProms.push(new QuestBox().attach(quest));
-            questProms.push(new QuestBox().attach(quest));
-            questProms.push(new QuestBox().attach(quest));
-            questProms.push(new QuestBox().attach(quest));
+        for (const [name, quest] of quests) {
             questProms.push(new QuestBox().attach(quest));
         }
 
@@ -98,9 +156,6 @@ class AnalyticsMain extends Component {
             }
         }
 
-
-        console.log(theGLP);
-
         if (nullishCheck(theGLP?.dashboardLink, '') === '') {
             console.log('[AnalyticsMain] no dashboard link');
             return h2(await window.bcnI18n.getPhrase('cr_no_analytics'));
@@ -113,7 +168,7 @@ class AnalyticsMain extends Component {
         } = theGLP;
 
         const missionProms = [];
-        for (const mission of missions) {
+        for (const [name, mission] of missions) {
             missionProms.push(new MissionBox().attach(mission));
         }
 
@@ -140,7 +195,7 @@ class AnalyticsMain extends Component {
                 p(await window.bcnI18n.getPhrase('main_dashboard_desc')),
             ),
 
-            h3('Missions'),
+            h2('Missions'),
             await Promise.all(missionProms).then(el => el),
         ];
     }

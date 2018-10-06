@@ -5,65 +5,28 @@ import { Component } from '../../../../core/component';
 
 class Sort extends Component {
     initPage: string = '';
+    selectedOptions: Set = new Set();
 
     async init() {
+        const pages = new Set([
+            'science',
+            'technology',
+            'engineering',
+            'maths',
+            'addedAsc',
+            'addedDesc',
+            'active',
+            'recentModAsc',
+            'recentModDesc',
+            'public',
+            'private',
+            'ownedAsc',
+            'ownedDesc',
+        ]);
+
         const page = window.sessionStorage.getItem('library_init');
-
-        if (page) {
-            switch (page) {
-            case 'science':
-                this.initPage = 'science';
-                break;
-            case 'technology':
-                this.initPage = 'technology';
-                break;
-            case 'engineering':
-                this.initPage = 'engineering';
-                break;
-            case 'maths':
-                this.initPage = 'maths';
-                break;
-            case 'addedAsc':
-                this.initPage = 'addedAsc';
-                break;
-            case 'addedDesc':
-                this.initPage = 'addedDesc';
-                break;
-            case 'active':
-                this.initPage = 'active';
-                break;
-            case 'recentModAsc':
-                this.initPage = 'recentModAsc';
-                break;
-            case 'recentModDesc':
-                this.initPage = 'recentModDesc';
-                break;
-            case 'nameAsc':
-                this.initPage = 'nameAsc';
-                break;
-            case 'nameDesc':
-                this.initPage = 'nameDesc';
-                break;
-            case 'mostAssigned':
-                this.initPage = 'mostAssigned';
-                break;
-            case 'public':
-                this.initPage = 'public';
-                break;
-            case 'private':
-                this.initPage = 'private';
-                break;
-            case 'ownedAsc':
-                this.initPage = 'ownedAsc';
-                break;
-            case 'ownedDesc':
-                this.initPage = 'ownedDesc';
-                break;
-            default:
-                this.initPage = 'recentModDesc';
-                break;
-            }
-
+        if (page && pages.has(page)) {
+            this.initPage = page;
             return;
         }
 
@@ -343,15 +306,34 @@ class Sort extends Component {
         );
     }
 
+    // toggleActive will add or remove an active
+    // tag to the given element.
     toggleActive(el: EventTarget, initPage: string) {
-        const asideEl = document.getElementById('library-sort');
-        const active = asideEl.querySelector('.active');
+        // edge case. the current el is active and
+        // we want to disable it.
+        if (el.classList.contains('active')) {
+            el.classList.remove('active');
+            return;
+        }
 
-        active.classList.remove('active');
+        // otherwise, we want to _toggle_ the active
+        // element, i.e. set one to active and clear the rest.
+        
+        const set = el.closest('.sort-group');
+        const actives = set.getElementsByClassName('active');
 
+        console.log('the actives for ', set, ' are ', actives);
+
+        // remove all the active tags from this set.
+        for (const active of actives) {
+            active.classList.remove('active');
+        }
+
+        // we have no active tag, so add it
         if (el.classList.contains('sort-option')) {
             el.classList.add('active');
 
+            // hm!
             if (window.sessionStorage) {
                 window.sessionStorage.setItem('library_init', initPage);
             }

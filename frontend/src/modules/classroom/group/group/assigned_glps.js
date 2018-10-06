@@ -11,10 +11,37 @@ import Loading from '../../../loading';
 import GLPBox from './glp_box';
 import nullishCheck from '../../../../core/util';
 
+class SceneAnalytics {
+    constructor(id: number, name: string) {
+        this.id = id;
+        this.name = name;
+        this.lbgs = [];   
+    }
+
+    registerLBG(lbg: LocationBasedGameAnalytics) {
+        this.lbgs.push(lbg);
+    }
+}
+
+class LocationBasedGameAnalytics {
+    constructor(id: number, name: string, type: string, desc: string, dashboardLink: string) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.desc = desc;
+        this.dashboardLink = dashboardLink;
+    }
+}
+
 class QuestAnalytics {
     constructor(name: string, dashboardLink: string) {
         this.name = name;
         this.dashboardLink = dashboardLink;
+        this.scenes = new Map();
+    }
+
+    registerScene(scene: SceneAnalytics) {
+        this.scenes.set(scene.id, scene);
     }
 }
 
@@ -22,11 +49,16 @@ class MissionAnalytics {
     constructor(name: string, dashboardLink: string) {
         this.name = name;
         this.dashboardLink = dashboardLink;
-        this.quests = [];
+        this.quests = new Map();
     }
 
     registerQuest(quest: QuestAnalytics) {
-        this.quests.push(quest);
+        this.quests.set(quest.name, quest);
+    }
+
+    // todo optional or something?
+    findQuest(name: string) {
+        return this.quests.get(name);
     }
 }
 
@@ -35,11 +67,15 @@ class GLPAnalyticsInfo {
         this.id = id;
         this.name = name;
         this.dashboardLink = dashboardLink;
-        this.missions = [];
+        this.missions = new Map();
     }
 
     registerMission(mission: MissionAnalytics) {
-        this.missions.push(mission);
+        this.missions.set(mission.name, mission);
+    }
+
+    findMission(name: string) {
+        return this.missions.get(name);
     }
 }
 
@@ -57,11 +93,20 @@ class AssignedGLPs extends Component {
         );
     }
 
+    // FIXME(Felix): clean this up
     async afterMount() {
         const { id } = this.props;
         const assignedGLPs = await window.beaconingAPI.getGroupAssigned(id);
 
+        // this is a map of the glp id's to their data
+        // nodes. which will be passed along in session storage
         const glpAnalyticsNodes = new Map();
+
+        const glps = [];
+
+        // FIXME !
+        // Need to make a GH issue for this
+        // it works for now but it's very messy.
 
         // we're basically taking this janky json
         // format and converting it into a nice tree data structure
@@ -71,6 +116,26 @@ class AssignedGLPs extends Component {
             if (nullishCheck(assigned?.analyticsGlp, 'none') === 'none') {
                 continue;
             }
+
+            const glp = await window.beaconingAPI.getGLP(assigned.gamifiedLessonPathId, false);
+
+            /*
+                notes:
+
+                we can ignore the analytics object for now?
+
+                - graph.scenes : [ color? image? title? locationBasedGames ]
+                - 
+            */
+
+            const dashboardLink = glp?.analyticsGlp?.analytics?.json?.analytics?.dashboard;
+
+            // FIXME
+            glps.push({
+                glp: glp,
+                assignedGLPID: glp.id,
+                dashboardLink,
+            });
 
             const {
                 analytics: glpAnalytics,
@@ -110,6 +175,43 @@ class AssignedGLPs extends Component {
                 glpAnalyticsObj.registerMission(missionAnalyticsObj);
             }
 
+            // now we have to loop through this other set
+            // of glp missions/quests that are in the 'contents' of the glp.
+
+            const glpContents = JSON.parse(glp.content);
+            
+            // four nested loops! :-)
+            for (const mission of glpContents.missions) {
+                let missionObj = glpAnalyticsObj.findMission(mission.name);
+                // TODO report if we cant find this.
+
+                const quests = mission.quests;
+                for (const quest of quests) {
+                    const questObj = missionObj.findQuest(quest.name);
+
+                    for (const scene of quest.graph.scenes) {
+                        const {
+                            id, title, locationBasedGames
+                        } = scene;
+
+                        const sceneItem = new SceneAnalytics(id, title);
+
+                        for (const lbg of locationBasedGames) {
+                            const {
+                                id, name, type, description, analytics
+                            } = lbg;
+
+                            const dashboard = analytics?.dashboard;
+
+                            const lbgItem = new LocationBasedGameAnalytics(id, name, type, description, dashboard);
+                            sceneItem.registerLBG(lbgItem);
+                        }
+
+                        questObj.registerScene(sceneItem);
+                    }
+                }
+            }
+
             // store glp id => glp data
             glpAnalyticsNodes.set(glpID, glpAnalyticsObj);
         }
@@ -120,19 +222,6 @@ class AssignedGLPs extends Component {
         window.sessionStorage.setItem('assignedAnalyticsData', JSON.stringify(glpAnalyticsNodes));
 
         if (assignedGLPs && assignedGLPs.length >= 1) {
-            const glps = [];
-
-            for (const glp of assignedGLPs) {
-                const glpObj = await window.beaconingAPI.getGLP(glp.gamifiedLessonPathId, true);
-                const dashboardLink = glp?.analyticsGlp?.analytics?.json?.analytics?.dashboard;
-
-                glps.push({
-                    glp: glpObj,
-                    assignedGLPID: glp.id,
-                    dashboardLink,
-                });
-            }
-
             const promArr = [];
 
             for (const glpObj of glps) {

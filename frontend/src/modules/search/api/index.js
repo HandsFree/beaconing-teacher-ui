@@ -66,11 +66,13 @@ class APISearchStatic extends Component {
         const { detail } = event;
 
         if (nullishCheck(detail?.filter, false)) {
+            const filter = (nullishCheck(detail, {}));
+            
             this.queryObj = {
                 query: '',
-                ...(nullishCheck(detail, {})),
+                ...filter,
             };
-
+            
             this.hideError();
 
             if (nullishCheck(this.view)) {
