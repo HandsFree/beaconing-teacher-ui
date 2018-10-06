@@ -6,6 +6,16 @@ import { Component } from '../../../../core/component';
 import Loading from '../../../loading';
 import LoadGLPs from './load_glps';
 
+// imo this needs a re-write the
+// structure is very spaghetti and 
+// there is a lot of indirection
+// for something that should be simple
+
+// the current implementation is very state
+// based and needs to be changed into something
+// that can handle a combination of filtering 
+// options.
+
 class GLPHandle extends Component {
     step = 12;
 
@@ -16,7 +26,8 @@ class GLPHandle extends Component {
     eventsLoaded: boolean = false;
 
     filterOptions: ?Object = null;
-
+    filterSet = new Map();
+    
     currentUser = null;
 
     updateHooks = {
@@ -39,6 +50,23 @@ class GLPHandle extends Component {
     };
 
     emitSearchFilter(type: string, order: string) {
+        // if 
+        // filterSet[type] == order then we 
+        // set the value in filterSet[type] to null
+        
+        if (this.filterSet.has(type)) {
+            const val = this.filterSet.get(type);
+            if (val === order) {
+                this.filterSet.set(type, null);
+            }
+            else {
+                this.filterSet.set(type, order);
+            }    
+        }
+        else {
+            this.filterSet.set(type, order);
+        }
+        
         const filterOptions = {
             filter: 'glp',
             sort: {
@@ -48,7 +76,6 @@ class GLPHandle extends Component {
         };
 
         this.filterOptions = filterOptions;
-
         this.emit('SearchFilterUpdate', filterOptions);
 
         if (window.sessionStorage) {
@@ -169,14 +196,8 @@ class GLPHandle extends Component {
 
         const glps = new LoadGLPs();
 
-        const {
-            type,
-            order,
-        } = this.filterOptions.sort;
-
         const glpsEl = await glps.attach({
-            type,
-            order,
+            filterSet: this.filterSet,
             loadAll: this.loadAll,
             index: this.index,
             step: this.step,

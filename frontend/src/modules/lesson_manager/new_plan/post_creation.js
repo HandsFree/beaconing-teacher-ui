@@ -50,7 +50,7 @@ class PostCreation extends Component {
                     ),
                     a(
                         {
-                            href: `//${window.location.host}/authoring_tool/?id=${encodeURIComponent(id)}`,
+                            href: `//${window.location.host}/lesson_manager/#edit?id=${encodeURIComponent(id)}`,
                         },
                         button('.button-action', await window.bcnI18n.getPhrase('edit_glp')),
                     ),

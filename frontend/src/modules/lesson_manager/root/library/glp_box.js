@@ -5,39 +5,6 @@ import { Component } from '../../../../core/component';
 import Status from '../../../status';
 
 class GLPBox extends Component {
-    async deleteGLP() {
-        const status = await window.beaconingAPI.deleteGLP(this.props.id);
-        const statusMessage = new Status();
-
-        console.log('[Delete GLP] status:', status ? 'success!' : 'failed!');
-
-        // const status = false;
-
-        if (status) {
-            const statusMessageEl = await statusMessage.attach({
-                elementID: false,
-                heading: 'Success',
-                type: 'success',
-                message: await window.bcnI18n.getPhrase('glp_del'),
-            });
-
-            document.body.appendChild(statusMessageEl);
-
-            this.removeSelf();
-
-            return;
-        }
-
-        const statusMessageEl = await statusMessage.attach({
-            elementID: false,
-            heading: 'Error',
-            type: 'error',
-            message: await window.bcnI18n.getPhrase('glp_nd'),
-        });
-
-        document.body.appendChild(statusMessageEl);
-    }
-
     async render() {
         const {
             name,
@@ -74,14 +41,14 @@ class GLPBox extends Component {
                 a(
                     '.item',
                     {
-                        href: `#view?id=${id}`,
+                        href: `#view?id=${encodeURIComponent(id)}`,
                     },
                     await window.bcnI18n.getPhrase('view'),
                 ),
                 a(
                     '.item',
                     {
-                        href: `//${window.location.host}/authoring_tool?id=${encodeURIComponent(id)}`,
+                        href: `#edit?id=${encodeURIComponent(id)}`,
                     },
                     await window.bcnI18n.getPhrase('edit'),
                 ),
@@ -92,22 +59,6 @@ class GLPBox extends Component {
                     },
                     await window.bcnI18n.getPhrase('lm_assign'),
                 ),
-                currentUser === owner ? a(
-                    '.item',
-                    {
-                        onclick: async () => {
-                            const confirmDelGLPTranslation = await window.bcnI18n.getPhrase('confirm_delete_glp');
-
-                            // https://eslint.org/docs/rules/no-alert
-                            // breaking the rules for now!
-                            const doDelete = confirm(confirmDelGLPTranslation);
-                            if (doDelete) {
-                                this.deleteGLP();
-                            }
-                        },
-                    },
-                    await window.bcnI18n.getPhrase('delete'),
-                ) : [],
             ),
             div(
                 '.title',

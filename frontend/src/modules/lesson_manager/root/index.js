@@ -6,6 +6,7 @@ import ViewPlans from '../view_plan';
 import ViewMission from '../view_mission';
 import AssignPlan from '../assign_plan';
 import NewPlan from '../new_plan';
+import EditPlan from '../edit_plan';
 
 const router = new Router();
 
@@ -17,6 +18,10 @@ router.setRoutes([
     {
         path: 'view',
         controller: new ViewPlans(),
+    },
+    {
+        path: 'edit',
+        controller: new EditPlan(),
     },
     {
         path: 'mission',

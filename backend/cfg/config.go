@@ -13,6 +13,7 @@ type tomlConfig struct {
 	Auth   authInfo
 	DB     databaseInfo
 	Server serverInfo
+	Debug  debugInfo
 }
 
 type databaseInfo struct {
@@ -32,6 +33,10 @@ type serverInfo struct {
 	Port         uint16 `toml:"port"`
 	RootPath     string `toml:"root_path"`
 	GlpFilesPath string `toml:"glp_files_path"`
+}
+
+type debugInfo struct {
+	Grmon bool `toml:"grmon"`
 }
 
 // Beaconing is the instance of the main toml

@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const Autoprefixer = require('autoprefixer');
 const { resolve } = require('path');
 // const threadLoader = require('thread-loader');
 // const { length: cpuCount } = require('os').cpus();
@@ -44,6 +45,22 @@ const babelLoader = {
     loader: 'babel-loader',
     options: {
         cacheDirectory: true,
+    },
+};
+
+const cssLoader = {
+    loader: 'css-loader',
+    options: {
+        importLoaders: 1,
+    },
+};
+
+const postCSSLoader = {
+    loader: 'postcss-loader',
+    options: {
+        plugins: [
+            Autoprefixer,
+        ],
     },
 };
 
@@ -112,8 +129,9 @@ const mainSettings = (dev, devServer, dash, verbose) => {
                     test: /\.(css|scss)$/,
                     use: [
                         MiniCssExtractPlugin.loader,
-                        'css-loader',
+                        cssLoader,
                         ...optLoaders,
+                        postCSSLoader,
                         'sass-loader',
                     ],
                 },

@@ -49,12 +49,30 @@ class LoadGLPs extends Component {
     }
 
     async updateGLPs() {
-        const typeQuery = nullishCheck(this.props?.type, 'default');
-        const orderQuery = nullishCheck(this.props?.order, 'default');
+        const filterSet = this.props?.filterSet;
+
+        const types = [];
+        const orders = [];
+
+        for (const [key, val] of filterSet) {
+            // fixme
+            if (val !== null) {
+                types.push(key);
+
+                // we have this null terminator here
+                // so we dont confuse the backend
+                // with funny placements
+                orders.push(val ? val : 'null');
+            }            
+        }
+
+        const typesSet = types.join(',');
+        const ordersSet = orders.join(',');
+        
         const index = nullishCheck(this.props?.index, 0);
         const step = nullishCheck(this.props?.step, 12);
 
-        const glps = await window.beaconingAPI.getGLPs(typeQuery, orderQuery, true, index, step);
+        const glps = await window.beaconingAPI.getGLPs(typesSet, ordersSet, true, index, step);
 
         if (glps.length < 12) {
             this.state.endReached = true;

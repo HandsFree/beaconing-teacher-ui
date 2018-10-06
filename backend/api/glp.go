@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
-	"time"
 
 	"github.com/HandsFree/beaconing-teacher-ui/backend/activity"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
@@ -27,28 +26,29 @@ func containsGLP(glpID uint64, glpArr []*entity.GLP) bool {
 	return false
 }
 
-type glpPutJSON struct {
-	ID                 uint64    `json:"id"`
-	Name               string    `json:"name"`
-	Desc               string    `json:"description"`
-	Author             string    `json:"author"`
-	Category           string    `json:"category"`
-	Domain             string    `json:"domain"`
-	Topic              string    `json:"topic"`
-	AgeGroup           string    `json:"ageGroup"`
-	Year               int       `json:"year"`
-	LearningObjectives []string  `json:"learningObjectives"`
-	Competences        []string  `json:"competences"`
-	Content            string    `json:"content"`
-	Public             bool      `json:"public"`
-	GamePlotID         int       `json:"gamePlotId"`
-	ExternConfig       string    `json:"externConfig"`
-	CreatedAt          time.Time `json:"createdAt"`
-	UpdatedAt          time.Time `json:"updatedAt"`
-	Owner              string    `json:"owner"`
-	OwnedByMe          bool      `json:"ownedByMe"`
-	ReadOnly           bool      `json:"readOnly"`
-}
+// To be used later on
+// type glpPutJSON struct {
+// 	ID                 uint64    `json:"id"`
+// 	Name               string    `json:"name"`
+// 	Desc               string    `json:"description"`
+// 	Author             string    `json:"author"`
+// 	Category           string    `json:"category"`
+// 	Domain             string    `json:"domain"`
+// 	Topic              string    `json:"topic"`
+// 	AgeGroup           string    `json:"ageGroup"`
+// 	Year               int       `json:"year"`
+// 	LearningObjectives []string  `json:"learningObjectives"`
+// 	Competences        []string  `json:"competences"`
+// 	Content            string    `json:"content"`
+// 	Public             bool      `json:"public"`
+// 	GamePlotID         int       `json:"gamePlotId"`
+// 	ExternConfig       string    `json:"externConfig"`
+// 	CreatedAt          time.Time `json:"createdAt"`
+// 	UpdatedAt          time.Time `json:"updatedAt"`
+// 	Owner              string    `json:"owner"`
+// 	OwnedByMe          bool      `json:"ownedByMe"`
+// 	ReadOnly           bool      `json:"readOnly"`
+// }
 
 type glpPostJSON struct {
 	Name               string   `json:"name"`
@@ -65,8 +65,8 @@ type glpPostJSON struct {
 }
 
 // PutGLP ...
-func PutGLP(s *gin.Context) (string, error) {
-	var json glpPutJSON
+func PutGLP(s *gin.Context, id int) (string, error) {
+	var json glpPostJSON
 	if err := s.ShouldBindJSON(&json); err != nil {
 		util.Error("PutGLP", err.Error())
 		return "", err
@@ -78,8 +78,9 @@ func PutGLP(s *gin.Context) (string, error) {
 		return "", err
 	}
 
+	apiPath := API.getPath(s, "gamifiedlessonpaths/", fmt.Sprintf("%d", id))
 	resp, err, status := DoTimedRequestBody(s, "PUT",
-		API.getPath(s, "gamifiedlessonpaths"),
+		apiPath,
 		bytes.NewBuffer(glpPut),
 	)
 	if err != nil {
@@ -92,13 +93,13 @@ func PutGLP(s *gin.Context) (string, error) {
 		return "", nil
 	}
 
-	id, err := GetUserID(s)
+	userID, err := GetUserID(s)
 	if err != nil {
 		util.Error("No such current user", err.Error())
 		return string(resp), err
 	}
 
-	API.WriteActivity(id, activity.PutGLPActivity, resp)
+	API.WriteActivity(userID, activity.PutGLPActivity, resp)
 	return string(resp), nil
 }
 

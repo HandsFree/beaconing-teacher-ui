@@ -9,6 +9,9 @@ import (
 	"os/signal"
 	"time"
 
+	"github.com/bcicen/grmon/agent"
+	raven "github.com/getsentry/raven-go"
+
 	"github.com/HandsFree/beaconing-teacher-ui/backend/api"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/cfg"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/serv"
@@ -17,6 +20,13 @@ import (
 
 func main() {
 	cfg.LoadConfig()
+	if cfg.Beaconing.Debug.Grmon {
+		grmon.Start()
+		util.Log(util.VerboseLog, "grmon started")
+	}
+
+	raven.SetDSN("https://a6fa84dc8a194ac899cfee18910f6813:14dc8b458fac43acbaab54d8ac02ab1b@sentry.io/1292950")
+
 	api.SetupAPIHelper()
 
 	server := &http.Server{

@@ -21,7 +21,7 @@ class APICore {
     async handleRequest(link: string, req: Object) {
         const res = await this.doRequest(link, req);
 
-        const jsonObj = await res.json();
+        const jsonObj = res.json();
 
         console.log(link, jsonObj);
 
@@ -123,14 +123,20 @@ class APICore {
         return false;
     }
 
-    async getGLPs(sortQuery: string, orderQuery: string, minify: ?boolean, indexNumber: ?number, stepNumber: ?number) {
+    async getGLPs(sortQuery: string, orderQuery: string, minify: ?boolean, indexNumber: ?number, stepNumber: ?number) {        
+        // FIXME this is sloppy
+        // too many ternary operators! kind of hard to read.
+
         const sort = sortQuery !== 'default' ? `?sort=${sortQuery}` : '';
         const order = orderQuery !== 'default' ? `&order=${orderQuery}` : '';
+
         const index = indexNumber >= 0 ? `&index=${indexNumber}` : '';
         const step = stepNumber && stepNumber > 0 ? `&step=${stepNumber}` : '';
-        const url = minify ? `//${window.location.host}/api/v1/glps${sort}${order}${index}${step}&minify=1` : `//${window.location.host}/api/v1/glps${sort}${order}${index}${step}`;
-        const glps = await this.get(url);
 
+        const minifyFlag = minify ? '1' : '0';
+        const url = `//${window.location.host}/api/v1/glps${sort}${order}${index}${step}&minify=${minifyFlag}`;
+
+        const glps = await this.get(url);
         return glps;
     }
 
@@ -173,6 +179,22 @@ class APICore {
         const msg = await this.delete(`//${window.location.host}/api/v1/glp/${id}`);
 
         if (typeof msg === 'object' && msg.success) {
+            glpStatus = true;
+        }
+
+        return glpStatus;
+    }
+
+    async updateGLP(glpID: number, data: { [string]: string | Object }) {
+        const glpJSON = JSON.stringify(data);
+
+        let glpStatus = false;
+
+        const glp = await this.put(`//${window.location.host}/api/v1/glp/${glpID}`, glpJSON);
+
+        console.log(glp);
+
+        if (typeof glp === 'object' && glp.success) {
             glpStatus = true;
         }
 

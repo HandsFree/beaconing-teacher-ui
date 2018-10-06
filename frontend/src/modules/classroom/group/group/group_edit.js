@@ -1,17 +1,42 @@
 // @flow
-import { section, div, form, p, input, label, span, select, option, small } from '../../../../core/html';
+import {
+    section,
+    div,
+    form,
+    p,
+    input,
+    label,
+    span,
+} from '../../../../core/html';
 
-import { Component } from '../../../../core/component';
+import Form from '../../../form';
 import Status from '../../../status';
 import StudentsList from './students_list';
-import nullishCheck from '../../../../core/util';
 
-class StudentEdit extends Component {
-    state = {
-        group: {},
+class StudentEdit extends Form {
+    stateObj = {
         groupName: '',
-        groupCategory: '',
     };
+
+    stateProxy = {
+        set(obj, prop, value) {
+            let trimmedValue = value;
+
+            if (typeof value === 'string') {
+                trimmedValue = value.trim();
+            }
+
+            // console.log(trimmedValue);
+
+            return Reflect.set(obj, prop, trimmedValue);
+        },
+    };
+
+    state = new Proxy(this.stateObj, this.stateProxy);
+
+    group = {};
+
+    groups = [];
 
     studentList: Array<Object> = [];
 
@@ -19,19 +44,29 @@ class StudentEdit extends Component {
         StudentSelected: this.updateStudentList,
     };
 
+    processGroups(groupsArr: Object[]) {
+        for (const obj of groupsArr) {
+            this.groups.push(obj?.name.toLowerCase());
+        }
+    }
+
     async init() {
         if (!this.props.id) {
             throw new Error('[Group Edit] no group id provided');
         }
 
         const group = await window.beaconingAPI.getGroup(this.props.id);
+        const groups = await window.beaconingAPI.getGroups();
 
-        if (group) {
-            this.state.group = group;
+        if (group && groups) {
+            this.group = group;
+            this.studentList = group?.students ?? [];
 
-            this.state.groupName = nullishCheck(group?.name, '');
-            this.state.groupCategory = nullishCheck(group?.category, '');
-            this.state.studentList = nullishCheck(group?.students, []);
+            this.state = {
+                groupName: group?.name ?? '',
+            };
+
+            this.processGroups(groups);
 
             return;
         }
@@ -67,31 +102,49 @@ class StudentEdit extends Component {
         doneButton.textContent = await window.bcnI18n.getPhrase('cancel');
     }
 
-    async checkFields() {
-        // TODO: reduce duped code
+    async checkGroupName() {
         if (this.state.groupName === '') {
-            const statusMessage = new Status();
-            const statusMessageEl = await statusMessage.attach({
-                elementID: 'group-name',
-                heading: 'Error',
-                type: 'error',
-                message: (await window.bcnI18n.getPhrase('empty_field')).replace('%s', `'${await window.bcnI18n.getPhrase('cr_group_name')}'`),
-            });
+            this.removeAll('group-name-status');
 
-            this.appendView(statusMessageEl);
+            return true;
+        }
 
-            this.changeButtons(false);
+        if (this.state.groupName !== this.group.name && this.groups.indexOf(this.state.groupName.toLowerCase()) !== -1) {
+            const errMsg = await window.bcnI18n.getPhrase('group_name_exists');
+            this.addError('group-name-status', errMsg);
 
             return false;
         }
 
+        this.addSuccess('group-name-status');
+        return true;
+    }
+
+    async checkFields() {
+        let success = true;
+        const emptyMsg = await window.bcnI18n.getPhrase('required_empty');
+
+        if (this.state.groupName === '') {
+            this.addError('group-name-status', emptyMsg);
+            success = false;
+        }
+
+        if (!this.checkGroupName()) {
+            success = false;
+        }
+
         if (this.studentList.length < 2) {
+            this.addError('group-students-status', await window.bcnI18n.getPhrase('more_students_needed'));
+            success = false;
+        }
+
+        if (!success) {
             const statusMessage = new Status();
             const statusMessageEl = await statusMessage.attach({
                 elementID: false,
                 heading: 'Error',
                 type: 'error',
-                message: await window.bcnI18n.getPhrase('more_students_needed'),
+                message: await window.bcnI18n.getPhrase('form_error'),
             });
 
             this.appendView(statusMessageEl);
@@ -109,20 +162,17 @@ class StudentEdit extends Component {
             return;
         }
 
-        const { group } = this.state;
-
         // console.log(this.state.groupCategory);
 
         const obj = {
-            id: group.id,
-            name: this.state.groupName === '' ? group.name : this.state.groupName,
-            category: this.state.groupCategory === '' ? group.category : this.state.groupCategory,
-            students: this.studentList.length >= 2 ? this.studentList : group.students,
+            id: this.group.id,
+            name: this.state.groupName,
+            students: this.studentList.length >= 2 ? this.studentList : this.group.students,
         };
 
         // console.log('Group Obj: ', obj);
 
-        const status = await window.beaconingAPI.updateGroup(group.id, obj);
+        const status = await window.beaconingAPI.updateGroup(this.group.id, obj);
         const statusMessage = new Status();
 
         console.log('[Update Group] status:', status ? 'success!' : 'failed!');
@@ -143,7 +193,6 @@ class StudentEdit extends Component {
 
             this.emit('GroupNameUpdate', {
                 groupName: this.state.groupName,
-                groupCategory: this.state.groupCategory,
             });
 
             return;
@@ -162,11 +211,9 @@ class StudentEdit extends Component {
     }
 
     async render() {
-        const { group } = this.state;
-
         const studentsArr = [];
 
-        for (const obj of group.students) {
+        for (const obj of this.group.students) {
             studentsArr.push(obj.id);
         }
 
@@ -190,59 +237,50 @@ class StudentEdit extends Component {
                     ),
                     form(
                         '.create-group',
-                        label(
-                            span(await window.bcnI18n.getPhrase('cr_group_name')),
-                            input(
-                                '#group-name.text-field',
-                                {
-                                    type: 'text',
-                                    placeholder: await window.bcnI18n.getPhrase('cr_group_enter_name'),
-                                    value: group.name,
-                                    oninput: (event) => {
-                                        const { target } = event;
+                        div(
+                            '.label-group',
+                            div(
+                                '.split',
+                                div('.title-area', span(await window.bcnI18n.getPhrase('cr_group_name'))),
+                                div('.desc-area', await window.bcnI18n.getPhrase('cr_group_name_desc')),
+                                div(
+                                    '.input-area',
+                                    label(
+                                        '.required',
+                                        input(
+                                            '#group-name.text-field',
+                                            {
+                                                type: 'text',
+                                                placeholder: await window.bcnI18n.getPhrase('cr_group_enter_name'),
+                                                value: this.state.groupName,
+                                                oninput: (event) => {
+                                                    const { target } = event;
 
-                                        this.state.groupName = target.value;
-                                    },
-                                },
+                                                    this.state.groupName = target.value;
+                                                    this.addLoading('group-name-status');
+                                                    this.checkGroupName();
+                                                },
+                                                required: true,
+                                            },
+                                        ),
+                                    ),
+                                ),
+                                div('#group-name-status.status-area'),
                             ),
                         ),
-                        label(
-                            '.select',
-                            span(await window.bcnI18n.getPhrase('cr_group_category')),
-                            select(
-                                '#group-category',
-                                {
-                                    onchange: (event) => {
-                                        const { target } = event;
-
-                                        this.state.groupCategory = target.value;
-                                    },
-                                },
-                                option(
-                                    {
-                                        value: 'normal',
-                                        selected: group.category === 'normal',
-                                    },
-                                    'Normal',
+                        div(
+                            '.label-group',
+                            div(
+                                '.split',
+                                div('.title-area', span(await window.bcnI18n.getPhrase('students'))),
+                                div('.desc-area', await window.bcnI18n.getPhrase('cr_students_group_desc')),
+                                div(
+                                    '.input-area',
+                                    studentsListEl,
                                 ),
-                                option(
-                                    {
-                                        value: 'class',
-                                        selected: group.category === 'class',
-                                    },
-                                    await window.bcnI18n.getPhrase('class'),
-                                ),
-                                option(
-                                    {
-                                        value: 'course',
-                                        selected: group.category === 'course',
-                                    },
-                                    'Course',
-                                ),
+                                div('#group-students-status.status-area'),
                             ),
                         ),
-                        small(await window.bcnI18n.getPhrase('students')),
-                        studentsListEl,
                         div(
                             '.flex-justify-end.margin-top-10',
                             div(
@@ -255,7 +293,7 @@ class StudentEdit extends Component {
                                 await window.bcnI18n.getPhrase('cancel'),
                             ),
                             div(
-                                '#update-group-button.button-action',
+                                '#update-group-button.button-submit',
                                 {
                                     onclick: (event) => {
                                         const { target } = event;
