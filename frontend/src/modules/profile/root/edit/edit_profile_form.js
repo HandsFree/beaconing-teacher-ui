@@ -1,37 +1,114 @@
 // @flow
-import { section, div, a, i, h1, form, input, select, option, p, label, span } from '../../../../core/html';
+import {
+    section,
+    div,
+    a,
+    i,
+    h1,
+    form,
+    input,
+    select,
+    option,
+    label,
+    span,
+} from '../../../../core/html';
 
-import { Component } from '../../../../core/component';
+import Form from '../../../form';
 import Status from '../../../status';
-import nullishCheck from '../../../../core/util';
 
-class ProfileEditForm extends Component {
+class ProfileEditForm extends Form {
     state = {
-        teacher: {},
-        teacherFirstName: null,
-        teacherLastName: null,
-        teacherEmail: null,
-        teacherGender: null,
-        teacherSchool: null,
-        teacherLang: null,
+        teacherFirstName: '',
+        teacherLastName: '',
+        teacherEmail: '',
+        teacherGender: '',
+        teacherSchool: '',
+        teacherLang: '',
     };
+
+    stateProxy = {
+        set(obj, prop, value) {
+            let trimmedValue = value;
+
+            if (typeof value === 'string') {
+                trimmedValue = value.trim();
+            }
+
+            // console.log(trimmedValue);
+
+            return Reflect.set(obj, prop, trimmedValue);
+        },
+    };
+
+    state = new Proxy(this.stateObj, this.stateProxy);
+
+    teacher = {};
 
     async init() {
         const currUser = await window.beaconingAPI.getCurrentUser();
 
-        this.state.teacher = currUser;
-        this.state.teacherGender = nullishCheck(currUser.teacherSettings?.gender, 'male');
+        this.teacher = currUser;
+        this.state = {
+            teacherFirstName: currUser.teacherSettings?.firstName ?? '',
+            teacherLastName: currUser.teacherSettings?.lastName ?? '',
+            teacherEmail: currUser.email ?? '',
+            teacherGender: currUser.teacherSettings?.gender ?? 'female',
+            teacherSchool: currUser.teacherSettings?.school ?? '',
+            teacherLang: currUser.language ?? 'en-GB',
+        };
     }
 
-    async editTeacher(editButton: EventTarget) {
+    async resetSubmit() {
+        const updateButton = document.getElementById('edit-teacher-button');
+        updateButton.textContent = await window.bcnI18n.getPhrase('update');
+    }
+
+    async checkFields() {
+        let success = true;
+        const emptyMsg = await window.bcnI18n.getPhrase('required_empty');
+
+        if (this.state.teacherFirstName === '') {
+            this.addError('teacher-fn-status', emptyMsg);
+            success = false;
+        }
+
+        if (this.state.teacherLastName === '') {
+            this.addError('teacher-ln-status', emptyMsg);
+            success = false;
+        }
+
+        if (!success) {
+            const statusMessage = new Status();
+            const statusMessageEl = await statusMessage.attach({
+                elementID: false,
+                heading: 'Error',
+                type: 'error',
+                message: await window.bcnI18n.getPhrase('form_error'),
+            });
+
+            this.appendView(statusMessageEl);
+
+            this.resetSubmit();
+
+            return false;
+        }
+
+        return true;
+    }
+
+    async editTeacher() {
+        if (await this.checkFields() === false) {
+            return;
+        }
+
         const obj = {
             email: this.state.teacherEmail,
-            language: nullishCheck(this.state.teacherLang, this.state.teacher?.language),
+            language: this.state.teacherLang,
             teacherSettings: {
-                firstName: nullishCheck(this.state.teacherFirstName, this.state.teacher?.teacherSettings?.firstName),
-                lastName: nullishCheck(this.state.teacherLastName, this.state.teacher?.teacherSettings?.lastName),
+                firstName: this.state.teacherFirstName,
+                lastName: this.state.teacherLastName,
                 gender: this.state.teacherGender,
-                school: nullishCheck(this.state.teacherSchool, this.state.teacher?.teacherSettings?.school),
+                school: this.state.teacherSchool,
             },
         };
 
@@ -54,7 +131,7 @@ class ProfileEditForm extends Component {
 
             this.appendView(statusMessageEl);
 
-            editButton.textContent = await window.bcnI18n.getPhrase('update');
+            this.resetSubmit();
 
             return;
         }
@@ -66,14 +143,12 @@ class ProfileEditForm extends Component {
             message: await window.bcnI18n.getPhrase('teacher_ne'),
         });
 
-        editButton.textContent = await window.bcnI18n.getPhrase('update');
+        this.resetSubmit();
 
         this.appendView(statusMessageEl);
     }
 
     async render() {
-        const { teacher } = this.state;
-
         const updatingText = await window.bcnI18n.getPhrase('updating');
 
         return div(
@@ -97,193 +172,270 @@ class ProfileEditForm extends Component {
             section(
                 '.flex-column',
                 div(
-                    '.margin-25.flex-column',
-                    div(
-                        '.general-info',
-                        p(await window.bcnI18n.getPhrase('pf_teacher_info')),
-                    ),
+                    '.flex-column',
                     form(
                         '.edit-teacher',
-                        label(
-                            span(await window.bcnI18n.getPhrase('pf_teacher_fn')),
-                            input(
-                                '#teacher-first-name.text-field',
-                                {
-                                    type: 'text',
-                                    value: teacher.teacherSettings?.firstName,
-                                    oninput: (event) => {
-                                        const { target } = event;
-
-                                        this.state.teacherFirstName = target.value;
-                                    },
-                                },
+                        div(
+                            '.label-group',
+                            div(
+                                '.split',
+                                div('.title-area', span(await window.bcnI18n.getPhrase('pf_teacher_fn'))),
+                                div('.desc-area', await window.bcnI18n.getPhrase('pf_teacher_fn_desc')),
+                                div(
+                                    '.input-area',
+                                    label(
+                                        '.required',
+                                        input(
+                                            '#teacher-first-name.text-field',
+                                            {
+                                                type: 'text',
+                                                placeholder: await window.bcnI18n.getPhrase('pf_teacher_fn_enter'),
+                                                value: this.state.teacherFirstName,
+                                                oninput: (event) => {
+                                                    const { target } = event;
+                        
+                                                    this.state.teacherFirstName = target.value;
+                                                },
+                                                required: true,
+                                            },
+                                        ),
+                                    ),
+                                ),
+                                div('#teacher-fn-status.status-area'),
                             ),
                         ),
-                        label(
-                            span(await window.bcnI18n.getPhrase('pf_teacher_ln')),
-                            input(
-                                '#teacher-last-name.text-field',
-                                {
-                                    type: 'text',
-                                    value: teacher.teacherSettings?.lastName,
-                                    oninput: (event) => {
-                                        const { target } = event;
-
-                                        this.state.teacherLastName = target.value;
-                                    },
-                                },
+                        div(
+                            '.label-group',
+                            div(
+                                '.split',
+                                div('.title-area', span(await window.bcnI18n.getPhrase('pf_teacher_ln'))),
+                                div('.desc-area', await window.bcnI18n.getPhrase('pf_teacher_ln_desc')),
+                                div(
+                                    '.input-area',
+                                    label(
+                                        '.required',
+                                        input(
+                                            '#teacher-last-name.text-field',
+                                            {
+                                                type: 'text',
+                                                placeholder: await window.bcnI18n.getPhrase('pf_teacher_ln_enter'),
+                                                value: this.state.teacherLastName,
+                                                oninput: (event) => {
+                                                    const { target } = event;
+                        
+                                                    this.state.teacherLastName = target.value;
+                                                },
+                                                required: true,
+                                            },
+                                        ),
+                                    ),
+                                ),
+                                div('#teacher-ln-status.status-area'),
                             ),
                         ),
-                        label(
-                            '.select',
-                            span(await window.bcnI18n.getPhrase('pf_teacher_gender')),
-                            select(
-                                '#teacher-gender',
-                                {
-                                    onchange: (event) => {
-                                        const { target } = event;
-
-                                        this.state.teacherGender = target.value;
-                                    },
-                                },
-                                option(
-                                    {
-                                        value: 'female',
-                                        selected: teacher.teacherSettings?.gender === 'female',
-                                    },
-                                    await window.bcnI18n.getPhrase('female'),
+                        div(
+                            '.label-group',
+                            div(
+                                '.split',
+                                div('.title-area', span(await window.bcnI18n.getPhrase('pf_teacher_gender'))),
+                                div('.desc-area', await window.bcnI18n.getPhrase('pf_teacher_gender_desc')),
+                                div(
+                                    '.input-area',
+                                    label(
+                                        '.select',
+                                        select(
+                                            '#teacher-gender',
+                                            {
+                                                onchange: (event) => {
+                                                    const { target } = event;
+            
+                                                    this.state.teacherGender = target.value;
+                                                },
+                                            },
+                                            option(
+                                                {
+                                                    value: 'female',
+                                                    selected: this.state.teacherGender === 'female',
+                                                },
+                                                await window.bcnI18n.getPhrase('female'),
+                                            ),
+                                            option(
+                                                {
+                                                    value: 'male',
+                                                    selected: this.state.teacherGender === 'male',
+                                                },
+                                                await window.bcnI18n.getPhrase('male'),
+                                            ),
+                                            option(
+                                                {
+                                                    value: 'other',
+                                                    selected: this.state.teacherGender === 'other',
+                                                },
+                                                await window.bcnI18n.getPhrase('other'),
+                                            ),
+                                            option(
+                                                {
+                                                    value: 'pnts',
+                                                    selected: this.state.teacherGender === 'pnts',
+                                                },
+                                                await window.bcnI18n.getPhrase('prefer_nts'),
+                                            ),
+                                        ),
+                                    ),
                                 ),
-                                option(
-                                    {
-                                        value: 'male',
-                                        selected: teacher.teacherSettings?.gender === 'male',
-                                    },
-                                    await window.bcnI18n.getPhrase('male'),
-                                ),
-                                option(
-                                    {
-                                        value: 'other',
-                                        selected: teacher.teacherSettings?.gender === 'other',
-                                    },
-                                    await window.bcnI18n.getPhrase('other'),
-                                ),
+                                div('.status-area'),
                             ),
                         ),
-                        label(
-                            span(await window.bcnI18n.getPhrase('pf_teacher_school')),
-                            input(
-                                '#teacher-school.text-field',
-                                {
-                                    type: 'text',
-                                    value: teacher.teacherSettings?.school,
-                                    oninput: (event) => {
-                                        const { target } = event;
-
-                                        this.state.teacherSchool = target.value;
-                                    },
-                                },
+                        div(
+                            '.label-group',
+                            div(
+                                '.split',
+                                div('.title-area', span(await window.bcnI18n.getPhrase('pf_teacher_school'))),
+                                div('.desc-area', await window.bcnI18n.getPhrase('pf_teacher_school_desc')),
+                                div(
+                                    '.input-area',
+                                    label(
+                                        input(
+                                            '#teacher-school.text-field',
+                                            {
+                                                type: 'text',
+                                                placeholder: await window.bcnI18n.getPhrase('pf_teacher_school_enter'),
+                                                value: this.state.teacherSchool,
+                                                oninput: (event) => {
+                                                    const { target } = event;
+                        
+                                                    this.state.teacherSchool = target.value;
+                                                },
+                                            },
+                                        ),
+                                    ),
+                                ),
+                                div('.status-area'),
                             ),
                         ),
-                        label(
-                            span(await window.bcnI18n.getPhrase('pf_teacher_email')),
-                            input(
-                                '#teacher-email.text-field',
-                                {
-                                    type: 'email',
-                                    placeholder: await window.bcnI18n.getPhrase('pf_enter_new_email'),
-                                    oninput: (event) => {
-                                        const { target } = event;
-
-                                        this.state.teacherEmail = target.value;
-                                    },
-                                },
+                        div(
+                            '.label-group',
+                            div(
+                                '.split',
+                                div('.title-area', span(await window.bcnI18n.getPhrase('pf_teacher_email'))),
+                                div('.desc-area', await window.bcnI18n.getPhrase('pf_teacher_email_desc')),
+                                div(
+                                    '.input-area',
+                                    label(
+                                        input(
+                                            '#teacher-email.text-field',
+                                            {
+                                                type: 'text',
+                                                placeholder: await window.bcnI18n.getPhrase('pf_teacher_email_enter'),
+                                                value: this.state.teacherEmail,
+                                                oninput: (event) => {
+                                                    const { target } = event;
+                        
+                                                    this.state.teacherEmail = target.value;
+                                                },
+                                            },
+                                        ),
+                                    ),
+                                ),
+                                div('.status-area'),
                             ),
                         ),
-                        label(
-                            '.select',
-                            span(await window.bcnI18n.getPhrase('pf_teacher_language')),
-                            select(
-                                '#teacher-language',
-                                {
-                                    onchange: (event) => {
-                                        const { target } = event;
-
-                                        this.state.teacherLang = target.value;
-                                    },
-                                },
-                                option(
-                                    {
-                                        value: 'en-GB',
-                                        selected: teacher.language === 'en-GB',
-                                    },
-                                    'English',
+                        div(
+                            '.label-group',
+                            div(
+                                '.split',
+                                div('.title-area', span(await window.bcnI18n.getPhrase('pf_teacher_language'))),
+                                div('.desc-area', await window.bcnI18n.getPhrase('pf_teacher_language_desc')),
+                                div(
+                                    '.input-area',
+                                    label(
+                                        '.select.required',
+                                        select(
+                                            '#teacher-language',
+                                            {
+                                                onchange: (event) => {
+                                                    const { target } = event;
+            
+                                                    this.state.teacherLang = target.value;
+                                                },
+                                            },
+                                            option(
+                                                {
+                                                    value: 'en-GB',
+                                                    selected: this.state.teacherLang === 'en-GB',
+                                                },
+                                                'English',
+                                            ),
+                                            option(
+                                                {
+                                                    value: 'fr-FR',
+                                                    selected: this.state.teacherLang === 'fr_FR',
+                                                },
+                                                'Français',
+                                            ),
+                                            option(
+                                                {
+                                                    value: 'es-ES',
+                                                    selected: this.state.teacherLang === 'es-ES',
+                                                },
+                                                'Español',
+                                            ),
+                                            option(
+                                                {
+                                                    value: 'it-IT',
+                                                    selected: this.state.teacherLang === 'it-IT',
+                                                },
+                                                'Italiano',
+                                            ),
+                                            option(
+                                                {
+                                                    value: 'de-DE',
+                                                    selected: this.state.teacherLang === 'de-DE',
+                                                },
+                                                'Deutsch',
+                                            ),
+                                            option(
+                                                {
+                                                    value: 'ro-RO',
+                                                    selected: this.state.teacherLang === 'ro-RO',
+                                                },
+                                                'Română',
+                                            ),
+                                            option(
+                                                {
+                                                    value: 'pl-PL',
+                                                    selected: this.state.teacherLang === 'pl-PL',
+                                                },
+                                                'Polskie',
+                                            ),
+                                            option(
+                                                {
+                                                    value: 'tr-TR',
+                                                    selected: this.state.teacherLang === 'tr-TR',
+                                                },
+                                                'Türk',
+                                            ),
+                                            option(
+                                                {
+                                                    value: 'pt-PT',
+                                                    selected: this.state.teacherLang === 'pt-PT',
+                                                },
+                                                'Português',
+                                            ),
+                                        ),
+                                    ),
                                 ),
-                                option(
-                                    {
-                                        value: 'fr-FR',
-                                        selected: teacher.language === 'fr_FR',
-                                    },
-                                    'Français',
-                                ),
-                                option(
-                                    {
-                                        value: 'es-ES',
-                                        selected: teacher.language === 'es-ES',
-                                    },
-                                    'Español',
-                                ),
-                                option(
-                                    {
-                                        value: 'it-IT',
-                                        selected: teacher.language === 'it-IT',
-                                    },
-                                    'Italiano',
-                                ),
-                                option(
-                                    {
-                                        value: 'de-DE',
-                                        selected: teacher.language === 'de-DE',
-                                    },
-                                    'Deutsch',
-                                ),
-                                option(
-                                    {
-                                        value: 'ro-RO',
-                                        selected: teacher.language === 'ro-RO',
-                                    },
-                                    'Română',
-                                ),
-                                option(
-                                    {
-                                        value: 'pl-PL',
-                                        selected: teacher.language === 'pl-PL',
-                                    },
-                                    'Polskie',
-                                ),
-                                option(
-                                    {
-                                        value: 'tr-TR',
-                                        selected: teacher.language === 'tr-TR',
-                                    },
-                                    'Türk',
-                                ),
-                                option(
-                                    {
-                                        value: 'pt-PT',
-                                        selected: teacher.language === 'pt-PT',
-                                    },
-                                    'Português',
-                                ),
+                                div('.status-area'),
                             ),
                         ),
                         div(
                             '.flex-justify-end.margin-top-10',
                             div(
-                                '#edit-teacher-button.button-action',
+                                '#edit-teacher-button.button-submit',
                                 {
                                     onclick: (event) => {
                                         const { target } = event;
-                                        this.editTeacher(target);
+                                        this.editTeacher();
 
                                         target.textContent = `${updatingText}...`;
                                     },
