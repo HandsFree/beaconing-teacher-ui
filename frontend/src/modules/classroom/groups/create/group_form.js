@@ -1,13 +1,42 @@
 // @flow
-import { section, div, a, i, h1, form, input, select, option, p, label, span, small } from '../../../../core/html';
+import {
+    section,
+    div,
+    form,
+    input,
+    p,
+    label,
+    span,
+} from '../../../../core/html';
 
-import { Component } from '../../../../core/component';
+import Form from '../../../form';
 import StudentsList from './students_list';
 import Status from '../../../status';
 import PostCreation from './post_creation';
-import nullishCheck from '../../../../core/util';
 
-class GroupForm extends Component {
+class GroupForm extends Form {
+    stateObj = {
+        groupName: '',
+    };
+
+    stateProxy = {
+        set(obj, prop, value) {
+            let trimmedValue = value;
+
+            if (typeof value === 'string') {
+                trimmedValue = value.trim();
+            }
+
+            // console.log(trimmedValue);
+
+            return Reflect.set(obj, prop, trimmedValue);
+        },
+    };
+
+    state = new Proxy(this.stateObj, this.stateProxy);
+
+    groups = [];
+
     studentList: Array<Object> = [];
 
     updateHooks = {
@@ -15,10 +44,19 @@ class GroupForm extends Component {
         ResetForm: this.resetForm,
     };
 
-    state = {
-        groupName: '',
-        groupCategory: 'normal',
-    };
+    processGroups(groupsArr: Object[]) {
+        for (const obj of groupsArr) {
+            this.groups.push(obj?.name.toLowerCase());
+        }
+    }
+
+    async init() {
+        const groups = await window.beaconingAPI.getGroups();
+
+        if (groups) {
+            this.processGroups(groups);
+        }
+    }
 
     updateStudentList() {
         const studentListEl = document.getElementById('student-list');
@@ -47,53 +85,49 @@ class GroupForm extends Component {
         groupButton.textContent = await window.bcnI18n.getPhrase('cr_create_group');
     }
 
-    async checkFields() {
-        // TODO: reduce duped code
+    async checkGroupName() {
         if (this.state.groupName === '') {
-            const statusMessage = new Status();
-            const statusMessageEl = await statusMessage.attach({
-                elementID: 'group-name',
-                heading: 'Error',
-                type: 'error',
-                message: (await window.bcnI18n.getPhrase('empty_field')).replace('%s', `'${await window.bcnI18n.getPhrase('cr_group_name')}'`),
-            });
+            this.removeAll('group-name-status');
 
-            this.appendView(statusMessageEl);
+            return true;
+        }
 
-            this.resetSubmit();
+        if (this.groups.indexOf(this.state.groupName.toLowerCase()) !== -1) {
+            const errMsg = await window.bcnI18n.getPhrase('group_name_exists');
+            this.addError('group-name-status', errMsg);
 
             return false;
         }
 
-        const groups = await window.beaconingAPI.getGroups();
+        this.addSuccess('group-name-status');
+        return true;
+    }
 
-        if (nullishCheck(groups, false)) {
-            const statusMessage = new Status();
-            const statusMessageEl = await statusMessage.attach({
-                elementID: 'group-name',
-                heading: 'Error',
-                type: 'error',
-                message: (await window.bcnI18n.getPhrase('group_name_exists')),
-            });
+    async checkFields() {
+        let success = true;
+        const emptyMsg = await window.bcnI18n.getPhrase('required_empty');
 
-            for (const group of groups) {
-                if (group.name.toLowerCase() === this.state.groupName.toLowerCase()) {
-                    this.appendView(statusMessageEl);
+        if (this.state.groupName === '') {
+            this.addError('group-name-status', emptyMsg);
+            success = false;
+        }
 
-                    this.resetSubmit();
-
-                    return false;
-                }
-            }
+        if (!this.checkGroupName()) {
+            success = false;
         }
 
         if (this.studentList.length < 2) {
+            this.addError('group-students-status', await window.bcnI18n.getPhrase('more_students_needed'));
+            success = false;
+        }
+
+        if (!success) {
             const statusMessage = new Status();
             const statusMessageEl = await statusMessage.attach({
                 elementID: false,
                 heading: 'Error',
                 type: 'error',
-                message: await window.bcnI18n.getPhrase('more_students_needed'),
+                message: await window.bcnI18n.getPhrase('form_error'),
             });
 
             this.appendView(statusMessageEl);
@@ -113,7 +147,6 @@ class GroupForm extends Component {
 
         const obj = {
             name: this.state.groupName,
-            category: this.state.groupCategory,
             students: this.studentList,
         };
 
@@ -166,68 +199,60 @@ class GroupForm extends Component {
             section(
                 '.flex-column',
                 div(
-                    '#section-header',
-                    a(
-                        '.back',
-                        {
-                            href: `//${window.location.host}/classroom/groups`,
-                        },
-                        i('.icon-angle-left'),
-                        await window.bcnI18n.getPhrase('go_back'),
-                    ),
-                    h1(await window.bcnI18n.getPhrase('cr_create_group')),
-                    div('.empty-spacer', ' '),
-                ),
-            ),
-            section(
-                '.flex-column',
-                div(
                     '.margin-25.flex-column',
                     div(
                         '.general-info',
-                        p(`${await window.bcnI18n.getPhrase('cr_group_info')}:`),
+                        p(`${await window.bcnI18n.getPhrase('cr_group_edit_info')}:`),
                     ),
                     form(
                         '.create-group',
-                        label(
-                            span(await window.bcnI18n.getPhrase('cr_group_name')),
-                            input(
-                                '#group-name.text-field',
-                                {
-                                    type: 'text',
-                                    placeholder: await window.bcnI18n.getPhrase('cr_group_enter_name'),
-                                    oninput: (event) => {
-                                        const { target } = event;
+                        div(
+                            '.label-group',
+                            div(
+                                '.split',
+                                div('.title-area', span(await window.bcnI18n.getPhrase('cr_group_name'))),
+                                div('.desc-area', await window.bcnI18n.getPhrase('cr_group_name_desc')),
+                                div(
+                                    '.input-area',
+                                    label(
+                                        '.required',
+                                        input(
+                                            '#group-name.text-field',
+                                            {
+                                                type: 'text',
+                                                placeholder: await window.bcnI18n.getPhrase('cr_group_enter_name'),
+                                                oninput: (event) => {
+                                                    const { target } = event;
 
-                                        this.state.groupName = target.value;
-                                    },
-                                    required: true,
-                                },
+                                                    this.state.groupName = target.value;
+                                                    this.addLoading('group-name-status');
+                                                    this.checkGroupName();
+                                                },
+                                                required: true,
+                                            },
+                                        ),
+                                    ),
+                                ),
+                                div('#group-name-status.status-area'),
                             ),
                         ),
-                        label(
-                            '.select',
-                            span(await window.bcnI18n.getPhrase('cr_group_category')),
-                            select(
-                                '#group-category',
-                                {
-                                    onchange: (event) => {
-                                        const { target } = event;
-
-                                        this.state.groupCategory = target.value;
-                                    },
-                                },
-                                option({ value: 'normal' }, await window.bcnI18n.getPhrase('normal')),
-                                option({ value: 'class' }, await window.bcnI18n.getPhrase('class')),
-                                option({ value: 'course' }, await window.bcnI18n.getPhrase('course')),
+                        div(
+                            '.label-group',
+                            div(
+                                '.split',
+                                div('.title-area', span(await window.bcnI18n.getPhrase('students'))),
+                                div('.desc-area', await window.bcnI18n.getPhrase('cr_students_group_desc')),
+                                div(
+                                    '.input-area',
+                                    studentsListEl,
+                                ),
+                                div('#group-students-status.status-area'),
                             ),
                         ),
-                        small(`${await window.bcnI18n.getPhrase('students')} - ${await window.bcnI18n.getPhrase('min_students_group')}`),
-                        studentsListEl,
                         div(
                             '.flex-justify-end.margin-top-10',
                             div(
-                                '#create-group-button.button-action',
+                                '#create-group-button.button-submit',
                                 {
                                     onclick: (event) => {
                                         const { target } = event;

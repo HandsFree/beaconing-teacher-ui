@@ -61,7 +61,7 @@
     "eslint-plugin-babel": "5.1.0",
     "eslint-plugin-flowtype": "2.50.0",
     "eslint-plugin-import": "2.13.0",
-    "flow-bin": "0.76.0",
+    "flow-bin": "^0.82.0",
     "hard-source-webpack-plugin": "0.11.0",
     "json5-loader": "1.0.1",
     "mini-css-extract-plugin": "0.4.1",
@@ -80,12 +80,13 @@
     "webpack-dev-server": "3.1.4"
   },
   "dependencies": {
-    "@babel/runtime": "^7.0.0-beta.42",
+    "@babel/runtime-corejs2": "^7.1.2",
     "@shopify/draggable": "^1.0.0-beta.5",
     "chart.js": "^2.7.0",
     "hyperscript": "^2.0.2",
     "hyperscript-helpers": "^3.0.3",
     "identicon.js": "^2.3.1",
-    "moment": "^2.22.2"
+    "moment": "^2.22.2",
+    "tippy.js": "^3.0.3"
   }
 }
