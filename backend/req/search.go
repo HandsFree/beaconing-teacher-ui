@@ -79,37 +79,27 @@ func searchGLPS(s *gin.Context, query searchRequestQuery) ([]*entity.GLP, error)
 		return glps, nil
 	}
 
-	var searchQuery string
+	searchQuery := query.Query
 
-	// parsing
-	// we first parse the query string to see if we have
-	// anything e.g.
-	// name:"datas"
-	{
+	if "do search term parse" == "ok" {
+		fmt.Println("----- DOING SOME SEARCH STUFF")
+		fmt.Println("-")
+		fmt.Println("-")
+
+		// parsing
+		// we first parse the query string to see if we have
+		// anything e.g.
+		// name:"datas"
 		fmt.Println("checking query ", query.Query)
 		tokens := lexSearchQuery(query.Query)
 		fmt.Println("matched ", len(tokens), " tokens: ", tokens)
 
 		nodes := parseTokens(tokens)
-		fmt.Println("finished parsing search query")
+		fmt.Println("finished parsing search query into ", len(nodes), "nodes")
 
-		// NOTE we can parse multiple queries
-		// so for now we take the first one
-
-		for _, node := range nodes {
-			if n, ok := node.(*searchTerm); ok {
-				searchQuery = n.Query
-				break
-			}
-		}
-
-		// TODO apply all of the filters
-
-		for _, node := range nodes {
-			if _, ok := node.(*filterOption); ok {
-				// TODO: do stuff!
-			}
-		}
+		fmt.Println("-")
+		fmt.Println("-")
+		fmt.Println("-")
 	}
 
 	// likewise we allocate a chunk of memory for the glps
