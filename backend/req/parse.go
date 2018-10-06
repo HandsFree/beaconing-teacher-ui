@@ -1,6 +1,6 @@
 package req
 
-import "strings"
+import "fmt"
 
 // NOTE
 // a lot of cleanups can be made here
@@ -37,11 +37,17 @@ type searchNode interface {
 }
 
 type searchTerm struct {
-	Query string
+	Token *token
+}
+
+func newSearchTerm(tok *token) *searchTerm {
+	return &searchTerm{
+		Token: tok,
+	}
 }
 
 func (s *searchTerm) String() string {
-	return "query: " + s.Query
+	return "term: " + s.Token.lexeme
 }
 
 // name:"value stuff here"
@@ -56,7 +62,7 @@ func (f *filterOption) String() string {
 }
 
 func (p *parser) parseFilterOption(field *token) *filterOption {
-	// no colon
+	// end of input so lets leave this function
 	if !p.hasNext() {
 		return nil
 	}
@@ -79,30 +85,6 @@ func (p *parser) parseFilterOption(field *token) *filterOption {
 	}
 }
 
-func (p *parser) parseSearchTerm(buff []*token) *searchTerm {
-	if len(buff) == 0 {
-		return nil
-	}
-
-	var query string
-
-	// clear the buffer if necessary
-	// and join them all into one search
-	// query node.
-	for _, t := range buff {
-		query += t.lexeme
-	}
-
-	trimmed := strings.TrimSpace(query)
-
-	// empty query. delete!
-	if len(trimmed) == 0 {
-		return nil
-	}
-
-	return &searchTerm{trimmed}
-}
-
 func parseTokens(toks []*token) []searchNode {
 	p := parser{
 		stream: toks,
@@ -111,39 +93,60 @@ func parseTokens(toks []*token) []searchNode {
 
 	nodes := []searchNode{}
 
-	buff := []*token{}
-
 	for p.hasNext() {
 		tok := p.consume()
 
-		if tok.kind == identifier && p.hasNext() && p.peek().kind == colon {
+		if p.hasNext() && tok.kind == identifier && p.peek().kind == colon {
 			opt := p.parseFilterOption(tok)
 			if opt != nil {
 				nodes = append(nodes, opt)
 			}
-
-			term := p.parseSearchTerm(buff[:])
-			if term != nil {
-				nodes = append(nodes, term)
-
-				// clear the buff!
-				buff = []*token{}
-			}
 		} else {
-			buff = append(buff, tok)
-		}
-	}
-
-	// clear buff one last time!
-	if len(buff) > 0 {
-		term := p.parseSearchTerm(buff[:])
-		if term != nil {
+			term := newSearchTerm(tok)
 			nodes = append(nodes, term)
-
-			// clear the buff!
-			buff = []*token{}
 		}
 	}
+
+	// we have all the nodes but now we need
+	// to optimise them and join the individual
+	// search term nodes into one big search term.
+
+	finalTerms := [][]int{}
+	termsList := []int{}
+
+	for i := 0; i < len(nodes); i++ {
+		if term := nodes[i].(*searchTerm); term != nil {
+			termsList = append(termsList, i)
+		} else {
+			finalTerms = append(finalTerms, termsList)
+			termsList = []int{}
+		}
+	}
+
+	newNodes := []searchNode{}
+
+	for _, termList := range finalTerms {
+		fst := nodes[termList[0]].(*searchTerm)
+		lst := nodes[len(termList)-1].(*searchTerm)
+
+		source := fst.Token.source
+
+		start := fst.Token.start
+		end := lst.Token.end
+
+		query := string(source[start:end])
+		fmt.Println("query is ", query)
+
+		newNodes = append(newNodes, nil)
+	}
+
+	fmt.Println("printing nodes:")
+	fmt.Println("-")
+	for _, node := range nodes {
+		fmt.Println(node)
+	}
+	fmt.Println("-")
+	fmt.Println("-")
 
 	return nodes
 }

@@ -16,17 +16,19 @@ const (
 )
 
 type token struct {
-	lexeme string
-	kind   tokenType
+	source     []rune
+	lexeme     string
+	kind       tokenType
+	start, end int
 }
 
 func (t *token) String() string {
 	return "{" + t.lexeme + ", " + string(t.kind) + "} "
 }
 
-func makeToken(lexeme string, kind tokenType) *token {
+func makeToken(source []rune, lexeme string, kind tokenType, start, end int) *token {
 	return &token{
-		lexeme, kind,
+		source, lexeme, kind, start, end,
 	}
 }
 
@@ -61,10 +63,12 @@ func (l *lexer) recognizeColon() *token {
 	if l.consume() != ':' {
 		panic("uh oh")
 	}
-	return makeToken(":", colon)
+	return makeToken(l.input, ":", colon, l.pos-1, l.pos)
 }
 
 func (l *lexer) recognizeQuotedString() *token {
+	start := l.pos
+
 	l.consume() // "
 	lexeme := l.consumeWhile(func(r rune) bool {
 		return r != '"'
@@ -72,7 +76,10 @@ func (l *lexer) recognizeQuotedString() *token {
 	if l.hasNext() && l.peek() == '"' {
 		l.consume() // "
 	}
-	return makeToken("\""+lexeme+"\"", quoted)
+
+	end := l.pos
+
+	return makeToken(l.input, "\""+lexeme+"\"", quoted, start, end)
 }
 
 // identifier is
@@ -81,17 +88,22 @@ func (l *lexer) recognizeQuotedString() *token {
 // foo_bar123
 // FOOBAR_foo_123 etc...
 func (l *lexer) recognizeIdentifier() *token {
+	start := l.pos
 	lexeme := l.consumeWhile(func(r rune) bool {
 		return unicode.IsLetter(r) || unicode.IsDigit(r) || r == '_'
 	})
-	return makeToken(lexeme, identifier)
+	end := l.pos
+	return makeToken(l.input, lexeme, identifier, start, end)
 }
 
 func (l *lexer) recognizeTerm() *token {
+	start := l.pos
 	lexeme := l.consumeWhile(func(r rune) bool {
 		return !unicode.IsLetter(r) && r != '"' && r != ':'
 	})
-	return makeToken(lexeme, term)
+	end := l.pos
+
+	return makeToken(l.input, lexeme, term, start, end)
 }
 
 func lexSearchQuery(input string) []*token {
