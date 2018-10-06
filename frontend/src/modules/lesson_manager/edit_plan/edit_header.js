@@ -1,4 +1,6 @@
 // @flow
+import tippy from 'tippy.js';
+
 import {
     div,
     h1,
@@ -12,6 +14,8 @@ import { Component } from '../../../core/component';
 import Status from '../../status';
 
 class EditHeader extends Component {
+    tooltipsActive = false;
+
     async deleteGLP() {
         const status = await window.beaconingAPI.deleteGLP(this.props.id);
         const statusMessage = new Status();
@@ -129,9 +133,21 @@ class EditHeader extends Component {
                 '#edit-plan-header-tabs',
                 div(
                     '.tab-container',
+                    {
+                        onmouseover: () => {
+                            if (!this.tooltipsActive) {
+                                tippy('.disabled-tab', {
+                                    content: 'Disabled',
+                                    arrow: true,
+                                });
+
+                                this.tooltipsActive = true;
+                            }
+                        },
+                    },
                     a('.tab.active', await window.bcnI18n.getPhrase('details')),
-                    a('.tab', await window.bcnI18n.getPhrase('assignees')),
-                    a('.tab', await window.bcnI18n.getPhrase('files')),
+                    a('.tab.disabled-tab', await window.bcnI18n.getPhrase('assignees')),
+                    a('.tab.disabled-tab', await window.bcnI18n.getPhrase('files')),
                 ),
             ),
         );
