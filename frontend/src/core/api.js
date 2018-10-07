@@ -404,6 +404,12 @@ class APICore {
         return glpStatus;
     }
 
+    async getGameplots() {
+        const gameplots = await this.get(`//${window.location.host}/api/v1/gameplots`);
+
+        return gameplots;
+    }
+
     async getAnalyticsToken() {
         const token = await this.getAuthToken();
 

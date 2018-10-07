@@ -94,5 +94,10 @@ func registerAPI(router *gin.Engine) {
 		studentGroup.DELETE("/:id", req.DeleteStudentGroupRequest())
 	}
 
+	gameplots := v1.Group("gameplots")
+	{
+		gameplots.GET("/", req.GetGameplots())
+	}
+
 	v1.POST("search", req.PostSearchRequest())
 }

@@ -70,12 +70,29 @@ form.create-group, form.create-student, form.create-new-plan, form.edit-teacher,
 					"status";
 			}
 
+			&.extra {
+				grid-template-areas:
+					"title"
+					"desc"
+					"input"
+					"extra-area"
+					"status";
+			}
+
 			@include for-tablet-landscape-up {
 				grid-template-columns: 3fr 1fr;
 				grid-template-areas:
 					"title filler"
 					"desc filler"
 					"input status";
+
+				&.extra {
+						grid-template-areas:
+						"title filler"
+						"desc filler"
+						"input status"
+						"extra-area filler";
+					}
 			}
 
 			.input-area {
@@ -100,6 +117,21 @@ form.create-group, form.create-student, form.create-new-plan, form.edit-teacher,
 				span {
 					display: flex;
 					font-weight: 400;
+				}
+			}
+
+			.extra-area {
+				display: flex;
+				grid-area: extra-area;
+
+				strong {
+					display: flex;
+					font-weight: 400;
+					color: #4f5962;
+				}
+
+				p {
+					margin: 0.5em 0;
 				}
 			}
 

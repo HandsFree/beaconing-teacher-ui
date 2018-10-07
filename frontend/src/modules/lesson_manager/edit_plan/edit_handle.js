@@ -12,6 +12,10 @@ class LoadEdit extends Component {
 
     currentUser = {};
 
+    updateHooks = {
+        GLPDeleted: this.handleGLPDelete,
+    };
+
     async init() {
         const { id } = this.props;
 
@@ -30,6 +34,10 @@ class LoadEdit extends Component {
         }
 
         throw new Error('[LoadEdit] No glp or user returned from API');
+    }
+
+    handleGLPDelete() {
+        window.location.href = `//${window.location.host}/lesson_manager`;
     }
 
     async render() {
