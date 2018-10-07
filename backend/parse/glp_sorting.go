@@ -2,7 +2,6 @@ package parse
 
 import (
 	"errors"
-	"fmt"
 	"sort"
 	"strings"
 
@@ -18,9 +17,9 @@ import (
 func SortOrder(opt string) []SortingOption {
 	sorts := strings.Split(opt, ",")
 
-	results := []SortingOption{}
+	results := make([]SortingOption, len(sorts))
 
-	for _, sort := range sorts {
+	for idx, sort := range sorts {
 		result := func(opt string) SortingOption {
 			switch strings.ToLower(opt) {
 			case "desc":
@@ -46,7 +45,7 @@ func SortOrder(opt string) []SortingOption {
 			}
 		}(sort)
 
-		results = append(results, result)
+		results[idx] = result
 	}
 
 	return results
@@ -81,32 +80,64 @@ func SortByName(s *gin.Context, plans []*entity.GLP, order SortingOption) ([]*en
 	return plans, nil
 }
 
-func SortBySTEM(s *gin.Context, plans []*entity.GLP, order SortingOption) ([]*entity.GLP, error) {
-	isSTEM := func(name string) bool {
-		name = strings.ToLower(name)
-		switch order {
-		case Sci:
-			return strings.Compare(name, "science") == 0
-		case Tech:
-			return strings.Compare(name, "technology") == 0
-		case Eng:
-			return strings.Compare(name, "engineering") == 0
-		case Maths:
-			return strings.Compare(name, "maths") == 0
-		default:
-			return false
-		}
-	}
-
+// FilterByTopic will filter down to a set of plans with
+// 'Topics' that match the given value. Note the search is
+// case insensitive and is not _exact_ matching.
+func FilterByTopic(s *gin.Context, plans []*entity.GLP, val string) ([]*entity.GLP, error) {
 	results := []*entity.GLP{}
-
 	for _, plan := range plans {
-		if isSTEM(plan.Domain) {
+		// check for prefix rather than equals for some
+		// more lenient matching.
+		// TODO fixme.
+		topic := strings.ToLower(plan.Topic)
+		if strings.HasPrefix(topic, val) {
 			results = append(results, plan)
 		}
 	}
-
 	return results, nil
+}
+
+func FilterByExactDomain(s *gin.Context, plans []*entity.GLP, val string) ([]*entity.GLP, error) {
+	results := []*entity.GLP{}
+	for _, plan := range plans {
+		// check for prefix rather than equals for some
+		// more lenient matching.
+		// TODO fixme.
+		domain := strings.ToLower(plan.Domain)
+		if strings.Compare(domain, val) == 0 {
+			results = append(results, plan)
+		}
+	}
+	return results, nil
+}
+
+func FilterByDomain(s *gin.Context, plans []*entity.GLP, val string) ([]*entity.GLP, error) {
+	results := []*entity.GLP{}
+	for _, plan := range plans {
+		// check for prefix rather than equals for some
+		// more lenient matching.
+		// TODO fixme.
+		domain := strings.ToLower(plan.Domain)
+		if strings.HasPrefix(domain, val) {
+			results = append(results, plan)
+		}
+	}
+	return results, nil
+}
+
+func SortBySTEM(s *gin.Context, plans []*entity.GLP, order SortingOption) ([]*entity.GLP, error) {
+	switch order {
+	case Sci:
+		return FilterByExactDomain(s, plans, "science")
+	case Tech:
+		return FilterByExactDomain(s, plans, "technology")
+	case Eng:
+		return FilterByExactDomain(s, plans, "engineering")
+	case Maths:
+		return FilterByExactDomain(s, plans, "maths")
+	default:
+		return []*entity.GLP{}, nil
+	}
 }
 
 func SortByCreationTime(s *gin.Context, plans []*entity.GLP, order SortingOption) ([]*entity.GLP, error) {
@@ -203,14 +234,14 @@ type sortable []string
 // the lower the value, the higher
 // the precedence.
 var precedence = map[string]int{
-	"name":     7,
-	"stem":     1,
-	"created":  6,
-	"updated":  5,
-	"assigned": 4,
+	"owned":    7,
+	"stem":     6,
+	"vis":      5,
+	"updated":  4,
 	"popular":  3,
-	"vis":      2,
-	"owned":    0,
+	"assigned": 2,
+	"created":  1,
+	"name":     0,
 }
 
 func (s sortable) Len() int { return len(s) }
@@ -261,15 +292,15 @@ func SortGLPS(s *gin.Context, plans []*entity.GLP, sortType string, orders []Sor
 	// cut all of the sorting options out.
 	sorts := strings.Split(sortType, ",")
 
-	fmt.Println("SORTED FROM ", sorts)
-
-	// sort the sorting options! so that we
-	// do things in a certain precedence, for example
-	// we want to check the STEM plans first
-
+	// we sort the sorting options so that they are
+	// in order of precedence.
+	// the frontend will send us the options and they could have
+	// been applied in any order.
+	// we need to make sure that we sort these so that for example
+	// we check for things like if it's a STEM plan last
+	// otherwise we might not have any plans to check if they are a STEM in the
+	// first place.
 	sort.Sort(sortable(sorts))
-
-	fmt.Println("SORTED INTO ", sorts)
 
 	var anyError error
 	startingPlans := plans

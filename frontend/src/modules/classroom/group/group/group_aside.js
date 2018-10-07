@@ -1,5 +1,13 @@
 // @flow
-import { aside, div, a, nav, i, span, h3, h1 } from '../../../../core/html';
+import {
+    aside,
+    div,
+    a,
+    nav,
+    i,
+    span,
+    h1,
+} from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 import Status from '../../../status';
@@ -17,16 +25,11 @@ class GroupAside extends Component {
 
     async updateName(event: CustomEvent) {
         const { detail } = event;
-        const {
-            groupName,
-            groupCategory,
-        } = detail;
+        const { groupName } = detail;
 
         const groupNameEl = document.getElementById('group-aside-name');
-        const groupCategoryEl = document.getElementById('group-aside-category');
 
         groupNameEl.textContent = groupName;
-        groupCategoryEl.textContent = groupCategory;
     }
 
     toggleEditButton() {
@@ -121,11 +124,7 @@ class GroupAside extends Component {
                     i('.icon-pencil'),
                 ),
             ),
-            div(
-                '#group-info',
-                h1('#group-aside-name', name),
-                h3('#group-aside-category', this.state.group.category),
-            ),
+            div('#group-info', h1('#group-aside-name', name)),
             nav(
                 '#group-nav',
                 a(
