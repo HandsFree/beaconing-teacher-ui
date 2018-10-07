@@ -62,6 +62,8 @@ type glpPostJSON struct {
 	LearningObjectives []string `json:"learningObjectives"`
 	Competences        []string `json:"competences"`
 	Public             bool     `json:"public"`
+	GamePlotID         int      `json:"gamePlotId"`
+	ExternConfig       string   `json:"externConfig"`
 }
 
 // PutGLP ...

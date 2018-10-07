@@ -2,25 +2,20 @@
 import {
     section,
     div,
-    a,
-    i,
-    h1,
     form,
     input,
     label,
     span,
-    textarea,
     select,
     option,
-    strong,
-    p,
+    textarea,
 } from '../../../core/html';
 
 import Form from '../../form';
 import Status from '../../status';
-import PostCreation from './post_creation';
+import nullishCheck from '../../../core/util';
 
-class NewPlanForm extends Form {
+class EditGLPForm extends Form {
     stateObj = {
         planName: '',
         planCategory: 'science',
@@ -29,15 +24,13 @@ class NewPlanForm extends Form {
         planTopic: '',
         planAgeGroup: '',
         planYear: '',
-        planLearningObjectives: [''],
+        planLearningObjectives: [],
         planCompetences: {
             communicationAndCollaboration: false,
             problemSolving: false,
             informationFluency: false,
         },
         planPublic: false,
-        planGameplot: 0,
-        planExternConfig: null,
     };
 
     stateProxy = {
@@ -61,97 +54,49 @@ class NewPlanForm extends Form {
 
     state = new Proxy(this.stateObj, this.stateProxy);
 
-    updateHooks = {
-        ResetForm: this.resetForm,
-    };
+    glp = {};
 
-    glps = [];
+    glps = {};
 
-    gameplots: Map<number, Object> = new Map();
+    formChanged = false;
 
     async init() {
+        const { glp } = this.props;
         const glps = await window.beaconingAPI.getGLPs('owned', 'desc', true);
-        const gameplots = await window.beaconingAPI.getGameplots();
 
-        if (glps && gameplots) {
+        if (!glp) {
+            throw new Error('[EditGLPForm] no glp provided!');
+        }
+
+        this.glp = glp;
+
+        if (glps) {
             this.glps = glps;
-            this.processGameplots(gameplots);
         }
 
-        console.log(gameplots);
-    }
-
-    processGameplots(gameplots: Object[]) {
-        for (const obj of gameplots) {
-            this.gameplots.set(obj.id, obj);
-        }
-    }
-
-    async updateGameplot(gameplot: number) {
-        const gameplotID = parseInt(gameplot, 10);
-        const extraArea = document.getElementById('plan-gp-extra');
-
-        if (gameplotID === 0) {
-            extraArea.innerHTML = '';
-            this.state.planExternConfig = null;
-        }
-
-        if (this.gameplots.has(gameplotID)) {
-            const {
-                description,
-                author,
-                externContent,
-            } = this.gameplots.get(gameplotID);
-
-            const el = div(
-                '.flex-column',
-                div(
-                    '.flex-column',
-                    strong(await window.bcnI18n.getPhrase('description')),
-                    p(description),
-                ),
-                div(
-                    '.flex-column',
-                    strong(await window.bcnI18n.getPhrase('author')),
-                    p(author),
-                ),
-            );
-
-            extraArea.innerHTML = '';
-            extraArea.appendChild(el);
-
-            this.state.planExternConfig = externContent;
-        }
-    }
-
-    async resetForm() {
         this.state = {
-            planName: '',
-            planCategory: 'default',
-            planDescription: '',
-            planDomain: '',
-            planTopic: '',
-            planAgeGroup: '',
-            planYear: '',
-            planLearningObjectives: [],
+            planName: this.glp?.name || '',
+            planCategory: this.glp?.category || '',
+            planDescription: this.glp?.description || '',
+            planDomain: this.glp?.domain || '',
+            planTopic: this.glp?.topic || '',
+            planAgeGroup: this.glp?.ageGroup || '',
+            planYear: this.glp?.year || 0,
+            planLearningObjectives: this.glp?.learningObjectives || [],
             planCompetences: {
-                communicationAndCollaboration: false,
-                problemSolving: false,
-                informationFluency: false,
+                communicationAndCollaboration: this.glp?.competences.indexOf('communicationAndCollaboration') !== -1,
+                problemSolving: this.glp?.competences.indexOf('problemSolving') !== -1,
+                informationFluency: this.glp?.competences.indexOf('informationFluency') !== -1,
             },
-            planPublic: false,
-            planGameplot: 0,
-            planExternConfig: null,
+            planPublic: this.glp?.public,
         };
 
-        this.removeErrors();
-
-        this.updateView(await this.render());
+        console.log(this.state);
     }
 
     async resetSubmit() {
-        const planButton = document.getElementById('create-plan-button');
-        planButton.textContent = await window.bcnI18n.getPhrase('lm_create_plan');
+        const saveButton = document.getElementById('save-plan-button');
+        saveButton.textContent = await window.bcnI18n.getPhrase('lm_save_plan');
     }
 
     async checkGLPName() {
@@ -163,12 +108,14 @@ class NewPlanForm extends Form {
             return true;
         }
 
-        for (const glp of this.glps) {
-            if (glp.name.toLowerCase() === this.state.planName.toLowerCase()) {
-                this.addError('plan-name-status', errMsg);
-                this.resetSubmit();
+        if (this.state.planName !== this.glp.name) {
+            for (const glp of this.glps) {
+                if (glp.name.toLowerCase() === this.state.planName.toLowerCase()) {
+                    this.addError('plan-name-status', errMsg);
+                    this.resetSubmit();
 
-                return false;
+                    return false;
+                }
             }
         }
 
@@ -239,7 +186,7 @@ class NewPlanForm extends Form {
         return true;
     }
 
-    async createPlan() {
+    async savePlan() {
         if (await this.checkFields() === false) {
             return;
         }
@@ -262,22 +209,22 @@ class NewPlanForm extends Form {
             learningObjectives: this.state.planLearningObjectives,
             competences: comps,
             public: this.state.planPublic,
-            ...(this.state.planGameplot !== 0 ? {
-                gamePlotId: this.state.planGameplot,
-                externConfig: this.state.planExternConfig,
-            } : {}),
         };
 
-        const status = await window.beaconingAPI.addGLP(obj);
+        // console.log(obj);
+
+        const status = await window.beaconingAPI.updateGLP(this.props.id, obj);
         const statusMessage = new Status();
 
-        console.log('[Create GLP] status:', status ? 'success!' : 'failed!');
+        console.log(status);
+
+        console.log('[Edit GLP] status:', status ? 'success!' : 'failed!');
 
         // const status = false;
 
         if (status) {
             this.resetSubmit();
-            this.afterCreation(status);
+            this.afterCreation();
 
             return;
         }
@@ -294,52 +241,35 @@ class NewPlanForm extends Form {
         this.resetSubmit();
     }
 
-    async afterCreation(glp: Object) {
-        const pcEL = new PostCreation().attach({
-            title: await window.bcnI18n.getPhrase('glp_cre'),
-            id: glp.id,
-        });
+    async afterCreation() {
+        return true;
+    }
 
-        this.updateView(await pcEL);
+    enableButton() {
+        const buttonEl = document.getElementById('save-plan-button');
+
+        if (nullishCheck(buttonEl, false)) {
+            buttonEl.classList.remove('disabled');
+        }
     }
 
     async render() {
-        const creatingText = await window.bcnI18n.getPhrase('creating');
-
-        const gameplotOptions = [];
-        const noneOption = option(await window.bcnI18n.getPhrase('none'), { value: 0 });
-
-        gameplotOptions.push(noneOption);
-
-        for (const [id, obj] of this.gameplots) {
-            const el = option(obj.name, { value: id });
-            gameplotOptions.push(el);
-        }
+        const savingText = await window.bcnI18n.getPhrase('saving');
 
         return div(
             '.flex-column',
             section(
                 '.flex-column',
                 div(
-                    '#section-header',
-                    a(
-                        '.back',
-                        {
-                            href: `//${window.location.host}/lesson_manager`,
-                        },
-                        i('.icon-angle-left'),
-                        await window.bcnI18n.getPhrase('go_back'),
-                    ),
-                    h1(await window.bcnI18n.getPhrase('lm_create_new_plan')),
-                    div('.empty-spacer', ' '),
-                ),
-            ),
-            section(
-                '.flex-column',
-                div(
                     '.flex-column',
                     form(
-                        '.create-new-plan',
+                        '.edit-plan',
+                        {
+                            oninput: () => {
+                                this.formChanged = true;
+                                this.enableButton();
+                            },
+                        },
                         div(
                             '.label-group',
                             div(
@@ -355,9 +285,10 @@ class NewPlanForm extends Form {
                                             {
                                                 type: 'text',
                                                 placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_name'),
+                                                value: this.state.planName,
                                                 oninput: (event) => {
                                                     const { target } = event;
-
+            
                                                     this.state.planName = target.value;
                                                     this.addLoading('plan-name-status');
                                                     this.checkGLPName();
@@ -384,19 +315,20 @@ class NewPlanForm extends Form {
                                             '#plan-description',
                                             {
                                                 placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_desc'),
+                                                value: this.state.planDescription,
                                                 oninput: (event) => {
                                                     const { target } = event;
                                                     const { value } = target;
                                                     const { length } = value.replace((/\n/g), '');
                                                     const countEl = document.querySelector('#plan-description ~ span');
-
+            
                                                     this.state.planDescription = value;
                                                     countEl.textContent = length;
                                                 },
                                                 required: true,
                                             },
                                         ),
-                                        span('.count', '0'),
+                                        span('.count', this.state.planDescription.length),
                                     ),
                                 ),
                                 div('#plan-desc-status.status-area'),
@@ -417,15 +349,39 @@ class NewPlanForm extends Form {
                                             {
                                                 onchange: (event) => {
                                                     const { target } = event;
-
+            
                                                     this.state.planCategory = target.value;
                                                 },
                                                 required: true,
                                             },
-                                            option(await window.bcnI18n.getPhrase('lm_science'), { value: 'science' }),
-                                            option(await window.bcnI18n.getPhrase('lm_tech'), { value: 'technology' }),
-                                            option(await window.bcnI18n.getPhrase('lm_eng'), { value: 'engineering' }),
-                                            option(await window.bcnI18n.getPhrase('lm_maths'), { value: 'maths' }),
+                                            option(
+                                                {
+                                                    value: 'science',
+                                                    selected: this.state.category === 'science',
+                                                },
+                                                await window.bcnI18n.getPhrase('lm_science'),
+                                            ),
+                                            option(
+                                                {
+                                                    value: 'technology',
+                                                    selected: this.state.category === 'technology',
+                                                },
+                                                await window.bcnI18n.getPhrase('lm_tech'),
+                                            ),
+                                            option(
+                                                {
+                                                    value: 'engineering',
+                                                    selected: this.state.category === 'engineering',
+                                                },
+                                                await window.bcnI18n.getPhrase('lm_eng'),
+                                            ),
+                                            option(
+                                                {
+                                                    value: 'maths',
+                                                    selected: this.state.category === 'maths',
+                                                },
+                                                await window.bcnI18n.getPhrase('lm_maths'),
+                                            ),
                                         ),
                                     ),
                                 ),
@@ -447,9 +403,10 @@ class NewPlanForm extends Form {
                                             {
                                                 type: 'text',
                                                 placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_domain'),
+                                                value: this.state.planDomain,
                                                 oninput: (event) => {
                                                     const { target } = event;
-
+            
                                                     this.state.planDomain = target.value;
                                                 },
                                                 required: true,
@@ -475,9 +432,10 @@ class NewPlanForm extends Form {
                                             {
                                                 type: 'text',
                                                 placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_topic'),
+                                                value: this.state.planTopic,
                                                 oninput: (event) => {
                                                     const { target } = event;
-
+            
                                                     this.state.planTopic = target.value;
                                                 },
                                                 required: true,
@@ -503,9 +461,10 @@ class NewPlanForm extends Form {
                                             {
                                                 type: 'text',
                                                 placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_ag'),
+                                                value: this.state.planAgeGroup,
                                                 oninput: (event) => {
                                                     const { target } = event;
-
+            
                                                     this.state.planAgeGroup = target.value;
                                                 },
                                                 required: true,
@@ -531,10 +490,11 @@ class NewPlanForm extends Form {
                                             {
                                                 type: 'text',
                                                 placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_year'),
+                                                value: this.state.planYear,
                                                 pattern: '[0-9]{4}',
                                                 oninput: (event) => {
                                                     const { target } = event;
-
+            
                                                     this.state.planYear = target.value;
                                                 },
                                                 required: true,
@@ -543,35 +503,6 @@ class NewPlanForm extends Form {
                                     ),
                                 ),
                                 div('#plan-year-status.status-area'),
-                            ),
-                        ),
-                        div(
-                            '.label-group',
-                            div(
-                                '.split.extra',
-                                div('.title-area', span(await window.bcnI18n.getPhrase('lm_plan_gp'))),
-                                div('.desc-area', await window.bcnI18n.getPhrase('lm_plan_gp_desc')),
-                                div(
-                                    '.input-area',
-                                    label(
-                                        '.select',
-                                        select(
-                                            '#plan-category',
-                                            {
-                                                onchange: (event) => {
-                                                    const { target } = event;
-                                                    const gameplotID = parseInt(target.value, 10);
-
-                                                    this.state.planGameplot = gameplotID;
-                                                    this.updateGameplot(gameplotID);
-                                                },
-                                            },
-                                            gameplotOptions,
-                                        ),
-                                    ),
-                                ),
-                                div('#plan-gp-extra.extra-area'),
-                                div('#plan-gp-status.status-area'),
                             ),
                         ),
                         // TODO: change to more user friendly solution
@@ -589,19 +520,20 @@ class NewPlanForm extends Form {
                                             '#plan-learning-objectives',
                                             {
                                                 placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_los'),
+                                                value: this.state.planLearningObjectives.join('\n'),
                                                 oninput: (event) => {
                                                     const { target } = event;
                                                     const { value } = target;
                                                     const { length } = value.replace((/\n/g), '');
                                                     const countEl = document.querySelector('#plan-learning-objectives ~ span');
                                                     const values = value.split('\n');
-
+            
                                                     this.state.planLearningObjectives = values;
                                                     countEl.textContent = length;
                                                 },
                                             },
                                         ),
-                                        span('.count', '0'),
+                                        span('.count', this.state.planLearningObjectives.join('').length),
                                     ),
                                 ),
                                 div('.status-area'),
@@ -621,15 +553,16 @@ class NewPlanForm extends Form {
                                             '#plan-lo-cac',
                                             {
                                                 type: 'checkbox',
+                                                checked: this.state.planCompetences.communicationAndCollaboration,
                                                 onchange: (event) => {
                                                     const { target } = event;
-
+            
                                                     if (target.checked) {
                                                         this.state.planCompetences.communicationAndCollaboration = true;
-
+            
                                                         return;
                                                     }
-
+            
                                                     this.state.planCompetences.communicationAndCollaboration = false;
                                                 },
                                             },
@@ -643,15 +576,16 @@ class NewPlanForm extends Form {
                                             '#plan-lo-ps',
                                             {
                                                 type: 'checkbox',
+                                                checked: this.state.planCompetences.problemSolving,
                                                 onchange: (event) => {
                                                     const { target } = event;
-
+            
                                                     if (target.checked) {
                                                         this.state.planCompetences.problemSolving = true;
-
+            
                                                         return;
                                                     }
-
+            
                                                     this.state.planCompetences.problemSolving = false;
                                                 },
                                             },
@@ -665,15 +599,16 @@ class NewPlanForm extends Form {
                                             '#plan-lo-if',
                                             {
                                                 type: 'checkbox',
+                                                checked: this.state.planCompetences.informationFluency,
                                                 onchange: (event) => {
                                                     const { target } = event;
-
+            
                                                     if (target.checked) {
                                                         this.state.planCompetences.informationFluency = true;
-
+            
                                                         return;
                                                     }
-
+            
                                                     this.state.planCompetences.informationFluency = false;
                                                 },
                                             },
@@ -699,14 +634,15 @@ class NewPlanForm extends Form {
                                             '#plan-vis-public',
                                             {
                                                 type: 'radio',
+                                                checked: this.state.planPublic === true,
                                                 onchange: (event) => {
                                                     const { target } = event;
-
+            
                                                     if (target.checked) {
                                                         const radioEl = document.getElementById('plan-vis-private');
-
+            
                                                         radioEl.checked = false;
-
+            
                                                         this.state.planPublic = true;
                                                     }
                                                 },
@@ -721,18 +657,18 @@ class NewPlanForm extends Form {
                                             '#plan-vis-private',
                                             {
                                                 type: 'radio',
+                                                checked: this.state.planPublic === false,
                                                 onchange: (event) => {
                                                     const { target } = event;
-
+            
                                                     if (target.checked) {
                                                         const radioEl = document.getElementById('plan-vis-public');
-
+            
                                                         radioEl.checked = false;
-
+            
                                                         this.state.planPublic = false;
                                                     }
                                                 },
-                                                checked: true,
                                             },
                                         ),
                                         div('.radio-box'),
@@ -745,16 +681,19 @@ class NewPlanForm extends Form {
                         div(
                             '.flex-justify-end.margin-top-10',
                             div(
-                                '#create-plan-button.button-submit',
+                                '#save-plan-button.button-submit.disabled',
                                 {
                                     onclick: (event) => {
                                         const { target } = event;
-                                        this.createPlan();
-
-                                        target.textContent = `${creatingText}...`;
+            
+                                        if (this.formChanged) {
+                                            this.savePlan();
+            
+                                            target.textContent = `${savingText}...`;
+                                        }
                                     },
                                 },
-                                await window.bcnI18n.getPhrase('lm_create_plan'),
+                                await window.bcnI18n.getPhrase('lm_save_plan'),
                             ),
                         ),
                     ),
@@ -764,4 +703,4 @@ class NewPlanForm extends Form {
     }
 }
 
-export default NewPlanForm;
+export default EditGLPForm;

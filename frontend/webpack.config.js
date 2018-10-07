@@ -156,7 +156,7 @@ const mainSettings = (dev, devServer, dash, verbose) => {
             new webpack.optimize.OccurrenceOrderPlugin(),
             new OptimizeCssAssetsPlugin(),
         ],
-        devtool: dev ? 'inline-source-map' : false,
+        devtool: dev ? 'eval-source-map' : false,
         devServer: {
             contentBase: './public/',
             hot: true,
