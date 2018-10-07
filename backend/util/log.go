@@ -1,9 +1,12 @@
 package util
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"time"
+
+	raven "github.com/getsentry/raven-go"
 )
 
 type LogLevel uint
@@ -21,15 +24,23 @@ func Verbose(msg ...interface{}) {
 }
 
 func Fatal(msg ...interface{}) {
+	err := errors.New(fmt.Sprintln(msg...))
+	raven.CaptureError(err, nil)
+
 	Log(FatalLog, msg...)
 	os.Exit(1)
 }
 
 func Warn(msg ...interface{}) {
+	raven.CaptureMessage(fmt.Sprintln(msg...), nil)
+
 	Log(WarnLog, msg...)
 }
 
 func Error(msg ...interface{}) {
+	err := errors.New(fmt.Sprintln(msg...))
+	raven.CaptureError(err, nil)
+
 	Log(ErrorLog, msg...)
 }
 
