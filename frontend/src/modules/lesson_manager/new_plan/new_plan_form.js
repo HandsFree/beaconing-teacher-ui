@@ -12,6 +12,8 @@ import {
     textarea,
     select,
     option,
+    strong,
+    p,
 } from '../../../core/html';
 
 import Form from '../../form';
@@ -34,6 +36,8 @@ class NewPlanForm extends Form {
             informationFluency: false,
         },
         planPublic: false,
+        planGameplot: 0,
+        planExternConfig: null,
     };
 
     stateProxy = {
@@ -61,13 +65,62 @@ class NewPlanForm extends Form {
         ResetForm: this.resetForm,
     };
 
-    glps = {};
+    glps = [];
+
+    gameplots: Map<number, Object> = new Map();
 
     async init() {
         const glps = await window.beaconingAPI.getGLPs('owned', 'desc', true);
+        const gameplots = await window.beaconingAPI.getGameplots();
 
-        if (glps) {
+        if (glps && gameplots) {
             this.glps = glps;
+            this.processGameplots(gameplots);
+        }
+
+        console.log(gameplots);
+    }
+
+    processGameplots(gameplots: Object[]) {
+        for (const obj of gameplots) {
+            this.gameplots.set(obj.id, obj);
+        }
+    }
+
+    async updateGameplot(gameplot: number) {
+        const gameplotID = parseInt(gameplot, 10);
+        const extraArea = document.getElementById('plan-gp-extra');
+
+        if (gameplotID === 0) {
+            extraArea.innerHTML = '';
+            this.state.planExternConfig = null;
+        }
+
+        if (this.gameplots.has(gameplotID)) {
+            const {
+                description,
+                author,
+                externContent,
+            } = this.gameplots.get(gameplotID);
+
+            const el = div(
+                '.flex-column',
+                div(
+                    '.flex-column',
+                    strong(await window.bcnI18n.getPhrase('description')),
+                    p(description),
+                ),
+                div(
+                    '.flex-column',
+                    strong(await window.bcnI18n.getPhrase('author')),
+                    p(author),
+                ),
+            );
+
+            extraArea.innerHTML = '';
+            extraArea.appendChild(el);
+
+            this.state.planExternConfig = externContent;
         }
     }
 
@@ -87,6 +140,8 @@ class NewPlanForm extends Form {
                 informationFluency: false,
             },
             planPublic: false,
+            planGameplot: 0,
+            planExternConfig: null,
         };
 
         this.removeErrors();
@@ -207,6 +262,10 @@ class NewPlanForm extends Form {
             learningObjectives: this.state.planLearningObjectives,
             competences: comps,
             public: this.state.planPublic,
+            ...(this.state.planGameplot !== 0 ? {
+                gamePlotId: this.state.planGameplot,
+                externConfig: this.state.planExternConfig,
+            } : {}),
         };
 
         const status = await window.beaconingAPI.addGLP(obj);
@@ -246,6 +305,16 @@ class NewPlanForm extends Form {
 
     async render() {
         const creatingText = await window.bcnI18n.getPhrase('creating');
+
+        const gameplotOptions = [];
+        const noneOption = option(await window.bcnI18n.getPhrase('none'), { value: 0 });
+
+        gameplotOptions.push(noneOption);
+
+        for (const [id, obj] of this.gameplots) {
+            const el = option(obj.name, { value: id });
+            gameplotOptions.push(el);
+        }
 
         return div(
             '.flex-column',
@@ -474,6 +543,35 @@ class NewPlanForm extends Form {
                                     ),
                                 ),
                                 div('#plan-year-status.status-area'),
+                            ),
+                        ),
+                        div(
+                            '.label-group',
+                            div(
+                                '.split.extra',
+                                div('.title-area', span(await window.bcnI18n.getPhrase('lm_plan_gp'))),
+                                div('.desc-area', await window.bcnI18n.getPhrase('lm_plan_gp_desc')),
+                                div(
+                                    '.input-area',
+                                    label(
+                                        '.select',
+                                        select(
+                                            '#plan-category',
+                                            {
+                                                onchange: (event) => {
+                                                    const { target } = event;
+                                                    const gameplotID = parseInt(target.value, 10);
+
+                                                    this.state.planGameplot = gameplotID;
+                                                    this.updateGameplot(gameplotID);
+                                                },
+                                            },
+                                            gameplotOptions,
+                                        ),
+                                    ),
+                                ),
+                                div('#plan-gp-extra.extra-area'),
+                                div('#plan-gp-status.status-area'),
                             ),
                         ),
                         // TODO: change to more user friendly solution
