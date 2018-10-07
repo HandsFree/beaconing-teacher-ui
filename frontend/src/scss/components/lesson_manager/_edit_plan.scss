@@ -1,0 +1,82 @@
+#edit-plan-header {
+    h1 {
+        font-size: 1.4em;
+        font-weight: 400;
+
+        @include for-tablet-portrait-up {
+            font-size: 1.6em;
+        }
+
+        @include for-tablet-landscape-up {
+            font-size: 1.8em;
+        }
+    }
+
+    #edit-plan-header-menu {
+        button {
+            font-size: 0.8em;
+            margin: 0 0.25em;
+            padding: 0.2em 0.4em;
+            border-radius: 0;
+            background: #f8f8f8;
+
+            &.delete {
+                color: #B20601;
+                border: 1px solid #F9CFCE;
+            }
+
+            &.action {
+                color: $primary_font_colour_alt;
+                border: 1px solid #cfd3da;
+            }
+
+            &:hover {
+                cursor: pointer;
+                background: none;
+            }
+
+            @include for-tablet-portrait-up {
+                font-size: 0.9em;
+                padding: 0.25em 0.5em;
+            }
+    
+            @include for-tablet-landscape-up {
+                font-size: 1em;
+                padding: 0.3em 0.75em;
+            }
+        }
+    }
+
+    #edit-plan-header-tabs {
+        margin-top: 0.5em;
+        border-bottom: 1px solid #e1e4e8;
+
+        .tab-container {
+            justify-content: space-around;
+            flex-grow: 1;
+            position: relative;
+            top: 1px;
+        }
+
+        a {
+            &.tab {
+                padding: 0.5em 0.2em 0.75em;
+                text-align: center;
+                flex-grow: 1;
+                font-size: 1.15em;
+
+                &.active {
+                    font-weight: 400;
+                    border-top: 2px solid $bcn_light_orange;
+                    border-left: 1px solid #e1e4e8;
+                    border-right: 1px solid #e1e4e8;
+                    background: white;
+                }
+            }
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+}

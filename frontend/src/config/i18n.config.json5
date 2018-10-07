@@ -1322,6 +1322,17 @@
         'tr-TR': 'Grup Adı',
         'pt-PT': 'Nome do grupo'
     },
+    cr_group_name_desc: {
+        'en-GB': 'Name for the new group. It must be unique.',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
     cr_group_category: {
         'en-GB': 'Group Category',
         'fr-FR': 'Catégorie du groupe',
@@ -1421,8 +1432,8 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    min_students_group: {
-        'en-GB': 'minimum 2 students or 6 for student overview',
+    cr_students_group_desc: {
+        'en-GB': 'Choose students to assign to the group. A minimum of 2 students; 6 are needed for student overview.',
         'fr-FR': '',
         'es-ES': '',
         'it-IT': '',
@@ -3021,8 +3032,8 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    pf_teacher_info: {
-        'en-GB': 'Enter New Teacher Information',
+    pf_teacher_fn: {
+        'en-GB': 'First Name',
         'fr-FR': '',
         'es-ES': '',
         'it-IT': '',
@@ -3032,8 +3043,19 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    pf_teacher_fn: {
-        'en-GB': 'Teacher First Name',
+    pf_teacher_fn_enter: {
+        'en-GB': 'Enter First Name',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    pf_teacher_fn_desc: {
+        'en-GB': 'Enter your first name.',
         'fr-FR': '',
         'es-ES': '',
         'it-IT': '',
@@ -3044,7 +3066,29 @@
         'pt-PT': ''
     },
     pf_teacher_ln: {
-        'en-GB': 'Teacher Last Name',
+        'en-GB': 'Last Name',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    pf_teacher_ln_enter: {
+        'en-GB': 'Enter Last Name',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    pf_teacher_ln_desc: {
+        'en-GB': 'Enter your last name.',
         'fr-FR': '',
         'es-ES': '',
         'it-IT': '',
@@ -3055,7 +3099,18 @@
         'pt-PT': ''
     },
     pf_teacher_gender: {
-        'en-GB': 'Teacher Gender',
+        'en-GB': 'Gender',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    pf_teacher_gender_desc: {
+        'en-GB': 'Enter your gender.',
         'fr-FR': '',
         'es-ES': '',
         'it-IT': '',
@@ -3066,7 +3121,29 @@
         'pt-PT': ''
     },
     pf_teacher_school: {
-        'en-GB': 'Teacher School',
+        'en-GB': 'School',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    pf_teacher_school_enter: {
+        'en-GB': 'Enter School',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    pf_teacher_school_desc: {
+        'en-GB': 'Enter the school or institution you teach for.',
         'fr-FR': '',
         'es-ES': '',
         'it-IT': '',
@@ -3077,7 +3154,7 @@
         'pt-PT': ''
     },
     pf_teacher_email: {
-        'en-GB': 'Teacher Email',
+        'en-GB': 'Email',
         'fr-FR': '',
         'es-ES': '',
         'it-IT': '',
@@ -3087,8 +3164,19 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    pf_enter_new_email: {
-        'en-GB': 'Enter New Email (or leave blank)',
+    pf_teacher_email_enter: {
+        'en-GB': 'Enter Email',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    pf_teacher_email_desc: {
+        'en-GB': 'Enter your email address.',
         'fr-FR': '',
         'es-ES': '',
         'it-IT': '',
@@ -3100,6 +3188,17 @@
     },
     pf_teacher_language: {
         'en-GB': 'Teacher Language',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    pf_teacher_language_desc: {
+        'en-GB': 'Changes the language of the website.',
         'fr-FR': '',
         'es-ES': '',
         'it-IT': '',
