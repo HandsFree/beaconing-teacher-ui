@@ -8,10 +8,11 @@
 		"@babel/plugin-proposal-async-generator-functions",
 		"@babel/plugin-syntax-async-generators",
 		["@babel/plugin-transform-runtime", {
+			"corejs": true,
 			"helpers": true,
 			"polyfill": true,
 			"regenerator": true,
-			"moduleName": "@babel/runtime"
+			"moduleName": "@babel/runtime-corejs2"
 		}],
 		"@babel/plugin-proposal-object-rest-spread",
 		["@babel/plugin-proposal-decorators", { "legacy": true }],

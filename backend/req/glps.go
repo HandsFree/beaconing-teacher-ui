@@ -78,7 +78,10 @@ func GetGLPSRequest() gin.HandlerFunc {
 			return
 		}
 
-		if sortQuery := s.Query("sort"); sortQuery != "" {
+		sortQuery := s.Query("sort")
+		log.Println("the sort query is '", sortQuery, "'")
+
+		if sortQuery != "" {
 			plans, err = parse.SortGLPS(s, plans, sortQuery, orders)
 			if err != nil {
 				util.Error("Failed to sort GLPs by ", sortQuery, " in order ", orders, "\n"+err.Error())

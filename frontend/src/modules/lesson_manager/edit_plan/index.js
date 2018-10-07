@@ -7,7 +7,7 @@ import Footer from '../../footer/root';
 import MainNav from '../../nav/main';
 import SecondNav from '../../nav/second';
 import InnerNav from '../inner_nav';
-// import EditHandle from './edit_handle';
+import EditHandle from './edit_handle';
 
 class EditPlan extends RootComponent {
     async render() {
@@ -16,7 +16,7 @@ class EditPlan extends RootComponent {
         const mainNav = new MainNav();
         const secondNav = new SecondNav();
         const innerNav = new InnerNav();
-        // const editHandle = new EditHandle();
+        const editHandle = new EditHandle();
 
         return Promise.all([
             header.attach(),
@@ -33,7 +33,7 @@ class EditPlan extends RootComponent {
                 footerEl,
                 mainNavEl,
                 secondNavEl,
-                // editHandleEl,
+                editHandleEl,
             ] = values;
 
             return div(
