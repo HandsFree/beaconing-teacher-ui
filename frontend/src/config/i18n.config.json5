@@ -455,6 +455,28 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+    author: {
+        'en-GB': 'Author',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    none: {
+        'en-GB': 'None',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
 
     // Header //
 
@@ -2043,6 +2065,28 @@
     },
     lm_plan_cat_desc: {
         'en-GB': 'Choose the STEM category the lesson plan falls under.',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    lm_plan_gp: {
+        'en-GB': 'Plan Gameplot',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+    lm_plan_gp_desc: {
+        'en-GB': 'Selecting a gameplot will add a premade narrative to the lesson plan.',
         'fr-FR': '',
         'es-ES': '',
         'it-IT': '',
