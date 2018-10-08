@@ -59,7 +59,7 @@
     "eslint-config-airbnb-base": "13.1.0",
     "cssnano": "4.1.4",
     "eslint-plugin-babel": "5.1.0",
-    "eslint-plugin-flowtype": "2.50.0",
+    "eslint-plugin-flowtype": "2.50.3",
     "hard-source-webpack-plugin": "0.12.0",
     "eslint-plugin-import": "2.14.0",
     "flow-bin": "0.82.0",
