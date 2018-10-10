@@ -32,7 +32,7 @@
     "clean": "./node_modules/.bin/rimraf './public/dist/beaconing/pages/*' './public/dist/beaconing/*.js' './public/dist/beaconing/*.css'"
   },
   "devDependencies": {
-    "babel-eslint": "8.2.6",
+    "babel-eslint": "10.0.1",
     "@babel/core": "7.1.2",
     "@babel/plugin-proposal-async-generator-functions": "7.1.0",
     "@babel/plugin-proposal-class-properties": "7.1.0",
