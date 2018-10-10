@@ -10,7 +10,6 @@ import (
 
 	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
-	"github.com/allegro/bigcache"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 )
@@ -30,7 +29,7 @@ func GetUserID(s *gin.Context) (uint64, error) {
 func GetCurrentUser(s *gin.Context) (*entity.CurrentUser, error) {
 	cache := LittleCacheInstance()
 
-	doCache := func(cache *bigcache.BigCache) []byte {
+	doCache := func(cache *CacheWrapper) []byte {
 		resp, err, status := DoTimedRequest(s, "GET", API.getPath(s, "currentuser"))
 		if err != nil {
 			util.Error("GetCurrentUser", err.Error())
@@ -82,7 +81,9 @@ func GetCurrentUser(s *gin.Context) (*entity.CurrentUser, error) {
 func getUserAvatar(s *gin.Context, id uint64) (string, error) {
 	cache := LittleCacheInstance()
 
-	avatar, err := cache.Get("avatar")
+	avatarKey := fmt.Sprintf("avatar_%d", id)
+
+	avatar, err := cache.Get(avatarKey)
 	if err == nil {
 		return string(avatar), nil
 	}
@@ -105,7 +106,7 @@ func getUserAvatar(s *gin.Context, id uint64) (string, error) {
 		}
 
 		data := avatarHash
-		cache.Set("avatar", data)
+		cache.Set(avatarKey, data)
 		return string(data), nil
 	}
 

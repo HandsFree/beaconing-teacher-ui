@@ -4,7 +4,6 @@ import (
 	"github.com/HandsFree/beaconing-teacher-ui/backend/api"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
-	"github.com/allegro/bigcache"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 )
@@ -12,7 +11,7 @@ import (
 func Students(s *gin.Context) ([]*entity.Student, error) {
 	cache := api.BigCacheInstance()
 
-	doCache := func(cache *bigcache.BigCache) []byte {
+	doCache := func(cache *api.CacheWrapper) []byte {
 		data, err := api.GetStudents(s)
 		if err != nil {
 			util.Error("parse.Students", err.Error())
