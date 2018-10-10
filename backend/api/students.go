@@ -11,7 +11,6 @@ import (
 	"github.com/HandsFree/beaconing-teacher-ui/backend/activity"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
-	"github.com/allegro/bigcache"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 )
@@ -28,7 +27,7 @@ import (
 func GetStudents(s *gin.Context) (string, error) {
 	cache := BigCacheInstance()
 
-	doCache := func(cache *bigcache.BigCache) []byte {
+	doCache := func(cache *CacheWrapper) []byte {
 		resp, err, status := DoTimedRequest(s, "GET", API.getPath(s, "students"))
 		if err != nil {
 			util.Error("GetStudents", err.Error())
@@ -90,7 +89,7 @@ func GetStudent(s *gin.Context, studentID int) (string, error) {
 	cache := LittleCacheInstance()
 	apiPath := API.getPath(s, "students/", fmt.Sprintf("%d", studentID))
 
-	doCache := func(cache *bigcache.BigCache) []byte {
+	doCache := func(cache *CacheWrapper) []byte {
 		data, err, status := DoTimedRequest(s, "GET", apiPath)
 		if err != nil {
 			util.Error("GetStudent", err.Error())

@@ -11,7 +11,6 @@ import (
 	"github.com/HandsFree/beaconing-teacher-ui/backend/activity"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
-	"github.com/allegro/bigcache"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 )
@@ -281,7 +280,7 @@ func GetGLP(s *gin.Context, id uint64, minify bool) (*entity.GLP, error) {
 		fmt.Sprintf("%d", id),
 		fmt.Sprintf("?noContent=%s", strconv.FormatBool(minify)))
 
-	doCache := func(cache *bigcache.BigCache) []byte {
+	doCache := func(cache *CacheWrapper) []byte {
 		resp, err, status := DoTimedRequest(s, "GET", apiPath)
 
 		if err != nil {

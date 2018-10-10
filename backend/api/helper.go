@@ -1,6 +1,7 @@
 package api
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"strings"
@@ -104,11 +105,28 @@ func SetupAPIHelper() {
 	API = newAPIHelper()
 }
 
-func LittleCacheInstance() *bigcache.BigCache {
+const CachingDisabled = true
+
+type CacheWrapper struct {
+	*bigcache.BigCache
+}
+
+func newCacheWrapper(inst *bigcache.BigCache) *CacheWrapper {
+	return &CacheWrapper{inst}
+}
+
+func (c *CacheWrapper) Get(key string) ([]byte, error) {
+	if CachingDisabled {
+		return []byte{}, errors.New("Caching disabled")
+	}
+	return c.BigCache.Get(key)
+}
+
+func LittleCacheInstance() *CacheWrapper {
 	return API.littleCache
 }
 
-func BigCacheInstance() *bigcache.BigCache {
+func BigCacheInstance() *CacheWrapper {
 	return API.cache
 }
 
@@ -116,8 +134,8 @@ func BigCacheInstance() *bigcache.BigCache {
 // as well as caching any json/requests that are frequently requested
 type CoreAPIManager struct {
 	APIPath     string
-	littleCache *bigcache.BigCache
-	cache       *bigcache.BigCache
+	littleCache *CacheWrapper
+	cache       *CacheWrapper
 	db          *sql.DB
 }
 
@@ -229,8 +247,8 @@ func newAPIHelper() *CoreAPIManager {
 
 	return &CoreAPIManager{
 		APIPath:     "https://core.beaconing.eu/api/",
-		littleCache: littleCache,
-		cache:       cache,
+		littleCache: newCacheWrapper(littleCache),
+		cache:       newCacheWrapper(cache),
 		db:          db,
 	}
 }
