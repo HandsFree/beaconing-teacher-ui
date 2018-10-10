@@ -81,7 +81,9 @@ func GetCurrentUser(s *gin.Context) (*entity.CurrentUser, error) {
 func getUserAvatar(s *gin.Context, id uint64) (string, error) {
 	cache := LittleCacheInstance()
 
-	avatar, err := cache.Get("avatar")
+	avatarKey := fmt.Sprintf("avatar_%d", id)
+
+	avatar, err := cache.Get(avatarKey)
 	if err == nil {
 		return string(avatar), nil
 	}
@@ -104,7 +106,7 @@ func getUserAvatar(s *gin.Context, id uint64) (string, error) {
 		}
 
 		data := avatarHash
-		cache.Set("avatar", data)
+		cache.Set(avatarKey, data)
 		return string(data), nil
 	}
 
