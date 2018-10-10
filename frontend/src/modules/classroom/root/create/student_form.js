@@ -425,6 +425,16 @@ class StudentForm extends Form {
                         div(
                             '.flex-justify-end.margin-top-10',
                             div(
+                                '#create-student-cancel.button-passive',
+                                {
+                                    onclick: () => {
+                                        this.resetForm();
+                                        window.location.href = `//${window.location.host}/classroom`;
+                                    },
+                                },
+                                await window.bcnI18n.getPhrase('cancel'),
+                            ),
+                            div(
                                 '#create-student-button.button-submit',
                                 {
                                     onclick: (event) => {

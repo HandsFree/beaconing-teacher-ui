@@ -431,6 +431,15 @@ class ProfileEditForm extends Form {
                         div(
                             '.flex-justify-end.margin-top-10',
                             div(
+                                '#edit-teacher-cancel.button-passive',
+                                {
+                                    onclick: () => {
+                                        window.location.href = `//${window.location.host}/`;
+                                    },
+                                },
+                                await window.bcnI18n.getPhrase('cancel'),
+                            ),
+                            div(
                                 '#edit-teacher-button.button-submit',
                                 {
                                     onclick: (event) => {

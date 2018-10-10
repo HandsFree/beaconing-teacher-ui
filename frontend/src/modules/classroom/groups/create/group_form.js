@@ -252,6 +252,16 @@ class GroupForm extends Form {
                         div(
                             '.flex-justify-end.margin-top-10',
                             div(
+                                '#create-group-cancel.button-passive',
+                                {
+                                    onclick: () => {
+                                        this.resetForm();
+                                        window.location.href = `//${window.location.host}/classroom/groups`;
+                                    },
+                                },
+                                await window.bcnI18n.getPhrase('cancel'),
+                            ),
+                            div(
                                 '#create-group-button.button-submit',
                                 {
                                     onclick: (event) => {

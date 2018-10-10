@@ -745,6 +745,16 @@ class NewPlanForm extends Form {
                         div(
                             '.flex-justify-end.margin-top-10',
                             div(
+                                '#create-plan-cancel.button-passive',
+                                {
+                                    onclick: () => {
+                                        this.resetForm();
+                                        window.location.href = `//${window.location.host}/lesson_manager`;
+                                    },
+                                },
+                                await window.bcnI18n.getPhrase('cancel'),
+                            ),
+                            div(
                                 '#create-plan-button.button-submit',
                                 {
                                     onclick: (event) => {
