@@ -18,36 +18,47 @@ class QuestBox extends Component {
         } = this.props;
 
         const sceneList = [];
-        
+        const noAnMsg = await window.bcnI18n.getPhrase('cr_no_analytics');
+        const dashMsg = await window.bcnI18n.getPhrase('an_dashboard');
+        const dashTitleMsg = await window.bcnI18n.getPhrase('an_lbg_dash_title');
+
         for (const [id, scene] of scenes) {
-            const { lbgs, name } = scene;
+            const {
+                lbgs,
+                name: sceneName,
+            } = scene;
 
             const lbgList = [];
             for (const lbg of lbgs) {
-                const { desc, name, type, dashboardLink } = lbg;
+                const {
+                    desc,
+                    type,
+                    dashboardLink: lbgDL,
+                } = lbg;
 
-                let lbgName = name;
+                let { name: lbgName } = lbg;
+
                 if (type) {
-                    lbgName += ' - ' + type;
+                    lbgName += ` -  ${type}`;
                 }
 
                 const dashboardLinkEl = p(a(
                     '.link-underline.btn',
                     {
-                        href: dashboardLink,
+                        href: lbgDL,
                         target: '_BLANK',
-                        title: 'LBG specific tracking',
+                        title: dashTitleMsg,
                     },
-                    'Dashboard',
+                    dashMsg,
                 ));
 
                 lbgList.push(
                     div(
                         '.empty-block',
                         p(lbgName),
-                        nullishCheck(dashboardLink, false) ? dashboardLinkEl : p('No analytics available'),
-                        p(desc)
-                    )
+                        nullishCheck(lbgDL, false) ? dashboardLinkEl : p(noAnMsg),
+                        p(desc),
+                    ),
                 );
             }
 
@@ -57,16 +68,16 @@ class QuestBox extends Component {
                 sceneList.push(
                     div(
                         '.empty-block.scene-box',
-                        h5(name),
+                        h5(sceneName),
                         lbgList,
-                    )
+                    ),
                 );
             }
         }
 
         return div(
             '.quest-box',
-           
+
             div(
                 '.flex-spacebetween',
                 h3(name),
@@ -75,9 +86,9 @@ class QuestBox extends Component {
                     {
                         href: dashboardLink,
                         target: '_BLANK',
-                        title: 'Quest specific tracking',
+                        title: await window.bcnI18n.getPhrase('an_scenes_dash_title'),
                     },
-                    await window.bcnI18n.getPhrase('dashboard_link'),
+                    await window.bcnI18n.getPhrase('an_dashboard'),
                 )),
             ),
 
@@ -85,8 +96,8 @@ class QuestBox extends Component {
             // if there are scenes.
             sceneList.length > 0 ? div(
                 '.margin-block',
-                h4('Scenes'),
-                p('The set of scenes in this quest - scenes without analytical information are hidden.'), 
+                h4(await window.bcnI18n.getPhrase('an_scenes')),
+                p(await window.bcnI18n.getPhrase('an_scenes_desc')),
                 div('.scenes-container', sceneList),
             ) : [],
         );
@@ -102,7 +113,7 @@ class MissionBox extends Component {
         } = this.props;
 
         const questProms = [];
-        for (const [name, quest] of quests) {
+        for (const [qname, quest] of quests) {
             questProms.push(new QuestBox().attach(quest));
         }
 
@@ -117,9 +128,9 @@ class MissionBox extends Component {
                     {
                         href: dashboardLink,
                         target: '_BLANK',
-                        title: 'Mission specific tracking',
+                        title: await window.bcnI18n.getPhrase('an_mission_dash_title'),
                     },
-                    'Dashboard',
+                    await window.bcnI18n.getPhrase('an_dashboard'),
                 )),
             ),
             div(
@@ -186,13 +197,13 @@ class AnalyticsMain extends Component {
                                 href: dashboardLink,
                                 target: '_BLANK',
                             },
-                            await window.bcnI18n.getPhrase('main_dashboard_link'),
+                            await window.bcnI18n.getPhrase('an_main_dashboard_link'),
                         ),
                     ),
                     h2('Analytics Overview'),
                 ),
 
-                p(await window.bcnI18n.getPhrase('main_dashboard_desc')),
+                p(await window.bcnI18n.getPhrase('an_main_dashboard_desc')),
             ),
 
             h2('Missions'),
@@ -215,7 +226,7 @@ class AnalyticsOverview extends RootComponent {
             footer.attach(),
             mainNav.attach(),
             secondNav.attach({
-                title: await window.bcnI18n.getPhrase('classroom'),
+                title: await window.bcnI18n.getPhrase('cr'),
                 innerNav: innerNav.attach(),
             }),
             mainPanel.attach(this.params),
