@@ -874,7 +874,7 @@
     },
 
     cr_student_lang_desc: {
-        'en-GB': 'Student\'s interface will be translated to the chosen language',
+        'en-GB': 'Student\'s interface will be translated to the chosen language.',
         'fr-FR': '',
         'es-ES': '',
         'it-IT': '',
@@ -2052,7 +2052,7 @@
     },
 
     lm_plan_ag_desc: {
-        'en-GB': 'Age group the lesson plan will target. Example: 16-18',
+        'en-GB': 'Age group the lesson plan will target. Example: 16-18.',
         'fr-FR': '',
         'es-ES': '',
         'it-IT': '',
@@ -2256,7 +2256,7 @@
     },
 
     lm_plan_vis_desc: {
-        'en-GB': 'Choose who can view the lesson plan. Public will allow other teachers to use the plan. Private will allow only you to use the plan',
+        'en-GB': 'Choose who can view the lesson plan. Public will allow other teachers to use the plan. Private will allow only you to use the plan.',
         'fr-FR': '',
         'es-ES': '',
         'it-IT': '',
@@ -2333,11 +2333,11 @@
         'en-GB': 'Visit Beaconing',
         'fr-FR': '',
         'es-ES': '',
-        'it-IT': '',
-        'de-DE': '',
+        'it-IT': 'Visita Beaconing',
+        'de-DE': 'Besuchen Sie Beaconing',
         'ro-RO': '',
         'pl-PL': '',
-        'tr-TR': '',
+        'tr-TR': 'BEACONING’i Ziyaret Et',
         'pt-PT': ''
     },
 
@@ -2480,7 +2480,7 @@
     },
 
     an_main_dashboard_desc: {
-        'en-GB': 'The dashboard links will allow you to track the progress and results for students.',
+        'en-GB': 'The dashboard links will track the progress and results for students.',
         'fr-FR': '',
         'es-ES': '',
         'it-IT': '',
@@ -2492,7 +2492,7 @@
     },
 
     an_mission_dashboard_desc: {
-        'en-GB': 'This set of dashboards allows you to track the progress and results for students for each individual mini game contained in the mission. You can view overall student progress in the group as well as filter the results by time and student.',
+        'en-GB': 'Mission dashboards track the progress and results for students in the mission.',
         'fr-FR': '',
         'es-ES': '',
         'it-IT': '',
@@ -2504,7 +2504,7 @@
     },
 
     an_quest_dashboard_desc: {
-        'en-GB': 'Similar to the mission Dashboard, the Quest dashboards can track the progress and results of students in a group within a particular mini game at quest level',
+        'en-GB': 'Quest dashboards track the progress and results of students in a quest and minigames that are part of the quest.',
         'fr-FR': '',
         'es-ES': '',
         'it-IT': '',
@@ -2805,18 +2805,6 @@
         'pt-PT': '',
     },
 
-    cal_monday: {
-		'en-GB': 'Monday',
-        'fr-FR': '',
-        'es-ES': '',
-        'it-IT': '',
-        'de-DE': '',
-        'ro-RO': '',
-        'pl-PL': '',
-        'tr-TR': '',
-        'pt-PT': '',
-    },
-
     cal_tuesday: {
 		'en-GB': 'Tuesday',
         'fr-FR': '',
@@ -3098,7 +3086,7 @@
     },
 
     pf_teacher_gender_desc: {
-        'en-GB': 'Enter your gender.',
+        'en-GB': 'Choose your gender.',
         'fr-FR': '',
         'es-ES': '',
         'it-IT': '',
@@ -3182,7 +3170,7 @@
     },
 
     pf_teacher_language: {
-        'en-GB': 'Teacher Language',
+        'en-GB': 'Language',
         'fr-FR': '',
         'es-ES': '',
         'it-IT': '',
