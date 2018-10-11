@@ -86,7 +86,7 @@ class StudentAside extends Component {
             return;
         }
 
-        const delStudentTranslation = await window.bcnI18n.getPhrase('confirm_delete_student');
+        const delStudentTranslation = await window.bcnI18n.getPhrase('con_delete_student');
         if (!confirm(delStudentTranslation)) {
             return;
         }
@@ -108,7 +108,7 @@ class StudentAside extends Component {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: await window.bcnI18n.getPhrase('student_nd'),
+            message: await window.bcnI18n.getPhrase('err_student_nd'),
         });
 
         this.appendView(statusMessageEl);

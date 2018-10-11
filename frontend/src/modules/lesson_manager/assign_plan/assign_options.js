@@ -50,7 +50,7 @@ class AssignOptions extends Component {
             '#assign-options',
             div(
                 '.flex-column',
-                div('.title', h4(`${await window.bcnI18n.getPhrase('students')}:`)),
+                div('.title', h4(`${await window.bcnI18n.getPhrase('cr_students')}:`)),
                 div(
                     '.students-container',
                     studentsEl,

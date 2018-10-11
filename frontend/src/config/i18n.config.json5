@@ -12,6 +12,7 @@
         'tr-TR': 'Ana Sayfa',
         'pt-PT': 'Início',
     },
+
     nav_classroom: {
         'en-GB': 'Classroom',
         'fr-FR': 'Classes',
@@ -23,6 +24,7 @@
         'tr-TR': 'Sınıf',
         'pt-PT': 'Sala de aula',
     },
+
     nav_lesson_manager: {
         'en-GB': 'Lesson Manager',
         'fr-FR': 'Gestion des Leçons',
@@ -34,6 +36,7 @@
         'tr-TR': 'Ders Yöneticisi',
         'pt-PT': 'Gestão de aulas',
     },
+
     nav_calendar: {
         'en-GB': 'Calendar',
         'fr-FR': 'Calendrier',
@@ -45,6 +48,7 @@
         'tr-TR': 'Takvim',
         'pt-PT': 'Agenda',
     },
+
     nav_forum: {
         'en-GB': 'Forum',
         'fr-FR': 'Forum',
@@ -56,6 +60,7 @@
         'tr-TR': 'Forum',
         'pt-PT': 'Fórum',
     },
+
     nav_search: {
         'en-GB': 'Search',
         'fr-FR': 'Chercher',
@@ -67,6 +72,7 @@
         'tr-TR': 'Arama',
         'pt-PT': 'Procurar',
     },
+
     nav_access: {
         'en-GB': 'Accessibility',
         'fr-FR': 'Accessibilité',
@@ -92,6 +98,7 @@
         'tr-TR': 'Sıra Önceliği',
         'pt-PT': 'Ordenar por',
     },
+
     view: {
         'en-GB': 'View',
         'fr-FR': 'Voir',
@@ -103,6 +110,7 @@
         'tr-TR': 'Görüntüle',
         'pt-PT': 'Visualizar',
     },
+
     edit: {
         'en-GB': 'Edit',
         'fr-FR': 'Modifier',
@@ -114,6 +122,7 @@
         'tr-TR': 'Düzenle',
         'pt-PT': 'Editar',
     },
+
     cancel: {
         'en-GB': 'Cancel',
         'fr-FR': 'Annuler',
@@ -125,39 +134,7 @@
         'tr-TR': 'İptal Et',
         'pt-PT': 'Cancelar'
     },
-    learning_plans: {
-        'en-GB': 'Learning Plans',
-        'fr-FR': 'Leçons',
-        'es-ES': 'Planes de Aprendizaje',
-        'it-IT': 'Lezioni',
-        'de-DE': 'Lehrpläne',
-        'ro-RO': 'Planuri de lecție',
-        'pl-PL': 'Plany nauczania',
-        'tr-TR': 'Ders Planları',
-        'pt-PT': 'Planos de aprendizagem'
-    },
-    class: {
-        'en-GB': 'Class',
-        'fr-FR': 'Classe',
-        'es-ES': 'Clase',
-        'it-IT': 'Classe',
-        'de-DE': 'Klasse',
-        'ro-RO': 'Clasă',
-        'pl-PL': 'Klasa',
-        'tr-TR': 'Sınıf',
-        'pt-PT': 'Turma'
-    },
-    group: {
-        'en-GB': 'Group',
-        'fr-FR': 'Groupe',
-        'es-ES': 'Grupo',
-        'it-IT': 'Gruppo',
-        'de-DE': 'Gruppe',
-        'ro-RO': 'Grup',
-        'pl-PL': 'Gruppa',
-        'tr-TR': 'Grup',
-        'pt-PT': 'Grupo',
-    },
+
     week: {
         'en-GB': 'Week',
         'fr-FR': 'Semaine',
@@ -169,6 +146,7 @@
         'tr-TR': 'Hafta',
         'pt-PT': 'Semana',
     },
+
     month: {
         'en-GB': 'Month',
         'fr-FR': 'Mois',
@@ -180,6 +158,7 @@
         'tr-TR': 'Ay',
         'pt-PT': 'Yıl',
     },
+
     year: {
         'en-GB': 'Year',
         'fr-FR': 'Année',
@@ -191,6 +170,7 @@
         'tr-TR': 'Yıl',
         'pt-PT': 'Ano',
     },
+
     name: {
         'en-GB': 'Name',
         'fr-FR': 'Nom',
@@ -202,6 +182,7 @@
         'tr-TR': 'İsim',
         'pt-PT': 'Nome'
     },
+
     go_back: {
         'en-GB': 'Go Back',
         'fr-FR': 'Retour',
@@ -213,6 +194,7 @@
         'tr-TR': 'Geri Git',
         'pt-PT': 'Voltar'
     },
+
     male: {
         'en-GB': 'Male',
         'fr-FR': 'Homme',
@@ -224,6 +206,7 @@
         'tr-TR': 'Erkek',
         'pt-PT': 'Masculino'
     },
+
     female: {
         'en-GB': 'Female',
         'fr-FR': 'Femme',
@@ -235,6 +218,7 @@
         'tr-TR': 'Kadın',
         'pt-PT': 'Feminino'
     },
+
     other: {
         'en-GB': 'Other',
         'fr-FR': 'Autre',
@@ -246,6 +230,7 @@
         'tr-TR': 'Diğer',
         'pt-PT': 'Outros'
     },
+
     prefer_nts: {
         'en-GB': 'Prefer not to say',
         'fr-FR': '',
@@ -257,28 +242,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    students: {
-        'en-GB': 'Students',
-        'fr-FR': 'Etudiants',
-        'es-ES': 'Estudiantes',
-        'it-IT': 'Studenti',
-        'de-DE': 'Schüler',
-        'ro-RO': 'Elevi',
-        'pl-PL': 'Uczniowie',
-        'tr-TR': 'Öğrenciler',
-        'pt-PT': 'Alunos'
-    },
-    groups: {
-        'en-GB': 'Groups',
-        'fr-FR': 'Groupes',
-        'es-ES': 'Grupos',
-        'it-IT': 'Gruppi',
-        'de-DE': 'Gruppen',
-        'ro-RO': 'Grupuri',
-        'pl-PL': 'Grupy',
-        'tr-TR': 'Gruplar',
-        'pt-PT': 'Grupos'
-    },
+
     creating: {
         'en-GB': 'Creating',
         'fr-FR': 'Créer',
@@ -290,6 +254,7 @@
         'tr-TR': 'Oluşturma',
         'pt-PT': 'Criando'
     },
+
     analytics: {
         'en-GB': 'Analytics',
         'fr-FR': 'Résultats',
@@ -301,6 +266,7 @@
         'tr-TR': 'Analitik',
         'pt-PT': 'Estatísticas'
     },
+
     update: {
         'en-GB': 'Update',
         'fr-FR': 'Mettre',
@@ -312,6 +278,7 @@
         'tr-TR': 'Güncelleştirme',
         'pt-PT': 'Atualizar'
     },
+
     updating: {
         'en-GB': 'Updating',
         'fr-FR': '',
@@ -323,6 +290,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     saving: {
         'en-GB': 'Saving',
         'fr-FR': '',
@@ -334,6 +302,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     delete: {
         'en-GB': 'Delete',
         'fr-FR': 'Effacer',
@@ -345,6 +314,7 @@
         'tr-TR': 'Silmek',
         'pt-PT': 'Excluir'
     },
+
     asc: {
         'en-GB': 'Ascending',
         'fr-FR': 'Croissant',
@@ -356,6 +326,7 @@
         'tr-TR': 'Artan Sıralama',
         'pt-PT': 'Ascendente'
     },
+
     desc: {
         'en-GB': 'Descending',
         'fr-FR': 'Décroissant',
@@ -367,6 +338,7 @@
         'tr-TR': 'Azalan Sıralama',
         'pt-PT': 'Descendente'
     },
+
     description: {
         'en-GB': 'Description',
         'fr-FR': 'Description',
@@ -378,6 +350,7 @@
         'tr-TR': 'Açıklama',
         'pt-PT': 'Descrição'
     },
+
     done: {
         'en-GB': 'Done',
         'fr-FR': '',
@@ -389,28 +362,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    normal: {
-        'en-GB': 'Normal',
-        'fr-FR': '',
-        'es-ES': '',
-        'it-IT': '',
-        'de-DE': '',
-        'ro-RO': '',
-        'pl-PL': '',
-        'tr-TR': '',
-        'pt-PT': ''
-    },
-    course: {
-        'en-GB': 'Course',
-        'fr-FR': '',
-        'es-ES': '',
-        'it-IT': '',
-        'de-DE': '',
-        'ro-RO': '',
-        'pl-PL': '',
-        'tr-TR': '',
-        'pt-PT': ''
-    },
+
     username: {
         'en-GB': 'Username',
         'fr-FR': '',
@@ -422,50 +374,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    details: {
-        'en-GB': 'Details',
-        'fr-FR': '',
-        'es-ES': '',
-        'it-IT': '',
-        'de-DE': '',
-        'ro-RO': '',
-        'pl-PL': '',
-        'tr-TR': '',
-        'pt-PT': ''
-    },
-    assignees: {
-        'en-GB': 'Assignees',
-        'fr-FR': '',
-        'es-ES': '',
-        'it-IT': '',
-        'de-DE': '',
-        'ro-RO': '',
-        'pl-PL': '',
-        'tr-TR': '',
-        'pt-PT': ''
-    },
-    files: {
-        'en-GB': 'Files',
-        'fr-FR': '',
-        'es-ES': '',
-        'it-IT': '',
-        'de-DE': '',
-        'ro-RO': '',
-        'pl-PL': '',
-        'tr-TR': '',
-        'pt-PT': ''
-    },
-    author: {
-        'en-GB': 'Author',
-        'fr-FR': '',
-        'es-ES': '',
-        'it-IT': '',
-        'de-DE': '',
-        'ro-RO': '',
-        'pl-PL': '',
-        'tr-TR': '',
-        'pt-PT': ''
-    },
+
     none: {
         'en-GB': 'None',
         'fr-FR': '',
@@ -476,6 +385,30 @@
         'pl-PL': '',
         'tr-TR': '',
         'pt-PT': ''
+    },
+
+    remove: {
+        'en-GB': 'Remove',
+        'fr-FR': 'Supprimer',
+        'es-ES': 'Eliminar',
+        'it-IT': 'Rimuovi',
+        'de-DE': 'Entfernen',
+        'ro-RO': 'Eliminare',
+        'pl-PL': 'Usuń',
+        'tr-TR': 'Kaldır',
+        'pt-PT': 'Remover'
+    },
+
+    never: {
+        'en-GB': 'Never',
+        'fr-FR': 'Jamais',
+        'es-ES': 'Nunca',
+        'it-IT': 'Mai',
+        'de-DE': 'Nie',
+        'ro-RO': 'Niciodată',
+        'pl-PL': 'Nigdy',
+        'tr-TR': 'Asla',
+        'pt-PT': 'Nunca'
     },
 
     // Header //
@@ -491,6 +424,7 @@
         'tr-TR': 'Giriş',
         'pt-PT': 'Encerrar sessão',
     },
+
     logo_title: {
         'en-GB': 'Click to go to Home',
         'fr-FR': 'Cliquer pour retourner à l’acceuil',
@@ -516,6 +450,7 @@
         'tr-TR': 'Görünümü Düzenle',
         'pt-PT': 'Editar disposição',
     },
+
     widget_ra_title: {
         'en-GB': 'Your Recent Activities',
         'fr-FR': 'Vos dernières activités',
@@ -527,6 +462,7 @@
         'tr-TR': 'Son Etkinlikleriniz',
         'pt-PT': 'Atividades recentes',
     },
+
     widget_ra_no_act: {
         'en-GB': 'No Recent Activities',
         'fr-FR': 'Aucune activités récentes',
@@ -538,6 +474,7 @@
         'tr-TR': 'Son Dönemde Aktivite Yok',
         'pt-PT': 'Não há atividades recentes',
     },
+
     widget_ra_group_created: {
         'en-GB': 'Created group',
         'fr-FR': 'Groupes créés',
@@ -549,6 +486,7 @@
         'tr-TR': 'Grup oluşturuldu.',
         'pt-PT': 'Grupo criado'
     },
+
     widget_ra_student_created: {
         'en-GB': 'Created student',
         'fr-FR': 'Elèves créés',
@@ -560,6 +498,7 @@
         'tr-TR': 'Öğrenci kaydı oluşturuldu.',
         'pt-PT': 'Aluno criado'
     },
+
     widget_ap_title: {
         'en-GB': 'Active Lesson Plans',
         'fr-FR': 'Leçons actives',
@@ -571,6 +510,7 @@
         'tr-TR': 'Aktif Ders Planları',
         'pt-PT': 'Planos letivos ativos',
     },
+
     widget_ap_link_title: {
         'en-GB': 'View Active Lesson Plans',
         'fr-FR': 'Voir les leçons actives',
@@ -582,6 +522,7 @@
         'tr-TR': 'Aktif Ders Planlarını Görüntüle',
         'pt-PT': 'Ver planos letivos ativos',
     },
+
     widget_ap_no_plans: {
         'en-GB': 'No Active Plans',
         'fr-FR': 'Aucunes leçons actives',
@@ -593,6 +534,7 @@
         'tr-TR': 'Aktif Plan Yok',
         'pt-PT': 'Não há planos ativos',
     },
+
     widget_so_title: {
         'en-GB': 'Student Overview',
         'fr-FR': 'Visualisation Etudiant',
@@ -604,6 +546,7 @@
         'tr-TR': 'Öğrenci Bilgileri',
         'pt-PT': 'Visão geral do aluno',
     },
+
     widget_so_link_title: {
         'en-GB': 'View Students',
         'fr-FR': 'Voir les étudiants',
@@ -615,6 +558,7 @@
         'tr-TR': 'Öğrencileri Görüntüle',
         'pt-PT': 'Ver os alunos',
     },
+
     widget_so_no_group: {
         'en-GB': 'At least one group must exist to use Student Overview',
         'fr-FR': 'Il faut au moins 1 groupe pour utiliser cette fonctionnalité',
@@ -626,6 +570,7 @@
         'tr-TR': 'Öğrenci Özet Görünümü için en az bir  Grup olmalıdır',
         'pt-PT': 'Tem de existir pelo menos um grupo para poder ter uma visão geral dos alunos',
     },
+
     widget_so_few: {
         'en-GB': 'This group has too few students! (needs 6 or more)',
         'fr-FR': '',
@@ -637,6 +582,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     widget_so_bp: {
         'en-GB': 'Best Performing',
         'fr-FR': 'Les plus performants',
@@ -648,6 +594,7 @@
         'tr-TR': 'En İyi performans',
         'pt-PT': 'Com melhor desempenho',
     },
+
     widget_so_na: {
         'en-GB': 'Needs Attention',
         'fr-FR': 'Ils requièrent votre attention',
@@ -659,6 +606,7 @@
         'tr-TR': 'İlgi Gerektiriyor',
         'pt-PT': 'Requerem atenção',
     },
+
     widget_so_mi: {
         'en-GB': 'Most Improvement',
         'fr-FR': 'Ils ont le plus progressés',
@@ -670,6 +618,7 @@
         'tr-TR': 'En Fazla İyileşen',
         'pt-PT': 'Que mais melhoraram',
     },
+
     widget_so_op: {
         'en-GB': 'Overall Percentage',
         'fr-FR': 'Pourcentage global',
@@ -681,6 +630,7 @@
         'tr-TR': 'Ortalama Yüzde',
         'pt-PT': 'Percentagem geral',
     },
+
     widget_so_oi: {
         'en-GB': 'Overall Improvement',
         'fr-FR': 'Amélioration globale',
@@ -695,7 +645,7 @@
 
     // Classroom //
 
-    classroom : {
+    cr: {
         'en-GB': 'Classroom',
         'fr-FR': 'Classe',
         'es-ES': 'Clase',
@@ -706,6 +656,43 @@
         'tr-TR': 'Derslik',
         'pt-PT': 'Sala de aula'
     },
+
+    cr_group: {
+        'en-GB': 'Group',
+        'fr-FR': 'Groupe',
+        'es-ES': 'Grupo',
+        'it-IT': 'Gruppo',
+        'de-DE': 'Gruppe',
+        'ro-RO': 'Grup',
+        'pl-PL': 'Gruppa',
+        'tr-TR': 'Grup',
+        'pt-PT': 'Grupo',
+    },
+
+    cr_groups: {
+        'en-GB': 'Groups',
+        'fr-FR': 'Groupes',
+        'es-ES': 'Grupos',
+        'it-IT': 'Gruppi',
+        'de-DE': 'Gruppen',
+        'ro-RO': 'Grupuri',
+        'pl-PL': 'Grupy',
+        'tr-TR': 'Gruplar',
+        'pt-PT': 'Grupos'
+    },
+
+    cr_students: {
+        'en-GB': 'Students',
+        'fr-FR': 'Etudiants',
+        'es-ES': 'Estudiantes',
+        'it-IT': 'Studenti',
+        'de-DE': 'Schüler',
+        'ro-RO': 'Elevi',
+        'pl-PL': 'Uczniowie',
+        'tr-TR': 'Öğrenciler',
+        'pt-PT': 'Alunos'
+    },
+
     cr_create_group: {
         'en-GB': 'Create Group',
         'fr-FR': 'Créer un groupe',
@@ -717,17 +704,7 @@
         'tr-TR': 'Grup Oluştur',
         'pt-PT': 'Criar grupo'
     },
-    cr_enter_si: {
-        'en-GB': 'Enter Student Information',
-        'fr-FR': 'Entrez les informations pour cet étudiant',
-        'es-ES': 'Introduce Información del Estudiante',
-        'it-IT': 'Inserisci i dati dello studente',
-        'de-DE': 'Geben Sie nachfolgend die Informationen der Schülerin oder des Schülers ein',
-        'ro-RO': 'Introduceți informațiile elevului',
-        'pl-PL': 'Wprowadź informacje o uczniu',
-        'tr-TR': 'Öğrenci Bilgilerini Girin',
-        'pt-PT': 'Introduzir dados de alunos'
-    },
+
     cr_create_student: {
         'en-GB': 'Create Student',
         'fr-FR': 'Créér un étudiant',
@@ -739,6 +716,7 @@
         'tr-TR': 'Öğrenci Oluştur',
         'pt-PT': 'Criar aluno'
     },
+
     cr_student_username: {
         'en-GB': 'Student Username',
         'fr-FR': 'Identifiant de connexion',
@@ -750,6 +728,7 @@
         'tr-TR': 'Öğrenci Kullanıcı Adı',
         'pt-PT': 'Nome de utilizador do aluno'
     },
+
     cr_enter_username: {
         'en-GB': 'Enter Username',
         'fr-FR': 'Entrez son Identifiant',
@@ -761,6 +740,7 @@
         'tr-TR': 'Kullanıcı Adı Girin',
         'pt-PT': 'Introduzir o nome de utilizador'
     },
+
     cr_student_username_desc: {
         'en-GB': 'The student will log in with this username. The username should be easy to remember. Username must be alphanumeric and contain no spaces.',
         'fr-FR': '',
@@ -772,6 +752,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     cr_student_fn: {
         'en-GB': 'Student First name',
         'fr-FR': 'Prénom',
@@ -783,6 +764,7 @@
         'tr-TR': 'Öğrenci Adı',
         'pt-PT': 'Nome próprio do aluno'
     },
+
     cr_enter_fn: {
         'en-GB': 'Enter First Name',
         'fr-FR': 'Entrez son prénom',
@@ -794,6 +776,7 @@
         'tr-TR': 'Öğrenci Adını Girin',
         'pt-PT': 'Introduzir o nome próprio'
     },
+
     cr_student_fn_desc: {
         'en-GB': 'First name of the student.',
         'fr-FR': '',
@@ -805,6 +788,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     cr_student_ln: {
         'en-GB': 'Student Last Name',
         'fr-FR': 'Nom',
@@ -816,6 +800,7 @@
         'tr-TR': 'Öğrenci Soyadı',
         'pt-PT': 'Apelido do aluno'
     },
+
     cr_enter_ln: {
         'en-GB': 'Enter Last Name',
         'fr-FR': 'Entrez son nom',
@@ -827,6 +812,7 @@
         'tr-TR': 'Öğrenci Soyadını Girin',
         'pt-PT': 'Introduzir o apelido'
     },
+
     cr_student_ln_desc: {
         'en-GB': 'Last name of the student.',
         'fr-FR': '',
@@ -838,39 +824,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    cr_student_gender: {
-        'en-GB': 'Student Gender',
-        'fr-FR': 'Civilité',
-        'es-ES': 'Género del Estudiante',
-        'it-IT': 'Genere',
-        'de-DE': 'Geschlecht',
-        'ro-RO': 'Sexul elevului',
-        'pl-PL': 'Płeć ucznia',
-        'tr-TR': 'Cinsiyeti',
-        'pt-PT': 'Género do aluno'
-    },
-    cr_student_gender_desc: {
-        'en-GB': 'Gender of the student. Student does not need to disclose their gender if preferred.',
-        'fr-FR': '',
-        'es-ES': '',
-        'it-IT': '',
-        'de-DE': '',
-        'ro-RO': '',
-        'pl-PL': '',
-        'tr-TR': '',
-        'pt-PT': ''
-    },
-    cr_student_dob: {
-        'en-GB': 'Student Date of Birth',
-        'fr-FR': 'Date de naissance',
-        'es-ES': 'Fecha de Nacimiento del Estudiante',
-        'it-IT': 'Data di nascita dello studente',
-        'de-DE': 'Geburtsdatum',
-        'ro-RO': 'Data de naștere a elevului',
-        'pl-PL': 'Data urodzenia ucznia',
-        'tr-TR': 'Öğrenci Doğum Tarihi',
-        'pt-PT': 'Data de nascimento do aluno'
-    },
+
     cr_student_yg: {
         'en-GB': 'Student Year Group',
         'fr-FR': '',
@@ -882,6 +836,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     cr_enter_yg: {
         'en-GB': 'Enter Year Group',
         'fr-FR': '',
@@ -893,6 +848,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     cr_student_yg_desc: {
         'en-GB': 'Year group or grade the student belongs to.',
         'fr-FR': '',
@@ -904,17 +860,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    cr_student_dob_desc: {
-        'en-GB': 'Student\'s Date of Birth. Must be a valid date in the past 120 years.',
-        'fr-FR': '',
-        'es-ES': '',
-        'it-IT': '',
-        'de-DE': '',
-        'ro-RO': '',
-        'pl-PL': '',
-        'tr-TR': '',
-        'pt-PT': ''
-    },
+
     cr_student_lang: {
         'en-GB': 'Student Language',
         'fr-FR': 'Langue',
@@ -926,6 +872,7 @@
         'tr-TR': 'Öğrenci Dili',
         'pt-PT': 'Idioma do aluno'
     },
+
     cr_student_lang_desc: {
         'en-GB': 'Student\'s interface will be translated to the chosen language',
         'fr-FR': '',
@@ -937,160 +884,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    cr_student_email: {
-        'en-GB': 'Student Email',
-        'fr-FR': 'Email',
-        'es-ES': 'Email del Estudiante',
-        'it-IT': 'Email',
-        'de-DE': 'Email',
-        'ro-RO': 'Emailul elevului',
-        'pl-PL': 'Email ucznia',
-        'tr-TR': 'Öğrenci ePostası',
-        'pt-PT': 'E-mail do aluno'
-    },
-    cr_enter_email: {
-        'en-GB': 'Enter email',
-        'fr-FR': 'Entrez son email',
-        'es-ES': 'Introduce el email',
-        'it-IT': 'Inserisci Email',
-        'de-DE': 'Email eingeben',
-        'ro-RO': 'Introduceți adresa de email',
-        'pl-PL': 'Wprowadź email',
-        'tr-TR': 'ePosta Girin',
-        'pt-PT': 'Introduzir o e-mail'
-    },
-    cr_student_email_desc: {
-        'en-GB': 'If an email address is provided, the student will recieve email notifications about new and existing assigned lesson plans.',
-        'fr-FR': '',
-        'es-ES': '',
-        'it-IT': '',
-        'de-DE': '',
-        'ro-RO': '',
-        'pl-PL': '',
-        'tr-TR': '',
-        'pt-PT': ''
-    },
-    cr_student_school: {
-        'en-GB': 'Student School',
-        'fr-FR': 'Etablissement scolaire',
-        'es-ES': 'Escuela del estudiante',
-        'it-IT': 'Scuola dello studente',
-        'de-DE': 'Schule',
-        'ro-RO': 'Școala elevului',
-        'pl-PL': 'Szkoła ucznia',
-        'tr-TR': 'Öğrenci Okulu',
-        'pt-PT': 'Escola do aluno'
-    },
-    cr_enter_school: {
-        'en-GB': 'Enter School Name',
-        'fr-FR': 'Entrez le nom de l’établissement',
-        'es-ES': 'Introduce la escuela',
-        'it-IT': 'Inserisici la scuola dello studente',
-        'de-DE': 'Schule eingeben',
-        'ro-RO': 'Întroduceți denumirea școlii',
-        'pl-PL': 'Wprowadź szkołę',
-        'tr-TR': 'Okul Adı Girin',
-        'pt-PT': 'Introduzir o nome da escola'
-    },
-    cr_student_school_desc: {
-        'en-GB': 'School the student goes to. Will appear on their profile.',
-        'fr-FR': '',
-        'es-ES': '',
-        'it-IT': '',
-        'de-DE': '',
-        'ro-RO': '',
-        'pl-PL': '',
-        'tr-TR': '',
-        'pt-PT': ''
-    },
-    cr_student_address: {
-        'en-GB': 'Student Address',
-        'fr-FR': 'Adresse de l’étudiant',
-        'es-ES': 'Dirección del Estudiante',
-        'it-IT': 'Indirizzo dello studente',
-        'de-DE': 'Adresse',
-        'ro-RO': 'Adresa elevului',
-        'pl-PL': 'Adres studenta',
-        'tr-TR': 'Öğrenci Adresi',
-        'pt-PT': 'Morada do aluno'
-    },
-    cr_student_address_desc: {
-        'en-GB': 'Address of the student.',
-        'fr-FR': '',
-        'es-ES': '',
-        'it-IT': '',
-        'de-DE': '',
-        'ro-RO': '',
-        'pl-PL': '',
-        'tr-TR': '',
-        'pt-PT': ''
-    },
-    cr_student_adrs_ln1: {
-        'en-GB': 'Address Line 1',
-        'fr-FR': 'Ligne 1 adresse',
-        'es-ES': 'Dirección 1',
-        'it-IT': 'Indirizzo linea 1',
-        'de-DE': 'Adresszeile 1',
-        'ro-RO': 'Adresa 1',
-        'pl-PL': 'Pierwsza linia adresu',
-        'tr-TR': 'Adres Satırı 1',
-        'pt-PT': '1.ª linha da morada'
-    },
-    cr_student_adrs_ln2: {
-        'en-GB': 'Address Line 2',
-        'fr-FR': 'Ligne 2 adresse',
-        'es-ES': 'Dirección 2',
-        'it-IT': 'Indirizzo linea 2',
-        'de-DE': 'Adresszeile 2',
-        'ro-RO': 'Adresa 2',
-        'pl-PL': 'Druga linia adresu',
-        'tr-TR': 'Adres Satırı 2',
-        'pt-PT': '2.ª linha da morada'
-    },
-    cr_student_adrs_city: {
-        'en-GB': 'City',
-        'fr-FR': 'Ville',
-        'es-ES': 'Ciudad',
-        'it-IT': 'Città',
-        'de-DE': 'Stadt',
-        'ro-RO': 'Oraș',
-        'pl-PL': 'Miasto',
-        'tr-TR': 'Şehir',
-        'pt-PT': 'Localidade'
-    },
-    cr_student_adrs_county: {
-        'en-GB': 'Province / County',
-        'fr-FR': 'Région',
-        'es-ES': 'Provincia / Región',
-        'it-IT': 'Provincia',
-        'de-DE': 'Bundesland',
-        'ro-RO': 'Județ',
-        'pl-PL': 'Województwo/Powiat',
-        'tr-TR': 'Semt/İlçe',
-        'pt-PT': 'Distrito / Concelho'
-    },
-    cr_student_adrs_country: {
-        'en-GB': 'Country',
-        'fr-FR': 'Pays',
-        'es-ES': 'País',
-        'it-IT': 'Stato',
-        'de-DE': 'Land',
-        'ro-RO': 'Țară',
-        'pl-PL': 'Kraj',
-        'tr-TR': 'Ülke',
-        'pt-PT': 'País'
-    },
-    cr_student_adrs_pc: {
-        'en-GB': 'Post Code',
-        'fr-FR': 'Code postal',
-        'es-ES': 'Código Postal',
-        'it-IT': 'CAP',
-        'de-DE': 'Postleitzahl',
-        'ro-RO': 'Cod poștal',
-        'pl-PL': 'Kod pocztowy',
-        'tr-TR': 'Posta Kodu',
-        'pt-PT': 'Código postal'
-    },
+
     cr_assigned_glps: {
         'en-GB': 'Assigned GLPs',
         'fr-FR': 'Leçons assignées',
@@ -1102,17 +896,7 @@
         'tr-TR': 'Atanmış ODP’ler',
         'pt-PT': 'GLP atribuídos'
     },
-    cr_view: {
-        'en-GB': 'View',
-        'fr-FR': 'Voir',
-        'es-ES': 'Ver',
-        'it-IT': 'Vedi',
-        'de-DE': 'Anzeigen',
-        'ro-RO': 'Vizualizează',
-        'pl-PL': 'Podgląd',
-        'tr-TR': 'Görüntüle',
-        'pt-PT': 'Ver'
-    },
+
     cr_unassign: {
         'en-GB': 'Unassign',
         'fr-FR': 'Ôter l’assignation',
@@ -1124,6 +908,7 @@
         'tr-TR': 'Atamayı Geri Al',
         'pt-PT': 'Anular atribuição'
     },
+
     cr_analytics_rw: {
         'en-GB': 'Right and Wrong Answers',
         'fr-FR': 'Bonnes ou mauvaises réponses',
@@ -1135,6 +920,7 @@
         'tr-TR': 'Doğru ve Yanlış Cevaplar',
         'pt-PT': 'Respostas certas e erradas'
     },
+
     cr_analytics_ra: {
         'en-GB': 'Right Answers',
         'fr-FR': 'Les bonnes réponses',
@@ -1146,6 +932,7 @@
         'tr-TR': 'Doğru Cevaplar',
         'pt-PT': 'Respostas certas'
     },
+
     cr_analytics_wa: {
         'en-GB': 'Wrong Answers',
         'fr-FR': 'Les mauvaises réponses',
@@ -1157,6 +944,7 @@
         'tr-TR': 'Yanlış Cevaplar',
         'pt-PT': 'Respostas erradas'
     },
+
     cr_analytics_sop: {
         'en-GB': 'Student Overall Progress',
         'fr-FR': 'Progression globale',
@@ -1168,6 +956,7 @@
         'tr-TR': 'Öğrenci Genel İlerlemesi',
         'pt-PT': 'Evolução geral do aluno'
     },
+
     cr_analytics_sp: {
         'en-GB': 'Student Progress',
         'fr-FR': 'Progression de l’étudiant',
@@ -1179,6 +968,7 @@
         'tr-TR': 'Öğrenci İlerlemesi',
         'pt-PT': 'Evolução do aluno'
     },
+
     cr_analytics_p: {
         'en-GB': 'Progress',
         'fr-FR': 'Progression',
@@ -1190,6 +980,7 @@
         'tr-TR': 'İlerleme',
         'pt-PT': 'Evolução'
     },
+
     cr_analytics_mam: {
         'en-GB': 'Min, Average, Maximum Scores',
         'fr-FR': 'Résultats : Min, Moyenne, Max.',
@@ -1201,6 +992,7 @@
         'tr-TR': 'Minimum, Ortalama ve Maksimum Skorlar',
         'pt-PT': 'Pontuações mín., méd., máx.'
     },
+
     cr_analytics_min_s: {
         'en-GB': 'Minimum Score',
         'fr-FR': 'Résultat minimum',
@@ -1212,6 +1004,7 @@
         'tr-TR': 'Minimum Skor',
         'pt-PT': 'Pontuação mínima'
     },
+
     cr_analytics_avg_s: {
         'en-GB': 'Average Score',
         'fr-FR': 'Résultat moyen',
@@ -1223,6 +1016,7 @@
         'tr-TR': 'Ortalama Skor',
         'pt-PT': 'Pontuação média'
     },
+
     cr_analytics_max_s: {
         'en-GB': 'Maximum Score',
         'fr-FR': 'Résultat maximum',
@@ -1234,6 +1028,7 @@
         'tr-TR': 'Maksimum Skor',
         'pt-PT': 'Pontuação máxima'
     },
+
     cr_analytics_act: {
         'en-GB': 'Average Completion Time',
         'fr-FR': 'Temps moyens pour finaliser',
@@ -1245,6 +1040,7 @@
         'tr-TR': 'Ortalama Bitirme Süresi',
         'pt-PT': 'Tempo médio de conclusão'
     },
+
     cr_analytics_sp: {
         'en-GB': 'Student Progress',
         'fr-FR': 'Progression de l’étudiant',
@@ -1256,6 +1052,7 @@
         'tr-TR': 'Öğrenci İlerlemesi',
         'pt-PT': 'Evolução do aluno'
     },
+
     cr_analytics_asp: {
         'en-GB': 'Average Student Progress',
         'fr-FR': 'Moyenne de progression pour l’étudiant',
@@ -1267,6 +1064,7 @@
         'tr-TR': 'Ortalama Öğrenci',
         'pt-PT': 'Evolução média do aluno'
     },
+
     cr_view_student: {
         'en-GB': 'View Student',
         'fr-FR': 'Voir l’étudiant',
@@ -1278,6 +1076,7 @@
         'tr-TR': 'Öğrenci Görüntüle',
         'pt-PT': 'Ver aluno'
     },
+
     cr_no_analytics: {
         'en-GB': 'No analytics to display',
         'fr-FR': '',
@@ -1289,6 +1088,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     cr_view_group: {
         'en-GB': 'View Group',
         'fr-FR': '',
@@ -1300,6 +1100,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     cr_view_calendar: {
         'en-GB': 'View Calendar',
         'fr-FR': 'Voir le calendrier',
@@ -1311,17 +1112,7 @@
         'tr-TR': 'Takvimi Görüntüle',
         'pt-PT': 'Ver Calendário'
     },
-    cr_remove: {
-        'en-GB': 'Remove',
-        'fr-FR': 'Supprimer',
-        'es-ES': 'Eliminar',
-        'it-IT': 'Rimuovi',
-        'de-DE': 'Entfernen',
-        'ro-RO': 'Eliminare',
-        'pl-PL': 'Usuń',
-        'tr-TR': 'Kaldır',
-        'pt-PT': 'Remover'
-    },
+
     cr_group_edit_info: {
         'en-GB': 'Edit Group Information',
         'fr-FR': 'Modifier les informations de ce groupe',
@@ -1333,6 +1124,7 @@
         'tr-TR': 'Grup Bilgilerini Düzenle',
         'pt-PT': 'Editar dados de grupo'
     },
+
     cr_group_name: {
         'en-GB': 'Group Name',
         'fr-FR': 'Nom du groupe',
@@ -1344,6 +1136,7 @@
         'tr-TR': 'Grup Adı',
         'pt-PT': 'Nome do grupo'
     },
+
     cr_group_name_desc: {
         'en-GB': 'Name for the new group. It must be unique.',
         'fr-FR': '',
@@ -1355,6 +1148,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     cr_group_category: {
         'en-GB': 'Group Category',
         'fr-FR': 'Catégorie du groupe',
@@ -1366,6 +1160,7 @@
         'tr-TR': 'Grup Kategorisi',
         'pt-PT': 'Categoria do grupo'
     },
+
     cr_group_update: {
         'en-GB': 'Update Group',
         'fr-FR': 'Modifier un groupe',
@@ -1377,6 +1172,7 @@
         'tr-TR': 'Grubu Güncelle',
         'pt-PT': 'Atualizar o grupo'
     },
+
     cr_student_update: {
         'en-GB': 'Update Student',
         'fr-FR': 'Modifier un étudiant',
@@ -1388,6 +1184,7 @@
         'tr-TR': 'Öğrenciyi Güncelle',
         'pt-PT': 'Atualizar um aluno'
     },
+
     cr_edit_student_info: {
         'en-GB': 'Edit Student Information',
         'fr-FR': '',
@@ -1399,39 +1196,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    cr_enter_dob: {
-        'en-GB': 'Enter DoB',
-        'fr-FR': '',
-        'es-ES': '',
-        'it-IT': '',
-        'de-DE': '',
-        'ro-RO': '',
-        'pl-PL': '',
-        'tr-TR': '',
-        'pt-PT': ''
-    },
-    cr_enter_new_email: {
-        'en-GB': 'Enter New Email (or leave blank)',
-        'fr-FR': '',
-        'es-ES': '',
-        'it-IT': '',
-        'de-DE': '',
-        'ro-RO': '',
-        'pl-PL': '',
-        'tr-TR': '',
-        'pt-PT': ''
-    },
-    cr_group_info: {
-        'en-GB': 'Enter Group information',
-        'fr-FR': '',
-        'es-ES': '',
-        'it-IT': '',
-        'de-DE': '',
-        'ro-RO': '',
-        'pl-PL': '',
-        'tr-TR': '',
-        'pt-PT': ''
-    },
+
     cr_group_enter_name: {
         'en-GB': 'Enter Group Name',
         'fr-FR': '',
@@ -1443,6 +1208,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     cr_go_to_lib: {
         'en-GB': 'Go to Library',
         'fr-FR': '',
@@ -1454,6 +1220,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     cr_students_group_desc: {
         'en-GB': 'Choose students to assign to the group. A minimum of 2 students; 6 are needed for student overview.',
         'fr-FR': '',
@@ -1465,11 +1232,10 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    
 
     // Lesson Manager //
 
-    lesson_manager: {
+    lm: {
         'en-GB': 'Lesson Manager',
         'fr-FR': 'Gestion des leçons',
         'es-ES': 'Gestor de lecciones',
@@ -1480,6 +1246,55 @@
         'tr-TR': 'Ders Yöneticisi',
         'pt-PT': 'Gestão de aulas'
     },
+
+    lm_author: {
+        'en-GB': 'Author',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+
+    lm_details: {
+        'en-GB': 'Details',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+
+    lm_assignees: {
+        'en-GB': 'Assignees',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+
+    lm_files: {
+        'en-GB': 'Files',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+
     lm_library: {
         'en-GB': 'Library',
         'fr-FR': 'Librairie',
@@ -1491,6 +1306,7 @@
         'tr-TR': 'Kütüphane',
         'pt-PT': 'Biblioteca'
     },
+
     lm_my_plans: {
         'en-GB': 'My Plans',
         'fr-FR': 'Mes leçons',
@@ -1502,6 +1318,7 @@
         'tr-TR': 'Planlarım',
         'pt-PT': 'Os meus planos'
     },
+
     lm_rm: {
         'en-GB': 'Recently Modified',
         'fr-FR': 'Modifiées récément',
@@ -1513,6 +1330,7 @@
         'tr-TR': 'Son Değiştirilen',
         'pt-PT': 'Recém-modificados'
     },
+
     lm_status: {
         'en-GB': 'Status',
         'fr-FR': 'Status',
@@ -1524,6 +1342,7 @@
         'tr-TR': 'Durum',
         'pt-PT': 'Estado'
     },
+
     lm_status_active: {
         'en-GB': 'Active',
         'fr-FR': '',
@@ -1535,6 +1354,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_status_active_title: {
         'en-GB': 'Recently Assigned GLPs',
         'fr-FR': '',
@@ -1546,6 +1366,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_status_ma: {
         'en-GB': 'Most Assigned',
         'fr-FR': '',
@@ -1557,6 +1378,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_time_added: {
         'en-GB': 'Time Added',
         'fr-FR': 'Date de création',
@@ -1568,6 +1390,7 @@
         'tr-TR': 'Eklenen Zaman',
         'pt-PT': 'Data de inclusão'
     },
+
     lm_vis: {
         'en-GB': 'Visibility',
         'fr-FR': 'Visibilité',
@@ -1579,6 +1402,7 @@
         'tr-TR': 'Görünebilirlik',
         'pt-PT': 'Visibilidade'
     },
+
     lm_public: {
         'en-GB': 'Public',
         'fr-FR': 'publique',
@@ -1590,6 +1414,7 @@
         'tr-TR': 'Genele Açık',
         'pt-PT': 'Pública'
     },
+
     lm_private: {
         'en-GB': 'Private',
         'fr-FR': 'privée',
@@ -1601,6 +1426,7 @@
         'tr-TR': 'Özel',
         'pt-PT': 'Privada'
     },
+
     lm_marketplace: {
         'en-GB': 'Marketplace',
         'fr-FR': 'Marketplace',
@@ -1612,6 +1438,7 @@
         'tr-TR': 'Pazar Yeri',
         'pt-PT': 'Mercado'
     },
+
     lm_stem: {
         'en-GB': 'STEM Subject',
         'fr-FR': 'Sujets',
@@ -1623,6 +1450,7 @@
         'tr-TR': 'STEM Konuları',
         'pt-PT': 'Tema STEM'
     },
+
     lm_science: {
         'en-GB': 'Science',
         'fr-FR': 'Sciences',
@@ -1634,6 +1462,7 @@
         'tr-TR': 'Fen',
         'pt-PT': 'Ciência'
     },
+
     lm_tech: {
         'en-GB': 'Technology',
         'fr-FR': 'Technologie',
@@ -1645,6 +1474,7 @@
         'tr-TR': 'Teknoloji',
         'pt-PT': 'Tecnologia'
     },
+
     lm_eng: {
         'en-GB': 'Engineering',
         'fr-FR': 'Engénérie',
@@ -1656,6 +1486,7 @@
         'tr-TR': 'Mühendislik',
         'pt-PT': 'Engenharia'
     },
+
     lm_maths: {
         'en-GB': 'Maths',
         'fr-FR': 'Mathématiques',
@@ -1667,6 +1498,7 @@
         'tr-TR': 'Matematik',
         'pt-PT': 'Matemática'
     },
+
     lm_recent: {
         'en-GB': 'Recent',
         'fr-FR': 'Récents',
@@ -1678,6 +1510,7 @@
         'tr-TR': 'En Son',
         'pt-PT': 'Recentes'
     },
+
     lm_domain: {
         'en-GB': 'Domain',
         'fr-FR': 'Domaine',
@@ -1689,6 +1522,7 @@
         'tr-TR': 'Konu Alanı',
         'pt-PT': 'Domínio'
     },
+
     lm_topic: {
         'en-GB': 'Topic',
         'fr-FR': 'Sujet',
@@ -1700,6 +1534,7 @@
         'tr-TR': 'Başlık',
         'pt-PT': 'Tema'
     },
+
     lm_not_rec: {
         'en-GB': 'Not Recorded',
         'fr-FR': 'Non enregistrée',
@@ -1711,17 +1546,7 @@
         'tr-TR': 'Kaydedilmedi.',
         'pt-PT': 'Não registado'
     },
-    lm_never: {
-        'en-GB': 'Never',
-        'fr-FR': 'Jamais',
-        'es-ES': 'Nunca',
-        'it-IT': 'Mai',
-        'de-DE': 'Nie',
-        'ro-RO': 'Niciodată',
-        'pl-PL': 'Nigdy',
-        'tr-TR': 'Asla',
-        'pt-PT': 'Nunca'
-    },
+
     lm_play: {
         'en-GB': 'Play',
         'fr-FR': 'Jouer',
@@ -1733,6 +1558,7 @@
         'tr-TR': 'Oyna',
         'pt-PT': 'Jogar'
     },
+
     lm_assign: {
         'en-GB': 'Assign',
         'fr-FR': 'Assigner',
@@ -1744,6 +1570,7 @@
         'tr-TR': 'Atama',
         'pt-PT': 'Atribuir'
     },
+
     lm_age: {
         'en-GB': 'Age',
         'fr-FR': 'Age',
@@ -1755,6 +1582,7 @@
         'tr-TR': 'Yaş',
         'pt-PT': 'Idade'
     },
+
     lm_year: {
         'en-GB': 'Year',
         'fr-FR': 'Année',
@@ -1766,6 +1594,7 @@
         'tr-TR': 'Yıl',
         'pt-PT': 'Ano'
     },
+
     lm_glp_details: {
         'en-GB': 'GLP Details',
         'fr-FR': 'Détails de la leçon',
@@ -1777,6 +1606,7 @@
         'tr-TR': 'ODP Detayı',
         'pt-PT': 'Detalhes do GLP'
     },
+
     lm_los: {
         'en-GB': 'Learning Objectives',
         'fr-FR': 'Objectifs d’apprentissage',
@@ -1788,6 +1618,7 @@
         'tr-TR': 'Öğrenme Hedefleri',
         'pt-PT': 'Objetivos de aprendizagem'
     },
+
     lm_comps: {
         'en-GB': 'Competences',
         'fr-FR': 'Compétences',
@@ -1799,6 +1630,7 @@
         'tr-TR': 'Yetkinlikler',
         'pt-PT': 'Competências'
     },
+
     lm_created: {
         'en-GB': 'Created',
         'fr-FR': 'Créé le',
@@ -1810,6 +1642,7 @@
         'tr-TR': 'Oluşturuldu.',
         'pt-PT': 'Criação'
     },
+
     lm_mod: {
         'en-GB': 'Modified',
         'fr-FR': 'Modifiée le',
@@ -1821,6 +1654,7 @@
         'tr-TR': 'Değiştirildi',
         'pt-PT': 'Modificação'
     },
+
     lm_owner: {
         'en-GB': 'Owner',
         'fr-FR': 'Propriétaire',
@@ -1832,6 +1666,7 @@
         'tr-TR': 'Sahip',
         'pt-PT': 'Proprietário'
     },
+
     lm_mission: {
         'en-GB': 'Mission',
         'fr-FR': 'Mission',
@@ -1843,6 +1678,7 @@
         'tr-TR': 'Misyonlar',
         'pt-PT': 'Missões'
     },
+
     lm_missions: {
         'en-GB': 'Missions',
         'fr-FR': 'Missions',
@@ -1854,6 +1690,7 @@
         'tr-TR': 'Misyon',
         'pt-PT': 'Missão'
     },
+
     lm_first_mission: {
         'en-GB': 'First Mission',
         'fr-FR': 'Première mission',
@@ -1865,6 +1702,7 @@
         'tr-TR': 'İlk Misyon',
         'pt-PT': 'Primeira missão'
     },
+
     lm_assigning: {
         'en-GB': 'Assigning',
         'fr-FR': 'En cours d’assignation',
@@ -1876,6 +1714,7 @@
         'tr-TR': 'Atanıyor',
         'pt-PT': 'A atribuir'
     },
+
     lm_mission_details: {
         'en-GB': 'Mission Details',
         'fr-FR': 'Détails de la mission',
@@ -1887,6 +1726,7 @@
         'tr-TR': 'Misyon Detayları',
         'pt-PT': 'Detalhes da missão'
     },
+
     lm_skills: {
         'en-GB': 'Skills',
         'fr-FR': 'Compétences',
@@ -1898,6 +1738,7 @@
         'tr-TR': 'Beceriler',
         'pt-PT': 'Capacidades'
     },
+
     lm_quests: {
         'en-GB': 'Quests',
         'fr-FR': 'Quêtes',
@@ -1909,6 +1750,7 @@
         'tr-TR': 'Görevler',
         'pt-PT': 'Demandas'
     },
+
     lm_first_quest: {
         'en-GB': 'First Quest',
         'fr-FR': 'Première quête',
@@ -1920,6 +1762,7 @@
         'tr-TR': 'İlk Görev',
         'pt-PT': 'Primeira demanda'
     },
+
     lm_plan_overview: {
         'en-GB': 'Plan Overview',
         'fr-FR': 'Vue des leçons',
@@ -1931,6 +1774,7 @@
         'tr-TR': 'Plan Özeti',
         'pt-PT': 'Visão geral do plano'
     },
+
     lm_unnamed_glp: {
         'en-GB': 'Unnamed GLP',
         'fr-FR': '',
@@ -1942,6 +1786,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_save_plan: {
         'en-GB': 'Save Plan',
         'fr-FR': '',
@@ -1953,6 +1798,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_create_plan: {
         'en-GB': 'Create Plan',
         'fr-FR': '',
@@ -1964,6 +1810,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_create_new_plan: {
         'en-GB': 'Create New Plan',
         'fr-FR': '',
@@ -1975,6 +1822,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_enter_plan_info: {
         'en-GB': 'Enter new plan information',
         'fr-FR': '',
@@ -1986,6 +1834,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_plan_name: {
         'en-GB': 'Plan Name',
         'fr-FR': '',
@@ -1997,6 +1846,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_enter_plan_name: {
         'en-GB': 'Enter Plan Name',
         'fr-FR': '',
@@ -2008,6 +1858,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_plan_name_desc: {
         'en-GB': 'Name for the new lesson plan. You cannot use a name you\'ve already used.',
         'fr-FR': '',
@@ -2019,6 +1870,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_plan_desc: {
         'en-GB': 'Plan Description',
         'fr-FR': '',
@@ -2030,6 +1882,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_enter_plan_desc: {
         'en-GB': 'Enter Description',
         'fr-FR': '',
@@ -2041,6 +1894,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_plan_desc_desc: {
         'en-GB': 'Description should describe the plan concisely for students and other teachers.',
         'fr-FR': '',
@@ -2052,6 +1906,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_plan_cat: {
         'en-GB': 'Plan Category',
         'fr-FR': '',
@@ -2063,6 +1918,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_plan_cat_desc: {
         'en-GB': 'Choose the STEM category the lesson plan falls under.',
         'fr-FR': '',
@@ -2074,6 +1930,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_plan_gp: {
         'en-GB': 'Plan Gameplot',
         'fr-FR': '',
@@ -2085,6 +1942,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_plan_gp_desc: {
         'en-GB': 'Selecting a gameplot will add a premade narrative to the lesson plan.',
         'fr-FR': '',
@@ -2096,6 +1954,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_plan_domain: {
         'en-GB': 'Plan Domain',
         'fr-FR': '',
@@ -2107,6 +1966,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_enter_plan_domain: {
         'en-GB': 'Enter Plan Domain',
         'fr-FR': '',
@@ -2118,6 +1978,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_plan_domain_desc: {
         'en-GB': 'Subject areas that will be covered in this lesson plan under the chosen STEM category.',
         'fr-FR': '',
@@ -2129,6 +1990,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_plan_topic: {
         'en-GB': 'Plan Topic',
         'fr-FR': '',
@@ -2140,6 +2002,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_enter_plan_topic: {
         'en-GB': 'Enter Plan Topic',
         'fr-FR': '',
@@ -2151,6 +2014,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_plan_topic_desc: {
         'en-GB': 'Topic the lesson plan will surround.',
         'fr-FR': '',
@@ -2162,6 +2026,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_plan_ag: {
         'en-GB': 'Plan Age Group',
         'fr-FR': '',
@@ -2173,6 +2038,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_enter_plan_ag: {
         'en-GB': 'Enter Age Group',
         'fr-FR': '',
@@ -2184,6 +2050,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_plan_ag_desc: {
         'en-GB': 'Age group the lesson plan will target. Example: 16-18',
         'fr-FR': '',
@@ -2195,6 +2062,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_plan_year: {
         'en-GB': 'Plan Year',
         'fr-FR': '',
@@ -2206,6 +2074,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_enter_plan_year: {
         'en-GB': 'Enter Plan Year',
         'fr-FR': '',
@@ -2217,6 +2086,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_plan_year_desc: {
         'en-GB': 'Year the lesson plan content applies to. Must be a valid 4 digit year.',
         'fr-FR': '',
@@ -2228,6 +2098,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_plan_los: {
         'en-GB': 'Plan Learning Objectives',
         'fr-FR': '',
@@ -2239,6 +2110,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_enter_plan_los: {
         'en-GB': 'Enter Learning Objectives (one per line)',
         'fr-FR': '',
@@ -2250,6 +2122,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_plan_los_desc: {
         'en-GB': 'Learning objectives for the lesson plan. Enter each learning objective on a new line. Aim for 4 to 6 objectives.',
         'fr-FR': '',
@@ -2261,6 +2134,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_plan_comps: {
         'en-GB': 'Plan Competences',
         'fr-FR': '',
@@ -2272,6 +2146,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_enter_plan_comps: {
         'en-GB': 'Enter Competences (one per line)',
         'fr-FR': '',
@@ -2283,6 +2158,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_plan_comps_desc: {
         'en-GB': 'Choose up to 3 competences that are relevant for the lesson plan.',
         'fr-FR': '',
@@ -2294,6 +2170,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_load_more: {
         'en-GB': 'Load More',
         'fr-FR': '',
@@ -2305,6 +2182,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_load_all: {
         'en-GB': 'Load All',
         'fr-FR': '',
@@ -2316,6 +2194,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_no_results: {
         'en-GB': 'No Results',
         'fr-FR': '',
@@ -2327,6 +2206,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_no_plans_found: {
         'en-GB': 'No Plans Found',
         'fr-FR': '',
@@ -2338,6 +2218,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_cac: {
         'en-GB': 'Communication and Collaboration',
         'fr-FR': '',
@@ -2349,6 +2230,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_ps: {
         'en-GB': 'Problem Solving',
         'fr-FR': '',
@@ -2360,6 +2242,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_if: {
         'en-GB': 'Information Fluency',
         'fr-FR': '',
@@ -2371,6 +2254,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_plan_vis_desc: {
         'en-GB': 'Choose who can view the lesson plan. Public will allow other teachers to use the plan. Private will allow only you to use the plan',
         'fr-FR': '',
@@ -2382,6 +2266,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     lm_open_at: {
         'en-GB': 'Open in AT',
         'fr-FR': '',
@@ -2393,7 +2278,6 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    
 
     // Footer //
 
@@ -2408,6 +2292,7 @@
         'tr-TR': 'Destek',
         'pt-PT': 'Suporte',
     },
+
     ft_cont_us: {
         'en-GB': 'Contact Us',
         'fr-FR': 'Contactez-nous',
@@ -2419,6 +2304,7 @@
         'tr-TR': 'Bizi Arayın',
         'pt-PT': 'Contacte-nos',
     },
+
     ft_tc: {
         'en-GB': 'Terms & Conditions',
         'fr-FR': 'Conditions & Services',
@@ -2430,6 +2316,7 @@
         'tr-TR': 'Şartlar & Koşullar',
         'pt-PT': 'Termos e condições',
     },
+
     ft_pp: {
         'en-GB': 'Privacy Policy',
         'fr-FR': 'Politique de vie privée',
@@ -2441,6 +2328,7 @@
         'tr-TR': 'Gizlilik Politikası',
         'pt-PT': 'Política de privacidade',
     },
+
     ft_visit_beaconing: {
         'en-GB': 'Visit Beaconing',
         'fr-FR': '',
@@ -2455,7 +2343,7 @@
 
     // Confirm Deletion/Creation //
 
-    remove_student: {
+    con_remove_student: {
         'en-GB': 'Are you sure you wish to remove this student?',
         'fr-FR': '',
         'es-ES': '',
@@ -2467,7 +2355,7 @@
         'pt-PT': '',
     },
 
-    assign_group: {
+    con_assign_group: {
         'en-GB': 'Are you sure you wish to assign this group?',
         'fr-FR': '',
         'es-ES': '',
@@ -2479,7 +2367,7 @@
         'pt-PT': '',
     },
 
-    assign_student: {
+    con_assign_student: {
         'en-GB': 'Are you sure you wish to assign this student?',
         'fr-FR': '',
         'es-ES': '',
@@ -2491,7 +2379,7 @@
         'pt-PT': '',
     },
 
-    unassign_glp: {
+    con_unassign_glp: {
         'en-GB': 'Are you sure you wish to unassign this GLP?',
         'fr-FR': '',
         'es-ES': '',
@@ -2503,7 +2391,7 @@
         'pt-PT': '',
     },
 
-    confirm_delete_glp: {
+    con_delete_glp: {
         'en-GB': 'Are you sure you wish to delete this GLP?',
         'fr-FR': '',
         'es-ES': '',
@@ -2515,7 +2403,7 @@
         'pt-PT': '',
     },
 
-    confirm_delete_group: {
+    con_delete_group: {
         'en-GB': 'Are you sure you wish to delete this group?',
         'fr-FR': '',
         'es-ES': '',
@@ -2527,7 +2415,7 @@
         'pt-PT': '',
     },
 
-    confirm_delete_student: {
+    con_delete_student: {
         'en-GB': 'Are you sure you wish to delete this student?',
         'fr-FR': '',
         'es-ES': '',
@@ -2539,7 +2427,7 @@
         'pt-PT': '',
     },
 
-    // question overview
+    // question overview //
 
     rw_question_overview: {
         'en-GB': 'Question Overview',
@@ -2579,19 +2467,7 @@
 
     // Analytics Page //
 
-    analytics_overview: {
-        'en-GB': 'Analytics Overview',
-        'fr-FR': '',
-        'es-ES': '',
-        'it-IT': '',
-        'de-DE': '',
-        'ro-RO': '',
-        'pl-PL': '',
-        'tr-TR': '',
-        'pt-PT': '',        
-    },
-
-    main_dashboard_link: {
+    an_main_dashboard_link: {
         'en-GB': 'Main Dashboard',
         'fr-FR': '',
         'es-ES': '',
@@ -2603,7 +2479,7 @@
         'pt-PT': '',        
     },
 
-    main_dashboard_desc: {
+    an_main_dashboard_desc: {
         'en-GB': 'The dashboard links will allow you to track the progress and results for students.',
         'fr-FR': '',
         'es-ES': '',
@@ -2615,7 +2491,7 @@
         'pt-PT': '',        
     },
 
-    mission_dashboard_desc: {
+    an_mission_dashboard_desc: {
         'en-GB': 'This set of dashboards allows you to track the progress and results for students for each individual mini game contained in the mission. You can view overall student progress in the group as well as filter the results by time and student.',
         'fr-FR': '',
         'es-ES': '',
@@ -2627,7 +2503,7 @@
         'pt-PT': '',        
     },
 
-    quest_dashboard_desc: {
+    an_quest_dashboard_desc: {
         'en-GB': 'Similar to the mission Dashboard, the Quest dashboards can track the progress and results of students in a group within a particular mini game at quest level',
         'fr-FR': '',
         'es-ES': '',
@@ -2639,8 +2515,68 @@
         'pt-PT': '',        
     },
 
-    dashboard_link: {
+    an_dashboard: {
         'en-GB': 'Dashboard',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',        
+    },
+
+    an_mission_dash_title: {
+        'en-GB': 'Mission specific tracking',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',        
+    },
+
+    an_scenes: {
+        'en-GB': 'Scenes',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',        
+    },
+
+    an_scenes_desc: {
+        'en-GB': 'The set of scenes in this quest - scenes without analytical information are hidden.',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',        
+    },
+
+    an_scenes_dash_title: {
+        'en-GB': 'Quest specific tracking',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': '',        
+    },
+
+    an_lbg_dash_title: {
+        'en-GB': 'LBG specific tracking',
         'fr-FR': '',
         'es-ES': '',
         'it-IT': '',
@@ -2845,7 +2781,7 @@
         'pt-PT': '',
     },
 
-    calendar: {
+    cal: {
         'en-GB': 'Calendar',
         'fr-FR': 'Calendrier',
         'es-ES': 'Calendario',
@@ -3076,6 +3012,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     pf_teacher_fn: {
         'en-GB': 'First Name',
         'fr-FR': '',
@@ -3087,6 +3024,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     pf_teacher_fn_enter: {
         'en-GB': 'Enter First Name',
         'fr-FR': '',
@@ -3098,6 +3036,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     pf_teacher_fn_desc: {
         'en-GB': 'Enter your first name.',
         'fr-FR': '',
@@ -3109,6 +3048,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     pf_teacher_ln: {
         'en-GB': 'Last Name',
         'fr-FR': '',
@@ -3120,6 +3060,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     pf_teacher_ln_enter: {
         'en-GB': 'Enter Last Name',
         'fr-FR': '',
@@ -3131,6 +3072,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     pf_teacher_ln_desc: {
         'en-GB': 'Enter your last name.',
         'fr-FR': '',
@@ -3142,6 +3084,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     pf_teacher_gender: {
         'en-GB': 'Gender',
         'fr-FR': '',
@@ -3153,6 +3096,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     pf_teacher_gender_desc: {
         'en-GB': 'Enter your gender.',
         'fr-FR': '',
@@ -3164,6 +3108,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     pf_teacher_school: {
         'en-GB': 'School',
         'fr-FR': '',
@@ -3175,6 +3120,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     pf_teacher_school_enter: {
         'en-GB': 'Enter School',
         'fr-FR': '',
@@ -3186,6 +3132,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     pf_teacher_school_desc: {
         'en-GB': 'Enter the school or institution you teach for.',
         'fr-FR': '',
@@ -3197,6 +3144,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     pf_teacher_email: {
         'en-GB': 'Email',
         'fr-FR': '',
@@ -3208,6 +3156,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     pf_teacher_email_enter: {
         'en-GB': 'Enter Email',
         'fr-FR': '',
@@ -3219,6 +3168,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     pf_teacher_email_desc: {
         'en-GB': 'Enter your email address.',
         'fr-FR': '',
@@ -3230,6 +3180,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     pf_teacher_language: {
         'en-GB': 'Teacher Language',
         'fr-FR': '',
@@ -3241,6 +3192,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     pf_teacher_language_desc: {
         'en-GB': 'Changes the language of the website.',
         'fr-FR': '',
@@ -3266,6 +3218,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     pc_create_another: {
         'en-GB': 'Create Another',
         'fr-FR': '',
@@ -3277,6 +3230,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     pc_go_classroom: {
         'en-GB': 'Go to Classroom',
         'fr-FR': '',
@@ -3288,6 +3242,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     pc_go_library: {
         'en-GB': 'Go to Library',
         'fr-FR': '',
@@ -3299,7 +3254,8 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    view_glp: {
+
+    pc_view_glp: {
         'en-GB': 'View Plan',
         'fr-FR': '',
         'es-ES': '',
@@ -3310,7 +3266,8 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    edit_glp: {
+
+    pc_edit_glp: {
         'en-GB': 'Edit Plan',
         'fr-FR': '',
         'es-ES': '',
@@ -3335,7 +3292,8 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    no_student: {
+
+    err_no_student: {
         'en-GB': 'Student does not exist!',
         'fr-FR': '',
         'es-ES': '',
@@ -3346,7 +3304,8 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    group_name_exists: {
+
+    err_group_name_exists: {
         'en-GB': 'Group name already exists! Please choose another',
         'fr-FR': '',
         'es-ES': '',
@@ -3357,7 +3316,8 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    glp_name_exists: {
+
+    err_glp_name_exists: {
         'en-GB': 'Plan name already exists!',
         'fr-FR': '',
         'es-ES': '',
@@ -3368,7 +3328,8 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    error_404: {
+
+    err_404: {
         'en-GB': 'Error (404): Page not found',
         'fr-FR': '',
         'es-ES': '',
@@ -3379,7 +3340,8 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    no_data: {
+
+    err_no_data: {
         'en-GB': 'No Data',
         'fr-FR': '',
         'es-ES': '',
@@ -3390,7 +3352,8 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    no_assigned_glps: {
+
+    err_no_assigned_glps: {
         'en-GB': 'There are no assigned GLPs. GLPs can be assigned in the Library.',
         'fr-FR': '',
         'es-ES': '',
@@ -3401,7 +3364,8 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    student_una: {
+
+    err_student_una: {
         'en-GB': 'Student not unassigned!',
         'fr-FR': '',
         'es-ES': '',
@@ -3412,7 +3376,8 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    group_una: {
+
+    err_group_una: {
         'en-GB': 'Group not unassigned!',
         'fr-FR': '',
         'es-ES': '',
@@ -3423,7 +3388,8 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    student_nd: {
+
+    err_student_nd: {
         'en-GB': 'Student not deleted!',
         'fr-FR': '',
         'es-ES': '',
@@ -3434,7 +3400,8 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    group_nd: {
+
+    err_group_nd: {
         'en-GB': 'Group not deleted!',
         'fr-FR': '',
         'es-ES': '',
@@ -3445,7 +3412,8 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    student_nu: {
+
+    err_student_nu: {
         'en-GB': 'Student not updated!',
         'fr-FR': '',
         'es-ES': '',
@@ -3456,7 +3424,8 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    group_nu: {
+
+    err_group_nu: {
         'en-GB': 'Group not updated!',
         'fr-FR': '',
         'es-ES': '',
@@ -3467,7 +3436,8 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    student_nc: {
+
+    err_student_nc: {
         'en-GB': 'Student not created!',
         'fr-FR': '',
         'es-ES': '',
@@ -3478,7 +3448,8 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    group_nc: {
+
+    err_group_nc: {
         'en-GB': 'Group not created!',
         'fr-FR': '',
         'es-ES': '',
@@ -3489,6 +3460,7 @@
         'tr-TR': '',
         'pt-PT': ''
     },
+
     no_students_assigned: {
         'en-GB': 'No students are assigned to this group. Please edit the group to add students.',
         'fr-FR': '',
@@ -3500,7 +3472,8 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    teacher_ne: {
+
+    err_teacher_ne: {
         'en-GB': 'Teacher not edited!',
         'fr-FR': '',
         'es-ES': '',
@@ -3511,7 +3484,8 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    group_na: {
+
+    err_group_na: {
         'en-GB': 'Group not assigned!',
         'fr-FR': '',
         'es-ES': '',
@@ -3522,7 +3496,8 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    student_na: {
+
+    err_student_na: {
         'en-GB': 'Student not assigned!',
         'fr-FR': '',
         'es-ES': '',
@@ -3533,7 +3508,8 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    plan_nc: {
+
+    err_plan_nc: {
         'en-GB': 'Plan not created!',
         'fr-FR': '',
         'es-ES': '',
@@ -3544,7 +3520,8 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    glp_nd: {
+
+    err_glp_nd: {
         'en-GB': 'GLP not deleted!',
         'fr-FR': '',
         'es-ES': '',
@@ -3555,18 +3532,8 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    empty_field: {
-        'en-GB': '%s is empty!',
-        'fr-FR': '',
-        'es-ES': '',
-        'it-IT': '',
-        'de-DE': '',
-        'ro-RO': '',
-        'pl-PL': '',
-        'tr-TR': '',
-        'pt-PT': ''
-    },
-    more_students_needed: {
+
+    err_more_students_needed: {
         'en-GB': 'A minimum of 2 students is required to create a group!',
         'fr-FR': '',
         'es-ES': '',
@@ -3577,29 +3544,8 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    not_valid_dob: {
-        'en-GB': 'Please enter a valid date of birth!',
-        'fr-FR': '',
-        'es-ES': '',
-        'it-IT': '',
-        'de-DE': '',
-        'ro-RO': '',
-        'pl-PL': '',
-        'tr-TR': '',
-        'pt-PT': ''
-    },
-    no_empty: {
-        'en-GB': 'Cannot be empty!',
-        'fr-FR': '',
-        'es-ES': '',
-        'it-IT': '',
-        'de-DE': '',
-        'ro-RO': '',
-        'pl-PL': '',
-        'tr-TR': '',
-        'pt-PT': ''
-    },
-    required_empty: {
+
+    err_required_empty: {
         'en-GB': 'Required field is empty!',
         'fr-FR': '',
         'es-ES': '',
@@ -3610,7 +3556,8 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    plan_year_not_valid: {
+
+    err_plan_year_not_valid: {
         'en-GB': 'Year must be valid!',
         'fr-FR': '',
         'es-ES': '',
@@ -3621,7 +3568,8 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    form_error: {
+
+    err_form: {
         'en-GB': 'Please check form for errors!',
         'fr-FR': '',
         'es-ES': '',
@@ -3632,7 +3580,8 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    username_exists: {
+
+    err_username_exists: {
         'en-GB': 'Username exists!',
         'fr-FR': '',
         'es-ES': '',
@@ -3646,7 +3595,7 @@
 
     // Success Messages //
 
-    sa: {
+    sc_sa: {
         'en-GB': 'Successfully unassigned!',
         'fr-FR': '',
         'es-ES': '',
@@ -3657,7 +3606,8 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    student_del: {
+
+    sc_student_del: {
         'en-GB': 'Student Deleted!',
         'fr-FR': '',
         'es-ES': '',
@@ -3668,7 +3618,8 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    student_cre: {
+
+    sc_student_cre: {
         'en-GB': 'Student Created!',
         'fr-FR': '',
         'es-ES': '',
@@ -3679,7 +3630,8 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    group_del: {
+
+    sc_group_del: {
         'en-GB': 'Group Deleted!',
         'fr-FR': '',
         'es-ES': '',
@@ -3690,7 +3642,8 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    group_cre: {
+
+    sc_group_cre: {
         'en-GB': 'Group Created!',
         'fr-FR': '',
         'es-ES': '',
@@ -3701,7 +3654,8 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    glp_del: {
+
+    sc_glp_del: {
         'en-GB': 'GLP deleted!',
         'fr-FR': '',
         'es-ES': '',
@@ -3712,7 +3666,8 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    glp_cre: {
+
+    sc_glp_cre: {
         'en-GB': 'Plan Created!',
         'fr-FR': '',
         'es-ES': '',
@@ -3723,7 +3678,8 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    student_up: {
+
+    sc_student_up: {
         'en-GB': 'Student Updated!',
         'fr-FR': '',
         'es-ES': '',
@@ -3734,7 +3690,8 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    group_up: {
+
+    sc_group_up: {
         'en-GB': 'Group Updated!',
         'fr-FR': '',
         'es-ES': '',
@@ -3745,29 +3702,8 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    group_created: {
-        'en-GB': 'Group ‘%s’ created!',
-        'fr-FR': '',
-        'es-ES': '',
-        'it-IT': '',
-        'de-DE': '',
-        'ro-RO': '',
-        'pl-PL': '',
-        'tr-TR': '',
-        'pt-PT': ''
-    },
-    plan_created: {
-        'en-GB': 'Plan ‘%s’ created!',
-        'fr-FR': '',
-        'es-ES': '',
-        'it-IT': '',
-        'de-DE': '',
-        'ro-RO': '',
-        'pl-PL': '',
-        'tr-TR': '',
-        'pt-PT': ''
-    },
-    teacher_edited: {
+
+    sc_teacher_edited: {
         'en-GB': 'Teacher edited!',
         'fr-FR': '',
         'es-ES': '',
@@ -3778,7 +3714,8 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    group_asg: {
+
+    sc_group_asg: {
         'en-GB': 'Group assigned!',
         'fr-FR': '',
         'es-ES': '',
@@ -3789,7 +3726,8 @@
         'tr-TR': '',
         'pt-PT': ''
     },
-    student_asg: {
+
+    sc_student_asg: {
         'en-GB': 'Student assigned!',
         'fr-FR': '',
         'es-ES': '',
@@ -3803,7 +3741,7 @@
 
     // Loading Messages //
 
-    loading: {
+    ld: {
         'en-GB': 'Loading',
         'fr-FR': 'Chargement',
         'es-ES': 'Cargando',
@@ -3814,6 +3752,7 @@
         'tr-TR': 'Yüklüyor',
         'pt-PT': 'A carregar',
     },
+
     ld_plans: {
         'en-GB': 'Loading Plans',
         'fr-FR': '',
@@ -3825,6 +3764,7 @@
         'tr-TR': '',
         'pt-PT': '',
     },
+
     ld_plan: {
         'en-GB': 'Loading Plan',
         'fr-FR': '',
@@ -3836,6 +3776,7 @@
         'tr-TR': '',
         'pt-PT': '',
     },
+
     ld_students: {
         'en-GB': 'Loading Students',
         'fr-FR': '',
@@ -3847,6 +3788,7 @@
         'tr-TR': '',
         'pt-PT': '',
     },
+
     ld_groups: {
         'en-GB': 'Loading Groups',
         'fr-FR': '',
@@ -3858,4 +3800,5 @@
         'tr-TR': '',
         'pt-PT': '',
     },
+
 }

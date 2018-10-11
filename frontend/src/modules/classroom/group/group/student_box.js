@@ -105,7 +105,7 @@ class StudentBox extends Component {
                                 this.removeStudent();
                             },
                         },
-                        await window.bcnI18n.getPhrase('cr_remove'),
+                        await window.bcnI18n.getPhrase('remove'),
                     ),
                 ),
             ),
@@ -113,7 +113,7 @@ class StudentBox extends Component {
     }
 
     async removeStudent() {
-        const removeStudentTransl = await window.bcnI18n.getPhrase('remove_student');
+        const removeStudentTransl = await window.bcnI18n.getPhrase('con_remove_student');
         if (!confirm(removeStudentTransl)) {
             return;
         }
@@ -135,7 +135,7 @@ class StudentBox extends Component {
                 elementID: false,
                 heading: 'Success',
                 type: 'success',
-                message: await window.bcnI18n.getPhrase('sa'),
+                message: await window.bcnI18n.getPhrase('sc_sa'),
             });
 
             document.body.appendChild(statusMessageEl);
@@ -149,7 +149,7 @@ class StudentBox extends Component {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: await window.bcnI18n.getPhrase('student_una'),
+            message: await window.bcnI18n.getPhrase('err_student_una'),
         });
 
         document.body.appendChild(statusMessageEl);

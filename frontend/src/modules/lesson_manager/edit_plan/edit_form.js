@@ -100,7 +100,7 @@ class EditGLPForm extends Form {
     }
 
     async checkGLPName() {
-        const errMsg = await window.bcnI18n.getPhrase('glp_name_exists');
+        const errMsg = await window.bcnI18n.getPhrase('err_glp_name_exists');
 
         if (this.state.planName === '') {
             this.removeAll('plan-name-status');
@@ -125,7 +125,7 @@ class EditGLPForm extends Form {
 
     async checkFields() {
         let success = true;
-        const emptyMsg = await window.bcnI18n.getPhrase('required_empty');
+        const emptyMsg = await window.bcnI18n.getPhrase('err_required_empty');
 
         if (this.state.planName === '') {
             this.addError('plan-name-status', emptyMsg);
@@ -162,7 +162,7 @@ class EditGLPForm extends Form {
         }
 
         if (this.state.planYear !== '' && !(/^[0-9]{4}$/).test(this.state.planYear)) {
-            const errMsg = await window.bcnI18n.getPhrase('plan_year_not_valid');
+            const errMsg = await window.bcnI18n.getPhrase('err_plan_year_not_valid');
             this.addError('plan-year-status', errMsg);
             success = false;
         }
@@ -173,7 +173,7 @@ class EditGLPForm extends Form {
                 elementID: false,
                 heading: 'Error',
                 type: 'error',
-                message: await window.bcnI18n.getPhrase('form_error'),
+                message: await window.bcnI18n.getPhrase('err_form'),
             });
 
             this.appendView(statusMessageEl);
@@ -233,7 +233,7 @@ class EditGLPForm extends Form {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: await window.bcnI18n.getPhrase('plan_nc'),
+            message: await window.bcnI18n.getPhrase('err_plan_nc'),
         });
 
         this.appendView(statusMessageEl);

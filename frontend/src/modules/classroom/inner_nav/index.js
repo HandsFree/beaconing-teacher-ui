@@ -18,7 +18,7 @@ class InnerNav extends Component {
                 {
                     href: `//${window.location.host}/classroom/`,
                 },
-                span(await window.bcnI18n.getPhrase('students')),
+                span(await window.bcnI18n.getPhrase('cr_students')),
             ),
             a(
                 /^classroom\/groups\/?$|^classroom\/group\/?/.test(path) ? '.item.active-white' : '.item',

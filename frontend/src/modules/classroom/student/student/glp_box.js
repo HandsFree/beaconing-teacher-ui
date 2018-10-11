@@ -43,7 +43,7 @@ class GLPBox extends Component {
     }
 
     async unassignPlan() {
-        const unassignGLPTransl = await window.bcnI18n.getPhrase('unassign_glp');
+        const unassignGLPTransl = await window.bcnI18n.getPhrase('con_unassign_glp');
         if (!confirm(unassignGLPTransl)) {
             return;
         }
@@ -65,7 +65,7 @@ class GLPBox extends Component {
                 elementID: false,
                 heading: 'Success',
                 type: 'success',
-                message: await window.bcnI18n.getPhrase('sa'),
+                message: await window.bcnI18n.getPhrase('sc_sa'),
             });
 
             document.body.appendChild(statusMessageEl);
@@ -79,7 +79,7 @@ class GLPBox extends Component {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: await window.bcnI18n.getPhrase('student_una'),
+            message: await window.bcnI18n.getPhrase('err_student_una'),
         });
 
         document.body.appendChild(statusMessageEl);

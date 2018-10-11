@@ -112,7 +112,7 @@ class NewPlanForm extends Form {
                 ),
                 div(
                     '.flex-column',
-                    strong(await window.bcnI18n.getPhrase('author')),
+                    strong(await window.bcnI18n.getPhrase('lm_author')),
                     p(author),
                 ),
             );
@@ -155,7 +155,7 @@ class NewPlanForm extends Form {
     }
 
     async checkGLPName() {
-        const errMsg = await window.bcnI18n.getPhrase('glp_name_exists');
+        const errMsg = await window.bcnI18n.getPhrase('err_glp_name_exists');
 
         if (this.state.planName === '') {
             this.removeAll('plan-name-status');
@@ -178,7 +178,7 @@ class NewPlanForm extends Form {
 
     async checkFields() {
         let success = true;
-        const emptyMsg = await window.bcnI18n.getPhrase('required_empty');
+        const emptyMsg = await window.bcnI18n.getPhrase('err_required_empty');
 
         if (this.state.planName === '') {
             this.addError('plan-name-status', emptyMsg);
@@ -215,7 +215,7 @@ class NewPlanForm extends Form {
         }
 
         if (this.state.planYear !== '' && !(/^[0-9]{4}$/).test(this.state.planYear)) {
-            const errMsg = await window.bcnI18n.getPhrase('plan_year_not_valid');
+            const errMsg = await window.bcnI18n.getPhrase('err_plan_year_not_valid');
             this.addError('plan-year-status', errMsg);
             success = false;
         }
@@ -226,7 +226,7 @@ class NewPlanForm extends Form {
                 elementID: false,
                 heading: 'Error',
                 type: 'error',
-                message: await window.bcnI18n.getPhrase('form_error'),
+                message: await window.bcnI18n.getPhrase('err_form'),
             });
 
             this.appendView(statusMessageEl);
@@ -286,7 +286,7 @@ class NewPlanForm extends Form {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: await window.bcnI18n.getPhrase('plan_nc'),
+            message: await window.bcnI18n.getPhrase('err_plan_nc'),
         });
 
         this.appendView(statusMessageEl);
@@ -296,7 +296,7 @@ class NewPlanForm extends Form {
 
     async afterCreation(glp: Object) {
         const pcEL = new PostCreation().attach({
-            title: await window.bcnI18n.getPhrase('glp_cre'),
+            title: await window.bcnI18n.getPhrase('sc_glp_cre'),
             id: glp.id,
         });
 

@@ -28,7 +28,7 @@ class ActivePlans extends Component {
             ),
             div(
                 '.content',
-                div('#active-plan-summary', `${await window.bcnI18n.getPhrase('loading')}...`),
+                div('#active-plan-summary', `${await window.bcnI18n.getPhrase('ld')}...`),
             ),
         );
     }

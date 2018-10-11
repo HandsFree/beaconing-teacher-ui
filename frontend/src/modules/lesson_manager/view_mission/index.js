@@ -23,7 +23,7 @@ class ViewMission extends RootComponent {
             footer.attach(),
             mainNav.attach(),
             secondNav.attach({
-                title: await window.bcnI18n.getPhrase('lesson_manager'),
+                title: await window.bcnI18n.getPhrase('lm'),
                 innerNav: innerNav.attach(),
             }),
             missionOverview.attach(this.params),

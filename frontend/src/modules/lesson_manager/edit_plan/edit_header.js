@@ -29,7 +29,7 @@ class EditHeader extends Component {
                 elementID: false,
                 heading: 'Success',
                 type: 'success',
-                message: await window.bcnI18n.getPhrase('glp_del'),
+                message: await window.bcnI18n.getPhrase('sc_glp_del'),
             });
 
             document.body.appendChild(statusMessageEl);
@@ -43,7 +43,7 @@ class EditHeader extends Component {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: await window.bcnI18n.getPhrase('glp_nd'),
+            message: await window.bcnI18n.getPhrase('err_glp_nd'),
         });
 
         document.body.appendChild(statusMessageEl);
@@ -117,7 +117,7 @@ class EditHeader extends Component {
                         '.delete',
                         {
                             onclick: async () => {
-                                const confirmDelGLPTranslation = await window.bcnI18n.getPhrase('confirm_delete_glp');
+                                const confirmDelGLPTranslation = await window.bcnI18n.getPhrase('con_delete_glp');
 
                                 const doDelete = confirm(confirmDelGLPTranslation);
                                 if (doDelete) {
@@ -145,9 +145,9 @@ class EditHeader extends Component {
                             }
                         },
                     },
-                    a('.tab.active', await window.bcnI18n.getPhrase('details')),
-                    a('.tab.disabled-tab', await window.bcnI18n.getPhrase('assignees')),
-                    a('.tab.disabled-tab', await window.bcnI18n.getPhrase('files')),
+                    a('.tab.active', await window.bcnI18n.getPhrase('lm_details')),
+                    a('.tab.disabled-tab', await window.bcnI18n.getPhrase('lm_assignees')),
+                    a('.tab.disabled-tab', await window.bcnI18n.getPhrase('lm_files')),
                 ),
             ),
         );

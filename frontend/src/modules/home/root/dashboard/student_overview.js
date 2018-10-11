@@ -71,7 +71,7 @@ class StudentOverview extends Component {
                 '.content',
                 div(
                     '#student-overview',
-                    p(`${await window.bcnI18n.getPhrase('loading')}...`),
+                    p(`${await window.bcnI18n.getPhrase('ld')}...`),
                 ),
             ),
         );
