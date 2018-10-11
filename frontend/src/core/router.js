@@ -74,7 +74,7 @@ class Router {
         } else {
             const container = document.getElementById('app');
             if (container) {
-                container.innerHTML = '<p>Error (404): Page not found</p>';
+                container.innerHTML = `<p>${await window.bcnI18n.getPhrase('err_404')}</p>`;
             }
         }
     }
