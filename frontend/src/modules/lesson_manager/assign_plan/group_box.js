@@ -27,7 +27,7 @@ class GroupBox extends Component {
     }
 
     async assignGroup(assignButton: HTMLElement) {
-        const assignGroupTransl = await window.bcnI18n.getPhrase('assign_group');
+        const assignGroupTransl = await window.bcnI18n.getPhrase('con_assign_group');
         if (!confirm(assignGroupTransl)) {
             return;
         }
@@ -40,7 +40,7 @@ class GroupBox extends Component {
         assignButton.textContent = `${await window.bcnI18n.getPhrase('lm_assigning')}...`;
 
         const status = await window.beaconingAPI.assignGroup(group.id, glpID);
-        console.log("assigning ", group.id, " aka ", group, " to ", glpID);
+        console.log('assigning ', group.id, ' aka ', group, ' to ', glpID);
 
         const statusMessage = new Status();
 
@@ -53,7 +53,7 @@ class GroupBox extends Component {
                 elementID: false,
                 heading: 'Success',
                 type: 'success',
-                message: await window.bcnI18n.getPhrase('group_asg'),
+                message: await window.bcnI18n.getPhrase('sc_group_asg'),
             });
 
             document.body.appendChild(statusMessageEl);
@@ -67,7 +67,7 @@ class GroupBox extends Component {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: await window.bcnI18n.getPhrase('group_na'),
+            message: await window.bcnI18n.getPhrase('err_group_na'),
         });
 
         assignButton.textContent = await window.bcnI18n.getPhrase('lm_assign');
