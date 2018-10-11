@@ -25,7 +25,7 @@ class InnerNav extends Component {
                 {
                     href: `//${window.location.host}/classroom/groups`,
                 },
-                span(await window.bcnI18n.getPhrase('groups')),
+                span(await window.bcnI18n.getPhrase('cr_groups')),
             ),
         );
     }
