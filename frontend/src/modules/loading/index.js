@@ -13,7 +13,7 @@ class Loading extends Component {
             return;
         }
 
-        this.msg = await window.bcnI18n.getPhrase('loading');
+        this.msg = await window.bcnI18n.getPhrase('ld');
     }
 
     async render() {

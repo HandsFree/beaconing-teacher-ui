@@ -27,7 +27,7 @@ class Students extends RootComponent {
             footer.attach(),
             mainNav.attach(),
             secondNav.attach({
-                title: await window.bcnI18n.getPhrase('classroom'),
+                title: await window.bcnI18n.getPhrase('cr'),
                 innerNav: innerNav.attach(),
             }),
             search.attach({

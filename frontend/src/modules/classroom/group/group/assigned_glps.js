@@ -249,7 +249,7 @@ class AssignedGLPs extends Component {
 
         const el = div(
             '#assigned-plans-container.status.flex-column.flex-align-center',
-            p(await window.bcnI18n.getPhrase('no_assigned_glps')),
+            p(await window.bcnI18n.getPhrase('err_no_assigned_glps')),
             a(
                 '.link-underline',
                 {

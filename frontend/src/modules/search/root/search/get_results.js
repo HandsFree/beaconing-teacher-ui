@@ -58,7 +58,7 @@ class SearchResults extends Component {
                 '.result-group',
                 div(
                     '.title',
-                    h4(`${await window.bcnI18n.getPhrase('students')}:`),
+                    h4(`${await window.bcnI18n.getPhrase('cr_students')}:`),
                 ),
                 div(
                     '.flex-container.flex-wrap',

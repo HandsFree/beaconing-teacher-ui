@@ -31,7 +31,7 @@ class CalendarController extends Component {
     }
 
     async render() {
-        const calTranslation = await window.bcnI18n.getPhrase('calendar');
+        const calTranslation = await window.bcnI18n.getPhrase('cal');
 
         let controllerTitle = calTranslation;
         

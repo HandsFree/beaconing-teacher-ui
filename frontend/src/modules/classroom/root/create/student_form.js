@@ -91,7 +91,7 @@ class StudentForm extends Form {
         }
 
         if (this.students.indexOf(this.state.studentUsername.toLowerCase()) !== -1) {
-            const errMsg = await window.bcnI18n.getPhrase('username_exists');
+            const errMsg = await window.bcnI18n.getPhrase('err_username_exists');
             this.addError('student-username-status', errMsg);
 
             return false;
@@ -103,7 +103,7 @@ class StudentForm extends Form {
 
     async checkFields() {
         let success = true;
-        const emptyMsg = await window.bcnI18n.getPhrase('required_empty');
+        const emptyMsg = await window.bcnI18n.getPhrase('err_required_empty');
 
         this.removeErrors();
 
@@ -137,7 +137,7 @@ class StudentForm extends Form {
                 elementID: false,
                 heading: 'Error',
                 type: 'error',
-                message: await window.bcnI18n.getPhrase('form_error'),
+                message: await window.bcnI18n.getPhrase('err_form'),
             });
 
             this.appendView(statusMessageEl);
@@ -185,7 +185,7 @@ class StudentForm extends Form {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: await window.bcnI18n.getPhrase('student_nc'),
+            message: await window.bcnI18n.getPhrase('err_student_nc'),
         });
 
         this.appendView(statusMessageEl);
@@ -195,7 +195,7 @@ class StudentForm extends Form {
 
     async afterCreation(student: Object) {
         const pcEL = new PostCreation().attach({
-            title: await window.bcnI18n.getPhrase('student_cre'),
+            title: await window.bcnI18n.getPhrase('sc_student_cre'),
             id: student.id,
         });
 

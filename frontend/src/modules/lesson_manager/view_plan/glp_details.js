@@ -61,7 +61,7 @@ class GLPDetails extends Component {
 
         let dateCreatedText = await window.bcnI18n.getPhrase('lm_not_rec');
         let timeCreatedText = '';
-        let dateUpdatedText = await window.bcnI18n.getPhrase('lm_never');
+        let dateUpdatedText = await window.bcnI18n.getPhrase('never');
         let timeUpdatedText = '';
 
         if (this.state.glp.createdAt && this.state.glp.createdAt !== '0001-01-01T00:00:00Z') {

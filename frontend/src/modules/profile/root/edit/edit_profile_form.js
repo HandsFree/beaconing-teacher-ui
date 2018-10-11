@@ -65,7 +65,7 @@ class ProfileEditForm extends Form {
 
     async checkFields() {
         let success = true;
-        const emptyMsg = await window.bcnI18n.getPhrase('required_empty');
+        const emptyMsg = await window.bcnI18n.getPhrase('err_required_empty');
 
         if (this.state.teacherFirstName === '') {
             this.addError('teacher-fn-status', emptyMsg);
@@ -83,7 +83,7 @@ class ProfileEditForm extends Form {
                 elementID: false,
                 heading: 'Error',
                 type: 'error',
-                message: await window.bcnI18n.getPhrase('form_error'),
+                message: await window.bcnI18n.getPhrase('err_form'),
             });
 
             this.appendView(statusMessageEl);
@@ -126,7 +126,7 @@ class ProfileEditForm extends Form {
                 elementID: false,
                 heading: 'Success',
                 type: 'success',
-                message: await window.bcnI18n.getPhrase('teacher_edited'),
+                message: await window.bcnI18n.getPhrase('sc_teacher_edited'),
             });
 
             this.appendView(statusMessageEl);
@@ -140,7 +140,7 @@ class ProfileEditForm extends Form {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: await window.bcnI18n.getPhrase('teacher_ne'),
+            message: await window.bcnI18n.getPhrase('err_teacher_ne'),
         });
 
         this.resetSubmit();

@@ -68,7 +68,7 @@ class GroupAside extends Component {
             return;
         }
 
-        const delGroupTranslation = await window.bcnI18n.getPhrase('confirm_delete_group');
+        const delGroupTranslation = await window.bcnI18n.getPhrase('con_delete_group');
         if (!confirm(delGroupTranslation)) {
             return;
         }
@@ -90,7 +90,7 @@ class GroupAside extends Component {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: await window.bcnI18n.getPhrase('group_nd'),
+            message: await window.bcnI18n.getPhrase('err_group_nd'),
         });
 
         this.appendView(statusMessageEl);
@@ -137,7 +137,7 @@ class GroupAside extends Component {
                             this.emit('GroupStudentsClicked');
                         },
                     },
-                    span(await window.bcnI18n.getPhrase('students')),
+                    span(await window.bcnI18n.getPhrase('cr_students')),
                 ),
                 a(
                     '.item',

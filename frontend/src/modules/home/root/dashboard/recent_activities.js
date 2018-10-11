@@ -16,7 +16,7 @@ class RecentActivities extends Component {
                 '.content',
                 div(
                     '#recent-activity',
-                    p(`${await window.bcnI18n.getPhrase('loading')}...`),
+                    p(`${await window.bcnI18n.getPhrase('ld')}...`),
                 ),
             ),
         );

@@ -42,14 +42,14 @@ class Group extends RootComponent {
         const groupMain = new GroupMain();
         const groupAside = new GroupAside();
 
-        const noGroupMsg = await window.bcnI18n.getPhrase('no_group');
+        const noGroupMsg = await window.bcnI18n.getPhrase('err_no_group');
 
         return Promise.all([
             header.attach(),
             footer.attach(),
             mainNav.attach(),
             secondNav.attach({
-                title: await window.bcnI18n.getPhrase('classroom'),
+                title: await window.bcnI18n.getPhrase('cr'),
                 innerNav: innerNav.attach(),
             }),
             groupMain.attach(this.params),
@@ -107,13 +107,13 @@ class Group extends RootComponent {
         const secondNav = new SecondNav();
         const innerNav = new InnerNav();
 
-        const groupDelMsg = await window.bcnI18n.getPhrase('group_del');
+        const groupDelMsg = await window.bcnI18n.getPhrase('sc_group_del');
 
         const el = await Promise.all([
             header.attach(),
             mainNav.attach(),
             secondNav.attach({
-                title: await window.bcnI18n.getPhrase('classroom'),
+                title: await window.bcnI18n.getPhrase('cr'),
                 innerNav: innerNav.attach(),
             }),
         ]).then((values) => {

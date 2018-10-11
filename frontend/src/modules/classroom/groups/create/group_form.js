@@ -93,7 +93,7 @@ class GroupForm extends Form {
         }
 
         if (this.groups.indexOf(this.state.groupName.toLowerCase()) !== -1) {
-            const errMsg = await window.bcnI18n.getPhrase('group_name_exists');
+            const errMsg = await window.bcnI18n.getPhrase('err_group_name_exists');
             this.addError('group-name-status', errMsg);
 
             return false;
@@ -105,7 +105,7 @@ class GroupForm extends Form {
 
     async checkFields() {
         let success = true;
-        const emptyMsg = await window.bcnI18n.getPhrase('required_empty');
+        const emptyMsg = await window.bcnI18n.getPhrase('err_required_empty');
 
         if (this.state.groupName === '') {
             this.addError('group-name-status', emptyMsg);
@@ -117,7 +117,7 @@ class GroupForm extends Form {
         }
 
         if (this.studentList.length < 2) {
-            this.addError('group-students-status', await window.bcnI18n.getPhrase('more_students_needed'));
+            this.addError('group-students-status', await window.bcnI18n.getPhrase('err_more_students_needed'));
             success = false;
         }
 
@@ -127,7 +127,7 @@ class GroupForm extends Form {
                 elementID: false,
                 heading: 'Error',
                 type: 'error',
-                message: await window.bcnI18n.getPhrase('form_error'),
+                message: await window.bcnI18n.getPhrase('err_form'),
             });
 
             this.appendView(statusMessageEl);
@@ -170,7 +170,7 @@ class GroupForm extends Form {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: await window.bcnI18n.getPhrase('group_nc'),
+            message: await window.bcnI18n.getPhrase('err_group_nc'),
         });
 
         this.appendView(statusMessageEl);
@@ -180,7 +180,7 @@ class GroupForm extends Form {
 
     async afterCreation(group: Object) {
         const pcEL = new PostCreation().attach({
-            title: await window.bcnI18n.getPhrase('group_cre'),
+            title: await window.bcnI18n.getPhrase('sc_group_cre'),
             id: group.id,
         });
 
@@ -240,7 +240,7 @@ class GroupForm extends Form {
                             '.label-group',
                             div(
                                 '.split',
-                                div('.title-area', span(await window.bcnI18n.getPhrase('students'))),
+                                div('.title-area', span(await window.bcnI18n.getPhrase('cr_students'))),
                                 div('.desc-area', await window.bcnI18n.getPhrase('cr_students_group_desc')),
                                 div(
                                     '.input-area',

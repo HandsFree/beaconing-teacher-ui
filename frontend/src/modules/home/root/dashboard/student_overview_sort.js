@@ -54,7 +54,7 @@ class Sort extends Component {
                 '.sort-menu',
                 label(
                     '.select',
-                    span(`${await window.bcnI18n.getPhrase('group')}: `),
+                    span(`${await window.bcnI18n.getPhrase('cr_group')}: `),
                     this.createClassList(),
                 ),
             ),

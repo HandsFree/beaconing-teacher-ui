@@ -46,13 +46,13 @@ class PostCreation extends Component {
                         {
                             href: `//${window.location.host}/lesson_manager/#view?id=${encodeURIComponent(id)}`,
                         },
-                        button('.button-action', await window.bcnI18n.getPhrase('view_glp')),
+                        button('.button-action', await window.bcnI18n.getPhrase('pc_view_glp')),
                     ),
                     a(
                         {
                             href: `//${window.location.host}/lesson_manager/#edit?id=${encodeURIComponent(id)}`,
                         },
-                        button('.button-action', await window.bcnI18n.getPhrase('edit_glp')),
+                        button('.button-action', await window.bcnI18n.getPhrase('pc_edit_glp')),
                     ),
                 ),
             ),
