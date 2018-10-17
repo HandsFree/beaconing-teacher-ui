@@ -1,5 +1,10 @@
 // @flow
-import { div, a, h3 } from '../../../../core/html';
+import {
+    div,
+    a,
+    h3,
+    h4,
+} from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 import Status from '../../../status';
@@ -9,6 +14,7 @@ class GLPBox extends Component {
         const {
             name,
             glpID,
+            fromGroupName,
         } = this.props;
 
         return div(
@@ -18,6 +24,7 @@ class GLPBox extends Component {
                 div(
                     '.flex-column',
                     h3('.name', name),
+                    fromGroupName ? h4('.group', `From group: ${fromGroupName}`) : [],
                 ),
             ),
             div(

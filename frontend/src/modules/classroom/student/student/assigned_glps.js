@@ -32,6 +32,10 @@ class AssignedGLPs extends Component {
                 glps.push({
                     glp: glpObj,
                     assignedGLPID: glp.id,
+                    ...(glp?.studentGroupId && glp?.studentGroupName ? {
+                        fromGroupID: glp.studentGroupId,
+                        fromGroupName: glp.studentGroupName,
+                    } : {}),
                 });
             }
 
@@ -45,6 +49,8 @@ class AssignedGLPs extends Component {
                     name: glpObj.glp.name,
                     studentID: id,
                     assignedGLPID: glpObj.assignedGLPID,
+                    fromGroupID: glpObj.fromGroupID,
+                    fromGroupName: glpObj.fromGroupName,
                 });
 
                 promArr.push(glpBoxProm);
