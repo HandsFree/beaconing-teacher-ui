@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/lib/pq"
@@ -158,13 +159,13 @@ func AssignGroupToGLP(s *gin.Context, groupID uint64, glpID uint64, from, to tim
 
 // GetAssignedGLPS returns a JSON string of all of the
 // glps that have been assigned to the given student {studentID}.
-func GetAssignedGLPS(s *gin.Context, studentID uint64) string {
+func GetAssignedGLPS(s *gin.Context, studentID uint64, includeGroups bool) string {
 	cache := BigCacheInstance()
 
 	// FIXME shall we support this:
 	// NOTE we can set the ?includeAnalytics=true flag here if necessary.
 
-	apiPath := API.getPath(s, "students/", fmt.Sprintf("%d", studentID), "/assignedGlps")
+	apiPath := API.getPath(s, "students/", fmt.Sprintf("%d", studentID), "/assignedGlps", fmt.Sprintf("?includeGroups=%s", strconv.FormatBool(includeGroups)))
 
 	resp, err := cache.Get(apiPath)
 	if err != nil {

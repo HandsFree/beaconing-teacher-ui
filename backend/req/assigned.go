@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/HandsFree/beaconing-teacher-ui/backend/api"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 	"github.com/gin-gonic/gin"
 )
 
@@ -42,7 +43,14 @@ func GetAssignedGLPsRequest() gin.HandlerFunc {
 			return
 		}
 
-		body := api.GetAssignedGLPS(s, studentID)
+		// specifies if to include glps assigned to groups
+		// the student is a part of
+		includeGroups, err := strconv.ParseBool(s.Query("ig"))
+		if err != nil {
+			util.Error("Query string 'ig' malformed", err)
+		}
+
+		body := api.GetAssignedGLPS(s, studentID, includeGroups)
 		s.Header("Content-Type", "application/json")
 		s.String(http.StatusOK, body)
 	}
