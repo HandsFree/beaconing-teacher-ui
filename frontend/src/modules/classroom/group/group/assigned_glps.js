@@ -224,19 +224,25 @@ class AssignedGLPs extends Component {
 
                     for (const scene of quest.graph.scenes) {
                         const {
-                            id, title, locationBasedGames
+                            id: sceneID,
+                            title,
+                            locationBasedGames,
                         } = scene;
 
-                        const sceneItem = new SceneAnalytics(id, title);
+                        const sceneItem = new SceneAnalytics(sceneID, title);
 
                         for (const lbg of locationBasedGames) {
                             const {
-                                id, name, type, description, analytics
+                                id: lgbID,
+                                name,
+                                type,
+                                description,
+                                analytics,
                             } = lbg;
 
                             const dashboard = analytics?.dashboard;
 
-                            const lbgItem = new LocationBasedGameAnalytics(id, name, type, description, dashboard);
+                            const lbgItem = new LocationBasedGameAnalytics(lgbID, name, type, description, dashboard);
                             sceneItem.registerLBG(lbgItem);
                         }
 
