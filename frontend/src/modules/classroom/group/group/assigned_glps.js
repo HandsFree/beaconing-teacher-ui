@@ -146,6 +146,7 @@ class AssignedGLPs extends Component {
         for (const assigned of assignedGLPs) {
             // some glps dont have this analyticsGlp available!
             if (nullishCheck(assigned?.analyticsGlp, 'none') === 'none') {
+                /* eslint-disable-next-line no-continue */
                 continue;
             }
 
