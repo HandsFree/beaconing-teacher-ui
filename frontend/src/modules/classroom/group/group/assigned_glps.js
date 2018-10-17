@@ -202,25 +202,8 @@ class AssignedGLPs extends Component {
                         name: questName,
                     } = quest;
                     const questDashboardLink = (questAnalytics?.json?.analytics?.dashboard || questAnalytics?.dashboard) ?? '';
-                    missionAnalyticsObj.registerQuest(new QuestAnalytics(questName, questDashboardLink));
-                }
-
-                glpAnalyticsObj.registerMission(missionAnalyticsObj);
-            }
-
-            // now we have to loop through this other set
-            // of glp missions/quests that are in the 'contents' of the glp.
-
-            const glpContents = JSON.parse(glp.content);
-
-            // four nested loops! :-)
-            for (const mission of glpContents.missions) {
-                const missionObj = glpAnalyticsObj.findMission(mission.name);
-                // TODO report if we cant find this.
-
-                const { quests } = mission;
-                for (const quest of quests) {
-                    const questObj = missionObj.findQuest(quest.name);
+                    const questAnalyticsObj = new QuestAnalytics(questName, questDashboardLink);
+                    missionAnalyticsObj.registerQuest(questAnalyticsObj);
 
                     for (const scene of quest.graph.scenes) {
                         const {
@@ -246,10 +229,55 @@ class AssignedGLPs extends Component {
                             sceneItem.registerLBG(lbgItem);
                         }
 
-                        questObj.registerScene(sceneItem);
+                        questAnalyticsObj.registerScene(sceneItem);
                     }
                 }
+
+                glpAnalyticsObj.registerMission(missionAnalyticsObj);
             }
+
+            // now we have to loop through this other set
+            // of glp missions/quests that are in the 'contents' of the glp.
+
+            // const glpContents = JSON.parse(glp.content);
+
+            // // four nested loops! :-)
+            // for (const mission of glpContents.missions) {
+            //     const missionObj = glpAnalyticsObj.findMission(mission.name);
+            //     // TODO report if we cant find this.
+
+            //     const { quests } = mission;
+            //     for (const quest of quests) {
+            //         const questObj = missionObj.findQuest(quest.name);
+
+            //         for (const scene of quest.graph.scenes) {
+            //             const {
+            //                 id: sceneID,
+            //                 title,
+            //                 locationBasedGames,
+            //             } = scene;
+
+            //             const sceneItem = new SceneAnalytics(sceneID, title);
+
+            //             for (const lbg of locationBasedGames) {
+            //                 const {
+            //                     id: lgbID,
+            //                     name,
+            //                     type,
+            //                     description,
+            //                     analytics,
+            //                 } = lbg;
+
+            //                 const dashboard = analytics?.dashboard;
+
+            //                 const lbgItem = new LocationBasedGameAnalytics(lgbID, name, type, description, dashboard);
+            //                 sceneItem.registerLBG(lbgItem);
+            //             }
+
+            //             questObj.registerScene(sceneItem);
+            //         }
+            //     }
+            // }
 
             // store glp id => glp data
             glpAnalyticsNodes.set(glpID, glpAnalyticsObj);
