@@ -158,14 +158,14 @@ class AssignedGLPs extends Component {
                 we can ignore the analytics object for now?
 
                 - graph.scenes : [ color? image? title? locationBasedGames ]
-                - 
+                -
             */
 
             const dashboardLink = glp?.analyticsGlp?.analytics?.json?.analytics?.dashboard;
 
             // FIXME
             glps.push({
-                glp: glp,
+                glp,
                 assignedGLPID: glp.id,
                 dashboardLink,
             });
