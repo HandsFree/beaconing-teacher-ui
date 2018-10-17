@@ -11,19 +11,17 @@ import Loading from '../../../loading';
 import GLPBox from './glp_box';
 import nullishCheck from '../../../../core/util';
 
-class SceneAnalytics {
-    constructor(id: number, name: string) {
-        this.id = id;
-        this.name = name;
-        this.lbgs = [];   
-    }
-
-    registerLBG(lbg: LocationBasedGameAnalytics) {
-        this.lbgs.push(lbg);
-    }
-}
-
 class LocationBasedGameAnalytics {
+    id: number = 0;
+
+    name: string = '';
+
+    type: string = '';
+
+    desc: string = '';
+
+    dashboardLink: string = '';
+
     constructor(id: number, name: string, type: string, desc: string, dashboardLink: string) {
         this.id = id;
         this.name = name;
@@ -33,11 +31,33 @@ class LocationBasedGameAnalytics {
     }
 }
 
+class SceneAnalytics {
+    lbgs = [];
+
+    id: number = 0;
+
+    name: string = '';
+
+    constructor(id: number, name: string) {
+        this.id = id;
+        this.name = name;
+    }
+
+    registerLBG(lbg: LocationBasedGameAnalytics) {
+        this.lbgs.push(lbg);
+    }
+}
+
 class QuestAnalytics {
+    name: string = '';
+
+    dashboardLink: string = '';
+
+    scenes = new Map();
+
     constructor(name: string, dashboardLink: string) {
         this.name = name;
         this.dashboardLink = dashboardLink;
-        this.scenes = new Map();
     }
 
     registerScene(scene: SceneAnalytics) {
@@ -46,10 +66,15 @@ class QuestAnalytics {
 }
 
 class MissionAnalytics {
+    name: string = '';
+
+    dashboardLink: string = '';
+
+    quests = new Map();
+
     constructor(name: string, dashboardLink: string) {
         this.name = name;
         this.dashboardLink = dashboardLink;
-        this.quests = new Map();
     }
 
     registerQuest(quest: QuestAnalytics) {
@@ -63,11 +88,18 @@ class MissionAnalytics {
 }
 
 class GLPAnalyticsInfo {
+    id: number = 0;
+
+    name: string = '';
+
+    dashboardLink: string = '';
+
+    missions = new Map();
+
     constructor(id: number, name: string, dashboardLink: string) {
         this.id = id;
         this.name = name;
         this.dashboardLink = dashboardLink;
-        this.missions = new Map();
     }
 
     registerMission(mission: MissionAnalytics) {
