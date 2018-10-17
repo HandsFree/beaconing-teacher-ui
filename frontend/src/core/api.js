@@ -215,7 +215,7 @@ class APICore {
 
     async getStudentAssigned(id: number) {
         // console.log(id);
-        const glps = await this.get(`//${window.location.host}/api/v1/student/${id}/assignedglps`);
+        const glps = await this.get(`//${window.location.host}/api/v1/student/${id}/assignedglps?ig=true`);
 
         return glps;
     }
