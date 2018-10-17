@@ -214,7 +214,7 @@ class AssignedGLPs extends Component {
             
             // four nested loops! :-)
             for (const mission of glpContents.missions) {
-                let missionObj = glpAnalyticsObj.findMission(mission.name);
+                const missionObj = glpAnalyticsObj.findMission(mission.name);
                 // TODO report if we cant find this.
 
                 const quests = mission.quests;
