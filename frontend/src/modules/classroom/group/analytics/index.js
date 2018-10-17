@@ -52,19 +52,19 @@ class QuestBox extends Component {
                     dashMsg,
                 ));
 
-                lbgList.push(
-                    div(
-                        '.empty-block',
-                        p(lbgName),
-                        nullishCheck(lbgDL, false) ? dashboardLinkEl : p(noAnMsg),
-                        p(desc),
-                    ),
+                const lbgEl = div(
+                    '.empty-block',
+                    p(lbgName),
+                    nullishCheck(lbgDL, false) ? dashboardLinkEl : p(noAnMsg),
+                    p(desc),
                 );
+
+                lbgList.push(lbgEl);
             }
 
             // we only add the scene
             // if at has some LBGs which have dashboard links!
-            if (lbgs.lengths > 0) {
+            if (lbgList.length > 0) {
                 sceneList.push(
                     div(
                         '.empty-block.scene-box',
