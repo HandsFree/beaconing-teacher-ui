@@ -6,7 +6,8 @@ image/*.png
 image/*.jpg
 image/*.jpeg
 
-
+### Dolphin ###
+.directory
 
 ### macOS ###
 *.DS_Store
