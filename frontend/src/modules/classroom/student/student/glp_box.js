@@ -14,6 +14,7 @@ class GLPBox extends Component {
         const {
             name,
             glpID,
+            fromGroupID,
             fromGroupName,
         } = this.props;
 
@@ -24,7 +25,17 @@ class GLPBox extends Component {
                 div(
                     '.flex-column',
                     h3('.name', name),
-                    fromGroupName ? h4('.group', `From group: ${fromGroupName}`) : [],
+                    fromGroupName ? h4(
+                        '.group',
+                        'From group: ',
+                        a(
+                            '.link-underline',
+                            {
+                                href: `//${window.location.host}/classroom/group?id=${fromGroupID}`,
+                            },
+                            fromGroupName,
+                        ),
+                    ) : [],
                 ),
             ),
             div(
@@ -36,7 +47,7 @@ class GLPBox extends Component {
                     },
                     await window.bcnI18n.getPhrase('view'),
                 ),
-                a(
+                !fromGroupID ? a(
                     '.item',
                     {
                         onclick: () => {
@@ -44,21 +55,26 @@ class GLPBox extends Component {
                         },
                     },
                     await window.bcnI18n.getPhrase('cr_unassign'),
-                ),
+                ) : [],
             ),
         );
     }
 
     async unassignPlan() {
+        const {
+            assignedGLPID,
+            studentID,
+            fromGroupID,
+        } = this.props;
+
+        if (fromGroupID) {
+            return;
+        }
+
         const unassignGLPTransl = await window.bcnI18n.getPhrase('con_unassign_glp');
         if (!confirm(unassignGLPTransl)) {
             return;
         }
-
-        const {
-            assignedGLPID,
-            studentID,
-        } = this.props;
 
         const status = await window.beaconingAPI.unassignStudent(studentID, assignedGLPID);
         const statusMessage = new Status();
