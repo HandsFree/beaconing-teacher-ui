@@ -54,7 +54,8 @@ class MainNav extends Component {
                 a(
                     /^forum/.test(path) ? '.item.active-orange' : '.item',
                     {
-                        href: '#', // `//${window.location.host}/forum/`,
+                        href: 'https://forum.beaconing.eu/',
+                        target: '_blank',
                         tabIndex: 1,
                     },
                     i('.icon-chat'),
