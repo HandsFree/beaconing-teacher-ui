@@ -1,7 +1,16 @@
 // @flow
-import { footer, div, img, p, i, nav, span, a } from '../../../core/html';
+import {
+    footer,
+    div,
+    i,
+    nav,
+    span,
+    a,
+} from '../../../core/html';
 
 import { Component } from '../../../core/component';
+import legalNotice from '../../../docs/ln.pdf';
+import privPolicy from '../../../docs/pp.pdf';
 
 class Footer extends Component {
     async render() {
@@ -70,14 +79,16 @@ class Footer extends Component {
                     a(
                         '.item',
                         {
-                            href: '#',
+                            href: legalNotice,
+                            target: '_blank',
                         },
-                        await window.bcnI18n.getPhrase('ft_tc'),
+                        await window.bcnI18n.getPhrase('ft_ln'),
                     ),
                     a(
                         '.item',
                         {
-                            href: '#',
+                            href: privPolicy,
+                            target: '_blank',
                         },
                         await window.bcnI18n.getPhrase('ft_pp'),
                     ),
