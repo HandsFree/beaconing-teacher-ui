@@ -2305,16 +2305,16 @@
         'pt-PT': 'Contacte-nos',
     },
 
-    ft_tc: {
-        'en-GB': 'Terms & Conditions',
-        'fr-FR': 'Conditions & Services',
-        'es-ES': 'Términos y Condiciones',
-        'it-IT': 'Termini e Condizioni',
-        'de-DE': 'Geschäftsbedingungen',
-        'ro-RO': 'Termeni și condiții',
-        'pl-PL': 'Regulamin',
-        'tr-TR': 'Şartlar & Koşullar',
-        'pt-PT': 'Termos e condições',
+    ft_ln: {
+        'en-GB': 'Legal Notice',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     ft_pp: {
