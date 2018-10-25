@@ -64,6 +64,13 @@ const postCSSLoader = {
     },
 };
 
+const docsFileLoader = {
+    loader: 'file-loader',
+    options: {
+        outputPath: 'docs/',
+    },
+};
+
 const optLoaders = [
     {
         loader: 'cache-loader',
@@ -133,6 +140,12 @@ const mainSettings = (dev, devServer, dash, verbose) => {
                         ...optLoaders,
                         postCSSLoader,
                         'sass-loader',
+                    ],
+                },
+                {
+                    test: /\.pdf$/,
+                    use: [
+                        docsFileLoader,
                     ],
                 },
                 {
