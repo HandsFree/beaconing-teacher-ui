@@ -1,5 +1,6 @@
 github.com/BurntSushi/toml v0.3.1 h1:WXkYYl6Yr3qBf1K79EBnL4mak0OimBfB0XUf9Vl28OQ=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
+github.com/HandsFree/beaconing-teacher-ui v0.7.0 h1:hGp5XcAS5Kv9bieMQu+ol0brXAl+nB3t/2eGxIpPhB0=
 github.com/allegro/bigcache v1.1.0 h1:MLuIKTjdxDc+qsG2rhjsYjsHQC5LUGjIWzutg7M+W68=
 github.com/allegro/bigcache v1.1.0/go.mod h1:Cb/ax3seSYIx7SuZdm2G2xzfwmv3TPSk2ucNfQESPXM=
 github.com/bcicen/grmon v0.0.0-20180322004815-9e5e49d99f7c h1:JRvjo0TzkNJCSOa7EWtbIAdrmBUbLiY3cfefOYBFa0E=
@@ -16,6 +17,7 @@ github.com/getsentry/raven-go v0.0.0-20180903072508-084a9de9eb03 h1:G/9fPivTr5Ei
 github.com/getsentry/raven-go v0.0.0-20180903072508-084a9de9eb03/go.mod h1:KungGk8q33+aIAZUIVWZDr2OfAEBsO49PX4NzFV5kcQ=
 github.com/gin-contrib/gzip v0.0.0-20180827025821-1c01330167a8 h1:AKWxItA8hSxKr2wNk5rPTHiMLKQamnPZL60ykA9qPMw=
 github.com/gin-contrib/gzip v0.0.0-20180827025821-1c01330167a8/go.mod h1:Xp4LajbnAl27NCdps5OWT+HTKYKWScmzTCli8Kjs7LE=
+github.com/gin-contrib/gzip v0.0.0-20181105052825-d9117ce29a07/go.mod h1:Iw1jLht8y5t9ZN91Qt/XzlT18He4kT9+LpFJkj4H/vY=
 github.com/gin-contrib/sentry v0.0.0-20180827025903-aa42345b40e5 h1:RiiUViASOJXmlBuyAj+NEMo2XNhvu87/vP53vhFzaRs=
 github.com/gin-contrib/sentry v0.0.0-20180827025903-aa42345b40e5/go.mod h1:5j0zXgpfMv4byKaAkkJdV4tGp0GizpJGLpRsvlLEHCQ=
 github.com/gin-contrib/sessions v0.0.0-20180827025425-58cbcf30135c h1:ueNl0Xo+kozcBSqEF509OUBrCW/RsT8/armfT3Bblc0=
@@ -56,6 +58,7 @@ github.com/thinkerou/favicon v0.1.0 h1:eWMISKTpHq2G8HOuKn7ydD55j5DDehx94b0C2y8AB
 github.com/thinkerou/favicon v0.1.0/go.mod h1:HL7Pap5kOluZv1ku34pZo/AJ44GaxMEPFZ3pmuexV2s=
 github.com/ugorji/go/codec v0.0.0-20180927125128-99ea80c8b19a h1:BgdofUvNP/srMxiUUpGyZm+WjX/qXpMXdl3edRf1Ta0=
 github.com/ugorji/go/codec v0.0.0-20180927125128-99ea80c8b19a/go.mod h1:VFNgLljTbGfSG7qAOspJ7OScBnGdDN/yBr0sguwnwf0=
+github.com/ugorji/go/codec v0.0.0-20181022190402-e5e69e061d4f/go.mod h1:VFNgLljTbGfSG7qAOspJ7OScBnGdDN/yBr0sguwnwf0=
 golang.org/x/net v0.0.0-20181005035420-146acd28ed58 h1:otZG8yDCO4LVps5+9bxOeNiCvgmOyt96J3roHTYs7oE=
 golang.org/x/net v0.0.0-20181005035420-146acd28ed58/go.mod h1:mL1N/T3taQHkDXs73rZJwtUhF3w3ftmwwsq0BUmARs4=
 golang.org/x/sync v0.0.0-20180314180146-1d60e4601c6f h1:wMNYb4v58l5UBM7MYRLPG6ZhfOqbKu7X5eyFl8ZhKvA=
