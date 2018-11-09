@@ -9,6 +9,12 @@
 </p>
 <p align="center">
   <a href="http://beaconing.eu/">Website</a> • <a href="https://www.facebook.com/beaconing/">Facebook</a> • <a href="https://twitter.com/BeaconingEU">Twitter</a>
+</p>
+<p align="center">
+  <a href="https://waffle.io/HandsFree/beaconing-teacher-ui">
+    <img src="https://badge.waffle.io/HandsFree/beaconing-teacher-ui.svg?columns=all" alt="Waffle.io">
+  </a>
+</p>
 <p align="center">
   <a href="https://semaphoreci.com/juddus/beaconing-teacher-ui">
     <img src="https://semaphoreci.com/api/v1/juddus/beaconing-teacher-ui/branches/nightly/badge.svg" alt="Build Status">
