@@ -99,6 +99,9 @@ class APISearchStatic extends Component {
 
         const noResultsStr = await window.bcnI18n.getPhrase('lm_no_results');
 
+        let typingTimer: ?number;
+        const typingTimerInterval = 5000; // ms
+
         return div(
             '.search.flex-grow',
             i('.icon-search', { 'aria-hidden': true }),
@@ -106,11 +109,14 @@ class APISearchStatic extends Component {
                 `.${searchType}`,
                 {
                     type: 'text',
-                    oninput: (event) => {
+                    onkeyup: (event) => {
                         const { target } = event;
-
-                        this.queryObj.query = target.value;
-                        this.doSearch();
+                        clearTimeout(typingTimer);
+                        typingTimer = setInterval(typingTimerInterval, () => {
+                            alert('timer is done!');
+                            this.queryObj.query = target.value;
+                            this.doSearch();
+                        });
                     },
                     onkeypress: (event) => {
                         const {
