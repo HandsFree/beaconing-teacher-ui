@@ -28,7 +28,7 @@ require (
 	github.com/thinkerou/favicon v0.1.0
 	github.com/ugorji/go/codec v0.0.0-20180927125128-99ea80c8b19a // indirect
 	golang.org/x/net v0.0.0-20181114230037-adae6a3d119a // indirect
-	golang.org/x/sync v0.0.0-20180314180146-1d60e4601c6f // indirect
+	golang.org/x/sync v0.0.0-20181116125742-42b317875d0f // indirect
 	golang.org/x/sys v0.0.0-20181107220648-66b7b1311ac8 // indirect
 	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
 	gopkg.in/go-playground/validator.v8 v8.18.2 // indirect
