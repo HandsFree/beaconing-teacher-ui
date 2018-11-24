@@ -10,7 +10,7 @@ require (
 	github.com/getsentry/raven-go v0.1.0
 	github.com/gin-contrib/gzip v0.0.0-20181105052825-d9117ce29a07
 	github.com/gin-contrib/sentry v0.0.0-20180827025903-aa42345b40e5
-	github.com/gin-contrib/sessions v0.0.0-20180827025425-58cbcf30135c
+	github.com/gin-contrib/sessions v0.0.0-20181124114733-7687b645ca6b
 	github.com/gin-contrib/sse v0.0.0-20170109093832-22d885f9ecc7 // indirect
 	github.com/gin-gonic/gin v1.3.0
 	github.com/golang/protobuf v1.2.0 // indirect
