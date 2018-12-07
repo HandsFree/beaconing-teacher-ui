@@ -27,7 +27,7 @@ require (
 	github.com/stretchr/testify v1.2.2
 	github.com/thinkerou/favicon v0.1.0
 	github.com/ugorji/go/codec v0.0.0-20180927125128-99ea80c8b19a // indirect
-	golang.org/x/net v0.0.0-20181201014815-351d144fa1fc // indirect
+	golang.org/x/net v0.0.0-20181207224725-610586996380 // indirect
 	golang.org/x/sync v0.0.0-20181116125742-42b317875d0f // indirect
 	golang.org/x/sys v0.0.0-20181207005210-70b957f3b65e // indirect
 	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
