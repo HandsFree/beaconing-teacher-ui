@@ -78,7 +78,7 @@
     "webpack": "4.28.2",
     "webpack-cli": "3.1.2",
     "webpack-dashboard": "2.0.0",
-    "webpack-dev-server": "3.1.12"
+    "webpack-dev-server": "3.1.13"
   },
   "dependencies": {
     "@babel/runtime-corejs2": "^7.1.2",
