@@ -21,6 +21,7 @@ github.com/getsentry/raven-go v0.2.0/go.mod h1:KungGk8q33+aIAZUIVWZDr2OfAEBsO49P
 github.com/gin-contrib/gzip v0.0.0-20180827025821-1c01330167a8 h1:AKWxItA8hSxKr2wNk5rPTHiMLKQamnPZL60ykA9qPMw=
 github.com/gin-contrib/gzip v0.0.0-20180827025821-1c01330167a8/go.mod h1:Xp4LajbnAl27NCdps5OWT+HTKYKWScmzTCli8Kjs7LE=
 github.com/gin-contrib/gzip v0.0.0-20181105052825-d9117ce29a07/go.mod h1:Iw1jLht8y5t9ZN91Qt/XzlT18He4kT9+LpFJkj4H/vY=
+github.com/gin-contrib/gzip v0.0.0-20190101234729-0eb78e93402e/go.mod h1:fGBJBCdt6qCZuCAOwWuFhBB4OOq9EFqlo5dEaFhhu5w=
 github.com/gin-contrib/sentry v0.0.0-20180827025903-aa42345b40e5 h1:RiiUViASOJXmlBuyAj+NEMo2XNhvu87/vP53vhFzaRs=
 github.com/gin-contrib/sentry v0.0.0-20180827025903-aa42345b40e5/go.mod h1:5j0zXgpfMv4byKaAkkJdV4tGp0GizpJGLpRsvlLEHCQ=
 github.com/gin-contrib/sentry v0.0.0-20181227224406-7a3855b0e756/go.mod h1:yLjx/Q5D3EqST12inhkwvLiEy5Rqh7G+205EnCXPRyk=
@@ -101,6 +102,7 @@ golang.org/x/sys v0.0.0-20181218235320-074acd46bca6/go.mod h1:STP8DvDyc/dI5b8T5h
 golang.org/x/sys v0.0.0-20181220225046-b00e65af1da0/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
 golang.org/x/sys v0.0.0-20181221143128-b4a75ba826a6/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
 golang.org/x/sys v0.0.0-20181222004617-b4a75ba826a6/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
+golang.org/x/sys v0.0.0-20181228144115-9a3f9b0469bb/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
 golang.org/x/sys v0.0.0-20181228224445-9a3f9b0469bb/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405 h1:yhCVgyC4o1eVCa2tZl7eS0r+SDo693bJlVdllGtEeKM=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
