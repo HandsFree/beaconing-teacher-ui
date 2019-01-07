@@ -29,7 +29,7 @@ require (
 	github.com/ugorji/go/codec v0.0.0-20180927125128-99ea80c8b19a // indirect
 	golang.org/x/net v0.0.0-20181220225039-927f97764cc3 // indirect
 	golang.org/x/sync v0.0.0-20181221223514-37e7f081c4d4 // indirect
-	golang.org/x/sys v0.0.0-20190106195353-1775db3f06b5 // indirect
+	golang.org/x/sys v0.0.0-20190107235148-20be8e55dc7b // indirect
 	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
 	gopkg.in/go-playground/validator.v8 v8.18.2 // indirect
 	gopkg.in/h2non/filetype.v1 v1.0.5
