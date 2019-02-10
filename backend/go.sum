@@ -3,6 +3,7 @@ github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03
 github.com/HandsFree/beaconing-teacher-ui v0.7.0 h1:hGp5XcAS5Kv9bieMQu+ol0brXAl+nB3t/2eGxIpPhB0=
 github.com/allegro/bigcache v1.1.0 h1:MLuIKTjdxDc+qsG2rhjsYjsHQC5LUGjIWzutg7M+W68=
 github.com/allegro/bigcache v1.1.0/go.mod h1:Cb/ax3seSYIx7SuZdm2G2xzfwmv3TPSk2ucNfQESPXM=
+github.com/allegro/bigcache v1.2.0/go.mod h1:Cb/ax3seSYIx7SuZdm2G2xzfwmv3TPSk2ucNfQESPXM=
 github.com/bcicen/grmon v0.0.0-20180322004815-9e5e49d99f7c h1:JRvjo0TzkNJCSOa7EWtbIAdrmBUbLiY3cfefOYBFa0E=
 github.com/bcicen/grmon v0.0.0-20180322004815-9e5e49d99f7c/go.mod h1:KEaJdcTbyvaT6Oyx9bbHwMVXNy9MTe7loXHNvaS+4Rg=
 github.com/boj/redistore v0.0.0-20180917114910-cd5dcc76aeff/go.mod h1:+RTT1BOk5P97fT2CiHkbFQwkK3mjsFAP6zCYV2aXtjw=
