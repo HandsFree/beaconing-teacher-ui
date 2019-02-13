@@ -5919,10 +5919,10 @@ pluralize@^1.2.1:
   resolved "https://registry.yarnpkg.com/pluralize/-/pluralize-1.2.1.tgz#d1a21483fd22bb41e58a12fa3421823140897c45"
   integrity sha1-0aIUg/0iu0HlihL6NCGCMUCJfEU=
 
-popper.js@^1.14.4:
-  version "1.14.4"
-  resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.14.4.tgz#8eec1d8ff02a5a3a152dd43414a15c7b79fd69b6"
-  integrity sha1-juwdj/AqWjoVLdQ0FKFce3n9abY=
+popper.js@^1.14.7:
+  version "1.14.7"
+  resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.14.7.tgz#e31ec06cfac6a97a53280c3e55e4e0c860e7738e"
+  integrity sha512-4q1hNvoUre/8srWsH7hnoSJ5xVmIL4qgz+s4qf2TnJIMyZFUFMGH+9vE7mXynAlHSZ/NdTmmow86muD0myUkVQ==
 
 portfinder@^1.0.9:
   version "1.0.17"
@@ -7774,12 +7774,12 @@ timsort@^0.3.0:
   resolved "https://registry.yarnpkg.com/timsort/-/timsort-0.3.0.tgz#405411a8e7e6339fe64db9a234de11dc31e02bd4"
   integrity sha1-QFQRqOfmM5/mTbmiNN4R3DHgK9Q=
 
-tippy.js@^3.0.3:
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/tippy.js/-/tippy.js-3.0.3.tgz#ee543943808201e75d3a9369464576585d9d5305"
-  integrity sha512-o8SwbiB0ZzddP4AIpL37vqMEVa8CtS5L/qTg9qgBPcFX7Jbor6jgPu6ZbVqRCTLvtDbR4ENkX6JpUfzIoB+xQg==
+tippy.js@^4.0.0:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/tippy.js/-/tippy.js-4.0.1.tgz#abe33909253e7e5266110ee05b80ba631da13951"
+  integrity sha512-tpq0ITPBmLND0WEuVPEnCI3IGDCZjO81o/qdQFAsHdIhtUJ6vx7eOmbBWRmPm/StLC7Cbbqmba+G8VixAeyVzA==
   dependencies:
-    popper.js "^1.14.4"
+    popper.js "^1.14.7"
 
 tmp@^0.0.33:
   version "0.0.33"
