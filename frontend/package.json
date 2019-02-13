@@ -53,7 +53,7 @@
     "babel-eslint": "10.0.1",
     "babel-loader": "8.0.5",
     "cache-loader": "1.2.5",
-    "color-convert": "1.9.3",
+    "color-convert": "2.0.0",
     "css-loader": "1.0.1",
     "cssnano": "4.1.9",
     "eslint": "5.13.0",
