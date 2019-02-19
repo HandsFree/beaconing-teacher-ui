@@ -31,7 +31,7 @@ require (
 	golang.org/x/sync v0.0.0-20181221223514-37e7f081c4d4 // indirect
 	golang.org/x/sys v0.0.0-20190215235406-d0b11bdaac8a // indirect
 	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
-	gopkg.in/go-playground/validator.v8 v8.18.2 // indirect
+	gopkg.in/go-playground/validator.v9 v9.27.0 // indirect
 	gopkg.in/h2non/filetype.v1 v1.0.5
 	gopkg.in/yaml.v2 v2.2.2 // indirect
 )
