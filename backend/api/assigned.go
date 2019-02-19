@@ -169,7 +169,8 @@ func GetAssignedGLPS(s *gin.Context, studentID uint64, includeGroups bool) strin
 
 	resp, err := cache.Get(apiPath)
 	if err != nil {
-		resp, err, status := DoTimedRequest(s, "GET", apiPath)
+		var status int
+		resp, err, status = DoTimedRequest(s, "GET", apiPath)
 		if err != nil {
 			util.Error("GetAssignedGLPS", err.Error())
 			return ""
@@ -181,7 +182,6 @@ func GetAssignedGLPS(s *gin.Context, studentID uint64, includeGroups bool) strin
 		}
 
 		cache.Set(apiPath, []byte(resp))
-		return string(resp)
 	}
 
 	return string(resp)

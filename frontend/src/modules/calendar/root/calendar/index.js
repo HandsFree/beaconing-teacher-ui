@@ -46,22 +46,16 @@ class CalendarDayView extends Component {
             return div();
         }
 
-        // FIXME the events we're passed here are wrong?
-        // there is only a date passed.
-
-        const eventsObj = nullishCheck(JSON.parse(data), []);
-
-        let dateSample = null;
+        const { date, encodedEvents } = JSON.parse(data);
+        const events = JSON.parse(encodedEvents);
 
         const calendarEventSet = [];
-        for (const event of eventsObj) {
+        for (const event of events) {
             calendarEventSet.push(new CalendarDaySlot().attach(event));
-
-            // sample a date. these events should all be the
-            // same day so we just take the last event in the list
-            const { date } = event;
-            dateSample = date;
         }
+
+        // FIXME(i18n)
+        const dateEl = `${moment(date).format('dddd - Do of MMMM, YYYY')} (${events.length} events today)`;
 
         return div(
             '.calendar-day-container',
@@ -82,8 +76,26 @@ class CalendarDayView extends Component {
 
             div(
                 '.calendar-day-heading',
-                p(moment(dateSample).format('dddd - Do of MMMM, YYYY')),
+                p(dateEl),
             ),
+
+            div(
+                '.calendar-day-slot',
+                p(
+                    a(
+                        '.fake-link',
+                        {
+                            onclick: () => {
+                                // TODO: show or redirect to some kind of
+                                // GLP listing page.
+                                alert('hello world');
+                            },
+                        },
+                        'Assign a new event',
+                    ),
+                ),
+            ),
+
             await Promise.all(calendarEventSet).then(el => el),
         );
     }

@@ -233,14 +233,14 @@
 
     prefer_nts: {
         'en-GB': 'Prefer not to say',
-        'fr-FR': 'Préfère ne rien dire',
-        'es-ES': 'Prefiero no decirlo',
+        'fr-FR': '',
+        'es-ES': '',
         'it-IT': '',
-        'de-DE': 'Ich bevorzuge, dies nicht anzugeben',
-        'ro-RO': 'Prefer sa nu spun',
-        'pl-PL': 'Wolę nie mówić',
-        'tr-TR': 'Sizi İlgilendirmez',
-        'pt-PT': 'Prefiro não dizer'
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     creating: {
@@ -281,26 +281,26 @@
 
     updating: {
         'en-GB': 'Updating',
-        'fr-FR': 'Mise à jour',
-        'es-ES': 'Actualizando',
-        'it-IT': 'In aggiornamento',
-        'de-DE': 'Aktualisiere',
-        'ro-RO': 'Actualizare',
-        'pl-PL': 'Aktualizuję',
-        'tr-TR': 'Güncelliyor',
-        'pt-PT': 'Atualizando'
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     saving: {
         'en-GB': 'Saving',
-        'fr-FR': 'Sauvegarde',
-        'es-ES': 'Guardando',
+        'fr-FR': '',
+        'es-ES': '',
         'it-IT': '',
-        'de-DE': 'Speichern',
-        'ro-RO': 'Salvare',
-        'pl-PL': 'Zapisuję',
-        'tr-TR': 'Saklıyor',
-        'pt-PT': 'Guardar'
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     delete: {
@@ -353,38 +353,38 @@
 
     done: {
         'en-GB': 'Done',
-        'fr-FR': 'Fait',
-        'es-ES': 'Completado',
-        'it-IT': 'Fatto',
-        'de-DE': 'Fertig',
-        'ro-RO': 'Terminat',
-        'pl-PL': 'Gotowe',
-        'tr-TR': 'Sonlandır',
-        'pt-PT': 'Concluído'
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     username: {
         'en-GB': 'Username',
-        'fr-FR': 'Nom d’utilisateur',
-        'es-ES': 'Nombre de usuario',
+        'fr-FR': '',
+        'es-ES': '',
         'it-IT': '',
-        'de-DE': 'Nutzername',
-        'ro-RO': 'Nume utilizator',
-        'pl-PL': 'Nazwa użytkownika',
-        'tr-TR': 'Kullanıcı Adı',
-        'pt-PT': 'Nome the utilizador'
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     none: {
         'en-GB': 'None',
-        'fr-FR': 'Aucun',
-        'es-ES': 'Ninguno',
+        'fr-FR': '',
+        'es-ES': '',
         'it-IT': '',
-        'de-DE': 'Kein',
-        'ro-RO': 'Nimic',
-        'pl-PL': 'Żaden',
-        'tr-TR': 'Hiçbiri',
-        'pt-PT': '' // FIXME (Nenhum/Nada depends on context)
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     remove: {
@@ -573,14 +573,14 @@
 
     widget_so_few: {
         'en-GB': 'This group has too few students! (needs 6 or more)',
-        'fr-FR': 'Le groupe n’a pas assez d’étudiants (6 au moins)',
-        'es-ES': '¡El grupo tiene pocos estudiantes! (Se necesitan 6 o más)',
-        'it-IT': 'Questo gruppo ha pochi studenti! (minimo 6)',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
         'de-DE': 'Diese Gruppe hat zu wenige Schüler! (es müssen mindestens 6 sein)',
         'ro-RO': 'Acest grup conține prea puțini studenți! (trebuie să fie 6 sau mai mulți)',
         'pl-PL': '',
-        'tr-TR': 'Bu grubun yeterli öğrencisi yok (6 ya da daha fazla gerekli)',
-        'pt-PT': 'Este grupo tem muito poucos alunos (mín.: 6)!'
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     widget_so_bp: {
@@ -779,14 +779,14 @@
 
     cr_student_fn_desc: {
         'en-GB': 'First name of the student.',
-        'fr-FR': 'Prénom de l’étudiant',
-        'es-ES': 'Nombre del estudiante',
-        'it-IT': 'Nome dello studente',
-        'de-DE': 'Schülervorname',
-        'ro-RO': 'Prenumele elevului',
-        'pl-PL': 'Imię ucznia',
-        'tr-TR': 'Öğrencinin adı',
-        'pt-PT': 'Primeiro nome do aluno.'
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     cr_student_ln: {
@@ -815,50 +815,50 @@
 
     cr_student_ln_desc: {
         'en-GB': 'Last name of the student.',
-        'fr-FR': 'Nom de l’étudiant',
-        'es-ES': 'Apellido del estudiante',
-        'it-IT': 'Cognome delo studente',
-        'de-DE': 'Schülernachname',
-        'ro-RO': 'Numele elevului',
-        'pl-PL': 'Nazwisko ucznia',
-        'tr-TR': 'Öğrencinin soyadı',
-        'pt-PT': 'Último nome do aluno.'
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     cr_student_yg: {
         'en-GB': 'Student Year Group',
-        'fr-FR': 'Classe d’âge',
-        'es-ES': 'Grupo del año del estudiante',
-        'it-IT': 'Gruppo dell’anno dello studente',
-        'de-DE': 'Schülerjahrgangsgruppe',
-        'ro-RO': 'Anul de studiu al elevului',
-        'pl-PL': 'Grupa wiekowa/Klasa',
-        'tr-TR': 'Öğrencinin yaş grubu',
-        'pt-PT': 'Ano letivo do aluno'
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     cr_enter_yg: {
         'en-GB': 'Enter Year Group',
-        'fr-FR': 'Entrer le classe d’âge',
-        'es-ES': 'Introduzca año del grupo',
-        'it-IT': 'Inserire anno del gruppo',
-        'de-DE': 'Geben Sie die Jahrgangsgruppe ein',
-        'ro-RO': 'Anul de studiu al clasei',
-        'pl-PL': 'Wprowadź grupę wiekową/klasę',
-        'tr-TR': 'Yaş grubunu girin',
-        'pt-PT': 'Introduza o ano letivo'
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     cr_student_yg_desc: {
         'en-GB': 'Year group or grade the student belongs to.',
-        'fr-FR': 'Classe d’âge ou classe de l’étudiant',
-        'es-ES': 'Año del grupo o curso académico al que pertenece el estudiante.',
-        'it-IT': 'Anno del gruppo (o livello della classe) cui lo studente appartiene.',
-        'de-DE': 'Jahrgang der Schülerin / des Schülers.',
-        'ro-RO': 'Anul clasei sau ciclul de învățământ la care aparține elevul.',
-        'pl-PL': 'Grupa wiekowa bądź klasa, do której uczeń należy',
-        'tr-TR': 'Öğrencinin dahil olduğu yaş grubu veya sınıfı',
-        'pt-PT': 'Ano letivo ou curricular a que pertence o aluno'
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     cr_student_lang: {
@@ -875,14 +875,14 @@
 
     cr_student_lang_desc: {
         'en-GB': 'Student\'s interface will be translated to the chosen language.',
-        'fr-FR': 'L’interface étudiant sera traduite dans la langue choisie.',
-        'es-ES': 'La interfaz del estudiante será traducida al idioma elegido.',
-        'it-IT': 'L’interfaccia dello studente sarà tradotta nel linguaggio scelto.',
-        'de-DE': 'Die Bedienoberfläche der Schülerin / des Schülers wird in diese Sprache übersetzt.',
-        'ro-RO': 'Interfața pentru elev va fi tradusă in limba aleasă.',
-        'pl-PL': 'Interfejs ucznia będzie przetłumaczony na wybrany język',
-        'tr-TR': 'Öğrenci arayüzü seçilen dile çevrilecektir.',
-        'pt-PT': 'A interface do aluno será traduzida para o idioma escolhido'
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     cr_assigned_glps: {
@@ -1139,14 +1139,14 @@
 
     cr_group_name_desc: {
         'en-GB': 'Name for the new group. It must be unique.',
-        'fr-FR': 'Nom pour le nouveau groupe. Celui-ci doit être unique.',
-        'es-ES': 'Nombre del nuevo grupo. Debe ser único.',
-        'it-IT': 'Nome del nuovo gruppo. Deve essere unico.',
-        'de-DE': 'Name der neuen Gruppe. Er muss einzigartig sein.',
-        'ro-RO': 'Numele noii clase. Trebuie sa fie unic.',
-        'pl-PL': 'Nazwa nowej grupy (powinna być unikalna).',
-        'tr-TR': 'Grubun adı. Tekil bir adı olmalı.',
-        'pt-PT': 'Nome do novo grupo. Deverá ser único.'
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     cr_group_category: {
@@ -1187,26 +1187,26 @@
 
     cr_edit_student_info: {
         'en-GB': 'Edit Student Information',
-        'fr-FR': 'Editer les informations étudiant',
-        'es-ES': 'Editar información del estudiante',
-        'it-IT': 'Modifica le informazioni dello studente',
-        'de-DE': 'Schülerinformation bearbeiten',
-        'ro-RO': 'Modificare informații elev',
-        'pl-PL': 'Edytuj informacje o uczniu',
-        'tr-TR': 'Öğrenci bilgilerini güncelle',
-        'pt-PT': 'Editar informação do estudante'
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     cr_group_enter_name: {
         'en-GB': 'Enter Group Name',
-        'fr-FR': 'Entre le nom du groupe',
-        'es-ES': 'Introduzca nombre del grupo',
-        'it-IT': 'Inserisci nome del gruppo',
-        'de-DE': 'Geben Sie den Gruppennamen ein',
-        'ro-RO': 'Introduceți numele clasei',
-        'pl-PL': 'Wprowadź nazwę grupy',
-        'tr-TR': 'Grup adını girin',
-        'pt-PT': 'Introduzir nome do grupo'
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     cr_go_to_lib: {
@@ -3343,272 +3343,271 @@
 
     err_no_assigned_glps: {
         'en-GB': 'There are no assigned GLPs. GLPs can be assigned in the Library.',
-        'fr-FR': 'Il n’y a pas de GLP d’attribué (les GLP peuvent s’attribuer dans la bibliothèque)',
-        'es-ES': 'No hay GLPs asignados. Los GLPs se pueden asignar en la biblioteca',
-        'it-IT': 'Non ci sono GLP assegnati. I GLP possono essere assegnati nella Biblioteca',
-        'de-DE': 'Keine zugewiesenen GLPs vorhanden. GLPs können in der Bibliothek zugewiesen werden',
-        'ro-RO': 'Nu sunt atribuite locații. Se pot atribui locații în Bibliotecă',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
         'pl-PL': '',
-        'tr-TR': 'Hiç atanmış GLP yok. GLP’ler Kütüphane’den atanabilir',
-        'pt-PT': 'Não há GLP atribuídos. Pode fazer essa atribuição na Biblioteca'
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     err_student_una: {
         'en-GB': 'Student not unassigned!',
-        'fr-FR': 'Étudiant non assigné!',
-        'es-ES': '¡Estudiante no asignado!',
-        'it-IT': 'Studente non scollegato!',
-        'de-DE': 'Zuweisung der Schülerin / des Schülers nicht entfernt!',
-        'ro-RO': 'Elev neatribuit!',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
         'pl-PL': '',
-        'tr-TR': 'Öğrencinin ataması geri alınamadı!',
-        'pt-PT': 'Aluno não atribuído!'
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     err_group_una: {
         'en-GB': 'Group not unassigned!',
-        'fr-FR': 'Groupe non assigné!',
-        'es-ES': '¡Grupo no asignado!',
-        'it-IT': 'Gruppo non scollegato!',
-        'de-DE': 'Zuweisung der Gruppe nicht entfernt!',
-        'ro-RO': 'Lecție neatribuită!',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
         'pl-PL': '',
-        'tr-TR': 'Grubun ataması geri alınamadı!',
-        'pt-PT': 'Grupo não atribuído!'
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     err_student_nd: {
         'en-GB': 'Student not deleted!',
-        'fr-FR': 'Étudiant non supprimé !',
-        'es-ES': '¡Estudiante no eliminado!',
-        'it-IT': 'Studente non cancellato!',
-        'de-DE': 'Schüler/in nicht gelöscht!',
-        'ro-RO': 'Elevul nu este șters!',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
         'pl-PL': '',
-        'tr-TR': 'Öğrenci silinemedi!',
-        'pt-PT': 'Aluno não apagado!'
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     err_group_nd: {
         'en-GB': 'Group not deleted!',
-        'fr-FR': 'Groupe non supprimé !',
-        'es-ES': '¡Grupo no eliminado!',
-        'it-IT': 'Gruppo non cancellato!',
-        'de-DE': 'Gruppe nicht gelöscht!',
-        'ro-RO': 'Clasa nu este ștearsă!',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
         'pl-PL': '',
-        'tr-TR': 'Grup silinemedi!',
-        'pt-PT': 'Grupo não apagado!'
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     err_student_nu: {
         'en-GB': 'Student not updated!',
-        'fr-FR': 'Étudiant non mis à jour ',
-        'es-ES': '¡Estudiante no actualizado!',
-        'it-IT': 'Studente non aggiornato!',
-        'de-DE': 'Schüler/in nicht aktualisiert!',
-        'ro-RO': 'Elevul nu este actualizat!',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
         'pl-PL': '',
-        'tr-TR': 'Öğrenci güncellenmedi!',
-        'pt-PT': 'Aluno não atualizado!'
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     err_group_nu: {
         'en-GB': 'Group not updated!',
-        'fr-FR': 'Groupe non mis à jour !',
-        'es-ES': '¡Grupo no actualizado!',
-        'it-IT': 'Gruppo non aggiornato!',
-        'de-DE': 'Gruppe nicht aktualisiert!',
-        'ro-RO': 'Clasă neactualizată!',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
         'pl-PL': '',
-        'tr-TR': 'Grup güncellenmedi!',
-        'pt-PT': 'Grupo não atualizado!'
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     err_student_nc: {
         'en-GB': 'Student not created!',
-        'fr-FR': 'Étudiant non crée !',
-        'es-ES': '¡Estudiante no creado!',
-        'it-IT': 'Studente non creato!',
-        'de-DE': 'Schüler/in nicht erstellt!',
-        'ro-RO': 'Elevul nu este creat!',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
         'pl-PL': '',
-        'tr-TR': 'Öğrenci yaratılamadı!',
-        'pt-PT': 'Aluno não criado!'
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     err_group_nc: {
         'en-GB': 'Group not created!',
-        'fr-FR': 'Groupe non crée !',
-        'es-ES': '¡Grupo no creado!',
-        'it-IT': 'Gruppo non creato!',
-        'de-DE': 'Gruppe nicht erstellt!',
-        'ro-RO': 'Clasa nu este creată!',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
         'pl-PL': '',
-        'tr-TR': 'Grup yaratılamadı!',
-        'pt-PT': 'Grupo não criado!'
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     no_students_assigned: {
         'en-GB': 'No students are assigned to this group. Please edit the group to add students.',
-        'fr-FR': 'Aucun étudiant dans ce groupe. Merci d’éditer le groupe afin de lui ajouter des membres.',
-        'es-ES': 'No hay estudiantes asignados a este grupo. Edite el grupo para añadir estudiantes.',
-        'it-IT': 'Nessuno studente è assegnato a questo gruppo. Modifica il gruppo per aggiungere studenti.',
-        'de-DE': 'Zu dieser Gruppe wurden keine Schüler/innen hinzugefügt. Bitte bearbeiten Sie die Gruppe, um Schüler/innen hinzuzufügen.',
-        'ro-RO': 'La această clasă nu sunt atribuiți elevi. Editați pentru adăugare de elevi.',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
         'pl-PL': '',
-        'tr-TR': 'Bu gruba hiç bir öğrenci atanmamış. Lütfen grubu düzenleyerek öğrenci ekleyin.',
-        'pt-PT': 'Não há alunos atribuídos a este grupo. Edite-o e inclua alunos.'
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     err_teacher_ne: {
         'en-GB': 'Teacher not edited!',
-        'fr-FR': 'Enseignant non édité !',
-        'es-ES': '¡Profesor no editado!',
-        'it-IT': 'Insegnante non modificato!',
-        'de-DE': 'Lehrperson nicht bearbeitet!',
-        'ro-RO': 'Profesorul nu este modificat!',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
         'pl-PL': '',
-        'tr-TR': 'Öğretmen düzenlenemedi!',
-        'pt-PT': 'Professor não editado!'
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     err_group_na: {
         'en-GB': 'Group not assigned!',
-        'fr-FR': 'Groupe non assigné !',
-        'es-ES': '¡Grupo no asignado!',
-        'it-IT': 'Gruppo non assegnato!',
-        'de-DE': 'Gruppe nicht zugewiesen!',
-        'ro-RO': 'Clasa nu este atribuită!',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
         'pl-PL': '',
-        'tr-TR': 'Gruba atanamadı!',
-        'pt-PT': 'Grupo não atribuído!'
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     err_student_na: {
         'en-GB': 'Student not assigned!',
-        'fr-FR': 'Étudiant non assigné !',
-        'es-ES': '¡Estudiante no asignado!',
-        'it-IT': 'Studente non assegnato!',
-        'de-DE': 'Schüler/in nicht zugewiesen!',
-        'ro-RO': 'Elevul nu este atribuit!',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
         'pl-PL': '',
-        'tr-TR': 'Öğrenciye atanamadı!',
-        'pt-PT': 'Aluno não atribuído!'
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     err_plan_nc: {
         'en-GB': 'Plan not created!',
-        'fr-FR': 'Plan non crée !',
-        'es-ES': '¡Plan no creado!',
-        'it-IT': 'Piano non creato!',
-        'de-DE': 'Lehrplan nicht erstellt!',
-        'ro-RO': 'Planul nu este creat!',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
         'pl-PL': '',
-        'tr-TR': 'Plan yaratılamadı!',
-        'pt-PT': 'Plano não criado!'
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     err_glp_nd: {
         'en-GB': 'GLP not deleted!',
-        'fr-FR': 'GLP non supprimé !',
-        'es-ES': '¡GLP no eliminado!',
-        'it-IT': 'GLP non cancellato!',
-        'de-DE': 'GLP nicht gelöscht!',
-        'ro-RO': 'Locația nu este ștearsă',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
         'pl-PL': '',
-        'tr-TR': 'GLP silinemedi!',
-        'pt-PT': 'GLP não apagado!'
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     err_more_students_needed: {
         'en-GB': 'A minimum of 2 students is required to create a group!',
-        'fr-FR': 'Un minimum de 2 étudiants est requis pour créer un groupe.',
-        'es-ES': '¡Son necesarios al menos 2 estudiantes para crear un grupo!',
-        'it-IT': 'Sono necessari almeno 2 studenti per creare un gruppo!',
-        'de-DE': 'Um eine Gruppe zu erstellen, müssen mindestens 2 Personen hinzugefügt werden.',
-        'ro-RO': 'Cel puțin doi elevi sunt necesari pentru a crea o clasă!',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
         'pl-PL': '',
-        'tr-TR': 'Bir grup yaratmak için en az 2 öğrenci gereklidir.',
-        'pt-PT': 'São necessários pelo menos 2 alunos para criar um grupo!'
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     err_required_empty: {
         'en-GB': 'Required field is empty!',
-        'fr-FR': 'Le champ requis est vide !',
-        'es-ES': '¡Un campo obligatorio está vacío!',
-        'it-IT': 'Il campo richiesto è vuoto!',
-        'de-DE': 'Pflichtfelder sind leer!',
-        'ro-RO': 'Câmp obligatoriu gol !',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
         'pl-PL': '',
-        'tr-TR': 'Doldurulması gerekli bir bölüm boş kalmış!',
-        'pt-PT': 'Um campo obrigatório está por preencher!'
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     err_plan_year_not_valid: {
         'en-GB': 'Year must be valid!',
-        'fr-FR': 'L’année doit être valide !',
-        'es-ES': '¡El año debe ser válido!',
-        'it-IT': 'L’anno deve essere valido!',
-        'de-DE': 'Das Jahr muss gültig sein!',
-        'ro-RO': 'Anul trebuie să fie valid!',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
         'pl-PL': '',
-        'tr-TR': 'Yıl geçerli olmalı!',
-        'pt-PT': 'O ano tem de ser válido!'
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     err_form: {
         'en-GB': 'Please check form for errors!',
-        'fr-FR': 'Vérifiez le formulaire, des erreurs existent !',
-        'es-ES': '¡Revise los errores del formulario!',
-        'it-IT': 'Per favore controlla il modulo per eventuali errori!',
-        'de-DE': 'Bitte überprüfen Sie das Formular auf Fehler!',
-        'ro-RO': 'Verificați erorile în formular!',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
         'pl-PL': '',
-        'tr-TR': 'Lütfen hataları kontrol edin!',
-        'pt-PT': 'Verifique se há erros na ficha.'
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     err_username_exists: {
         'en-GB': 'Username exists!',
-        'fr-FR': 'Le nom d’utilisateur existe déjà !',
-        'es-ES': '¡El nombre de usuario ya existe!',
-        'it-IT': 'Questo username esiste già!',
-        'de-DE': 'Nutzername existiert!',
-        'ro-RO': 'Utilizatorul există!',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
         'pl-PL': '',
-        'tr-TR': 'Kullanıcı adı zaten mevcut!',
-        'pt-PT': 'O nome de utilizador já existe.'
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     // Success Messages //
 
     sc_sa: {
         'en-GB': 'Successfully unassigned!',
-        'fr-FR': 'Bien assigné !',
-        'es-ES': '¡Asignación eliminada con éxito!',
-        'it-IT': 'Assegnato correttamente!',
-        'de-DE': 'Zuweisung erfolgreich entfernt!',
-        'ro-RO': 'Atribuire ștearsă!',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
         'pl-PL': '',
-        'tr-TR': 'Başarıyla atama geri alındı!',
-        'pt-PT': 'Atribuição com êxito!'
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     sc_student_del: {
         'en-GB': 'Student Deleted!',
-        'fr-FR': 'Étudiant effacé !',
-        'es-ES': '¡Estudiante eliminado!',
-        'it-IT': 'Studente cancellato!',
-        'de-DE': 'Schüler/in gelöscht!',
-        'ro-RO': 'Elev șters!',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
         'pl-PL': '',
-        'tr-TR': 'Öğrenci silindi!',
-        'pt-PT': 'Aluno apagado!'
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     sc_student_cre: {
-        // no translation for this yet.
         'en-GB': 'Student Created!',
         'fr-FR': '',
         'es-ES': '',
@@ -3622,110 +3621,110 @@
 
     sc_group_del: {
         'en-GB': 'Group Deleted!',
-        'fr-FR': 'Groupe effacé !',
-        'es-ES': '¡Grupo eliminado!',
-        'it-IT': 'Gruppo cancellato!',
-        'de-DE': 'Gruppe gelöscht!',
-        'ro-RO': 'Clasă ștearsă!',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
         'pl-PL': '',
-        'tr-TR': 'Grup silindi!',
-        'pt-PT': 'Grupo apagado!'
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     sc_group_cre: {
         'en-GB': 'Group Created!',
-        'fr-FR': 'Groupe crée !',
-        'es-ES': '¡Grupo creado!',
-        'it-IT': 'Gruppo creato!',
-        'de-DE': 'Gruppe erstellt!',
-        'ro-RO': 'Clasa creată!',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
         'pl-PL': '',
-        'tr-TR': 'Grup yaratıldı!',
-        'pt-PT': 'Grupo criado!'
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     sc_glp_del: {
         'en-GB': 'GLP deleted!',
-        'fr-FR': 'GLP effacé !',
-        'es-ES': '¡GLP eliminado!',
-        'it-IT': 'GLP cancellato!',
-        'de-DE': 'GLP gelöscht!',
-        'ro-RO': 'Locație ștearsă!',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
         'pl-PL': '',
-        'tr-TR': 'GLP silindi!',
-        'pt-PT': 'GLP apagado!'
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     sc_glp_cre: {
         'en-GB': 'Plan Created!',
-        'fr-FR': 'Plan crée !',
-        'es-ES': '¡Plan creado!',
-        'it-IT': 'Piano creato!',
-        'de-DE': 'Lehrplan erstellt!',
-        'ro-RO': 'Planul creat!',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
         'pl-PL': '',
-        'tr-TR': 'Plan yaratıldı!',
-        'pt-PT': 'Plano criado!'
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     sc_student_up: {
         'en-GB': 'Student Updated!',
-        'fr-FR': 'Étudiant mis à jour !',
-        'es-ES': '¡Estudiante actualizado!',
-        'it-IT': 'Studente aggiornato!',
-        'de-DE': 'Schüler/in aktualisiert!',
-        'ro-RO': 'Elev actualizat!',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
         'pl-PL': '',
-        'tr-TR': 'Öğrenci güncellendi!',
-        'pt-PT': 'Aluno atualizado!'
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     sc_group_up: {
         'en-GB': 'Group Updated!',
-        'fr-FR': 'Groupe mis à jour !',
-        'es-ES': '¡Grupo actualizado!',
-        'it-IT': 'Gruppo aggiornato!',
-        'de-DE': 'Gruppe aktualisiert!',
-        'ro-RO': 'Clasa actualizată!',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
         'pl-PL': '',
-        'tr-TR': 'Grup güncellenedi!',
-        'pt-PT': 'Grupo atualizado!'
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     sc_teacher_edited: {
         'en-GB': 'Teacher edited!',
-        'fr-FR': 'Enseignant édité !',
-        'es-ES': '¡Profesor editado!',
-        'it-IT': 'Insegnante modificato!',
-        'de-DE': 'Lehrperson bearbeitet!',
-        'ro-RO': 'Profesor modificat!',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
         'pl-PL': '',
-        'tr-TR': 'Öğretmen düzenlendi!',
-        'pt-PT': 'Professor editado!'
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     sc_group_asg: {
         'en-GB': 'Group assigned!',
-        'fr-FR': 'Groupe assigné !',
-        'es-ES': '¡Grupo asignado!',
-        'it-IT': 'Gruppo assegnato!',
-        'de-DE': 'Gruppe zugewiesen!',
-        'ro-RO': 'Clasa atribuită!',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
         'pl-PL': '',
-        'tr-TR': 'Gruba atandı!',
-        'pt-PT': 'Grupo atribuído!'
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     sc_student_asg: {
         'en-GB': 'Student assigned!',
-        'fr-FR': 'Étudiant assigné !',
-        'es-ES': '¡Estudiante asignado!',
-        'it-IT': 'Studente assegnato!',
-        'de-DE': 'Schüler/in zugewiesen!',
-        'ro-RO': 'Elev atribuit!',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
         'pl-PL': '',
-        'tr-TR': 'Öğrenciye atandı!',
-        'pt-PT': 'Aluno atribuído!'
+        'tr-TR': '',
+        'pt-PT': ''
     },
 
     // Loading Messages //
@@ -3744,50 +3743,50 @@
 
     ld_plans: {
         'en-GB': 'Loading Plans',
-        'fr-FR': 'Chargement des plans',
-        'es-ES': 'Cargando planes',
-        'it-IT': 'Sto caricando i Piani',
-        'de-DE': 'Lädt Lehrpläne',
-        'ro-RO': 'Încărcare planuri',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
         'pl-PL': '',
-        'tr-TR': 'Planları Yüklüyor',
-        'pt-PT': 'A carregar planos',
+        'tr-TR': '',
+        'pt-PT': '',
     },
 
     ld_plan: {
         'en-GB': 'Loading Plan',
-        'fr-FR': 'Chargement du plan',
-        'es-ES': 'Cargando plan',
-        'it-IT': 'Sto caricando il Piano',
-        'de-DE': 'Lädt Lehrplan',
-        'ro-RO': 'Încărcare plan',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
         'pl-PL': '',
-        'tr-TR': 'Planı Yüklüyor',
-        'pt-PT': 'A carregar o plano',
+        'tr-TR': '',
+        'pt-PT': '',
     },
 
     ld_students: {
         'en-GB': 'Loading Students',
-        'fr-FR': 'Chargement des étudiants',
-        'es-ES': 'Cargando estudiantes',
-        'it-IT': 'Sto caricando gli Studenti',
-        'de-DE': 'Lädt Schüler',
-        'ro-RO': 'Încărcare elevi',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
         'pl-PL': '',
-        'tr-TR': 'Öğrencileri Yüklüyor',
-        'pt-PT': 'A carregar alunos',
+        'tr-TR': '',
+        'pt-PT': '',
     },
 
     ld_groups: {
         'en-GB': 'Loading Groups',
-        'fr-FR': 'Chargement des groupes',
-        'es-ES': 'Cargando grupos',
-        'it-IT': 'Sto caricando i Gruppi',
-        'de-DE': 'Lädt Gruppen',
-        'ro-RO': 'Încărcare clase',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
         'pl-PL': '',
-        'tr-TR': 'Grupları Yüklüyor',
-        'pt-PT': 'A carregar grupos',
+        'tr-TR': '',
+        'pt-PT': '',
     },
 
 }

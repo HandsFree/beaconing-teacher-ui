@@ -213,10 +213,10 @@ class APICore {
         return student;
     }
 
-    async getStudentAssigned(id: number) {
+    async getStudentAssigned(id: number, hard: bool = false) {
         // console.log(id);
-        const glps = await this.get(`//${window.location.host}/api/v1/student/${id}/assignedglps?ig=true`);
-
+        const req = `assignedglps${hard ? '_hard' : ''}`;
+        const glps = await this.get(`//${window.location.host}/api/v1/student/${id}/${req}?ig=true`);
         return glps;
     }
 

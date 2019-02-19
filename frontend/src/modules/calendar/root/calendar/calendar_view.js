@@ -105,16 +105,16 @@ class CalendarView extends Component {
     }
 
     async getStudentGLPS(id: number) {
-        const assigned = nullishCheck(await window.beaconingAPI.getStudentAssigned(id), []);
+        const assigned = nullishCheck(await window.beaconingAPI.getStudentAssigned(id, true), []);
 
         const glps = [];
-        for (const glp of assigned) {
-            const glpObj = await window.beaconingAPI.getGLP(glp.gamifiedLessonPathId, true);
-            glps.push({
+        for (const glpObj of assigned) {
+            const obj = {
                 glp: glpObj,
-                assignedGLPID: glp.id,
-                availableFrom: glp.availableFrom,
-            });
+                assignedGLPID: glpObj.id,
+                availableFrom: glpObj.availableFrom,
+            };
+            glps.push(obj);
         }
         return glps;
     }
@@ -122,6 +122,7 @@ class CalendarView extends Component {
     async loadGroupEvents(group: number) {
         console.log(`[Calendar] writing events for group ${group}`);
 
+        // FIXME squash this into one request in the backend.
         const glpBoxes = await window.beaconingAPI.getGroupAssigned(group);
         console.log(`[Calendar] loaded ${glpBoxes.length} events`);
 

@@ -8,11 +8,13 @@ import nullishCheck from '../../../../core/util';
 // an individual cell in the calendar
 class CalendarCell extends Component {
     async render() {
-        const { dayNumber, cellDate, eventList, encodedEvents } = this.props;
-
-        const eventsData = JSON.parse(nullishCheck(encodedEvents, '[]'));
+        const {
+            dayNumber, cellDate, eventList, encodedEvents,
+        } = this.props;
 
         let classList = '.calendar-cell';
+
+        // add the current day class to highlight the current day.
         if (moment().isSame(cellDate, 'D')) {
             classList += '.current-day';
         }
@@ -24,27 +26,28 @@ class CalendarCell extends Component {
                 '.fake-link', 
                 {
                     onclick: () => {
-                        window.sessionStorage.setItem('calendarDayData', encodedEvents);
+                        window.sessionStorage.setItem('calendarDayData', JSON.stringify({ date: cellDate, encodedEvents: encodedEvents }));
                         this.emit('UpdateCalendarContainer');
                     },
                     title: await window.bcnI18n.getPhrase('view'),
-                }, 
+                },
                 i('.icon-link-ext-alt'),
-            )
+            ),
         );
 
         return div(
             classList,
             div(
                 '.calendar-cell-meta',
-
                 p('.calendar-day', dayNumber),
+                viewDayEl,
+            ),
+            
+            // TODO this is where events go
+            // if their due date spans this element!
+            // FIXME: (merge from offline branch?) p('X X X'),
 
-                // we only show this button if we have
-                // more than 0 events.
-                eventsData.length === 0 ? [] : viewDayEl,
-            ), 
-            el
+            el,
         );
     }
 }

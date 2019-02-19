@@ -47,6 +47,12 @@ func registerAPI(router *gin.Engine) {
 		student.DELETE("/:id", req.DeleteStudentRequest())
 		student.POST("/", req.PostStudentRequest())
 
+		// kind of like assignedglps, but a HARD search i.e.
+		// it will go through each GLP and get the GLPs. this is predominently
+		// for the calendar since this is what happens on the client side, but i want
+		// to squish it into one request to make it a bit faster.
+		student.GET("/:id/assignedglps_hard", req.GetAssignedGLPsHardRequest())
+
 		student.GET("/:id/assignedglps", req.GetAssignedGLPsRequest())
 		student.DELETE("/:id/assignedglps/:glp", req.DeleteAssignedGLPsRequest())
 	}
