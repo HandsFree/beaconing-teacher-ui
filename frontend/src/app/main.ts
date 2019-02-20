@@ -1,13 +1,10 @@
 import { View } from 'hyperapp';
 import { div } from '@hyperapp/html';
-
-const beaconingWrapper = () => {
-    return div();
-};
+import beaconingHeader from './components/header.component';
 
 const mainView: View<Beaconing.IState, Beaconing.IActions> = (state, actions) =>  {
     return div({ id: 'app' }, [
-        beaconingWrapper(),
+        beaconingHeader(),
     ]);
 };
 
