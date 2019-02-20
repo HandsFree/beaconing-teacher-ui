@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "outDir": "./public/dist/example/",
+        "outDir": "./public/dist/beaconing/",
         "sourceMap": true,
         "noImplicitAny": false,
         "module": "commonjs",

@@ -34,17 +34,19 @@ const config = (env) => {
 // ─── BANNERS ────────────────────────────────────────────────────────────────────
 //
 
-const prodBanner = `Example
+const prodBanner = `Beaconing Teacher UI
 ------------
 Authors:
-Elliott Judd <e@ejudd.uk>`;
+Elliott Judd <elliott.judd@hands-free.co.uk>
+Felix Angell <felix.angell@hands-free.co.uk>`;
 
 const devBanner = `--- Compiled in Developer Mode ---
 
-Example
+Beaconing Teacher UI
 ------------
 Authors:
-Elliott Judd <e@ejudd.uk>`;
+Elliott Judd <elliott.judd@hands-free.co.uk>
+Felix Angell <felix.angell@hands-free.co.uk>`;
 
 //
 // ─── LOADER OPTIONS ─────────────────────────────────────────────────────────────
@@ -136,8 +138,8 @@ const mainSettings = (entries, dev, devServer, dash, verbose) => {
         context: resolve(__dirname, 'src'),
         entry: entries,
         output: {
-            publicPath: '/dist/example/',
-            path: resolve(__dirname, 'public', 'dist', 'example'),
+            publicPath: '/dist/beaconing/',
+            path: resolve(__dirname, 'public', 'dist', 'beaconing'),
             filename: '[name].js',
             // Export options
             // library: 'Example', // name
@@ -220,7 +222,7 @@ const mainSettings = (entries, dev, devServer, dash, verbose) => {
             hotOnly: true,
             host: 'localhost',
             open: false,
-            publicPath: 'http://localhost:8080/dist/example/',
+            publicPath: 'http://localhost:8080/dist/beaconing/',
             port: '8090',
             compress: true,
         },

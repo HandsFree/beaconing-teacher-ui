@@ -1,7 +1,7 @@
 {
-  "name": "example-web-app",
+  "name": "beaconing-teacher-ui",
   "version": "0.0.1",
-  "description": "example-web-app",
+  "description": "beaconing-teacher-ui",
   "author": "Elliott Judd <e@ejudd.uk>",
   "license": "MIT",
   "scripts": {
@@ -14,7 +14,7 @@
     "bp:v": "webpack --env.mode='production' --env.verbose='enabled'",
     "lint": "tslint",
     "lint-all": "tslint 'src/**/*.ts'",
-    "clean": "rimraf './public/dist/example/*' './node_modules/.cache/*'",
+    "clean": "rimraf './public/dist/beaconing/*' './node_modules/.cache/*'",
     "cypress": "cypress open",
     "cypress:run-all": "cypress run",
     "ava": "ava",

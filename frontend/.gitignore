@@ -70,5 +70,5 @@ jspm_packages
 .node_repl_history
 
 ### Bundle Output ###
-public/dist/example
+public/dist/beaconing
 public/views
