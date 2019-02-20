@@ -1,7 +1,14 @@
 import { View } from 'hyperapp';
 import { div } from '@hyperapp/html';
-import counter from './components/counter.component';
 
-const mainView: View<Counter.IState, Counter.IActions> = (state, actions) => div({ id: 'app' }, [counter(state, actions)]);
+const beaconingWrapper = () => {
+    return div();
+};
+
+const mainView: View<Beaconing.IState, Beaconing.IActions> = (state, actions) =>  {
+    return div({ id: 'app' }, [
+        beaconingWrapper(),
+    ]);
+};
 
 export default mainView;
