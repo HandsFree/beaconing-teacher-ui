@@ -7,7 +7,7 @@ import nullishCheck from '../../../../core/util';
 
 class LoadRecentActivities extends Component {
     async init() {
-        const recent = await window.beaconingAPI.getRecentActivitiesWidget();
+        const recent = await window.beaconingAPI.getRecentActivities();
 
         this.state.recentActivities = recent;
     }

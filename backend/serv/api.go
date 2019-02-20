@@ -13,6 +13,12 @@ func registerAPI(router *gin.Engine) {
 
 	v1 := router.Group("/api/v1/")
 
+	// FIXME(Felix): this probably falls under some kind of
+	// category. activity/activities?
+	{
+		v1.GET("recent_activities", req.GetRecentActivities())
+	}
+
 	fileUpload := v1.Group("upload")
 	{
 		fileUpload.POST("/:id", upload.PostGLPFiles())

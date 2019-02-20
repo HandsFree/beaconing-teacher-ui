@@ -12,7 +12,9 @@ func registerWidgets(router *gin.Engine) {
 
 	widgets := router.Group("/widget/")
 
+	// TODO(Felix): Move into a general 'api' route.
 	widgets.GET("student_overview", req.GetStudentOverview())
-	widgets.GET("recent_activities", req.GetRecentActivities())
+
+	// TODO(Felix): Remove me!
 	widgets.GET("active_lesson_plans", req.GetActiveLessonPlansWidget())
 }

@@ -99,15 +99,14 @@ class APICore {
         return this.handleRequest(link, req);
     }
 
+    // FIXME(Felix): remove this
     async getActivePlansWidget() {
         const activePlans = await this.get(`//${window.location.host}/widget/active_lesson_plans`);
-
         return activePlans;
     }
 
-    async getRecentActivitiesWidget() {
-        const recent = await this.get(`//${window.location.host}/widget/recent_activities`);
-
+    async getRecentActivities() {
+        const recent = await this.get(`//${window.location.host}/api/v1/recent_activities`);
         return recent;
     }
 
