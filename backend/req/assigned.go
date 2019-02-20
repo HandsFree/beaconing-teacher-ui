@@ -154,6 +154,72 @@ func DeleteGroupAssignedRequest() gin.HandlerFunc {
 	}
 }
 
+// similar to assignedglps_hard.
+func GetStudentGroupAssignedHardRequest() gin.HandlerFunc {
+	return func(s *gin.Context) {
+		groupID, err := strconv.ParseUint(s.Param("id"), 10, 64)
+		if err != nil {
+			s.String(http.StatusBadRequest, "No such ID thing!")
+			return
+		}
+
+		assignedGlpsBody := api.GetGroupAssignedGLPS(s, groupID)
+
+		type glp struct {
+			Name          string `json:"name"`
+			ID            uint64 `json:"gamifiedLessonPathId"`
+			AvailableFrom string `json:"availableFrom"`
+		}
+
+		var req []glp
+		if err := jsoniter.Unmarshal([]byte(assignedGlpsBody), &req); err != nil {
+			util.Error("GetAssignedGLPsHardRequest: failed to decode assigned GLPS", err)
+		}
+
+		var wg sync.WaitGroup
+		wg.Add(len(req))
+
+		type modifiedGLP struct {
+			*entity.GLP
+			AvailableFrom string `json:"availableFrom"`
+		}
+
+		glps := []*modifiedGLP{}
+		queue := make(chan *modifiedGLP, 1)
+
+		for _, g := range req {
+			go func(g glp) {
+				// TODO pass in whether or not we want
+				// to minify the glp.
+				res, err := api.GetGLP(s, g.ID, true)
+				if err != nil {
+					util.Error("Failed to retrieve GLP", err)
+					return
+				}
+
+				queue <- &modifiedGLP{res, g.AvailableFrom}
+			}(g)
+		}
+
+		go func() {
+			for t := range queue {
+				glps = append(glps, t)
+				wg.Done()
+			}
+		}()
+
+		wg.Wait()
+
+		body, err := jsoniter.Marshal(glps)
+		if err != nil {
+			util.Error(err)
+		}
+
+		s.Header("Content-Type", "application/json")
+		s.String(http.StatusOK, string(body))
+	}
+}
+
 func GetStudentGroupAssignedRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
 		groupID, err := strconv.ParseUint(s.Param("id"), 10, 64)

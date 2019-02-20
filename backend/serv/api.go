@@ -66,7 +66,10 @@ func registerAPI(router *gin.Engine) {
 	students := v1.Group("students")
 	{
 		students.GET("/", req.GetStudentsRequest())
+
+		// FIXME(Felix): _hard request here. this is mirrored?
 		students.GET("/:id/assignedglps", req.GetAssignedGLPsRequest())
+
 		students.DELETE("/:id/assignedglps/:glp", req.DeleteAssignedGLPsRequest())
 	}
 
@@ -100,7 +103,10 @@ func registerAPI(router *gin.Engine) {
 	{
 		studentGroup.GET("/:id", req.GetStudentGroupRequest())
 		studentGroup.PUT("/:id", req.PutStudentGroupRequest())
+
+		studentGroup.GET("/:id/assignedglps_hard", req.GetStudentGroupAssignedHardRequest())
 		studentGroup.GET("/:id/assignedglps", req.GetStudentGroupAssignedRequest())
+
 		studentGroup.DELETE("/:id/assignedglps/:glp", req.DeleteGroupAssignedRequest())
 		studentGroup.POST("/", req.PostStudentGroupRequest())
 		studentGroup.DELETE("/:id", req.DeleteStudentGroupRequest())

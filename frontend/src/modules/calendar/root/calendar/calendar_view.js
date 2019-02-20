@@ -122,26 +122,12 @@ class CalendarView extends Component {
     async loadGroupEvents(group: number) {
         console.log(`[Calendar] writing events for group ${group}`);
 
-        // FIXME squash this into one request in the backend.
-        const glpBoxes = await window.beaconingAPI.getGroupAssigned(group);
-        console.log(`[Calendar] loaded ${glpBoxes.length} events`);
+        const glps = await window.beaconingAPI.getGroupAssigned(group, true);
+        console.log(`[Calendar] loaded ${glps.length} events`);
 
-        for (const glpBox of glpBoxes) {
-            const glp = await window.beaconingAPI.getGLP(glpBox.gamifiedLessonPathId);
-
-            if (nullishCheck(glp, false) && glpBox.availableFrom) {
-                const availDate = moment(glpBox.availableFrom).startOf('D');
-
-                console.log(`[Calendar] writing GROUP event ${availDate.format()}`);
-
-                this.writeEvent(availDate, {
-                    name: glp.name,
-                    desc: glp.description,
-                    id: glp.id,
-                    due: glp.availableUntil,
-                    avail: glp.availableFrom,
-                });
-            }
+        for (const glp of glps) {
+            console.log('the glp is ', glp);
+            this.writeEvent(moment(glp.availableFrom).startOf('D'), glp);
         }
     }
 

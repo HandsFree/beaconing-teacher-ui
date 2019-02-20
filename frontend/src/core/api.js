@@ -219,10 +219,10 @@ class APICore {
         return glps;
     }
 
-    async getGroupAssigned(id: number) {
+    async getGroupAssigned(id: number, hard: bool = false) {
         // console.log(id);
-        const glps = await this.get(`//${window.location.host}/api/v1/studentgroup/${id}/assignedglps`);
-
+        const req = `assignedglps${hard ? '_hard' : ''}`;
+        const glps = await this.get(`//${window.location.host}/api/v1/studentgroup/${id}/${req}`);
         return glps;
     }
 
