@@ -5,7 +5,7 @@ context('Counter Functional Tests', () => {
     // runs before each test
     beforeEach(() => {
         // visits the webpage
-        cy.visit('/dist/example/');
+        cy.visit('/');
     });
 
     // a test group
