@@ -1,0 +1,10 @@
+{
+    "extends": [
+        "config:base",
+        "schedule:nonOfficeHours"
+    ],
+    "automerge": true,
+    "major": {
+        "automerge": false
+    }
+}
