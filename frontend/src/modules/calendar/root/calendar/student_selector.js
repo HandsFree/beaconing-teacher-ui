@@ -119,7 +119,6 @@ class StudentSelector extends Component {
 
         for (const student of studentsSet) {
             const selItem = new CalendarSelectedStudent();
-            console.log(student);
             const selItemEl = selItem.attach({
                 id: student.id,
                 username: student.username,

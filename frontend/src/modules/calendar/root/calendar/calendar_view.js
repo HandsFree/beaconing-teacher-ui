@@ -92,7 +92,7 @@ class CalendarView extends Component {
         event.date = eventDate.toDate();
 
         const newDate = eventDate.clone().startOf('D');
-        console.log('[Calendar] writing ', event, ' time ', newDate);
+        console.log('[Calendar] writing', event.name, 'at', newDate.format());
 
         const events = nullishCheck(this.state.eventMap.get(newDate.format()), 'none');
         if (events !== 'none') {
@@ -142,8 +142,6 @@ class CalendarView extends Component {
             // TODO optimize me!
             if (nullishCheck(glp, false) && glpBox.availableFrom) {
                 const availDate = moment(glpBox.availableFrom).startOf('D');
-
-                console.log(`[Calendar] writing event ${availDate.format()}`);
 
                 this.writeEvent(availDate, {
                     name: glp.name,
