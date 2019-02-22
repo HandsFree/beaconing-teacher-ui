@@ -76,8 +76,8 @@ func GetProtocol() string {
 // the computers ip with the port (loaded from the config file)
 func GetBaseLink() string {
 	if gin.IsDebugging() {
-		// we have to slap the port on there
-		return GetOutboundIP().String() + ":" + fmt.Sprintf("%d", cfg.Beaconing.Server.Port)
+		// ip:port - we append the port in debug mode.
+		return fmt.Sprintf("%s:%d", GetOutboundIP().String(), cfg.Beaconing.Server.Port)
 	}
 
 	host := cfg.Beaconing.Server.Host

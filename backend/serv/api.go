@@ -17,6 +17,9 @@ func registerAPI(router *gin.Engine) {
 	// category. activity/activities?
 	{
 		v1.GET("recent_activities", req.GetRecentActivities())
+
+		// FIXME: move somewhere, e.g. /students/
+		v1.GET("student_overview", req.GetStudentOverview())
 	}
 
 	fileUpload := v1.Group("upload")

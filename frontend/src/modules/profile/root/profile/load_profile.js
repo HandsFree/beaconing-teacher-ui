@@ -2,8 +2,9 @@
 import Identicon from 'identicon.js';
 
 import { section, figure, img, figcaption, nav, a, i } from '../../../../core/html';
-
 import { Component } from '../../../../core/component';
+
+import RecentActivities from './recent_activities';
 
 class LoadProfile extends Component {
     state = {
@@ -27,6 +28,9 @@ class LoadProfile extends Component {
             format: 'svg',
         };
 
+        const recentActivities = new RecentActivities();
+        const recentActivitiesEl = await recentActivities.attach();
+
         const teacherIMG = `data:image/svg+xml;base64,${new Identicon(teacher.identiconSha512, options).toString()}`;
 
         return section(
@@ -47,6 +51,7 @@ class LoadProfile extends Component {
                 }),
                 figcaption(teacherFullName),
             ),
+            recentActivitiesEl,
         );
     }
 }

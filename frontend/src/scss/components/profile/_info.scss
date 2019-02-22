@@ -12,8 +12,8 @@
 
         img {
             border: 1px solid $bcn_light_orange;
-            height: 20em;
-            width: 20em;
+            height: 8em;
+            width: 8em;
 
             @include for-phone-only {
                 height: 10em;
