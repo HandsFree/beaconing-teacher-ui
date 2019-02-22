@@ -87,25 +87,6 @@ func searchGLPS(s *gin.Context, query searchRequestQuery) ([]*entity.GLP, error)
 
 	searchQuery := query.Query
 
-	// we only parse if the query is long enough
-	// measure how long this would be.
-	if len(searchQuery) >= 25 {
-		fmt.Println("Search: Parsing Search Query")
-
-		// parsing
-		// we first parse the query string to see if we have
-		// anything e.g.
-		// name:"datas"
-		fmt.Println("checking query ", query.Query)
-		tokens := lexSearchQuery(query.Query)
-		fmt.Println("matched ", len(tokens), " tokens: ", tokens)
-
-		nodes := parseTokens(tokens)
-		fmt.Println("finished parsing search query into ", len(nodes), "nodes")
-
-		// set query to parsed query.
-	}
-
 	// likewise we allocate a chunk of memory for the glps
 	glpNames := make([]string, len(glps))
 	glpPtrs := make([]int, len(glps))
