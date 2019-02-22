@@ -86,7 +86,7 @@ func GetAssignedGLPsHardRequest() gin.HandlerFunc {
 			FromStudentGroupName string `json:"fromStudentGroupName"`
 		}
 
-		glps := []*modifiedGLP{}
+		glps := make([]*modifiedGLP, len(req))
 		queue := make(chan *modifiedGLP, 1)
 
 		for _, g := range req {
@@ -110,8 +110,10 @@ func GetAssignedGLPsHardRequest() gin.HandlerFunc {
 		}
 
 		go func() {
+			iter := 0
 			for t := range queue {
-				glps = append(glps, t)
+				glps[iter] = t
+				iter++
 				wg.Done()
 			}
 		}()
