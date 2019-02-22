@@ -59,9 +59,12 @@ func GetAssignedGLPsHardRequest() gin.HandlerFunc {
 		assignedGlpsBody := api.GetAssignedGLPS(s, studentID, includeGroups)
 
 		type glp struct {
-			Name          string `json:"name"`
-			ID            uint64 `json:"gamifiedLessonPathId"`
-			AvailableFrom string `json:"availableFrom"`
+			Name                 string `json:"name"`
+			AssignedID           uint64 `json:"id"`
+			ID                   uint64 `json:"gamifiedLessonPathId"`
+			AvailableFrom        string `json:"availableFrom"`
+			FromStudentGroupID   uint64 `json:"studentGroupId"`
+			FromStudentGroupName string `json:"studentGroupName"`
 		}
 
 		var req []glp
@@ -72,9 +75,15 @@ func GetAssignedGLPsHardRequest() gin.HandlerFunc {
 		var wg sync.WaitGroup
 		wg.Add(len(req))
 
+		// this is basically a merged object of the entity.GLP
+		// with the glp above from the assignedglps request.
+		// a bit confusing, i know!
 		type modifiedGLP struct {
 			*entity.GLP
-			AvailableFrom string `json:"availableFrom"`
+			AssignedID           uint64 `json:"assignedId"`
+			AvailableFrom        string `json:"availableFrom"`
+			FromStudentGroupID   uint64 `json:"fromStudentGroupId"`
+			FromStudentGroupName string `json:"fromStudentGroupName"`
 		}
 
 		glps := []*modifiedGLP{}
@@ -90,7 +99,13 @@ func GetAssignedGLPsHardRequest() gin.HandlerFunc {
 					return
 				}
 
-				queue <- &modifiedGLP{res, g.AvailableFrom}
+				queue <- &modifiedGLP{
+					res,
+					g.AssignedID,
+					g.AvailableFrom,
+					g.FromStudentGroupID,
+					g.FromStudentGroupName,
+				}
 			}(g)
 		}
 

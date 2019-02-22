@@ -21,36 +21,23 @@ class AssignedGLPs extends Component {
 
     async afterMount() {
         const { id } = this.props;
-        const assignedGLPs = await window.beaconingAPI.getStudentAssigned(id);
+        const assignedGLPs = await window.beaconingAPI.getStudentAssigned(id, true);
 
         if (assignedGLPs && assignedGLPs.length >= 1) {
-            const glps = [];
-
-            for (const glp of assignedGLPs) {
-                const glpObj = await window.beaconingAPI.getGLP(glp.gamifiedLessonPathId, true);
-
-                glps.push({
-                    glp: glpObj,
-                    assignedGLPID: glp.id,
-                    ...(glp?.studentGroupId && glp?.studentGroupName ? {
-                        fromGroupID: glp.studentGroupId,
-                        fromGroupName: glp.studentGroupName,
-                    } : {}),
-                });
-            }
-
             const promArr = [];
 
-            for (const glpObj of glps) {
+            for (const glp of assignedGLPs) {
+                console.log('glp! ', glp);
+
                 const glpBox = new GLPBox();
 
                 const glpBoxProm = glpBox.attach({
-                    glpID: glpObj.glp.id,
-                    name: glpObj.glp.name,
+                    glpID: glp.id,
+                    name: glp.name,
                     studentID: id,
-                    assignedGLPID: glpObj.assignedGLPID,
-                    fromGroupID: glpObj.fromGroupID,
-                    fromGroupName: glpObj.fromGroupName,
+                    assignedGLPID: glp.assignedId,
+                    fromGroupID: glp.fromStudentGroupId,
+                    fromGroupName: glp.fromStudentGroupName,
                 });
 
                 promArr.push(glpBoxProm);
