@@ -4,7 +4,6 @@
 import { section, div } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
-import ActivePlans from './active_plans';
 import StudentOverview from './student_overview';
 // import QuerySearch from '../../../search/query';
 
@@ -14,21 +13,15 @@ class Widgets extends Component {
     // };
 
     async render() {
-        const activePlans = new ActivePlans();
         const studentOverview = new StudentOverview();
         // const search = new QuerySearch();
 
-        const activePlansEl = await activePlans.attach();
         const studentOverviewEl = await studentOverview.attach();
         // const searchEl = await search.attach({ searchType: 'width-expand' });
 
         return div(
             '.flex-column',
             // section('.draggable-container.flex-column', searchEl),
-            section(
-                '.draggable-container.flex-spacearound.mobile-collapse',
-                activePlansEl,
-            ),
             section('.draggable-container.flex-column', studentOverviewEl),
         );
     }
