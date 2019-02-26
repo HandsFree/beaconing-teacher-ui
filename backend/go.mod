@@ -8,7 +8,7 @@ require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/felixangell/fuzzysearch v1.0.1-0.20180204213259-cfc75cad5319
 	github.com/getsentry/raven-go v0.2.0
-	github.com/gin-contrib/gzip v0.0.0-20190101234729-0eb78e93402e
+	github.com/gin-contrib/gzip v0.0.0-20190226025929-3ee4a99e5892
 	github.com/gin-contrib/sentry v0.0.0-20181227224406-7a3855b0e756
 	github.com/gin-contrib/sessions v0.0.0-20190212225054-a38112fffc50
 	github.com/gin-contrib/sse v0.0.0-20190125044258-a7658810eb74 // indirect

@@ -33,6 +33,8 @@ github.com/gin-contrib/gzip v0.0.0-20180827025821-1c01330167a8/go.mod h1:Xp4Lajb
 github.com/gin-contrib/gzip v0.0.0-20181105052825-d9117ce29a07/go.mod h1:Iw1jLht8y5t9ZN91Qt/XzlT18He4kT9+LpFJkj4H/vY=
 github.com/gin-contrib/gzip v0.0.0-20190101234729-0eb78e93402e h1:LtdKJckY957ZMVn3Y03OboAAgcx6o4ZsWkxnWXrdSio=
 github.com/gin-contrib/gzip v0.0.0-20190101234729-0eb78e93402e/go.mod h1:fGBJBCdt6qCZuCAOwWuFhBB4OOq9EFqlo5dEaFhhu5w=
+github.com/gin-contrib/gzip v0.0.0-20190226025929-3ee4a99e5892 h1:Om6I4CNNtLEa0GTh8YRUoiJCPTGxddLkAgzuz9wz6eg=
+github.com/gin-contrib/gzip v0.0.0-20190226025929-3ee4a99e5892/go.mod h1:fGBJBCdt6qCZuCAOwWuFhBB4OOq9EFqlo5dEaFhhu5w=
 github.com/gin-contrib/sentry v0.0.0-20180827025903-aa42345b40e5 h1:RiiUViASOJXmlBuyAj+NEMo2XNhvu87/vP53vhFzaRs=
 github.com/gin-contrib/sentry v0.0.0-20180827025903-aa42345b40e5/go.mod h1:5j0zXgpfMv4byKaAkkJdV4tGp0GizpJGLpRsvlLEHCQ=
 github.com/gin-contrib/sentry v0.0.0-20181227224406-7a3855b0e756 h1:Fhtxwbtp9hMWakxDHwkEeNp6qr42+isO4haCqg8WCXo=
@@ -70,6 +72,7 @@ github.com/lib/pq v1.0.0 h1:X5PMW56eZitiTeO7tKzZxFCSpbFZJtkMMooicw2us9A=
 github.com/lib/pq v1.0.0/go.mod h1:5WUZQaWbwv1U+lTReE5YruASi9Al49XbQIvNi/34Woo=
 github.com/mattn/go-isatty v0.0.4 h1:bnP0vzxcAdeI1zdubAl5PjU6zsERjGZb7raWodagDYs=
 github.com/mattn/go-isatty v0.0.4/go.mod h1:M+lRXTBqGeGNdLjl/ufCoiOlB5xdOkqRJdNxMWT7Zi4=
+github.com/mattn/go-isatty v0.0.5 h1:tHXDdz1cpzGaovsTB+TVB8q90WEokoVmfMqoVcrLUgw=
 github.com/mattn/go-isatty v0.0.5/go.mod h1:Iq45c/XA43vh69/j3iqttzPXn0bhXyGjM0Hdxcsrc5s=
 github.com/mattn/go-runewidth v0.0.3 h1:a+kO+98RDGEfo6asOGMmpodZq4FNtnGP54yps8BzLR4=
 github.com/mattn/go-runewidth v0.0.3/go.mod h1:LwmH8dsx7+W8Uxz3IHJYH5QSwggIsqBzpuz5H//U1FU=
@@ -172,6 +175,7 @@ golang.org/x/sys v0.0.0-20190219225805-90b0e4468f99/go.mod h1:STP8DvDyc/dI5b8T5h
 golang.org/x/sys v0.0.0-20190220234321-629670e5acc5/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
 golang.org/x/sys v0.0.0-20190222025315-ec7b60b042fd/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
 golang.org/x/sys v0.0.0-20190222072716-a9d3bda3a223/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
+golang.org/x/sys v0.0.0-20190222233755-cd391775e71e h1:D2x2QaS4a6hvrThFamArqmknHhkAoR5TuLElKvl3BZ0=
 golang.org/x/sys v0.0.0-20190222233755-cd391775e71e/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405 h1:yhCVgyC4o1eVCa2tZl7eS0r+SDo693bJlVdllGtEeKM=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
