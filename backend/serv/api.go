@@ -13,6 +13,15 @@ func registerAPI(router *gin.Engine) {
 
 	v1 := router.Group("/api/v1/")
 
+	// FIXME(Felix): this probably falls under some kind of
+	// category. activity/activities?
+	{
+		v1.GET("recent_activities", req.GetRecentActivities())
+
+		// FIXME: move somewhere, e.g. /students/
+		v1.GET("student_overview", req.GetStudentOverview())
+	}
+
 	fileUpload := v1.Group("upload")
 	{
 		fileUpload.POST("/:id", upload.PostGLPFiles())
@@ -47,6 +56,12 @@ func registerAPI(router *gin.Engine) {
 		student.DELETE("/:id", req.DeleteStudentRequest())
 		student.POST("/", req.PostStudentRequest())
 
+		// kind of like assignedglps, but a HARD search i.e.
+		// it will go through each GLP and get the GLPs. this is predominently
+		// for the calendar since this is what happens on the client side, but i want
+		// to squish it into one request to make it a bit faster.
+		student.GET("/:id/assignedglps_hard", req.GetAssignedGLPsHardRequest())
+
 		student.GET("/:id/assignedglps", req.GetAssignedGLPsRequest())
 		student.DELETE("/:id/assignedglps/:glp", req.DeleteAssignedGLPsRequest())
 	}
@@ -54,7 +69,10 @@ func registerAPI(router *gin.Engine) {
 	students := v1.Group("students")
 	{
 		students.GET("/", req.GetStudentsRequest())
+
+		// FIXME(Felix): _hard request here. this is mirrored?
 		students.GET("/:id/assignedglps", req.GetAssignedGLPsRequest())
+
 		students.DELETE("/:id/assignedglps/:glp", req.DeleteAssignedGLPsRequest())
 	}
 
@@ -88,7 +106,10 @@ func registerAPI(router *gin.Engine) {
 	{
 		studentGroup.GET("/:id", req.GetStudentGroupRequest())
 		studentGroup.PUT("/:id", req.PutStudentGroupRequest())
+
+		studentGroup.GET("/:id/assignedglps_hard", req.GetStudentGroupAssignedHardRequest())
 		studentGroup.GET("/:id/assignedglps", req.GetStudentGroupAssignedRequest())
+
 		studentGroup.DELETE("/:id/assignedglps/:glp", req.DeleteGroupAssignedRequest())
 		studentGroup.POST("/", req.PostStudentGroupRequest())
 		studentGroup.DELETE("/:id", req.DeleteStudentGroupRequest())

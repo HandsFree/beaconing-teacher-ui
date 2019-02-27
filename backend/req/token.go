@@ -27,6 +27,8 @@ func isValidToken(tok string) bool {
 
 func GetTokenRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
+		fmt.Println(s)
+
 		accessToken := s.Query("code")
 		if accessToken == "" {
 			s.String(http.StatusBadRequest, "Error: Access Token not provided")

@@ -3,7 +3,7 @@ import {
 } from '@hyperapp/html';
 
 const beaconingHeader = () => {
-    return div();
+    return div('this is the header.');
 };
 
 export default beaconingHeader;

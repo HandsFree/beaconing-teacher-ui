@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"os"
 	"strings"
 	"time"
 
@@ -36,6 +37,10 @@ const timeout = 120 * time.Second
 // GetOutboundIP is a helper function to get the
 // current computers outbound IP.
 func GetOutboundIP() net.IP {
+	if os.Getenv("USELOCAL") == "1" {
+		return net.ParseIP("127.0.0.1")
+	}
+
 	conn, err := net.Dial("udp", "8.8.8.8:80")
 	if err != nil {
 		log.Fatal(err)
@@ -71,8 +76,8 @@ func GetProtocol() string {
 // the computers ip with the port (loaded from the config file)
 func GetBaseLink() string {
 	if gin.IsDebugging() {
-		// we have to slap the port on there
-		return GetOutboundIP().String() + ":" + fmt.Sprintf("%d", cfg.Beaconing.Server.Port)
+		// ip:port - we append the port in debug mode.
+		return fmt.Sprintf("%s:%d", GetOutboundIP().String(), cfg.Beaconing.Server.Port)
 	}
 
 	host := cfg.Beaconing.Server.Host

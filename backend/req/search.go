@@ -51,16 +51,20 @@ func searchEverything(s *gin.Context, json searchRequestQuery) (*searchQueryResp
 }
 
 func searchGLPS(s *gin.Context, query searchRequestQuery) ([]*entity.GLP, error) {
+	fmt.Println("Search: Parsing GLPS")
 	glps, err := parse.GLPS(s, true)
 	if err != nil {
 		util.Error("searchGLPS")
 		return nil, err
 	}
 
+	fmt.Println("Search: Sort order")
 	sortOrder := parse.Ascending
 	if sortOrderType, exists := query.Sort["order"]; exists {
 		sortOrder = parse.SortOrder(sortOrderType)[0]
 	}
+
+	fmt.Println("Search: Applying sort options")
 
 	// apply any sort options to the glps
 	// _before_ we do the search:
@@ -79,28 +83,9 @@ func searchGLPS(s *gin.Context, query searchRequestQuery) ([]*entity.GLP, error)
 		return glps, nil
 	}
 
+	fmt.Println("Search: Processing Search Query '", query.Query, "'")
+
 	searchQuery := query.Query
-
-	if "do search term parse" == "ok" {
-		fmt.Println("----- DOING SOME SEARCH STUFF")
-		fmt.Println("-")
-		fmt.Println("-")
-
-		// parsing
-		// we first parse the query string to see if we have
-		// anything e.g.
-		// name:"datas"
-		fmt.Println("checking query ", query.Query)
-		tokens := lexSearchQuery(query.Query)
-		fmt.Println("matched ", len(tokens), " tokens: ", tokens)
-
-		nodes := parseTokens(tokens)
-		fmt.Println("finished parsing search query into ", len(nodes), "nodes")
-
-		fmt.Println("-")
-		fmt.Println("-")
-		fmt.Println("-")
-	}
 
 	// likewise we allocate a chunk of memory for the glps
 	glpNames := make([]string, len(glps))
@@ -116,6 +101,8 @@ func searchGLPS(s *gin.Context, query searchRequestQuery) ([]*entity.GLP, error)
 	}
 
 	matchedGLPS := []*entity.GLP{}
+
+	fmt.Println("Search: Performing Fuzzy Search")
 
 	// Process the actual search here!
 	glpsSearches := fuzzy.RankFindFold(searchQuery, glpNames)
