@@ -55,6 +55,8 @@ github.com/gin-contrib/sse v0.0.0-20190125044258-a7658810eb74 h1:fWcX4mFDyGXwo7m
 github.com/gin-contrib/sse v0.0.0-20190125044258-a7658810eb74/go.mod h1:VJ0WA2NBN22VlZ2dKZQPAPnyWw5XTlK1KymzLKsr59s=
 github.com/gin-contrib/sse v0.0.0-20190226094731-996076df5b33 h1:lfl1PPqLG1XQCImhmKHPQQ2vDGPLqQmfn8QDyj2pdKw=
 github.com/gin-contrib/sse v0.0.0-20190226094731-996076df5b33/go.mod h1:VJ0WA2NBN22VlZ2dKZQPAPnyWw5XTlK1KymzLKsr59s=
+github.com/gin-contrib/sse v0.0.0-20190302031122-5545eab6dad3 h1:5RvoTLN4iyDM4AkpWFLoAHk3OVEPls7zfvFAIaGPKsA=
+github.com/gin-contrib/sse v0.0.0-20190302031122-5545eab6dad3/go.mod h1:VJ0WA2NBN22VlZ2dKZQPAPnyWw5XTlK1KymzLKsr59s=
 github.com/gin-gonic/gin v1.3.0 h1:kCmZyPklC0gVdL728E6Aj20uYBJV93nj/TkwBTKhFbs=
 github.com/gin-gonic/gin v1.3.0/go.mod h1:7cKuhb5qV2ggCFctp2fJQ+ErvciLZrIeoOSOm6mUr7Y=
 github.com/globalsign/mgo v0.0.0-20181015135952-eeefdecb41b8/go.mod h1:xkRDCp4j0OGD1HRkm4kmhM+pmpv3AKq5SU7GMg4oO/Q=
