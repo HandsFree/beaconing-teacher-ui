@@ -11,7 +11,7 @@ require (
 	github.com/gin-contrib/gzip v0.0.0-20190301224657-b07653c4b4b1
 	github.com/gin-contrib/sentry v0.0.0-20181227224406-7a3855b0e756
 	github.com/gin-contrib/sessions v0.0.0-20190226030128-1532893d996f
-	github.com/gin-contrib/sse v0.0.0-20190226094731-996076df5b33 // indirect
+	github.com/gin-contrib/sse v0.0.0-20190302031122-5545eab6dad3 // indirect
 	github.com/gin-gonic/gin v1.3.0
 	github.com/golang/protobuf v1.3.0 // indirect
 	github.com/gorilla/sessions v1.1.3 // indirect
