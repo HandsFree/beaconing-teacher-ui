@@ -28,7 +28,7 @@ func slicePlans(plans []*entity.GLP, index int, step int) ([]*entity.GLP, error)
 	return plans[index:stepIndex], nil
 }
 
-// retrieves multiple glps
+// GetGLPSRequest Retrieves multiple glps
 //
 // inputs:
 // - index - the starting glp id (int)
@@ -71,6 +71,7 @@ func GetGLPSRequest() gin.HandlerFunc {
 		// defaults to Ascending order.
 		orders := parse.SortOrder(s.Query("order"))
 
+		// get the glps and unmarshal them.
 		plans, err := parse.GLPS(s, shouldMinify)
 		if err != nil {
 			util.Error("parse.GLPS failed", err.Error())
@@ -80,7 +81,6 @@ func GetGLPSRequest() gin.HandlerFunc {
 
 		sortQuery := s.Query("sort")
 		log.Println("the sort query is '", sortQuery, "'")
-
 		if sortQuery != "" {
 			plans, err = parse.SortGLPS(s, plans, sortQuery, orders)
 			if err != nil {
@@ -90,6 +90,9 @@ func GetGLPSRequest() gin.HandlerFunc {
 			}
 		}
 
+		// if we have an index and a step set
+		// that means we want to slice the plans
+		// note that this mutates the glps.
 		if index != 0 || step != 0 {
 			plans, err = slicePlans(plans, index, step)
 			if err != nil {

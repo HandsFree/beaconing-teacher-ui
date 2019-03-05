@@ -232,9 +232,15 @@ class APICore {
         return groups;
     }
 
+    // similar getGroup(id), but for cases where we 
+    // want to perform getStudent() on the result of getGroup()
+    async getStudentsFromGroup(id: number) {
+        const students = await this.get(`//${window.location.host}/api/v1/students_from_studentgroup/${id}`);
+        return students;
+    }
+
     async getGroup(id: number) {
         const group = await this.get(`//${window.location.host}/api/v1/studentgroup/${id}`);
-
         return group;
     }
 

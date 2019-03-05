@@ -8,6 +8,41 @@ import (
 	jsoniter "github.com/json-iterator/go"
 )
 
+func Student(s *gin.Context, id uint64) (entity.Student, error) {
+	cache := api.BigCacheInstance()
+
+	doCache := func(cache *api.CacheWrapper) []byte {
+		data, err := api.GetStudent(s, id)
+		if err != nil {
+			util.Error("parse.Student", err.Error())
+			return []byte{}
+		}
+
+		payload := []byte(data)
+		cache.Set("parse_student", payload)
+		return payload
+	}
+
+	resp, err := cache.Get("parse_student")
+	if err != nil {
+		resp = doCache(cache)
+	}
+
+	// conv json -> objects
+	var student entity.Student
+	if err := jsoniter.Unmarshal([]byte(resp), &student); err != nil {
+		// the data in the cache might be bad in which
+		// case we should re-cache the data so that
+		// we dont repeat this error every request.
+		doCache(cache)
+
+		util.Error("parse.Student", err)
+		return entity.Student{}, err
+	}
+
+	return student, nil
+}
+
 func Students(s *gin.Context) ([]*entity.Student, error) {
 	cache := api.BigCacheInstance()
 

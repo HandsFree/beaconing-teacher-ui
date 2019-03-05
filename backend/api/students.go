@@ -85,7 +85,7 @@ func GetStudents(s *gin.Context) (string, error) {
 // note that it will store the hash object in the student and
 // re-encode it. if anything fails, including hashing the avatar,
 // this will return an empty string and an error.
-func GetStudent(s *gin.Context, studentID int) (string, error) {
+func GetStudent(s *gin.Context, studentID uint64) (string, error) {
 	cache := LittleCacheInstance()
 	apiPath := API.getPath(s, "students/", fmt.Sprintf("%d", studentID))
 

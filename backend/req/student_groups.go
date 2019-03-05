@@ -4,9 +4,11 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"sync"
 
 	"github.com/HandsFree/beaconing-teacher-ui/backend/api"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
+	"github.com/HandsFree/beaconing-teacher-ui/backend/parse"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
@@ -108,6 +110,78 @@ func GetStudentGroupsRequest() gin.HandlerFunc {
 
 		s.Header("Content-Type", "application/json")
 		s.String(http.StatusOK, string(data))
+	}
+}
+
+func GetStudentsFromStudentGroupRequest() gin.HandlerFunc {
+	return func(s *gin.Context) {
+		groupID, err := strconv.Atoi(s.Param("id"))
+		if err != nil {
+			s.String(http.StatusBadRequest, "Group ID Error!")
+			return
+		}
+
+		body, err := api.GetStudentGroup(s, groupID)
+		if err != nil {
+			util.Error("GetStudentsFromStudentGroupRequest", err.Error())
+			s.AbortWithError(http.StatusBadRequest, err)
+			return
+		}
+
+		type student struct {
+			ID uint64 `json:"id"`
+		}
+
+		type studentGroup struct {
+			ID       uint64    `json:"id"`
+			Name     string    `json:"name"`
+			Category string    `json:"category"`
+			Students []student `json:"students"`
+		}
+
+		var data studentGroup
+		if err := jsoniter.Unmarshal([]byte(body), &data); err != nil {
+			util.Error("GetStudentsFromStudentGroupRequest", err.Error())
+			s.AbortWithError(http.StatusBadRequest, err)
+			return
+		}
+
+		var wg sync.WaitGroup
+		wg.Add(len(data.Students))
+
+		students := make([]entity.Student, len(data.Students))
+		queue := make(chan entity.Student, 1)
+
+		for _, st := range data.Students {
+			go func(st student) {
+				res, err := parse.Student(s, st.ID)
+				if err != nil {
+					util.Error("failed to retrieve student ", st.ID)
+					return
+				}
+
+				queue <- res
+			}(st)
+		}
+
+		go func() {
+			iter := 0
+			for t := range queue {
+				students[iter] = t
+				iter++
+				wg.Done()
+			}
+		}()
+
+		wg.Wait()
+
+		fetchedStudentsBody, err := jsoniter.Marshal(students)
+		if err != nil {
+			util.Error(err)
+		}
+
+		s.Header("Content-Type", "application/json")
+		s.String(http.StatusOK, string(fetchedStudentsBody))
 	}
 }
 

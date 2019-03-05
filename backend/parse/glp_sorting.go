@@ -266,6 +266,8 @@ func SortGLPS(s *gin.Context, plans []*entity.GLP, sortType string, orders []Sor
 	// sort by recently modified "modified"
 	// sort by draft? whats this.
 
+	// this sort function will do the correct sort given the
+	// sort type...
 	doSort := func(planSet []*entity.GLP, sortType string, order SortingOption) ([]*entity.GLP, error) {
 		switch strings.ToLower(sortType) {
 		case "name":
@@ -289,7 +291,7 @@ func SortGLPS(s *gin.Context, plans []*entity.GLP, sortType string, orders []Sor
 		}
 	}
 
-	// cut all of the sorting options out.
+	// cut all of the sorting options out of the URL
 	sorts := strings.Split(sortType, ",")
 
 	// we sort the sorting options so that they are

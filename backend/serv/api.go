@@ -102,6 +102,11 @@ func registerAPI(router *gin.Engine) {
 		studentGroups.GET("/", req.GetStudentGroupsRequest())
 	}
 
+	studentsFromStudentGroup := v1.Group("students_from_studentgroup")
+	{
+		studentsFromStudentGroup.GET("/:id", req.GetStudentsFromStudentGroupRequest())
+	}
+
 	studentGroup := v1.Group("studentgroup")
 	{
 		studentGroup.GET("/:id", req.GetStudentGroupRequest())

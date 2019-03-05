@@ -21,26 +21,14 @@ class GroupStudents extends Component {
 
     async afterMount() {
         const { id } = this.props;
-        const group = await window.beaconingAPI.getGroup(id);
+        const students = await window.beaconingAPI.getStudentsFromGroup(id);
 
-        console.log(group);
-
-        if (group) {
-            const students = [];
-
-            if (!group.students) {
-                return;
-            }
-
-            for (const student of group.students) {
-                const studentObj = await window.beaconingAPI.getStudent(student.id);
-
-                students.push(studentObj);
-            }
-
+        if (students) {
             const promArr = [];
 
             for (const studentObj of students) {
+                console.log(studentObj);
+
                 if (studentObj.username) {
                     const studentBox = new StudentBox();
 
