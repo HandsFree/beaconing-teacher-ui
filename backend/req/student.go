@@ -15,7 +15,7 @@ import (
 // - student id
 func GetStudentRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
-		studentID, err := strconv.Atoi(s.Param("id"))
+		studentID, err := strconv.ParseUint(s.Param("id"), 10, 64)
 		if err != nil {
 			util.Error("GetStudentRequest", err.Error())
 			s.AbortWithError(http.StatusBadRequest, err)

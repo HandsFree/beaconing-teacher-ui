@@ -11,6 +11,8 @@ import Loading from '../../../loading';
 import GLPBox from './glp_box';
 import nullishCheck from '../../../../core/util';
 
+// TODO(Felix), clean this up.
+
 class LocationBasedGameAnalytics {
     id: number = 0;
 
@@ -128,7 +130,7 @@ class AssignedGLPs extends Component {
     // FIXME(Felix): clean this up
     async afterMount() {
         const { id } = this.props;
-        const assignedGLPs = await window.beaconingAPI.getGroupAssigned(id);
+        const assignedGLPs = await window.beaconingAPI.getGroupAssigned(id, true);
 
         // this is a map of the glp id's to their data
         // nodes. which will be passed along in session storage
@@ -143,15 +145,14 @@ class AssignedGLPs extends Component {
         // we're basically taking this janky json
         // format and converting it into a nice tree data structure
         // that's a bit more usable
-        for (const assigned of assignedGLPs) {
+        for (const glp of assignedGLPs) {
             // some glps dont have this analyticsGlp available!
-            if (nullishCheck(assigned?.analyticsGlp, 'none') === 'none') {
+            if (nullishCheck(glp?.analyticsGlp, 'none') === 'none') {
+                console.log('skipping, no analytics information');
                 /* eslint-disable-next-line no-continue */
                 continue;
             }
-
-            const glp = await window.beaconingAPI.getGLP(assigned.gamifiedLessonPathId, false);
-
+            
             /*
                 notes:
 
@@ -175,14 +176,13 @@ class AssignedGLPs extends Component {
                 id: uglpID,
                 missions,
                 name: glpName,
-            } = assigned.analyticsGlp;
+            } = glp.analyticsGlp;
 
             // some ids are string, some numbers
             const glpID = parseInt(uglpID, 10);
 
             // lovely.
             // even more lovely is that some analytics objects don't contain the 'json' field.
-            // such a mess
             const mainDashboard = (glpAnalytics?.json?.analytics?.dashboard || glpAnalytics?.dashboard) ?? '';
             const glpAnalyticsObj = new GLPAnalyticsInfo(glpID, glpName, mainDashboard);
 
@@ -291,15 +291,15 @@ class AssignedGLPs extends Component {
         if (assignedGLPs && assignedGLPs.length >= 1) {
             const promArr = [];
 
-            for (const glpObj of glps) {
+            for (const glp of assignedGLPs) {
                 const glpBox = new GLPBox();
 
                 const glpBoxProm = glpBox.attach({
-                    glpID: glpObj.glp.id,
-                    name: glpObj.glp.name,
+                    glpID: glp.id,
+                    name: glp.name,
                     groupID: id,
-                    assignedGLPID: glpObj.assignedGLPID,
-                    dashboardLink: glpObj.dashboardLink,
+                    assignedGLPID: glp.assignedGLPID,
+                    dashboardLink: glp.dashboardLink,
                 });
 
                 promArr.push(glpBoxProm);
