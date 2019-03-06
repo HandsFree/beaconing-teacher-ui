@@ -4,6 +4,7 @@ import { section, div, p } from '../../../../core/html';
 import { Component } from '../../../../core/component';
 import Loading from '../../../loading';
 import StudentBox from './student_box';
+import StudentOverview from './student_overview';
 
 class GroupStudents extends Component {
     async render() {
@@ -47,7 +48,10 @@ class GroupStudents extends Component {
 
             Promise.all(promArr)
                 .then((elements) => {
-                    const el = div('#group-students-container.flex-wrap', elements);
+                    const el = div(
+                        '#group-students-container.flex-wrap.margin-20',
+                        elements,
+                    );
                     this.updateView(el);
                 });
 

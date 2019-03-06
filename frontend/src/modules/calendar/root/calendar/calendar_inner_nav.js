@@ -13,7 +13,7 @@ class CalendarInnerNav extends Component {
     async showStudents() {
         window.sessionStorage.setItem('calendarDayData', 'none');
         window.sessionStorage.setItem('calendarSelectionType', 'students');
-        
+
         await this.emit('UpdateCalendarContainer');
         await this.emit('RefreshPanel');
         this.updateView(await this.render());

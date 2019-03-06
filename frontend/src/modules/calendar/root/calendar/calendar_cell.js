@@ -1,9 +1,14 @@
 // @flow
 import moment from 'moment';
 
-import { div, p, a, i } from '../../../../core/html';
+import {
+    div,
+    p,
+    a,
+    i,
+} from '../../../../core/html';
+
 import { Component } from '../../../../core/component';
-import nullishCheck from '../../../../core/util';
 
 // an individual cell in the calendar
 class CalendarCell extends Component {
@@ -21,12 +26,16 @@ class CalendarCell extends Component {
 
         const el = await eventList;
 
-        const viewDayEl = p('.view-calendar-day', 
+        const viewDayEl = p('.view-calendar-day',
             a(
-                '.fake-link', 
+                '.fake-link',
                 {
                     onclick: () => {
-                        window.sessionStorage.setItem('calendarDayData', JSON.stringify({ date: cellDate, encodedEvents: encodedEvents }));
+                        const data = {
+                            date: cellDate,
+                            encodedEvents,
+                        };
+                        window.sessionStorage.setItem('calendarDayData', JSON.stringify(data));
                         this.emit('UpdateCalendarContainer');
                     },
                     title: await window.bcnI18n.getPhrase('view'),
@@ -42,7 +51,7 @@ class CalendarCell extends Component {
                 p('.calendar-day', dayNumber),
                 viewDayEl,
             ),
-            
+
             // TODO this is where events go
             // if their due date spans this element!
             // FIXME: (merge from offline branch?) p('X X X'),

@@ -1,11 +1,16 @@
 // @flow
 import moment from 'moment';
 
-import { div, p, a } from '../../../../core/html';
+import { div } from '../../../../core/html';
 import { Component } from '../../../../core/component';
 
 import { CalendarEvent, CalendarDueEvent, CalendarEventList } from './calendar_event';
-import { CalendarCell, CalendarHeadingCell, CalendarNextMonthCell, CalendarPrevMonthCell } from './calendar_cell';
+import {
+    CalendarCell,
+    CalendarHeadingCell,
+    CalendarNextMonthCell,
+    CalendarPrevMonthCell,
+} from './calendar_cell';
 import nullishCheck from '../../../../core/util';
 
 // NOTE
@@ -31,11 +36,11 @@ class CalendarView extends Component {
         eventMap: new Map(),
 
         // the current event that is due
-        currentDueEvent: null,
+        currentDueEvent: {},
     };
 
     async clearDueEvent() {
-        this.state.currentDueEvent = null;
+        this.state.currentDueEvent = {};
         this.updateView(await this.render());
     }
 
@@ -44,7 +49,7 @@ class CalendarView extends Component {
         const { detail } = event;
 
         const { id, name, due } = detail;
-        
+
         const eventProm = new CalendarDueEvent().attach({
             name, id, due,
         });
@@ -56,7 +61,7 @@ class CalendarView extends Component {
             eventProm,
             date: due,
         };
-        
+
         if (!this.state.currDate.isSame(due, 'M')) {
             this.emit('RefreshCalendarController');
             this.gotoDate(due);
@@ -86,7 +91,7 @@ class CalendarView extends Component {
     // array or we insert an array when writing an event.
     // note that we strip the time from the date given
     // so that we can index the hashmap just from mm/dd/yyyy
-    async writeEvent(eventDate, event : Object) {
+    async writeEvent(eventDate: any, event: Object) {
         // store the date in the event object
         // WITH the time included.
         event.date = eventDate.toDate();
@@ -154,7 +159,7 @@ class CalendarView extends Component {
         }
     }
 
-    async loadEvents(calendarSelection) {
+    async loadEvents(calendarSelection: any) {
         if (calendarSelection.student !== null) {
             console.log('[Calendar] Loading student events');
             const { id } = calendarSelection.student;
@@ -179,7 +184,7 @@ class CalendarView extends Component {
         this.updateView(await this.render());
     }
 
-    async gotoDate(date) {
+    async gotoDate(date: any) {
         this.state.currDate = date.clone().startOf('month');
         window.sessionStorage.setItem('calendarDate', this.state.currDate);
         this.updateView(await this.render());
@@ -218,14 +223,22 @@ class CalendarView extends Component {
         // rows of calendar cells in the calendar
         const rows = [];
 
-        const calendarDayTranslKeys = ['cal_sunday', 'cal_monday', 'cal_tuesday', 'cal_wednesday', 'cal_thursday', 'cal_friday', 'cal_saturday'];
+        const calendarDayTranslKeys = [
+            'cal_sunday',
+            'cal_monday',
+            'cal_tuesday',
+            'cal_wednesday',
+            'cal_thursday',
+            'cal_friday',
+            'cal_saturday',
+        ];
 
-        for (const key of calendarDayTranslKeys) {
+        calendarDayTranslKeys.forEach(async (key) => {
             const dayName = await window.bcnI18n.getPhrase(key);
 
             const cellProm = new CalendarHeadingCell().attach({ dayName });
             rows.push(cellProm);
-        }
+        });
 
         const offset = firstDay.day() - 1;
         const prevMonth = firstDay.clone().subtract(1, 'M').endOf('M');
@@ -259,7 +272,6 @@ class CalendarView extends Component {
 
             if (eventMap.has(eventDateKey)) {
                 const storedEvents = eventMap.get(eventDateKey);
-
                 for (const event of storedEvents) {
                     rawEventsList.push(event);
                     eventsProm.push(new CalendarEvent().attach(event));

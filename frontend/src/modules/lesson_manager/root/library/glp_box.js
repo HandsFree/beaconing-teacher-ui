@@ -37,6 +37,13 @@ class GLPBox extends Component {
         return div(
             '.glp-box.flex-4.flex-column',
             div(
+                '.title',
+                div(
+                    '.flex-column',
+                    h3('.name', name),
+                ),
+            ),
+            div(
                 '.toolbar',
                 a(
                     '.item',
@@ -58,13 +65,6 @@ class GLPBox extends Component {
                         href: `#assign?id=${encodeURIComponent(id)}`,
                     },
                     await window.bcnI18n.getPhrase('lm_assign'),
-                ),
-            ),
-            div(
-                '.title',
-                div(
-                    '.flex-column',
-                    h3('.name', name),
                 ),
             ),
             div(

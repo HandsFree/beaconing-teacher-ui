@@ -49,13 +49,17 @@
 	color: #e87f62;
 }
 
-.current-day .calendar-day {
-	color: #fff;
-}
 .current-day {
 	// hm...
 	// border-bottom: 2.5px solid #fc3d39;
 	background:rgba(242, 108, 66, 0.7);
+
+	.icon-link-ext-alt {
+		color: #fff;
+	}
+	.calendar-day {
+		color: #fff;
+	}
 }
 
 /*

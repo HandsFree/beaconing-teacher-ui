@@ -17,15 +17,11 @@ class StudentOverview extends Component {
         StudentOverviewSortYearClicked: this.sortYear,
     };
 
+    async init() {
+        this.state.classID = this.props.classID;
+    }
+
     async updateClass() {
-        const soClassList = document.getElementById('so-class-list');
-
-        if (soClassList) {
-            this.state.classID = soClassList.value;
-        }
-
-        // console.log(this.state.classID);
-
         const el = await this.loadOverview(this.state.classID, this.state.sortType);
         this.updateView(el);
     }
@@ -50,23 +46,8 @@ class StudentOverview extends Component {
 
     async render() {
         return div(
-            '.draggable.tile.flex-column',
-            div(
-                '.title',
-                p(await window.bcnI18n.getPhrase('widget_so_title')),
-                a(
-                    {
-                        href: `//${window.location.host}/classroom/`,
-                    },
-                    i(
-                        '.icon-link-ext-alt',
-                        {
-                            title: await window.bcnI18n.getPhrase('widget_so_link_title'),
-                            'aria-hidden': true,
-                        },
-                    ),
-                ),
-            ),
+            '#student-overview-container.status.flex-column.flex-align-center',
+            p(await window.bcnI18n.getPhrase('widget_so_title')),
             div(
                 '.content',
                 div(
@@ -86,23 +67,8 @@ class StudentOverview extends Component {
         });
 
         const el = div(
-            '.draggable.tile.flex-column',
-            div(
-                '.title',
-                p(await window.bcnI18n.getPhrase('widget_so_title')),
-                a(
-                    {
-                        href: `//${window.location.host}/classroom/`,
-                    },
-                    i(
-                        '.icon-link-ext-alt',
-                        {
-                            title: await window.bcnI18n.getPhrase('widget_so_link_title'),
-                            'aria-hidden': true,
-                        },
-                    ),
-                ),
-            ),
+            '#student-overview-container.status.flex-column.flex-align-center',
+            p(await window.bcnI18n.getPhrase('widget_so_title')),
             div(
                 '.content',
                 loadStudentOverviewEl,

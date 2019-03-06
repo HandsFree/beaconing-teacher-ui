@@ -63,7 +63,6 @@ class LoadStudentOverview extends Component {
         const sort = new Sort();
 
         const sortEl = await sort.attach({
-            classes: this.state.classes,
             id: this.state.classID,
             sort: this.state.sort,
         });

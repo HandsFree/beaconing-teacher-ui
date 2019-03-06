@@ -25,6 +25,19 @@
 	display: flex;
 }
 
+#student-overview-container {
+	padding: 2em;
+
+	&.status {
+		justify-content: center;
+
+		p {
+			padding: 1em;
+			font-size: 1.4em;
+		}
+	}
+}
+
 #assigned-plans-container {
 	padding: 2em;
 

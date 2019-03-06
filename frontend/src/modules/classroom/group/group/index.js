@@ -12,12 +12,13 @@ import GroupAside from './group_aside';
 
 class Group extends RootComponent {
     groupExists = true;
+
     updateHooks = {
         GroupDeleted: this.handleGroupDelete,
     };
 
     async init() {
-        const id = this.params.id;
+        const { id } = this.params;
 
         if (!id) {
             console.log('[View Group] No Group ID provided!');
@@ -29,7 +30,6 @@ class Group extends RootComponent {
 
         if (!group || Object.keys(group).indexOf('error') !== -1) {
             this.groupExists = false;
-            return;
         }
     }
 

@@ -21,6 +21,7 @@ class GroupAside extends Component {
         GroupStudentsClicked: this.resetEditButton,
         AssignedGLPsClicked: this.resetEditButton,
         AnalyticsClicked: this.resetEditButton,
+        OverviewClicked: this.resetEditButton,
     };
 
     async updateName(event: CustomEvent) {
@@ -109,6 +110,8 @@ class GroupAside extends Component {
             name,
         } = this.state.group;
 
+        const { id } = this.props;
+
         return aside(
             '#group-aside',
             nav(
@@ -150,6 +153,19 @@ class GroupAside extends Component {
                         },
                     },
                     span(await window.bcnI18n.getPhrase('cr_assigned_glps')),
+                ),
+                a(
+                    '.item',
+                    {
+                        onclick: (event) => {
+                            const { target } = event;
+
+                            this.toggleActive(target);
+                            this.emit('OverviewClicked', { id });
+                        },
+                    },
+                    // TODO(i18n)
+                    span('Overview'),
                 ),
                 // a(
                 //     '.item',
