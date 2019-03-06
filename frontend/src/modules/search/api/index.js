@@ -3,6 +3,7 @@ import { div, i, input, span } from '../../../core/html';
 
 import { Component } from '../../../core/component';
 import nullishCheck from '../../../core/util';
+import { last } from 'fp-ts/lib/Array';
 
 type QueryObject = {
     query: string,
@@ -99,6 +100,23 @@ class APISearchStatic extends Component {
 
         const noResultsStr = await window.bcnI18n.getPhrase('lm_no_results');
 
+        let lastQuery = '';
+        const searchHandler = () => {
+            console.log('checking for search');
+
+            const { query } = this.queryObj;
+            if (query !== '' && lastQuery !== query) {
+                this.doSearch();
+                lastQuery = query;
+            }
+        };
+
+        let typingTimer;
+
+        // how many ms to wait till we do the
+        // search POST
+        const searchWaitInterval = 150;
+
         return div(
             '.search.flex-grow',
             i('.icon-search', { 'aria-hidden': true }),
@@ -106,11 +124,16 @@ class APISearchStatic extends Component {
                 `.${searchType}`,
                 {
                     type: 'text',
-                    oninput: (event) => {
+                    onkeyup: (event) => {
                         const { target } = event;
-
                         this.queryObj.query = target.value;
-                        this.doSearch();
+                        clearTimeout(typingTimer);
+
+                        if (target.value) {
+                            typingTimer = setTimeout(() => {
+                                this.doSearch();
+                            }, searchWaitInterval);
+                        }
                     },
                     onkeypress: (event) => {
                         const {

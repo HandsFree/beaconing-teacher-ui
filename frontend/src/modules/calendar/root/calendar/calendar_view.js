@@ -279,8 +279,9 @@ class CalendarView extends Component {
             }
 
             // render the due dates...
-            if (nullishCheck(this.state.currentDueEvent, 'none') !== 'none') {
-                const { eventProm, date } = this.state.currentDueEvent;
+            const { currentDueEvent } = this.state;
+            if (currentDueEvent?.date) {
+                const { eventProm, date } = currentDueEvent;
                 if (date.isSame(cellDate, 'D')) {
                     eventsProm.push(eventProm);
                 }
