@@ -51,7 +51,7 @@ class LoadGroups extends Component {
         }
 
         return Promise.all(promArr)
-            .then(elements => section('.flex-container.flex-wrap.margin-20.list', elements));
+            .then(elements => section('.flex-container.flex-wrap.list', elements));
     }
 }
 

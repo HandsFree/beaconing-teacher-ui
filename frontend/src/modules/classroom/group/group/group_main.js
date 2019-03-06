@@ -5,6 +5,7 @@ import { Component } from '../../../../core/component';
 import AssignedGLPs from './assigned_glps';
 import GroupEdit from './group_edit';
 import GroupStudents from './group_students';
+import StudentOverview from './student_overview';
 
 class GroupMain extends Component {
     updateHooks = {
@@ -12,6 +13,7 @@ class GroupMain extends Component {
         EditDoneClicked: this.startGroupStudents,
         AssignedGLPsClicked: this.startAssignedGLPs,
         GroupStudentsClicked: this.startGroupStudents,
+        OverviewClicked: this.startOverview,
     };
 
     state = {
@@ -32,6 +34,22 @@ class GroupMain extends Component {
         const el = div(
             '#pane-container.flex-column.flex-grow',
             groupEditEl,
+        );
+
+        this.updateView(el);
+    }
+
+    async startOverview(evt: any) {
+        const { detail } = evt;
+
+        const overview = new StudentOverview();
+        const overviewEl = await overview.attach({
+            classID: detail.id,
+        });
+
+        const el = div(
+            '#pane-container.flex-column.flex-grow',
+            overviewEl,
         );
 
         this.updateView(el);

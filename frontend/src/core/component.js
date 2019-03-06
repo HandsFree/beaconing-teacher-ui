@@ -285,7 +285,6 @@ class Component implements ComponentInterface {
         if (data) {
             const ev = new CustomEvent(name, { detail: data });
             window.dispatchEvent(ev);
-
             return;
         }
 

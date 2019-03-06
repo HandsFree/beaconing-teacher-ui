@@ -57,7 +57,7 @@ class StudentMain extends Component {
 
         const el = div(
             '#pane-container.flex-column.flex-grow',
-            div('.student-analytics-title.margin-20',
+            div('.student-analytics-title',
                 h2('Student Analytics'),
                 p('Overall progress charts for students display progress accross all lesson plans assigned to them are only updated after the GLP has been fully played and finished.'),
             ),

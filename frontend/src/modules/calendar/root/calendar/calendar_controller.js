@@ -27,7 +27,7 @@ class CalendarController extends Component {
             'cal_sept', 'cal_oct', 'cal_nov', 'cal_dec',
         ];
         const monthIndex = date.month();
-        return window.bcnI18n.getPhrase(monthNames[monthIndex]);   
+        return window.bcnI18n.getPhrase(monthNames[monthIndex]);
     }
 
     async render() {
@@ -81,30 +81,33 @@ class CalendarController extends Component {
 
             div('.calendar-buttons',
                 p(a(
-                    '.btn', 
+                    '.btn',
                     {
                         role: 'button',
                         onclick: () => this.updateCalendar('PrevMonth'),
-                    }, prevMonthTranslation)
-                ),
+                    },
+                    prevMonthTranslation,
+                )),
                 ' ',
 
-                !currDate.isSame(moment(), 'D') ?
-                p(a(
-                    '.btn', 
+                !currDate.isSame(moment(), 'D') ? p(a(
+                    '.btn',
                     {
                         role: 'button',
                         onclick: () => this.updateCalendar('CurrMonth'),
-                    }, currMonthTranslation)
-                ) : div(),
-                
-                ' ',
-                p(a(
-                    '.btn', 
-                    {
-                        role: 'button',
-                        onclick: () => this.updateCalendar('NextMonth'),
-                    }, nextMonthTranslation)
+                    },
+                    currMonthTranslation,
+                )) : div(),
+
+                p(
+                    a(
+                        '.btn',
+                        {
+                            role: 'button',
+                            onclick: () => this.updateCalendar('NextMonth'),
+                        },
+                        nextMonthTranslation,
+                    ),
                 ),
             ),
         );

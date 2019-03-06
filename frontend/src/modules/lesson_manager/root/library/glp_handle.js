@@ -205,7 +205,7 @@ class GLPHandle extends Component {
         });
 
         const element = div(
-            '.plans.flex-column.flex-grow.margin-20',
+            '.plans.flex-column.flex-grow',
             glpsEl,
             div(
                 '#glpload.flex-align-center.flex-column',
