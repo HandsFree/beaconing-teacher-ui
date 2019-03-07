@@ -39,8 +39,24 @@ const config = async (yours, others) => {
             legend: {
                 display: true,
                 position: 'right',
+                labels: {
+                    fontColor: 'black',
+                    fontSize: 18,
+                },
             },
             scale: {
+                yAxes: [{
+                    ticks: {
+                        fontColor: 'black',
+                        fontSize: 18,
+                    },
+                }],
+                xAxes: [{
+                    ticks: {
+                        fontColor: 'black',
+                        fontSize: 14,
+                    },
+                }],
                 ticks: {
                     beginAtZero: true,
                     min: 0,

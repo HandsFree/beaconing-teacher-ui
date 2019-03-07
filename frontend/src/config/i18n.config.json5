@@ -363,6 +363,54 @@
         'pt-PT': ''
     },
 
+    dob: {
+        'en-GB': 'Date of Birth',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+
+    student_prog_chart: {
+        'en-GB': 'Overall progress charts for students display progress accross all lesson plans assigned to them are only updated after the GLP has been fully played and finished.',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    }
+
+    student_analytics: {
+        'en-GB': 'Student Analytics',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+
+    student_name: {
+        'en-GB': 'Student Name',
+        'fr-FR': '',
+        'es-ES': '',
+        'it-IT': '',
+        'de-DE': '',
+        'ro-RO': '',
+        'pl-PL': '',
+        'tr-TR': '',
+        'pt-PT': ''
+    },
+
     username: {
         'en-GB': 'Username',
         'fr-FR': '',

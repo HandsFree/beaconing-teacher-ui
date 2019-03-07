@@ -56,13 +56,9 @@
 		margin: 0.5em;
 		outline: none;
 		border: none;
-		border: 1px solid $bcn_light_orange;
+		border: 2px solid $border_color;
 		background: white;
 		background: transparent;
 		font-size: 1.15em;
-
-		&:focus {
-			outline: 1px solid $bcn_light_orange;
-		}
 	}
 }

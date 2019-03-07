@@ -28,11 +28,19 @@ const config = async (progress) => {
         options: {
             legend: {
                 display: false,
+                labels: {
+                    fontColor: 'black',
+                    fontSize: 18,
+                },
             },
             scales: {
                 xAxes: [
                     {
                         stacked: true,
+                        ticks: {
+                            fontColor: 'black',
+                            fontSize: 18,
+                        },
                     },
                 ],
                 yAxes: [
@@ -41,6 +49,8 @@ const config = async (progress) => {
                             beginAtZero: true,
                             max: 100,
                             callback: value => `${value}%`,
+                            fontColor: 'black',
+                            fontSize: 18,
                         },
                         stacked: true,
                     },

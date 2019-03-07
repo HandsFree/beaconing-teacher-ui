@@ -61,7 +61,9 @@
 	margin: 9.2px;
 	padding: 0.5em 1em;
 	align-items: center;
-	border: 1px solid $bcn_light_orange;
+	background: #fafafa;
+	font-weight: 400;
+	border: 2px solid $border_color;
 
 	&:hover {
 		cursor: pointer;

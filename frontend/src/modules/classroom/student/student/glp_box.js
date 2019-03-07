@@ -18,6 +18,18 @@ class GLPBox extends Component {
             fromGroupName,
         } = this.props;
 
+        const fromGroupEl = fromGroupName ? h4(
+            '.group',
+            'From group: ',
+            a(
+                '.link-underline',
+                {
+                    href: `//${window.location.host}/classroom/group?id=${fromGroupID}`,
+                },
+                fromGroupName,
+            ),
+        ) : [];
+
         return div(
             '.glp-assigned-box.flex-4.flex-column',
             div(
@@ -25,37 +37,30 @@ class GLPBox extends Component {
                 div(
                     '.flex-column',
                     h3('.name', name),
-                    fromGroupName ? h4(
-                        '.group',
-                        'From group: ',
-                        a(
-                            '.link-underline',
-                            {
-                                href: `//${window.location.host}/classroom/group?id=${fromGroupID}`,
-                            },
-                            fromGroupName,
-                        ),
-                    ) : [],
                 ),
             ),
             div(
-                '.toolbar',
-                a(
-                    '.item',
-                    {
-                        href: `//${window.location.host}/lesson_manager#view?id=${glpID}`,
-                    },
-                    await window.bcnI18n.getPhrase('view'),
-                ),
-                !fromGroupID ? a(
-                    '.item',
-                    {
-                        onclick: () => {
-                            this.unassignPlan();
+                '.content',
+                fromGroupEl,
+                div(
+                    '.toolbar',
+                    a(
+                        '.item',
+                        {
+                            href: `//${window.location.host}/lesson_manager#view?id=${glpID}`,
                         },
-                    },
-                    await window.bcnI18n.getPhrase('cr_unassign'),
-                ) : [],
+                        await window.bcnI18n.getPhrase('view'),
+                    ),
+                    !fromGroupID ? a(
+                        '.item',
+                        {
+                            onclick: () => {
+                                this.unassignPlan();
+                            },
+                        },
+                        await window.bcnI18n.getPhrase('cr_unassign'),
+                    ) : [],
+                ),
             ),
         );
     }

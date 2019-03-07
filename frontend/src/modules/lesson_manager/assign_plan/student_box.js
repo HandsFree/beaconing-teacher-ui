@@ -136,7 +136,7 @@ class StudentBox extends Component {
             }
         };
 
-        return div(
+        const card = div(
             '.student-box',
             figure(img({
                 src: this.state.imgData,
@@ -147,16 +147,18 @@ class StudentBox extends Component {
                     '.title',
                     studentName,
                 ),
-                a(
-                    {
-                        onclick: (event) => {
-                            const { target } = event;
-                            this.assign(target);
-                        },
-                    },
-                    await window.bcnI18n.getPhrase('lm_assign'),
-                ),
             ),
+        );
+        return a(
+            '.fake-link',
+            {
+                onclick: (event) => {
+                    const { target } = event;
+                    this.assign(target);
+                    return false;
+                },
+            },
+            card,
         );
     }
 }

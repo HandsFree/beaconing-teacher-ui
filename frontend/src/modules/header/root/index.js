@@ -47,16 +47,6 @@ class Header extends Component {
             div(
                 '.profile',
                 div(
-                    '.logout',
-                    a(
-                        {
-                            href: `//${window.location.host}/auth/logout`,
-                            tabIndex: 2,
-                        },
-                        await window.bcnI18n.getPhrase('log_out'),
-                    ),
-                ),
-                div(
                     '.profile-img',
                     a(
                         {

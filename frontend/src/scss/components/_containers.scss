@@ -7,18 +7,32 @@
 	display: flex;
 }
 
+.group-list-container {
+	display: grid;
+	grid-template-columns: 50% 50%;
+}
+
+#group-students-container {
+	display: grid;
+	grid-template-columns: 50% 50%;
+}
+
+.student-list-container {
+	display: grid;
+	grid-template-columns: 50% 50%;
+}
+
 .student-box {
-    border: 1px solid $bcn-light-orange;
-    padding: 1em;
-    flex: 25%;
+    border: 2px solid $border_color;
     margin: 0.5em;
 
     figure {
-        padding: 1em;
-        margin: 0 0.25em 0 0;
+		background: $border_color;
+		padding: 1em;
+		margin: 0 0.25em 0 0;
 
         img {
-            width: 8em;
+            width: 4em;
             height: auto;
         }
     }
@@ -31,8 +45,8 @@
 
             h3 {
                 margin: 0 0 0.2em;
-                font-weight: 300;
-                font-size: 1.2em;
+                font-weight: bold;
+                font-size: 1.5em;
 			}
 			
 			h4.username {
@@ -59,15 +73,16 @@
 }
 
 .small-box {
-    border: 1px solid $bcn-light-orange;
-    padding: 1em 2em;
-    flex: 33%;
+	display: flex;
+	border: 2px solid $border_color;
     margin: 0.5em;
-    justify-content: space-between;
-    align-items: center;
+	padding: 1em 2em;
+	justify-content: space-between;
+
+	border-left: 4px solid $border_color;
 
     > .title {
-        h3 {
+		h3 {
             margin: 0;
             font-weight: 400;
             font-size: 1.2em;
@@ -99,13 +114,9 @@
 
 .glp-box {
 	margin: 0.5em;
-	padding: 1em 1.5em;
-	border: 1px solid $bcn_light_orange;
-	// justify-content: space-between;
+	border: 2px solid $border_color;
 
 	.toolbar {
-		justify-content: flex-end;
-
 		a.item {
 			@extend .link-underline;
 			padding: 0.1em;
@@ -115,15 +126,18 @@
 		}
 	}
 
+	.title {
+		padding: 0.9em;
+		background: $border_color;
+	}
+
 	> .title {
 		justify-content: space-between;
 		align-items: center;
-		// padding-bottom: 0.75em;
-		border-bottom: 1px solid rgba($primary_element_background, 0.4);
 		margin-bottom: 0.25em;
 
 		h3 {
-			font-weight: 400;
+			font-weight: bold;
 			font-size: 1.25em;
 			margin: 0.25em;
 		}
@@ -136,7 +150,7 @@
 	}
 
 	> .content {
-		padding: 0.5em;
+		padding: 0.9em;
 		justify-content: space-between;
 
 		.topic, .domain, .created, .modified, .owner {

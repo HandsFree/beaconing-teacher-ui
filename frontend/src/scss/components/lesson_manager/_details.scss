@@ -19,7 +19,7 @@
 
     .detail {
         margin: 0.5em;
-        border: 1px solid $bcn-light-orange;
+        border: 2px solid $border_color;
         padding: 0.5em;
         justify-content: space-between;
         align-items: center;
@@ -61,7 +61,7 @@
             margin: 0.25em;
             flex: 33%;
             flex-direction: column;
-            border: 1px solid $bcn_light_orange;
+            border: 2px solid $border_color;
             padding: 0.5em;
 
             > .title {

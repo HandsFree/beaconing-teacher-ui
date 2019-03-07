@@ -29,7 +29,7 @@
 
 .calendar-cell,
 .calendar-header {
-	border: 1px solid #f5f5f5;
+	border: 2px solid $border_color;
 }
 
 .calendar-cell-meta {
@@ -81,7 +81,7 @@
 	flex-wrap: wrap;
 	margin-bottom: 3em;
 	padding: 0;
-	border: 1px solid #f5f5f5;
+	border: 2px solid $border_color;
 }
 
 .prev-month,
@@ -112,7 +112,6 @@
     cursor: pointer;
 }
 .fake-link:hover {
-	text-decoration: underline;
 }
 
 .student-info,
@@ -129,13 +128,6 @@
 // TODO move this into the students selectiony css file but for now 
 // im gonna slap it here.
 
-.cal-sel-item {
-	border: 1px solid #e87f62;
-	padding: 0.5em 1em;
-	margin: 1em;
-	justify-content: space-between;
-}
-
 // TODO
 // this should go in _calendar_day.scss or something
 
@@ -144,14 +136,14 @@
 }
 
 .calendar-day-heading {
-	background: #2d353e;
-	border-bottom: 1px solid #a9b5c0;
-	color: #fff;
+	background: $border_color;
+	color: #000;
+	font-weight: 400;
 	padding: 0 0.8em;
 }
 
 .calendar-day-slot {
 	display: block;
-	border: 1px solid #f5f5f5;
+	border: 2px solid $border_color;
 	padding: 0 0.8em;
 }

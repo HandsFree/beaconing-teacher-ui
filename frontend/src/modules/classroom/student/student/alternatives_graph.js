@@ -29,6 +29,28 @@ const config = async (correct, incorrect) => {
             legend: {
                 display: true,
                 position: 'right',
+                labels: {
+                    fontColor: 'black',
+                    fontSize: 18,
+                },
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        fontColor: 'black',
+                        fontSize: 18,
+                        stepSize: 1,
+                        beginAtZero: true,
+                    },
+                }],
+                xAxes: [{
+                    ticks: {
+                        fontColor: 'black',
+                        fontSize: 14,
+                        stepSize: 1,
+                        beginAtZero: true,
+                    },
+                }],
             },
             maintainAspectRatio: true,
             responsive: true,
@@ -51,7 +73,7 @@ class AlternativesGraph extends Component {
         } = graphData;
 
         if (correct === 0 && incorrect === 0) {
-            return div(h2('No data to display.'));
+            return div(h2(await window.bcnI18n.getPhrase('err_no_data')));
         }
 
         const ctx: CanvasRenderingContext2D = this.view.getContext('2d');

@@ -41,30 +41,30 @@ class GLPBox extends Component {
                 div(
                     '.flex-column',
                     h3('.name', name),
-                ),
-            ),
-            div(
-                '.toolbar',
-                a(
-                    '.item',
-                    {
-                        href: `#view?id=${encodeURIComponent(id)}`,
-                    },
-                    await window.bcnI18n.getPhrase('view'),
-                ),
-                a(
-                    '.item',
-                    {
-                        href: `#edit?id=${encodeURIComponent(id)}`,
-                    },
-                    await window.bcnI18n.getPhrase('edit'),
-                ),
-                a(
-                    '.item',
-                    {
-                        href: `#assign?id=${encodeURIComponent(id)}`,
-                    },
-                    await window.bcnI18n.getPhrase('lm_assign'),
+                    div(
+                        '.toolbar',
+                        a(
+                            '.item',
+                            {
+                                href: `#view?id=${encodeURIComponent(id)}`,
+                            },
+                            await window.bcnI18n.getPhrase('view'),
+                        ),
+                        a(
+                            '.item',
+                            {
+                                href: `#edit?id=${encodeURIComponent(id)}`,
+                            },
+                            await window.bcnI18n.getPhrase('edit'),
+                        ),
+                        a(
+                            '.item',
+                            {
+                                href: `#assign?id=${encodeURIComponent(id)}`,
+                            },
+                            await window.bcnI18n.getPhrase('lm_assign'),
+                        ),
+                    ),
                 ),
             ),
             div(

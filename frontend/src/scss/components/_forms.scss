@@ -209,14 +209,14 @@ form.create-group, form.create-student, form.create-new-plan, form.edit-teacher,
 		min-height: 8em;
 		background: white;
 		outline: none;
-		border: 1px dashed $bcn_light_orange;
+		border: 2px dashed $border_color;
 		padding: 0.5em;
 		font-size: 1.06em;
 		margin-top: 0.1em;
 		resize: vertical;
 	
 		&:focus {
-			border: 1px solid $bcn_light_orange;
+			border: 2px solid $border_color;
 		}
 	}
 
@@ -326,10 +326,10 @@ form.create-group, form.create-student, form.create-new-plan, form.edit-teacher,
 		font-size: 1.06em;
 		border: none;
 		outline: none;
-		border: 1px solid $bcn_light_orange;
+		border: 2px solid $border_color;
 
 		&:focus {
-			box-shadow: 0 2px $bcn_light_orange;
+			box-shadow: 0 2px $border_color;
 		}
 	}
 
@@ -363,13 +363,13 @@ form.create-group, form.create-student, form.create-new-plan, form.edit-teacher,
 			font-size: 1.06em;
 			background: none;
 			outline: none;
-			border: 1px solid $bcn_light_orange;
+			border: 2px solid $border_color;
 			-moz-appearance: none;
 			-webkit-appearance: none;
 			appearance: none;
 	
 			&:focus {
-				box-shadow: 0 2px $bcn_light_orange;
+				box-shadow: 0 2px $border_color;
 			}
 		}
 	}

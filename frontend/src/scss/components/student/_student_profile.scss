@@ -16,7 +16,7 @@
 
 		img {
 			max-width: 15em;
-			border: 1px solid $bcn_light_orange;
+			border: 2px solid $border_color;
 		}
 	}
 }
@@ -52,14 +52,15 @@
 }
 
 .glp-assigned-box {
-	margin: 0.25em 0.5em;
-	padding: 1em 1.5em;
-	border: 1px solid $bcn_light_orange;
+	margin: 0.5em 0.5em;
+	border: 2px solid $border_color;
 
 	> .title {
 		justify-content: space-between;
+		padding: 1em 1.5em;
 		align-items: center;
 		margin-bottom: 0.25em;
+		background: $border_color;
 
 		h3 {
 			font-weight: 400;
@@ -77,6 +78,10 @@
 				font-weight: 400;
 			}
 		}
+	}
+
+	.content {
+		padding: 1em 1.5em;
 	}
 
 	.toolbar {

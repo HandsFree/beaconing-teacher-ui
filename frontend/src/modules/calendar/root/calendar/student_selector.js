@@ -11,43 +11,50 @@ class CalendarSelectedGroup extends Component {
             name,
         } = this.props;
 
-        return div('.cal-sel-item',
-            p('.item-name.fake-link', a(
-                {
-                    title: await window.bcnI18n.getPhrase('cal_view_in_classroom'),
-                    href: `//${window.location.host}/classroom/group?id=${id}`,
-                },
-                `${name}`,
-            )),
-            p(a(
-                '.fake-link',
-                {
-                    onclick: () => {
-                        // don't do anything if we've already selected
-                        // this group
-                        if (window.sessionStorage.getItem('calendarSelectionType') === 'groups') {
-                            const data = nullishCheck(window.sessionStorage.getItem('calendarSelection'), 'none');
-                            if (data !== 'none') {
-                                const groupData = JSON.parse(data);
-                                if (groupData.group !== null && groupData.group.id === id) {
-                                    return;
+        return div('.small-box',
+            div(
+                '.title',
+                p('.item-name.fake-link', a(
+                    {
+                        title: await window.bcnI18n.getPhrase('cal_view_in_classroom'),
+                        href: `//${window.location.host}/classroom/group?id=${id}`,
+                    },
+                    `${name}`,
+                )),
+            ),
+            div(
+                '.box-buttons',
+                p(a(
+                    '.fake-link',
+                    {
+                        onclick: () => {
+                            // don't do anything if we've already selected
+                            // this group
+                            if (window.sessionStorage.getItem('calendarSelectionType') === 'groups') {
+                                const data = nullishCheck(window.sessionStorage.getItem('calendarSelection'), 'none');
+                                if (data !== 'none') {
+                                    const groupData = JSON.parse(data);
+                                    if (groupData.group !== null && groupData.group.id === id) {
+                                        return;
+                                    }
                                 }
                             }
-                        }
 
-                        window.sessionStorage.setItem('calendarSelection', JSON.stringify({
-                            student: null,
-                            group: {
-                                id,
-                                name,
-                            },
-                        }));
-                        this.emit('RefreshCalendarController');
-                        this.emit('RefreshCalendarView');
+                            window.sessionStorage.setItem('calendarSelection', JSON.stringify({
+                                student: null,
+                                group: {
+                                    id,
+                                    name,
+                                },
+                            }));
+
+                            this.emit('RefreshCalendarController');
+                            this.emit('RefreshCalendarView');
+                        },
                     },
-                },
-                await window.bcnI18n.getPhrase('view'),
-            )),
+                    await window.bcnI18n.getPhrase('view'),
+                )),
+            ),
         );
     }
 }
@@ -59,42 +66,52 @@ class CalendarSelectedStudent extends Component {
             username,
         } = this.props;
 
-        return div('.cal-sel-item',
-            p('.item-name.fake-link', a(
-                {
-                    title: await window.bcnI18n.getPhrase('cal_view_in_classroom'),
-                    href: `//${window.location.host}/classroom/student?id=${id}`,
-                },
-                `${username}`,
-            )),
-            p(a('.fake-link',
-                {
-                    onclick: () => {
-                        // don't do anything if we've already selected
-                        // this group
-                        if (window.sessionStorage.getItem('calendarSelectionType') === 'students') {
-                            const data = nullishCheck(window.sessionStorage.getItem('calendarSelection'), 'none');
-                            if (data !== 'none') {
-                                const studentData = JSON.parse(data);
-                                if (studentData.student !== null && studentData.student.id === id) {
-                                    return;
-                                }
-                            }
-                        }
-
-                        window.sessionStorage.setItem('calendarSelection', JSON.stringify({
-                            student: {
-                                id,
-                                username,
-                            },
-                            group: null,
-                        }));
-                        this.emit('RefreshCalendarController');
-                        this.emit('RefreshCalendarView');
+        return div(
+            '.small-box',
+            div(
+                '.title',
+                p('.item-name.fake-link', a(
+                    {
+                        title: await window.bcnI18n.getPhrase('cal_view_in_classroom'),
+                        href: `//${window.location.host}/classroom/student?id=${id}`,
                     },
-                },
-                await window.bcnI18n.getPhrase('view'),
-            )),
+                    `${username}`,
+                )),
+            ),
+            div(
+                '.box-buttons',
+                p(
+                    a(
+                        '.fake-link',
+                        {
+                            onclick: () => {
+                                // don't do anything if we've already selected
+                                // this group
+                                if (window.sessionStorage.getItem('calendarSelectionType') === 'students') {
+                                    const data = nullishCheck(window.sessionStorage.getItem('calendarSelection'), 'none');
+                                    if (data !== 'none') {
+                                        const studentData = JSON.parse(data);
+                                        if (studentData.student !== null && studentData.student.id === id) {
+                                            return;
+                                        }
+                                    }
+                                }
+
+                                window.sessionStorage.setItem('calendarSelection', JSON.stringify({
+                                    student: {
+                                        id,
+                                        username,
+                                    },
+                                    group: null,
+                                }));
+                                this.emit('RefreshCalendarController');
+                                this.emit('RefreshCalendarView');
+                            },
+                        },
+                        await window.bcnI18n.getPhrase('view'),
+                    ),
+                ),
+            ),
         );
     }
 }

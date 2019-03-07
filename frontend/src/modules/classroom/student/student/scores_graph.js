@@ -31,6 +31,10 @@ const config = async (min, avg, max) => {
         options: {
             legend: {
                 display: false,
+                labels: {
+                    fontColor: 'black',
+                    fontSize: 18,
+                },
             },
             scales: {
                 yAxes: [
@@ -40,6 +44,8 @@ const config = async (min, avg, max) => {
                             min: 0,
                             max: 100,
                             callback: value => `${value}%`,
+                            fontColor: 'black',
+                            fontSize: 18,
                         },
                     },
                 ],

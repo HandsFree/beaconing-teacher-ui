@@ -16,11 +16,14 @@ class GroupBox extends Component {
                 '.title',
                 h3('.name', name),
             ),
-            a(
-                {
-                    href: `//${window.location.host}/classroom/group?id=${id}`,
-                },
-                await window.bcnI18n.getPhrase('view'),
+            div(
+                '.box-buttons',
+                a(
+                    {
+                        href: `//${window.location.host}/classroom/group?id=${id}`,
+                    },
+                    await window.bcnI18n.getPhrase('view'),
+                ),
             ),
         );
     }

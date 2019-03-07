@@ -9,7 +9,6 @@ class GLPBox extends Component {
         const {
             name,
             glpID,
-            dashboardLink,
         } = this.props;
 
         return div(
@@ -22,29 +21,32 @@ class GLPBox extends Component {
                 ),
             ),
             div(
-                '.toolbar',
-                a(
-                    '.item',
-                    {
-                        href: `//${window.location.host}/lesson_manager#view?id=${glpID}`,
-                    },
-                    await window.bcnI18n.getPhrase('view'),
-                ),
-                a(
-                    '.item',
-                    {
-                        href: `//${window.location.host}/classroom/group#analytics?id=${glpID}`,
-                    },
-                    await window.bcnI18n.getPhrase('analytics'),
-                ),
-                a(
-                    '.item',
-                    {
-                        onclick: () => {
-                            this.unassignPlan();
+                '.content',
+                div(
+                    '.toolbar',
+                    a(
+                        '.item',
+                        {
+                            href: `//${window.location.host}/lesson_manager#view?id=${glpID}`,
                         },
-                    },
-                    await window.bcnI18n.getPhrase('cr_unassign'),
+                        await window.bcnI18n.getPhrase('view'),
+                    ),
+                    a(
+                        '.item',
+                        {
+                            href: `//${window.location.host}/classroom/group#analytics?id=${glpID}`,
+                        },
+                        await window.bcnI18n.getPhrase('analytics'),
+                    ),
+                    a(
+                        '.item',
+                        {
+                            onclick: () => {
+                                this.unassignPlan();
+                            },
+                        },
+                        await window.bcnI18n.getPhrase('cr_unassign'),
+                    ),
                 ),
             ),
         );

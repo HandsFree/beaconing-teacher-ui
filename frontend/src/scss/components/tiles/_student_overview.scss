@@ -48,13 +48,13 @@
 					background: none;
 					outline: none;
 					border: none;
-					border-bottom: 1px solid $bcn_light_orange;
+					border-bottom: 2px solid $border_color;
 					-moz-appearance: none;
 					-webkit-appearance: none;
 					appearance: none;
 			
 					&:focus {
-						box-shadow: 0 1px $bcn_light_orange;
+						box-shadow: 0 2px $border_color;
 					}
 
 					* {

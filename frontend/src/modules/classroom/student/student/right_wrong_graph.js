@@ -38,7 +38,7 @@ class RightWrongGraph extends Component {
     async render() {
         const { data } = this.props;
         if (nullishCheck(data.answers, 'none') === 'none') {
-            return div(h2('No data to display.'));
+            return div(h2(await window.bcnI18n.getPhrase('err_no_data')));
         }
 
         const answerSet = new Map();

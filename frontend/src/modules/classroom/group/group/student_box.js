@@ -80,8 +80,7 @@ class StudentBox extends Component {
         };
 
         const imgData = `data:image/svg+xml;base64,${new Identicon(identiconSha512, options).toString()}`;
-
-        return div(
+        const card = div(
             '.student-box',
             figure(img({
                 src: imgData,
@@ -95,12 +94,6 @@ class StudentBox extends Component {
                 div(
                     a(
                         {
-                            href: `//${window.location.host}/classroom/student?id=${studentID}`,
-                        },
-                        await window.bcnI18n.getPhrase('cr_view_student'),
-                    ),
-                    a(
-                        {
                             onclick: () => {
                                 this.removeStudent();
                             },
@@ -109,6 +102,13 @@ class StudentBox extends Component {
                     ),
                 ),
             ),
+        );
+
+        return a(
+            {
+                href: `//${window.location.host}/classroom/student?id=${studentID}`,
+            },
+            card,
         );
     }
 

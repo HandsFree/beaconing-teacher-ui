@@ -7,14 +7,9 @@
 		margin: 0.5em;
 		outline: none;
 		border: none;
-		border: 1px solid $bcn_light_orange;
-		background: white;
-		background: transparent;
+		border: 2px solid $border_color;
+		background: #fafafa;
 		font-size: 1.15em;
-
-		&:focus {
-			outline: 1px solid $bcn_light_orange;
-		}
 	}
 
 	i {

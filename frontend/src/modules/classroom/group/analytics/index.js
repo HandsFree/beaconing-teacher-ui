@@ -200,13 +200,13 @@ class AnalyticsMain extends Component {
                             await window.bcnI18n.getPhrase('an_main_dashboard_link'),
                         ),
                     ),
-                    h2('Analytics Overview'),
+                    h2(await window.bcnI18n.getPhrase('analytics')),
                 ),
 
                 p(await window.bcnI18n.getPhrase('an_main_dashboard_desc')),
             ),
 
-            h2('Missions'),
+            h2(await window.bcnI18n.getPhrase('lm_missions')),
             await Promise.all(missionProms).then(el => el),
         ];
     }

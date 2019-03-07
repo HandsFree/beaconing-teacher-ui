@@ -39,7 +39,16 @@ class LoadProfile extends Component {
                 '.mini.icon-menu.flex-align-self-end',
                 a(
                     {
+                        href: `//${window.location.host}/auth/logout`,
+                        tabIndex: 2,
+                        title: await window.bcnI18n.getPhrase('log_out'),
+                    },
+                    i('.icon-link-ext-alt'),
+                ),
+                a(
+                    {
                         href: '#edit',
+                        title: await window.bcnI18n.getPhrase('edit'),
                     },
                     i('.icon-pencil'),
                 ),

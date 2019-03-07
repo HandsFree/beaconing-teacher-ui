@@ -13,5 +13,6 @@
 }
 
 .students-container, .groups-container {
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 32% 32% 32%;
 }
