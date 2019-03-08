@@ -9,7 +9,6 @@ import SecondNav from '../../../nav/second';
 import InnerNav from '../../inner_nav';
 import APISearch from '../../../search/api';
 import StudentsContainer from './students_container';
-import CreateStudentButton from './create_student_button';
 
 class Students extends RootComponent {
     async render() {
@@ -20,7 +19,6 @@ class Students extends RootComponent {
         const innerNav = new InnerNav();
         const search = new APISearch();
         const students = new StudentsContainer();
-        const createStudentButton = new CreateStudentButton();
 
         return Promise.all([
             header.attach(),
@@ -38,7 +36,6 @@ class Students extends RootComponent {
                 },
             }),
             students.attach(),
-            createStudentButton.attach(),
         ]).then((values) => {
             const [
                 headerEl,
@@ -47,7 +44,6 @@ class Students extends RootComponent {
                 secondNavEl,
                 searchEl,
                 studentsEL,
-                createStudentButtonEl,
             ] = values;
 
             return div(
@@ -60,7 +56,6 @@ class Students extends RootComponent {
                     main(
                         '#students',
                         section(
-                            createStudentButtonEl,
                             searchEl,
                         ),
                         studentsEL,

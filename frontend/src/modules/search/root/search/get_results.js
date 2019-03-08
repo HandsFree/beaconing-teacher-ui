@@ -61,7 +61,7 @@ class SearchResults extends Component {
                     h4(`${await window.bcnI18n.getPhrase('cr_students')}:`),
                 ),
                 div(
-                    '.flex-container.flex-wrap',
+                    '.flex-container.flex-wrap.result-container',
                     boxes,
                 ),
             );
@@ -94,7 +94,7 @@ class SearchResults extends Component {
                     h4('GLP\'s:'),
                 ),
                 div(
-                    '.flex-container.flex-wrap',
+                    '.flex-container.flex-wrap.result-container',
                     boxes,
                 ),
             );

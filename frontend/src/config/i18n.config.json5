@@ -385,7 +385,7 @@
         'pl-PL': '',
         'tr-TR': '',
         'pt-PT': ''
-    }
+    },
 
     student_analytics: {
         'en-GB': 'Student Analytics',

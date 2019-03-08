@@ -160,7 +160,7 @@ class StudentAside extends Component {
 
         const options = {
             foreground: randArray(),
-            background: [255, 255, 255, 255],
+            background: [245, 245, 245, 255],
             margin: 0.1,
             size: 160,
             format: 'svg',

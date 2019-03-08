@@ -1,5 +1,10 @@
 // @flow
-import { section } from '../../../../core/html';
+import {
+    div,
+    h2,
+    a,
+    section,
+} from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 import GroupBox from './group_box';
@@ -33,6 +38,17 @@ class LoadGroups extends Component {
     async render() {
         const groups = Object.values(this.state.groups);
         const promArr = [];
+
+        const createGroupCard = a(
+            {
+                href: '#create',
+            },
+            div(
+                '.small-box.create-group-box',
+                h2('+'),
+            ),
+        );
+        promArr.push(createGroupCard);
 
         for (const group of groups) {
             const {

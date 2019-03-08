@@ -10,18 +10,18 @@ class ResultBox extends Component {
             link,
         } = this.props;
 
-        return div(
+        const card = div(
             '.result',
             div(
                 '.title',
                 title,
             ),
-            a(
-                {
-                    href: link,
-                },
-                await window.bcnI18n.getPhrase('view'),
-            ),
+        );
+        return a(
+            {
+                href: link,
+            },
+            card,
         );
     }
 }

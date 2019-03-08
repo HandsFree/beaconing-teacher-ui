@@ -72,7 +72,7 @@ class StudentBox extends Component {
 
         const options = {
             foreground: studentColour,
-            background: [255, 255, 255, 255],
+            background: [245, 245, 245, 255],
             margin: 0.1,
             size: 64,
             format: 'svg',

@@ -10,7 +10,7 @@ class GroupBox extends Component {
             name,
         } = this.props;
 
-        return div(
+        const card = div(
             '.small-box',
             div(
                 '.title',
@@ -18,13 +18,14 @@ class GroupBox extends Component {
             ),
             div(
                 '.box-buttons',
-                a(
-                    {
-                        href: `//${window.location.host}/classroom/group?id=${id}`,
-                    },
-                    await window.bcnI18n.getPhrase('view'),
-                ),
             ),
+        );
+
+        return a(
+            {
+                href: `//${window.location.host}/classroom/group?id=${id}`,
+            },
+            card,
         );
     }
 }

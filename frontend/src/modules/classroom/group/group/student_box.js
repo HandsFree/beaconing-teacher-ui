@@ -1,7 +1,7 @@
 // @flow
 import Identicon from 'identicon.js';
 
-import { div, figure, img, h4, a, h3 } from '../../../../core/html';
+import { i, div, figure, img, h4, a, h3 } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 import Status from '../../../status';
@@ -73,7 +73,7 @@ class StudentBox extends Component {
 
         const options = {
             foreground: studentColour,
-            background: [255, 255, 255, 255],
+            background: [245, 245, 245, 255],
             margin: 0.1,
             size: 64,
             format: 'svg',
@@ -82,9 +82,10 @@ class StudentBox extends Component {
         const imgData = `data:image/svg+xml;base64,${new Identicon(identiconSha512, options).toString()}`;
         const card = div(
             '.student-box',
-            figure(img({
-                src: imgData,
-            })),
+
+            figure(
+                img({ src: imgData }),
+            ),
             div(
                 '.info.flex-column',
                 div(
@@ -92,14 +93,8 @@ class StudentBox extends Component {
                     studentName,
                 ),
                 div(
-                    a(
-                        {
-                            onclick: () => {
-                                this.removeStudent();
-                            },
-                        },
-                        await window.bcnI18n.getPhrase('remove'),
-                    ),
+                    '.toolbar',
+                    i('.icon-trash-empty'),
                 ),
             ),
         );

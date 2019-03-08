@@ -20,7 +20,6 @@ class Groups extends RootComponent {
         const innerNav = new InnerNav();
         const search = new APISearch();
         const groups = new GroupsContainer();
-        const createGroupButton = new CreateGroupButton();
 
         return Promise.all([
             header.attach(),
@@ -38,7 +37,6 @@ class Groups extends RootComponent {
                 },
             }),
             groups.attach(),
-            createGroupButton.attach(),
         ]).then((values) => {
             const [
                 headerEl,
@@ -47,7 +45,6 @@ class Groups extends RootComponent {
                 secondNavEl,
                 searchEl,
                 groupsEL,
-                createGroupButtonEl,
             ] = values;
 
             return div(
@@ -60,7 +57,6 @@ class Groups extends RootComponent {
                     main(
                         '#groups',
                         section(
-                            createGroupButtonEl,
                             searchEl,
                         ),
                         groupsEL,

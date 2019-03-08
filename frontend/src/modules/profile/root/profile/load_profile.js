@@ -22,7 +22,7 @@ class LoadProfile extends Component {
         const teacherFullName = `${teacher.teacherSettings.firstName} ${teacher.teacherSettings.lastName}`;
         const options = {
             foreground: [61, 177, 51, 255],
-            background: [255, 255, 255, 255],
+            background: [245, 245, 245, 255],
             margin: 0.1,
             size: 512,
             format: 'svg',

@@ -1,5 +1,10 @@
 // @flow
-import { section } from '../../../../core/html';
+import {
+    h1,
+    div,
+    a,
+    section,
+} from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 import StudentBox from './student_box';
@@ -33,6 +38,19 @@ class LoadStudents extends Component {
     async render() {
         const students = Object.values(this.state.students);
         const promArr = [];
+
+        promArr.push(
+            a(
+                {
+                    title: 'Create Student', // TODO(i18n)
+                    href: '#create',
+                },
+                div(
+                    '.student-box.create-student-box',
+                    h1('+'),
+                ),
+            ),
+        );
 
         for (const student of students) {
             const {
