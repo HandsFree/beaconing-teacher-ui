@@ -1,5 +1,5 @@
 // @flow
-import { div, h3, a } from '../../../core/html';
+import { p, div, h3, a } from '../../../core/html';
 
 import { Component } from '../../../core/component';
 import Status from '../../status';
@@ -8,21 +8,23 @@ class GroupBox extends Component {
     async render() {
         const { group } = this.props;
 
-        return div(
+        const card = div(
             '.small-box',
             div(
                 '.title',
                 h3('.name', group.name),
             ),
-            a(
-                {
-                    onclick: (event) => {
-                        const { target } = event;
-                        this.assignGroup(target);
-                    },
+            p('.assign-status'),
+        );
+        return a(
+            '.fake-link',
+            {
+                onclick: (event) => {
+                    const { target } = event;
+                    this.assignGroup(target);
                 },
-                await window.bcnI18n.getPhrase('lm_assign'),
-            ),
+            },
+            card,
         );
     }
 
@@ -37,7 +39,11 @@ class GroupBox extends Component {
             group,
         } = this.props;
 
-        assignButton.textContent = `${await window.bcnI18n.getPhrase('lm_assigning')}...`;
+        const assignMsg = `${await window.bcnI18n.getPhrase('lm_assigning')}...`;
+        const statusInfo = assignButton.querySelector('.title');
+        if (statusInfo) {
+            statusInfo.innerText = assignMsg;
+        }
 
         const status = await window.beaconingAPI.assignGroup(group.id, glpID);
         console.log('assigning ', group.id, ' aka ', group, ' to ', glpID);
@@ -70,7 +76,10 @@ class GroupBox extends Component {
             message: await window.bcnI18n.getPhrase('err_group_na'),
         });
 
-        assignButton.textContent = await window.bcnI18n.getPhrase('lm_assign');
+        if (statusInfo) {
+            const assignPhrase = await window.bcnI18n.getPhrase('lm_assign');
+            statusInfo.innerText = assignPhrase;
+        }
 
         document.body.appendChild(statusMessageEl);
     }

@@ -20,6 +20,9 @@ class APICore {
 
     async handleRequest(link: string, req: Object) {
         const res = await this.doRequest(link, req);
+        if (!res) {
+            console.log('response is undefined for ', link);
+        }
 
         const jsonObj = res.json();
 

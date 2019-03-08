@@ -58,7 +58,7 @@ class AssignOptions extends Component {
             ),
             div(
                 '.flex-column',
-                div('.title', h4(`${await window.bcnI18n.getPhrase('groups')}:`)),
+                div('.title', h4(`${await window.bcnI18n.getPhrase('cr_groups')}:`)),
                 div(
                     '.groups-container',
                     groupsEl,

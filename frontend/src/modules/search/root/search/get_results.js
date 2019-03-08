@@ -15,6 +15,7 @@ class SearchResults extends Component {
         const {
             MatchedGLPS,
             MatchedStudents,
+            MatchedGroups,
         } = this.state.results;
         const resultGroups = [];
 
@@ -100,6 +101,39 @@ class SearchResults extends Component {
             );
 
             resultGroups.push(glpsEl);
+        }
+
+        if (MatchedGroups.length > 0) {
+            const promArr = [];
+
+            for (const group of MatchedGroups) {
+                const resultBox = new ResultBox();
+
+                const groupNameEl = h3(group.name);
+
+                const resultBoxEl = resultBox.attach({
+                    title: groupNameEl,
+                    link: `//${window.location.host}/classroom/group?id=${group.id}&prev=search`,
+                });
+
+                promArr.push(resultBoxEl);
+            }
+
+            const boxes = await Promise.all(promArr).then(elements => elements);
+
+            const groupsEl = div(
+                '.result-group',
+                div(
+                    '.title',
+                    h4('Groups:'),
+                ),
+                div(
+                    '.flex-container.flex-wrap.result-container',
+                    boxes,
+                ),
+            );
+
+            resultGroups.push(groupsEl);
         }
 
         return resultGroups;
