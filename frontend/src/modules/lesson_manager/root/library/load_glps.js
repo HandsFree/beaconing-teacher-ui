@@ -131,7 +131,7 @@ class LoadGLPs extends Component {
             '.plans-container.list.flex-wrap',
             div(
                 '.status',
-                span(await window.bcnI18n.getPhrase('lm_no_plans_found')),
+                span(await window.beaconingAPI.getPhrase('lm_no_plans_found')),
             ),
         );
     }

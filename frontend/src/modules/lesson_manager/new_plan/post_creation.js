@@ -25,7 +25,7 @@ class PostCreation extends Component {
             ),
             section(
                 '#post-create-steps.flex-column.no-margin',
-                p(`${await window.bcnI18n.getPhrase('pc_next')}:`),
+                p(`${await window.beaconingAPI.getPhrase('pc_next')}:`),
                 div(
                     '#post-create-buttons',
                     a(
@@ -34,25 +34,25 @@ class PostCreation extends Component {
                                 this.emit('ResetForm');
                             },
                         },
-                        button('.button-action', await window.bcnI18n.getPhrase('pc_create_another')),
+                        button('.button-action', await window.beaconingAPI.getPhrase('pc_create_another')),
                     ),
                     a(
                         {
                             href: `//${window.location.host}/lesson_manager/`,
                         },
-                        button('.button-action', await window.bcnI18n.getPhrase('pc_go_library')),
+                        button('.button-action', await window.beaconingAPI.getPhrase('pc_go_library')),
                     ),
                     a(
                         {
                             href: `//${window.location.host}/lesson_manager/#view?id=${encodeURIComponent(id)}`,
                         },
-                        button('.button-action', await window.bcnI18n.getPhrase('pc_view_glp')),
+                        button('.button-action', await window.beaconingAPI.getPhrase('pc_view_glp')),
                     ),
                     a(
                         {
                             href: `//${window.location.host}/lesson_manager/#edit?id=${encodeURIComponent(id)}`,
                         },
-                        button('.button-action', await window.bcnI18n.getPhrase('pc_edit_glp')),
+                        button('.button-action', await window.beaconingAPI.getPhrase('pc_edit_glp')),
                     ),
                 ),
             ),

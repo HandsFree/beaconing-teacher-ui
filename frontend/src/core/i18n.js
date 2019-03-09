@@ -15,13 +15,11 @@ class I18n {
     async fetchLang() {
         if (this.currUser === null) {
             this.currUser = this.api.getCurrentUser();
-
             const user = await this.currUser;
 
             const lang = nullishCheck(await user?.language, 'en-GB');
             this.language = lang;
             this.langFetched = true;
-
             return;
         }
 

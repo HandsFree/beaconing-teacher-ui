@@ -38,7 +38,7 @@ class RightWrongGraph extends Component {
     async render() {
         const { data } = this.props;
         if (nullishCheck(data.answers, 'none') === 'none') {
-            return div(h2(await window.bcnI18n.getPhrase('err_no_data')));
+            return div(h2(await window.beaconingAPI.getPhrase('err_no_data')));
         }
 
         const answerSet = new Map();
@@ -49,8 +49,8 @@ class RightWrongGraph extends Component {
             });
         }
 
-        const correctTransl = await window.bcnI18n.getPhrase('rw_correct');
-        const incorrectTransl = await window.bcnI18n.getPhrase('rw_incorrect');
+        const correctTransl = await window.beaconingAPI.getPhrase('rw_correct');
+        const incorrectTransl = await window.beaconingAPI.getPhrase('rw_incorrect');
 
         const makeAnswer = (question, answer, succ) => {
             const bgClass = succ ? '.rw-correct' : '.rw-incorrect';

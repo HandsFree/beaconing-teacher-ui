@@ -46,14 +46,14 @@ class Student extends RootComponent {
         const studentMain = new StudentMain();
         const studentAside = new StudentAside();
 
-        const noStudentMsg = await window.bcnI18n.getPhrase('err_no_student');
+        const noStudentMsg = await window.beaconingAPI.getPhrase('err_no_student');
 
         return Promise.all([
             header.attach(),
             footer.attach(),
             mainNav.attach(),
             secondNav.attach({
-                title: await window.bcnI18n.getPhrase('cr'),
+                title: await window.beaconingAPI.getPhrase('cr'),
                 innerNav: innerNav.attach(),
             }),
             // studentInfo.attach(this.params),
@@ -114,14 +114,14 @@ class Student extends RootComponent {
         const secondNav = new SecondNav();
         const innerNav = new InnerNav();
 
-        const studentDelMsg = await window.bcnI18n.getPhrase('sc_student_del');
+        const studentDelMsg = await window.beaconingAPI.getPhrase('sc_student_del');
 
         const el = await Promise.all([
             header.attach(),
             footer.attach(),
             mainNav.attach(),
             secondNav.attach({
-                title: await window.bcnI18n.getPhrase('cr'),
+                title: await window.beaconingAPI.getPhrase('cr'),
                 innerNav: innerNav.attach(),
             }),
         ]).then((values) => {

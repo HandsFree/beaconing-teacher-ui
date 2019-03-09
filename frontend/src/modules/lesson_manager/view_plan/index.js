@@ -23,7 +23,7 @@ class ViewPlan extends RootComponent {
             footer.attach(),
             mainNav.attach(),
             secondNav.attach({
-                title: await window.bcnI18n.getPhrase('lm'),
+                title: await window.beaconingAPI.getPhrase('lm'),
                 innerNav: innerNav.attach(),
             }),
             planOverview.attach(this.params),

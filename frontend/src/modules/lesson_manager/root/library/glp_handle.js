@@ -181,7 +181,7 @@ class GLPHandle extends Component {
         const loading = new Loading();
 
         const loadingEl = await loading.attach({
-            msg: await window.bcnI18n.getPhrase('ld_plans'),
+            msg: await window.beaconingAPI.getPhrase('ld_plans'),
         });
 
         const el = div('.plans.flex-column.flex-grow.margin-20', loadingEl);
@@ -216,7 +216,7 @@ class GLPHandle extends Component {
                             this.loadMoreGLPs();
                         },
                     },
-                    await window.bcnI18n.getPhrase('lm_load_more'),
+                    await window.beaconingAPI.getPhrase('lm_load_more'),
                 ),
                 small(
                     '.pointer-hover',
@@ -225,7 +225,7 @@ class GLPHandle extends Component {
                             this.loadAllGLPs();
                         },
                     },
-                    await window.bcnI18n.getPhrase('lm_load_all'),
+                    await window.beaconingAPI.getPhrase('lm_load_all'),
                 ),
             ),
         );
@@ -237,7 +237,7 @@ class GLPHandle extends Component {
         const loading = new Loading();
 
         const loadingEl = await loading.attach({
-            msg: await window.bcnI18n.getPhrase('ld_plans'),
+            msg: await window.beaconingAPI.getPhrase('ld_plans'),
         });
 
         return div('.plans.flex-column.flex-grow.margin-20', loadingEl);

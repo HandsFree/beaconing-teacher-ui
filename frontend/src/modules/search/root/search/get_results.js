@@ -22,7 +22,7 @@ class SearchResults extends Component {
         if (MatchedStudents.length > 0) {
             const promArr = [];
 
-            const studentUsernameStr = await window.bcnI18n.getPhrase('username');
+            const studentUsernameStr = await window.beaconingAPI.getPhrase('username');
             for (const student of MatchedStudents) {
                 const resultBox = new ResultBox();
                 const { profile } = student;
@@ -59,7 +59,7 @@ class SearchResults extends Component {
                 '.result-group',
                 div(
                     '.title',
-                    h4(`${await window.bcnI18n.getPhrase('cr_students')}:`),
+                    h4(`${await window.beaconingAPI.getPhrase('cr_students')}:`),
                 ),
                 div(
                     '.flex-container.flex-wrap.result-container',

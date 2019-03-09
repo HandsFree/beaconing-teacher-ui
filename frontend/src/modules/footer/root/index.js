@@ -24,7 +24,7 @@ class Footer extends Component {
                         '.social',
                         a(
                             {
-                                title: await window.bcnI18n.getPhrase('ft_visit_beaconing'),
+                                title: await window.beaconingAPI.getPhrase('ft_visit_beaconing'),
                                 href: 'http://beaconing.eu',
                                 target: '_blank',
                             },
@@ -66,7 +66,7 @@ class Footer extends Component {
                             href: 'https://hfc.gitbook.io/beaconing-teacher-ui/',
                             target: '_blank',
                         },
-                        await window.bcnI18n.getPhrase('ft_support'),
+                        await window.beaconingAPI.getPhrase('ft_support'),
                     ),
                     a(
                         '.item',
@@ -74,7 +74,7 @@ class Footer extends Component {
                             href: 'http://beaconing.eu/contact-us/',
                             target: '_blank',
                         },
-                        await window.bcnI18n.getPhrase('ft_cont_us'),
+                        await window.beaconingAPI.getPhrase('ft_cont_us'),
                     ),
                     a(
                         '.item',
@@ -82,7 +82,7 @@ class Footer extends Component {
                             href: legalNotice,
                             target: '_blank',
                         },
-                        await window.bcnI18n.getPhrase('ft_ln'),
+                        await window.beaconingAPI.getPhrase('ft_ln'),
                     ),
                     a(
                         '.item',
@@ -90,7 +90,7 @@ class Footer extends Component {
                             href: privPolicy,
                             target: '_blank',
                         },
-                        await window.bcnI18n.getPhrase('ft_pp'),
+                        await window.beaconingAPI.getPhrase('ft_pp'),
                     ),
                 ),
             ),

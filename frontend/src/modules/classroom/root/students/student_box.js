@@ -24,7 +24,7 @@ class StudentBox extends Component {
                     h4(
                         '.username',
                         {
-                            title: await window.bcnI18n.getPhrase('username'),
+                            title: await window.beaconingAPI.getPhrase('username'),
                         },
                         username,
                     ),

@@ -25,7 +25,7 @@ class PostCreation extends Component {
             ),
             section(
                 '#post-create-steps.flex-column.no-margin',
-                p(`${await window.bcnI18n.getPhrase('pc_next')}:`),
+                p(`${await window.beaconingAPI.getPhrase('pc_next')}:`),
                 div(
                     '#post-create-buttons',
                     a(
@@ -34,19 +34,19 @@ class PostCreation extends Component {
                                 this.emit('ResetForm');
                             },
                         },
-                        button('.button-action', await window.bcnI18n.getPhrase('pc_create_another')),
+                        button('.button-action', await window.beaconingAPI.getPhrase('pc_create_another')),
                     ),
                     a(
                         {
                             href: `//${window.location.host}/classroom/`,
                         },
-                        button('.button-action', await window.bcnI18n.getPhrase('pc_go_classroom')),
+                        button('.button-action', await window.beaconingAPI.getPhrase('pc_go_classroom')),
                     ),
                     a(
                         {
                             href: `//${window.location.host}/classroom/student?id=${encodeURIComponent(id)}`,
                         },
-                        button('.button-action', await window.bcnI18n.getPhrase('cr_view_student')),
+                        button('.button-action', await window.beaconingAPI.getPhrase('cr_view_student')),
                     ),
                 ),
             ),

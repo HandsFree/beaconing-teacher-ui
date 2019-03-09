@@ -69,7 +69,7 @@ class GroupAside extends Component {
             return;
         }
 
-        const delGroupTranslation = await window.bcnI18n.getPhrase('con_delete_group');
+        const delGroupTranslation = await window.beaconingAPI.getPhrase('con_delete_group');
         if (!confirm(delGroupTranslation)) {
             return;
         }
@@ -91,7 +91,7 @@ class GroupAside extends Component {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: await window.bcnI18n.getPhrase('err_group_nd'),
+            message: await window.beaconingAPI.getPhrase('err_group_nd'),
         });
 
         this.appendView(statusMessageEl);
@@ -119,7 +119,7 @@ class GroupAside extends Component {
                 a(
                     '#group-edit-button',
                     {
-                        title: await window.bcnI18n.getPhrase('edit'),
+                        title: await window.beaconingAPI.getPhrase('edit'),
                         onclick: () => {
                             this.handleEditClick();
                         },
@@ -140,7 +140,7 @@ class GroupAside extends Component {
                             this.emit('GroupStudentsClicked');
                         },
                     },
-                    span(await window.bcnI18n.getPhrase('cr_students')),
+                    span(await window.beaconingAPI.getPhrase('cr_students')),
                 ),
                 a(
                     '.item',
@@ -152,7 +152,7 @@ class GroupAside extends Component {
                             this.emit('AssignedGLPsClicked');
                         },
                     },
-                    span(await window.bcnI18n.getPhrase('cr_assigned_glps')),
+                    span(await window.beaconingAPI.getPhrase('cr_assigned_glps')),
                 ),
                 a(
                     '.item',

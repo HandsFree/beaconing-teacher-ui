@@ -60,12 +60,12 @@ class ProfileEditForm extends Form {
 
     async resetSubmit() {
         const updateButton = document.getElementById('edit-teacher-button');
-        updateButton.textContent = await window.bcnI18n.getPhrase('update');
+        updateButton.textContent = await window.beaconingAPI.getPhrase('update');
     }
 
     async checkFields() {
         let success = true;
-        const emptyMsg = await window.bcnI18n.getPhrase('err_required_empty');
+        const emptyMsg = await window.beaconingAPI.getPhrase('err_required_empty');
 
         if (this.state.teacherFirstName === '') {
             this.addError('teacher-fn-status', emptyMsg);
@@ -83,7 +83,7 @@ class ProfileEditForm extends Form {
                 elementID: false,
                 heading: 'Error',
                 type: 'error',
-                message: await window.bcnI18n.getPhrase('err_form'),
+                message: await window.beaconingAPI.getPhrase('err_form'),
             });
 
             this.appendView(statusMessageEl);
@@ -126,7 +126,7 @@ class ProfileEditForm extends Form {
                 elementID: false,
                 heading: 'Success',
                 type: 'success',
-                message: await window.bcnI18n.getPhrase('sc_teacher_edited'),
+                message: await window.beaconingAPI.getPhrase('teacher_edited'),
             });
 
             this.appendView(statusMessageEl);
@@ -140,7 +140,7 @@ class ProfileEditForm extends Form {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: await window.bcnI18n.getPhrase('err_teacher_ne'),
+            message: await window.beaconingAPI.getPhrase('err_teacher_ne'),
         });
 
         this.resetSubmit();
@@ -149,7 +149,7 @@ class ProfileEditForm extends Form {
     }
 
     async render() {
-        const updatingText = await window.bcnI18n.getPhrase('updating');
+        const updatingText = await window.beaconingAPI.getPhrase('updating');
 
         return div(
             '.flex-column',
@@ -163,9 +163,9 @@ class ProfileEditForm extends Form {
                             href: `//${window.location.host}/profile`,
                         },
                         i('.icon-angle-left'),
-                        await window.bcnI18n.getPhrase('go_back'),
+                        await window.beaconingAPI.getPhrase('go_back'),
                     ),
-                    h1(await window.bcnI18n.getPhrase('pf_editing_profile')),
+                    h1(await window.beaconingAPI.getPhrase('pf_editing_profile')),
                     div('.empty-spacer', ' '),
                 ),
             ),
@@ -179,8 +179,8 @@ class ProfileEditForm extends Form {
                             '.label-group',
                             div(
                                 '.split',
-                                div('.title-area', span(await window.bcnI18n.getPhrase('pf_teacher_fn'))),
-                                div('.desc-area', await window.bcnI18n.getPhrase('pf_teacher_fn_desc')),
+                                div('.title-area', span(await window.beaconingAPI.getPhrase('pf_teacher_fn'))),
+                                div('.desc-area', await window.beaconingAPI.getPhrase('pf_teacher_fn_desc')),
                                 div(
                                     '.input-area',
                                     label(
@@ -189,7 +189,7 @@ class ProfileEditForm extends Form {
                                             '#teacher-first-name.text-field',
                                             {
                                                 type: 'text',
-                                                placeholder: await window.bcnI18n.getPhrase('pf_teacher_fn_enter'),
+                                                placeholder: await window.beaconingAPI.getPhrase('pf_teacher_fn_enter'),
                                                 value: this.state.teacherFirstName,
                                                 oninput: (event) => {
                                                     const { target } = event;
@@ -208,8 +208,8 @@ class ProfileEditForm extends Form {
                             '.label-group',
                             div(
                                 '.split',
-                                div('.title-area', span(await window.bcnI18n.getPhrase('pf_teacher_ln'))),
-                                div('.desc-area', await window.bcnI18n.getPhrase('pf_teacher_ln_desc')),
+                                div('.title-area', span(await window.beaconingAPI.getPhrase('pf_teacher_ln'))),
+                                div('.desc-area', await window.beaconingAPI.getPhrase('pf_teacher_ln_desc')),
                                 div(
                                     '.input-area',
                                     label(
@@ -218,7 +218,7 @@ class ProfileEditForm extends Form {
                                             '#teacher-last-name.text-field',
                                             {
                                                 type: 'text',
-                                                placeholder: await window.bcnI18n.getPhrase('pf_teacher_ln_enter'),
+                                                placeholder: await window.beaconingAPI.getPhrase('pf_teacher_ln_enter'),
                                                 value: this.state.teacherLastName,
                                                 oninput: (event) => {
                                                     const { target } = event;
@@ -237,8 +237,8 @@ class ProfileEditForm extends Form {
                             '.label-group',
                             div(
                                 '.split',
-                                div('.title-area', span(await window.bcnI18n.getPhrase('pf_teacher_gender'))),
-                                div('.desc-area', await window.bcnI18n.getPhrase('pf_teacher_gender_desc')),
+                                div('.title-area', span(await window.beaconingAPI.getPhrase('pf_teacher_gender'))),
+                                div('.desc-area', await window.beaconingAPI.getPhrase('pf_teacher_gender_desc')),
                                 div(
                                     '.input-area',
                                     label(
@@ -257,28 +257,28 @@ class ProfileEditForm extends Form {
                                                     value: 'female',
                                                     selected: this.state.teacherGender === 'female',
                                                 },
-                                                await window.bcnI18n.getPhrase('female'),
+                                                await window.beaconingAPI.getPhrase('female'),
                                             ),
                                             option(
                                                 {
                                                     value: 'male',
                                                     selected: this.state.teacherGender === 'male',
                                                 },
-                                                await window.bcnI18n.getPhrase('male'),
+                                                await window.beaconingAPI.getPhrase('male'),
                                             ),
                                             option(
                                                 {
                                                     value: 'other',
                                                     selected: this.state.teacherGender === 'other',
                                                 },
-                                                await window.bcnI18n.getPhrase('other'),
+                                                await window.beaconingAPI.getPhrase('other'),
                                             ),
                                             option(
                                                 {
                                                     value: 'pnts',
                                                     selected: this.state.teacherGender === 'pnts',
                                                 },
-                                                await window.bcnI18n.getPhrase('prefer_nts'),
+                                                await window.beaconingAPI.getPhrase('prefer_nts'),
                                             ),
                                         ),
                                     ),
@@ -290,8 +290,8 @@ class ProfileEditForm extends Form {
                             '.label-group',
                             div(
                                 '.split',
-                                div('.title-area', span(await window.bcnI18n.getPhrase('pf_teacher_school'))),
-                                div('.desc-area', await window.bcnI18n.getPhrase('pf_teacher_school_desc')),
+                                div('.title-area', span(await window.beaconingAPI.getPhrase('pf_teacher_school'))),
+                                div('.desc-area', await window.beaconingAPI.getPhrase('pf_teacher_school_desc')),
                                 div(
                                     '.input-area',
                                     label(
@@ -299,7 +299,7 @@ class ProfileEditForm extends Form {
                                             '#teacher-school.text-field',
                                             {
                                                 type: 'text',
-                                                placeholder: await window.bcnI18n.getPhrase('pf_teacher_school_enter'),
+                                                placeholder: await window.beaconingAPI.getPhrase('pf_teacher_school_enter'),
                                                 value: this.state.teacherSchool,
                                                 oninput: (event) => {
                                                     const { target } = event;
@@ -317,8 +317,8 @@ class ProfileEditForm extends Form {
                             '.label-group',
                             div(
                                 '.split',
-                                div('.title-area', span(await window.bcnI18n.getPhrase('pf_teacher_email'))),
-                                div('.desc-area', await window.bcnI18n.getPhrase('pf_teacher_email_desc')),
+                                div('.title-area', span(await window.beaconingAPI.getPhrase('pf_teacher_email'))),
+                                div('.desc-area', await window.beaconingAPI.getPhrase('pf_teacher_email_desc')),
                                 div(
                                     '.input-area',
                                     label(
@@ -326,7 +326,7 @@ class ProfileEditForm extends Form {
                                             '#teacher-email.text-field',
                                             {
                                                 type: 'text',
-                                                placeholder: await window.bcnI18n.getPhrase('pf_teacher_email_enter'),
+                                                placeholder: await window.beaconingAPI.getPhrase('pf_teacher_email_enter'),
                                                 value: this.state.teacherEmail,
                                                 oninput: (event) => {
                                                     const { target } = event;
@@ -344,8 +344,8 @@ class ProfileEditForm extends Form {
                             '.label-group',
                             div(
                                 '.split',
-                                div('.title-area', span(await window.bcnI18n.getPhrase('pf_teacher_language'))),
-                                div('.desc-area', await window.bcnI18n.getPhrase('pf_teacher_language_desc')),
+                                div('.title-area', span(await window.beaconingAPI.getPhrase('pf_teacher_language'))),
+                                div('.desc-area', await window.beaconingAPI.getPhrase('pf_teacher_language_desc')),
                                 div(
                                     '.input-area',
                                     label(
@@ -437,7 +437,7 @@ class ProfileEditForm extends Form {
                                         window.location.href = `//${window.location.host}/`;
                                     },
                                 },
-                                await window.bcnI18n.getPhrase('cancel'),
+                                await window.beaconingAPI.getPhrase('cancel'),
                             ),
                             div(
                                 '#edit-teacher-button.button-submit',
@@ -449,7 +449,7 @@ class ProfileEditForm extends Form {
                                         target.textContent = `${updatingText}...`;
                                     },
                                 },
-                                await window.bcnI18n.getPhrase('update'),
+                                await window.beaconingAPI.getPhrase('update'),
                             ),
                         ),
                     ),

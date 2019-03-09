@@ -21,7 +21,7 @@ class SearchResults extends Component {
             '.results.margin-20',
             div(
                 '.status',
-                span(await window.bcnI18n.getPhrase('search_msg_type')),
+                span(await window.beaconingAPI.getPhrase('search_msg_type')),
             ),
         );
     }

@@ -23,7 +23,7 @@ class Prompt extends Component {
                             'aria-hidden': true,
                         },
                     ),
-                    await window.bcnI18n.getPhrase('lm_library'),
+                    await window.beaconingAPI.getPhrase('lm_library'),
                 ),
             ),
         );

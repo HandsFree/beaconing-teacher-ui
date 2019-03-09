@@ -87,14 +87,14 @@ class StudentEdit extends Form {
         const studentButton = document.getElementById('update-student-button');
 
         if (completed) {
-            studentButton.textContent = await window.bcnI18n.getPhrase('cr_student_update');
-            doneButton.textContent = await window.bcnI18n.getPhrase('done');
+            studentButton.textContent = await window.beaconingAPI.getPhrase('cr_student_update');
+            doneButton.textContent = await window.beaconingAPI.getPhrase('done');
 
             return;
         }
 
-        studentButton.textContent = await window.bcnI18n.getPhrase('cr_student_update');
-        doneButton.textContent = await window.bcnI18n.getPhrase('cancel');
+        studentButton.textContent = await window.beaconingAPI.getPhrase('cr_student_update');
+        doneButton.textContent = await window.beaconingAPI.getPhrase('cancel');
     }
 
     async checkUsername() {
@@ -105,7 +105,7 @@ class StudentEdit extends Form {
         }
 
         if (this.state.studentUsername !== this.student.username && this.students.indexOf(this.state.studentUsername.toLowerCase()) !== -1) {
-            const errMsg = await window.bcnI18n.getPhrase('err_username_exists');
+            const errMsg = await window.beaconingAPI.getPhrase('err_username_exists');
             this.addError('student-username-status', errMsg);
 
             return false;
@@ -117,7 +117,7 @@ class StudentEdit extends Form {
 
     async checkFields() {
         let success = true;
-        const emptyMsg = await window.bcnI18n.getPhrase('err_required_empty');
+        const emptyMsg = await window.beaconingAPI.getPhrase('err_required_empty');
 
         this.removeErrors();
 
@@ -151,7 +151,7 @@ class StudentEdit extends Form {
                 elementID: false,
                 heading: 'Error',
                 type: 'error',
-                message: await window.bcnI18n.getPhrase('err_form'),
+                message: await window.beaconingAPI.getPhrase('err_form'),
             });
 
             this.appendView(statusMessageEl);
@@ -194,7 +194,7 @@ class StudentEdit extends Form {
                 elementID: false,
                 heading: 'Success',
                 type: 'success',
-                message: await window.bcnI18n.getPhrase('sc_student_up'),
+                message: await window.beaconingAPI.getPhrase('sc_student_up'),
             });
 
             this.appendView(statusMessageEl);
@@ -210,7 +210,7 @@ class StudentEdit extends Form {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: await window.bcnI18n.getPhrase('err_student_nu'),
+            message: await window.beaconingAPI.getPhrase('err_student_nu'),
         });
 
         this.changeButtons(false);
@@ -219,7 +219,7 @@ class StudentEdit extends Form {
     }
 
     async render() {
-        const updatingText = await window.bcnI18n.getPhrase('updating');
+        const updatingText = await window.beaconingAPI.getPhrase('updating');
 
         return div(
             '.flex-column',
@@ -229,7 +229,7 @@ class StudentEdit extends Form {
                     '.margin-25.flex-column',
                     div(
                         '.general-info',
-                        p(`${await window.bcnI18n.getPhrase('cr_edit_student_info')}:`),
+                        p(`${await window.beaconingAPI.getPhrase('cr_edit_student_info')}:`),
                     ),
                     form(
                         '.create-student',
@@ -237,8 +237,8 @@ class StudentEdit extends Form {
                             '.label-group',
                             div(
                                 '.split',
-                                div('.title-area', span(await window.bcnI18n.getPhrase('cr_student_username'))),
-                                div('.desc-area', await window.bcnI18n.getPhrase('cr_student_username_desc')),
+                                div('.title-area', span(await window.beaconingAPI.getPhrase('cr_student_username'))),
+                                div('.desc-area', await window.beaconingAPI.getPhrase('cr_student_username_desc')),
                                 div(
                                     '.input-area',
                                     label(
@@ -247,7 +247,7 @@ class StudentEdit extends Form {
                                             '#student-username.text-field',
                                             {
                                                 type: 'text',
-                                                placeholder: await window.bcnI18n.getPhrase('cr_enter_username'),
+                                                placeholder: await window.beaconingAPI.getPhrase('cr_enter_username'),
                                                 value: this.state.studentUsername,
                                                 oninput: (event) => {
                                                     const { target } = event;
@@ -268,8 +268,8 @@ class StudentEdit extends Form {
                             '.label-group',
                             div(
                                 '.split',
-                                div('.title-area', span(await window.bcnI18n.getPhrase('cr_student_fn'))),
-                                div('.desc-area', await window.bcnI18n.getPhrase('cr_student_fn_desc')),
+                                div('.title-area', span(await window.beaconingAPI.getPhrase('cr_student_fn'))),
+                                div('.desc-area', await window.beaconingAPI.getPhrase('cr_student_fn_desc')),
                                 div(
                                     '.input-area',
                                     label(
@@ -278,7 +278,7 @@ class StudentEdit extends Form {
                                             '#student-first-name.text-field',
                                             {
                                                 type: 'text',
-                                                placeholder: await window.bcnI18n.getPhrase('cr_enter_fn'),
+                                                placeholder: await window.beaconingAPI.getPhrase('cr_enter_fn'),
                                                 value: this.state.studentFirstName,
                                                 oninput: (event) => {
                                                     const { target } = event;
@@ -297,8 +297,8 @@ class StudentEdit extends Form {
                             '.label-group',
                             div(
                                 '.split',
-                                div('.title-area', span(await window.bcnI18n.getPhrase('cr_student_ln'))),
-                                div('.desc-area', await window.bcnI18n.getPhrase('cr_student_ln_desc')),
+                                div('.title-area', span(await window.beaconingAPI.getPhrase('cr_student_ln'))),
+                                div('.desc-area', await window.beaconingAPI.getPhrase('cr_student_ln_desc')),
                                 div(
                                     '.input-area',
                                     label(
@@ -307,7 +307,7 @@ class StudentEdit extends Form {
                                             '#student-last-name.text-field',
                                             {
                                                 type: 'text',
-                                                placeholder: await window.bcnI18n.getPhrase('cr_enter_ln'),
+                                                placeholder: await window.beaconingAPI.getPhrase('cr_enter_ln'),
                                                 value: this.state.studentLastName,
                                                 oninput: (event) => {
                                                     const { target } = event;
@@ -326,8 +326,8 @@ class StudentEdit extends Form {
                             '.label-group',
                             div(
                                 '.split',
-                                div('.title-area', span(await window.bcnI18n.getPhrase('cr_student_yg'))),
-                                div('.desc-area', await window.bcnI18n.getPhrase('cr_student_yg_desc')),
+                                div('.title-area', span(await window.beaconingAPI.getPhrase('cr_student_yg'))),
+                                div('.desc-area', await window.beaconingAPI.getPhrase('cr_student_yg_desc')),
                                 div(
                                     '.input-area',
                                     label(
@@ -336,7 +336,7 @@ class StudentEdit extends Form {
                                             '#student-year-group.text-field',
                                             {
                                                 type: 'text',
-                                                placeholder: await window.bcnI18n.getPhrase('cr_enter_yg'),
+                                                placeholder: await window.beaconingAPI.getPhrase('cr_enter_yg'),
                                                 value: this.state.studentYearGroup,
                                                 oninput: (event) => {
                                                     const { target } = event;
@@ -355,8 +355,8 @@ class StudentEdit extends Form {
                             '.label-group',
                             div(
                                 '.split',
-                                div('.title-area', span(await window.bcnI18n.getPhrase('cr_student_lang'))),
-                                div('.desc-area', await window.bcnI18n.getPhrase('cr_student_lang_desc')),
+                                div('.title-area', span(await window.beaconingAPI.getPhrase('cr_student_lang'))),
+                                div('.desc-area', await window.beaconingAPI.getPhrase('cr_student_lang_desc')),
                                 div(
                                     '.input-area',
                                     label(
@@ -448,7 +448,7 @@ class StudentEdit extends Form {
                                         this.emit('EditDoneClicked');
                                     },
                                 },
-                                await window.bcnI18n.getPhrase('cancel'),
+                                await window.beaconingAPI.getPhrase('cancel'),
                             ),
                             div(
                                 '#update-student-button.button-submit',
@@ -460,7 +460,7 @@ class StudentEdit extends Form {
                                         target.textContent = `${updatingText}...`;
                                     },
                                 },
-                                await window.bcnI18n.getPhrase('cr_student_update'),
+                                await window.beaconingAPI.getPhrase('cr_student_update'),
                             ),
                         ),
                     ),

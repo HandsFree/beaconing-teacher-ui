@@ -28,8 +28,8 @@ class CalendarEvent extends Component {
             avail 
         } = this.props;
 
-        const inspectGLPTransl = await window.bcnI18n.getPhrase('cal_inspect_glp');
-        const goToDueDateTransl = await window.bcnI18n.getPhrase('cal_go_to_due_date');
+        const inspectGLPTransl = await window.beaconingAPI.getPhrase('cal_inspect_glp');
+        const goToDueDateTransl = await window.beaconingAPI.getPhrase('cal_go_to_due_date');
 
         const inspectGLPButtonEl = a(
             {

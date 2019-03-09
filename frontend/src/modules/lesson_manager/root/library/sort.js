@@ -38,13 +38,13 @@ class Sort extends Component {
             '#library-sort.sort.flex-column',
             div(
                 '.header',
-                span(await window.bcnI18n.getPhrase('sort_by')),
+                span(await window.beaconingAPI.getPhrase('sort_by')),
             ),
             div(
                 '.sort-group',
                 div(
                     '.title',
-                    span(await window.bcnI18n.getPhrase('lm_my_plans')),
+                    span(await window.beaconingAPI.getPhrase('lm_my_plans')),
                 ),
                 div(
                     '.content',
@@ -58,7 +58,7 @@ class Sort extends Component {
                                 this.emit('SortOwnedAscClicked');
                             },
                         },
-                        await window.bcnI18n.getPhrase('asc'),
+                        await window.beaconingAPI.getPhrase('asc'),
                     ),
                     a(
                         this.initPage === 'ownedDesc' ? '.sort-option.active' : '.sort-option',
@@ -70,7 +70,7 @@ class Sort extends Component {
                                 this.emit('SortOwnedDescClicked');
                             },
                         },
-                        await window.bcnI18n.getPhrase('desc'),
+                        await window.beaconingAPI.getPhrase('desc'),
                     ),
                 ),
             ),
@@ -78,7 +78,7 @@ class Sort extends Component {
                 '.sort-group',
                 div(
                     '.title',
-                    span(await window.bcnI18n.getPhrase('lm_rm')),
+                    span(await window.beaconingAPI.getPhrase('lm_rm')),
                 ),
                 div(
                     '.content',
@@ -92,7 +92,7 @@ class Sort extends Component {
                                 this.emit('SortRecentModAscGLPsClicked');
                             },
                         },
-                        await window.bcnI18n.getPhrase('asc'),
+                        await window.beaconingAPI.getPhrase('asc'),
                     ),
                     a(
                         this.initPage === 'recentModDesc' ? '.sort-option.active' : '.sort-option',
@@ -104,7 +104,7 @@ class Sort extends Component {
                                 this.emit('SortRecentModDescGLPsClicked');
                             },
                         },
-                        await window.bcnI18n.getPhrase('desc'),
+                        await window.beaconingAPI.getPhrase('desc'),
                     ),
                 ),
             ),
@@ -112,7 +112,7 @@ class Sort extends Component {
                 '.sort-group',
                 div(
                     '.title',
-                    span(await window.bcnI18n.getPhrase('lm_status')),
+                    span(await window.beaconingAPI.getPhrase('lm_status')),
                 ),
                 div(
                     '.content',
@@ -125,9 +125,9 @@ class Sort extends Component {
                                 this.toggleActive(target, 'active');
                                 this.emit('SortActiveGLPsClicked');
                             },
-                            title: await window.bcnI18n.getPhrase('lm_status_active_title'),
+                            title: await window.beaconingAPI.getPhrase('lm_status_active_title'),
                         },
-                        await window.bcnI18n.getPhrase('lm_status_active'),
+                        await window.beaconingAPI.getPhrase('lm_status_active'),
                     ),
                     a(
                         this.initPage === 'mostAssigned' ? '.sort-option.active' : '.sort-option',
@@ -139,7 +139,7 @@ class Sort extends Component {
                                 this.emit('SortMostAssignedClicked');
                             },
                         },
-                        await window.bcnI18n.getPhrase('lm_status_ma'),
+                        await window.beaconingAPI.getPhrase('lm_status_ma'),
                     ),
                 ),
             ),
@@ -147,7 +147,7 @@ class Sort extends Component {
                 '.sort-group',
                 div(
                     '.title',
-                    span(await window.bcnI18n.getPhrase('lm_stem')),
+                    span(await window.beaconingAPI.getPhrase('lm_stem')),
                 ),
                 div(
                     '.content',
@@ -161,7 +161,7 @@ class Sort extends Component {
                                 this.emit('STEMScienceClicked');
                             },
                         },
-                        await window.bcnI18n.getPhrase('lm_science'),
+                        await window.beaconingAPI.getPhrase('lm_science'),
                     ),
                     a(
                         this.initPage === 'technology' ? '.sort-option.active' : '.sort-option',
@@ -173,7 +173,7 @@ class Sort extends Component {
                                 this.emit('STEMTechnologyClicked');
                             },
                         },
-                        await window.bcnI18n.getPhrase('lm_tech'),
+                        await window.beaconingAPI.getPhrase('lm_tech'),
                     ),
                     a(
                         this.initPage === 'engineering' ? '.sort-option.active' : '.sort-option',
@@ -185,7 +185,7 @@ class Sort extends Component {
                                 this.emit('STEMEngineeringClicked');
                             },
                         },
-                        await window.bcnI18n.getPhrase('lm_eng'),
+                        await window.beaconingAPI.getPhrase('lm_eng'),
                     ),
                     a(
                         this.initPage === 'maths' ? '.sort-option.active' : '.sort-option',
@@ -197,7 +197,7 @@ class Sort extends Component {
                                 this.emit('STEMMathsClicked');
                             },
                         },
-                        await window.bcnI18n.getPhrase('lm_maths'),
+                        await window.beaconingAPI.getPhrase('lm_maths'),
                     ),
                 ),
             ),
@@ -205,7 +205,7 @@ class Sort extends Component {
                 '.sort-group',
                 div(
                     '.title',
-                    span(await window.bcnI18n.getPhrase('name')),
+                    span(await window.beaconingAPI.getPhrase('name')),
                 ),
                 div(
                     '.content',
@@ -219,7 +219,7 @@ class Sort extends Component {
                                 this.emit('NameAscendingClicked');
                             },
                         },
-                        await window.bcnI18n.getPhrase('asc'),
+                        await window.beaconingAPI.getPhrase('asc'),
                     ),
                     a(
                         this.initPage === 'nameDesc' ? '.sort-option.active' : '.sort-option',
@@ -231,7 +231,7 @@ class Sort extends Component {
                                 this.emit('NameDescendingClicked');
                             },
                         },
-                        await window.bcnI18n.getPhrase('desc'),
+                        await window.beaconingAPI.getPhrase('desc'),
                     ),
                 ),
             ),
@@ -239,7 +239,7 @@ class Sort extends Component {
                 '.sort-group',
                 div(
                     '.title',
-                    span(await window.bcnI18n.getPhrase('lm_time_added')),
+                    span(await window.beaconingAPI.getPhrase('lm_time_added')),
                 ),
                 div(
                     '.content',
@@ -253,7 +253,7 @@ class Sort extends Component {
                                 this.emit('RecentAscendingClicked');
                             },
                         },
-                        await window.bcnI18n.getPhrase('asc'),
+                        await window.beaconingAPI.getPhrase('asc'),
                     ),
                     a(
                         this.initPage === 'addedDesc' ? '.sort-option.active' : '.sort-option',
@@ -265,7 +265,7 @@ class Sort extends Component {
                                 this.emit('RecentDescendingClicked');
                             },
                         },
-                        await window.bcnI18n.getPhrase('desc'),
+                        await window.beaconingAPI.getPhrase('desc'),
                     ),
                 ),
             ),
@@ -273,7 +273,7 @@ class Sort extends Component {
                 '.sort-group',
                 div(
                     '.title',
-                    span(await window.bcnI18n.getPhrase('lm_vis')),
+                    span(await window.beaconingAPI.getPhrase('lm_vis')),
                 ),
                 div(
                     '.content',
@@ -287,7 +287,7 @@ class Sort extends Component {
                                 this.emit('SortPublicClicked');
                             },
                         },
-                        await window.bcnI18n.getPhrase('lm_public'),
+                        await window.beaconingAPI.getPhrase('lm_public'),
                     ),
                     a(
                         this.initPage === 'private' ? '.sort-option.active' : '.sort-option',
@@ -299,7 +299,7 @@ class Sort extends Component {
                                 this.emit('SortPrivateClicked');
                             },
                         },
-                        await window.bcnI18n.getPhrase('lm_private'),
+                        await window.beaconingAPI.getPhrase('lm_private'),
                     ),
                 ),
             ),

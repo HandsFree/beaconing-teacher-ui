@@ -38,7 +38,7 @@ class CalendarInnerNav extends Component {
                         this.showStudents();
                     },
                 },
-                span(await window.bcnI18n.getPhrase('cr_students')),
+                span(await window.beaconingAPI.getPhrase('cr_students')),
             ),
             a(
                 window.sessionStorage.getItem('calendarSelectionType') === 'groups' ? '.item.active-white' : '.item',
@@ -47,7 +47,7 @@ class CalendarInnerNav extends Component {
                         this.showGroups();
                     },
                 },
-                span(await window.bcnI18n.getPhrase('cr_groups')),
+                span(await window.beaconingAPI.getPhrase('cr_groups')),
             ),
         );
     }

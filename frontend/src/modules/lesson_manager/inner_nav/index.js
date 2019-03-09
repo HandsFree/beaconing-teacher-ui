@@ -18,7 +18,7 @@ class InnerNav extends Component {
                 {
                     href: `//${window.location.host}/lesson_manager/`,
                 },
-                span(await window.bcnI18n.getPhrase('lm_library')),
+                span(await window.beaconingAPI.getPhrase('lm_library')),
             ),
         );
     }

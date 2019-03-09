@@ -17,7 +17,7 @@ class MissionHeader extends Component {
     }
 
     async render() {
-        const glpName = nullishCheck(this.state.glp?.name, await window.bcnI18n.getPhrase('lm_unnamed_glp'));
+        const glpName = nullishCheck(this.state.glp?.name, await window.beaconingAPI.getPhrase('lm_unnamed_glp'));
         const playUrl = nullishCheck(this.state.glp?.playUrl, `http://gameplots.beaconing.eu/game/?externs=http://core.beaconing.eu/api/gamifiedlessonpaths/${this.state.glp.id}/externconfig`);
 
         return div(
@@ -29,16 +29,16 @@ class MissionHeader extends Component {
                     {
                         href: `//${window.location.host}/lesson_manager`,
                     },
-                    span(await window.bcnI18n.getPhrase('lm_library')),
+                    span(await window.beaconingAPI.getPhrase('lm_library')),
                 ),
                 a(
                     '.crumb',
                     {
                         href: `//${window.location.host}/lesson_manager#view?id=${this.state.glp.id}`,
                     },
-                    span(await window.bcnI18n.getPhrase('lm_plan_overview')),
+                    span(await window.beaconingAPI.getPhrase('lm_plan_overview')),
                 ),
-                a('.current', await window.bcnI18n.getPhrase('lm_mission')),
+                a('.current', await window.beaconingAPI.getPhrase('lm_mission')),
             ),
             div(
                 '.name-group',
@@ -52,19 +52,19 @@ class MissionHeader extends Component {
                         href: playUrl,
                         target: '_blank',
                     },
-                    await window.bcnI18n.getPhrase('lm_play'),
+                    await window.beaconingAPI.getPhrase('lm_play'),
                 ),
                 a(
                     {
                         href: `#assign?id=${this.state.glp.id}`,
                     },
-                    await window.bcnI18n.getPhrase('lm_assign'),
+                    await window.beaconingAPI.getPhrase('lm_assign'),
                 ),
                 a(
                     {
                         href: `#edit?id=${encodeURIComponent(this.state.glp.id)}`,
                     },
-                    await window.bcnI18n.getPhrase('edit'),
+                    await window.beaconingAPI.getPhrase('edit'),
                 ),
             ),
         );

@@ -98,7 +98,7 @@ class APISearchStatic extends Component {
             searchType,
         } = this.props;
 
-        const noResultsStr = await window.bcnI18n.getPhrase('lm_no_results');
+        const noResultsStr = await window.beaconingAPI.getPhrase('lm_no_results');
 
         let typingTimer;
 

@@ -40,7 +40,7 @@ class LoadProfile extends Component {
                 a(
                     {
                         href: '#edit',
-                        title: await window.bcnI18n.getPhrase('edit'),
+                        title: await window.beaconingAPI.getPhrase('edit'),
                     },
                     i('.icon-pencil'),
                 ),

@@ -10,13 +10,13 @@ class RecentActivities extends Component {
             '.draggable.tile.flex-column.flex-2',
             div(
                 '.title',
-                p(await window.bcnI18n.getPhrase('widget_ra_title')),
+                p(await window.beaconingAPI.getPhrase('widget_ra_title')),
             ),
             div(
                 '.content',
                 div(
                     '#recent-activity',
-                    p(`${await window.bcnI18n.getPhrase('ld')}...`),
+                    p(`${await window.beaconingAPI.getPhrase('ld')}...`),
                 ),
             ),
         );
@@ -31,7 +31,7 @@ class RecentActivities extends Component {
             '.draggable.tile.flex-column.flex-2',
             div(
                 '.title',
-                p(await window.bcnI18n.getPhrase('widget_ra_title')),
+                p(await window.beaconingAPI.getPhrase('widget_ra_title')),
             ),
             div(
                 '.content',

@@ -118,7 +118,7 @@ class AssignedGLPs extends Component {
         const loading = new Loading();
 
         const loadingEl = await loading.attach({
-            msg: await window.bcnI18n.getPhrase('ld_plans'),
+            msg: await window.beaconingAPI.getPhrase('ld_plans'),
         });
 
         return section(
@@ -318,13 +318,13 @@ class AssignedGLPs extends Component {
 
         const el = div(
             '#assigned-plans-container.status.flex-column.flex-align-center',
-            p(await window.bcnI18n.getPhrase('err_no_assigned_glps')),
+            p(await window.beaconingAPI.getPhrase('err_no_assigned_glps')),
             a(
                 '.link-underline',
                 {
                     href: `//${window.location.host}/lesson_manager`,
                 },
-                await window.bcnI18n.getPhrase('cr_go_to_lib'),
+                await window.beaconingAPI.getPhrase('cr_go_to_lib'),
             ),
         );
 

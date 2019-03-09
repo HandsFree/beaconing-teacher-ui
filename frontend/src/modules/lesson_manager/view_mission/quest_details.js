@@ -29,7 +29,7 @@ class QuestDetails extends Component {
                 questsProm.push(questEl);
             }
 
-            const questsText = await window.bcnI18n.getPhrase('lm_quests');
+            const questsText = await window.beaconingAPI.getPhrase('lm_quests');
     
             return Promise.all(questsProm)
                 .then(questsEl => div(
@@ -44,7 +44,7 @@ class QuestDetails extends Component {
 
         return div(
             '#quests-details',
-            div('.title', h4(`${await window.bcnI18n.getPhrase('lm_quests')}:`)),
+            div('.title', h4(`${await window.beaconingAPI.getPhrase('lm_quests')}:`)),
         );
     }
 }

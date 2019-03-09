@@ -74,7 +74,7 @@ class Router {
         } else {
             const container = document.getElementById('app');
             if (container) {
-                container.innerHTML = `<p>${await window.bcnI18n.getPhrase('err_404')}</p>`;
+                container.innerHTML = `<p>${await window.beaconingAPI.getPhrase('err_404')}</p>`;
             }
         }
     }

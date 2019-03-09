@@ -18,9 +18,9 @@ class QuestBox extends Component {
         } = this.props;
 
         const sceneList = [];
-        const noAnMsg = await window.bcnI18n.getPhrase('cr_no_analytics');
-        const dashMsg = await window.bcnI18n.getPhrase('an_dashboard');
-        const dashTitleMsg = await window.bcnI18n.getPhrase('an_lbg_dash_title');
+        const noAnMsg = await window.beaconingAPI.getPhrase('cr_no_analytics');
+        const dashMsg = await window.beaconingAPI.getPhrase('an_dashboard');
+        const dashTitleMsg = await window.beaconingAPI.getPhrase('an_lbg_dash_title');
 
         for (const [id, scene] of scenes) {
             const {
@@ -86,9 +86,9 @@ class QuestBox extends Component {
                     {
                         href: dashboardLink,
                         target: '_BLANK',
-                        title: await window.bcnI18n.getPhrase('an_scenes_dash_title'),
+                        title: await window.beaconingAPI.getPhrase('an_scenes_dash_title'),
                     },
-                    await window.bcnI18n.getPhrase('an_dashboard'),
+                    await window.beaconingAPI.getPhrase('an_dashboard'),
                 )),
             ),
 
@@ -96,8 +96,8 @@ class QuestBox extends Component {
             // if there are scenes.
             sceneList.length > 0 ? div(
                 '.margin-block',
-                h4(await window.bcnI18n.getPhrase('an_scenes')),
-                p(await window.bcnI18n.getPhrase('an_scenes_desc')),
+                h4(await window.beaconingAPI.getPhrase('an_scenes')),
+                p(await window.beaconingAPI.getPhrase('an_scenes_desc')),
                 div('.scenes-container', sceneList),
             ) : [],
         );
@@ -128,9 +128,9 @@ class MissionBox extends Component {
                     {
                         href: dashboardLink,
                         target: '_BLANK',
-                        title: await window.bcnI18n.getPhrase('an_mission_dash_title'),
+                        title: await window.beaconingAPI.getPhrase('an_mission_dash_title'),
                     },
-                    await window.bcnI18n.getPhrase('an_dashboard'),
+                    await window.beaconingAPI.getPhrase('an_dashboard'),
                 )),
             ),
             div(
@@ -146,7 +146,7 @@ class AnalyticsMain extends Component {
         const rawData = nullishCheck(window.sessionStorage.getItem('assignedAnalyticsData'), 'none');
         if (rawData === 'none') {
             console.log('[AnalyticsMain] data not in session storage');
-            return h2(await window.bcnI18n.getPhrase('cr_no_analytics'));
+            return h2(await window.beaconingAPI.getPhrase('cr_no_analytics'));
         }
 
         // avoid type issues
@@ -169,7 +169,7 @@ class AnalyticsMain extends Component {
 
         if (nullishCheck(theGLP?.dashboardLink, '') === '') {
             console.log('[AnalyticsMain] no dashboard link');
-            return h2(await window.bcnI18n.getPhrase('cr_no_analytics'));
+            return h2(await window.beaconingAPI.getPhrase('cr_no_analytics'));
         }
 
         const {
@@ -197,16 +197,16 @@ class AnalyticsMain extends Component {
                                 href: dashboardLink,
                                 target: '_BLANK',
                             },
-                            await window.bcnI18n.getPhrase('an_main_dashboard_link'),
+                            await window.beaconingAPI.getPhrase('an_main_dashboard_link'),
                         ),
                     ),
-                    h2(await window.bcnI18n.getPhrase('analytics')),
+                    h2(await window.beaconingAPI.getPhrase('analytics')),
                 ),
 
-                p(await window.bcnI18n.getPhrase('an_main_dashboard_desc')),
+                p(await window.beaconingAPI.getPhrase('an_main_dashboard_desc')),
             ),
 
-            h2(await window.bcnI18n.getPhrase('lm_missions')),
+            h2(await window.beaconingAPI.getPhrase('lm_missions')),
             await Promise.all(missionProms).then(el => el),
         ];
     }
@@ -226,7 +226,7 @@ class AnalyticsOverview extends RootComponent {
             footer.attach(),
             mainNav.attach(),
             secondNav.attach({
-                title: await window.bcnI18n.getPhrase('cr'),
+                title: await window.beaconingAPI.getPhrase('cr'),
                 innerNav: innerNav.attach(),
             }),
             mainPanel.attach(this.params),

@@ -10,7 +10,7 @@ class PlanOverview extends Component {
         const loading = new Loading();
 
         const loadingEl = await loading.attach({
-            msg: await window.bcnI18n.getPhrase('ld_plan'),
+            msg: await window.beaconingAPI.getPhrase('ld_plan'),
         });
 
         return section(

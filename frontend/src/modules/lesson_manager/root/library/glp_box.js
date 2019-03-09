@@ -16,9 +16,9 @@ class GLPBox extends Component {
             owner,
         } = this.props;
 
-        let dateCreatedText = await window.bcnI18n.getPhrase('lm_not_rec');
+        let dateCreatedText = await window.beaconingAPI.getPhrase('lm_not_rec');
         let timeCreatedText = '';
-        let dateUpdatedText = await window.bcnI18n.getPhrase('never');
+        let dateUpdatedText = await window.beaconingAPI.getPhrase('never');
         let timeUpdatedText = '';
 
         if (creationDate && creationDate !== '0001-01-01T00:00:00Z') {
@@ -44,7 +44,7 @@ class GLPBox extends Component {
                     div(
                         p(
                             '.owner',
-                            `${await window.bcnI18n.getPhrase('lm_owner')} ${owner}`,
+                            `${await window.beaconingAPI.getPhrase('lm_owner')} ${owner}`,
                         ),
                     ),                    
                     div(
@@ -54,21 +54,21 @@ class GLPBox extends Component {
                             {
                                 href: `#view?id=${encodeURIComponent(id)}`,
                             },
-                            await window.bcnI18n.getPhrase('view'),
+                            await window.beaconingAPI.getPhrase('view'),
                         ),
                         a(
                             '.item',
                             {
                                 href: `#edit?id=${encodeURIComponent(id)}`,
                             },
-                            await window.bcnI18n.getPhrase('edit'),
+                            await window.beaconingAPI.getPhrase('edit'),
                         ),
                         a(
                             '.item',
                             {
                                 href: `#assign?id=${encodeURIComponent(id)}`,
                             },
-                            await window.bcnI18n.getPhrase('lm_assign'),
+                            await window.beaconingAPI.getPhrase('lm_assign'),
                         ),
                     ),
                 ),
@@ -77,7 +77,7 @@ class GLPBox extends Component {
                 '.content.flex-column',
                 div(
                     '.created',
-                    strong(`${await window.bcnI18n.getPhrase('lm_created')}:`),
+                    strong(`${await window.beaconingAPI.getPhrase('lm_created')}:`),
                     p(
                         {
                             title: timeCreatedText,
@@ -87,17 +87,17 @@ class GLPBox extends Component {
                 ),
                 div(
                     '.domain',
-                    strong(`${await window.bcnI18n.getPhrase('lm_domain')}:`),
+                    strong(`${await window.beaconingAPI.getPhrase('lm_domain')}:`),
                     p(domain),
                 ),
                 div(
                     '.topic',
-                    strong(`${await window.bcnI18n.getPhrase('lm_topic')}:`),
+                    strong(`${await window.beaconingAPI.getPhrase('lm_topic')}:`),
                     p(topic),
                 ),
                 div(
                     '.modified',
-                    strong(`${await window.bcnI18n.getPhrase('lm_mod')}:`),
+                    strong(`${await window.beaconingAPI.getPhrase('lm_mod')}:`),
                     p(
                         {
                             title: timeUpdatedText,

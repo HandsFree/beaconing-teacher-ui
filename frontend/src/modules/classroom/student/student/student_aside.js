@@ -34,7 +34,7 @@ class StudentAside extends Component {
                         span(
                             '.username',
                             {
-                                title: await window.bcnI18n.getPhrase('username'),
+                                title: await window.beaconingAPI.getPhrase('username'),
                             },
                             student.username,
                         ),
@@ -86,7 +86,7 @@ class StudentAside extends Component {
             return;
         }
 
-        const delStudentTranslation = await window.bcnI18n.getPhrase('con_delete_student');
+        const delStudentTranslation = await window.beaconingAPI.getPhrase('con_delete_student');
         if (!confirm(delStudentTranslation)) {
             return;
         }
@@ -108,7 +108,7 @@ class StudentAside extends Component {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: await window.bcnI18n.getPhrase('err_student_nd'),
+            message: await window.beaconingAPI.getPhrase('err_student_nd'),
         });
 
         this.appendView(statusMessageEl);
@@ -127,7 +127,7 @@ class StudentAside extends Component {
                         span(
                             '.username',
                             {
-                                title: await window.bcnI18n.getPhrase('username'),
+                                title: await window.beaconingAPI.getPhrase('username'),
                             },
                             student.username,
                         ),
@@ -175,7 +175,7 @@ class StudentAside extends Component {
                 a(
                     '#student-edit-button',
                     {
-                        title: await window.bcnI18n.getPhrase('edit'),
+                        title: await window.beaconingAPI.getPhrase('edit'),
                         onclick: () => {
                             this.handleEditClick();
                         },
@@ -204,7 +204,7 @@ class StudentAside extends Component {
                             this.emit('AssignedGLPsClicked');
                         },
                     },
-                    span(await window.bcnI18n.getPhrase('cr_assigned_glps')),
+                    span(await window.beaconingAPI.getPhrase('cr_assigned_glps')),
                 ),
                 a(
                     '.item',
@@ -216,7 +216,7 @@ class StudentAside extends Component {
                             this.emit('AnalyticsClicked');
                         },
                     },
-                    span(await window.bcnI18n.getPhrase('analytics')),
+                    span(await window.beaconingAPI.getPhrase('analytics')),
                 ),
             ),
         );

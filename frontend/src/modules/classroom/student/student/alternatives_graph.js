@@ -8,8 +8,8 @@ const config = async (correct, incorrect) => {
         type: 'pie',
         data: {
             labels: [
-                await window.bcnI18n.getPhrase('cr_analytics_ra'),
-                await window.bcnI18n.getPhrase('cr_analytics_wa'),
+                await window.beaconingAPI.getPhrase('cr_analytics_ra'),
+                await window.beaconingAPI.getPhrase('cr_analytics_wa'),
             ],
             datasets: [
                 {
@@ -73,7 +73,7 @@ class AlternativesGraph extends Component {
         } = graphData;
 
         if (correct === 0 && incorrect === 0) {
-            return div(h2(await window.bcnI18n.getPhrase('err_no_data')));
+            return div(h2(await window.beaconingAPI.getPhrase('err_no_data')));
         }
 
         const ctx: CanvasRenderingContext2D = this.view.getContext('2d');

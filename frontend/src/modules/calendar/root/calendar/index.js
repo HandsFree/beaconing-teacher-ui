@@ -70,7 +70,7 @@ class CalendarDayView extends Component {
                         },
                         href: '#',
                     },
-                    await window.bcnI18n.getPhrase('cal_back_to_calendar'),
+                    await window.beaconingAPI.getPhrase('cal_back_to_calendar'),
                 ),
             ),
 

@@ -40,7 +40,7 @@ class Header extends Component {
                     },
                     img({
                         src: `//${window.location.host}/dist/beaconing/images/logo.png`,
-                        alt: await window.bcnI18n.getPhrase('logo_title'),
+                        alt: await window.beaconingAPI.getPhrase('logo_title'),
                     }),
                 ),
             ),
@@ -51,7 +51,7 @@ class Header extends Component {
                         href: `//${window.location.host}/auth/logout`,
                         tabIndex: 2,
                     },
-                    await window.bcnI18n.getPhrase('log_out')
+                    await window.beaconingAPI.getPhrase('log_out')
                 ),
                 div(
                     '.profile-img',

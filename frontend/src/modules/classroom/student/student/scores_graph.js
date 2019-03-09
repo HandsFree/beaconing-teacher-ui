@@ -8,9 +8,9 @@ const config = async (min, avg, max) => {
         type: 'bar',
         data: {
             labels: [
-                await window.bcnI18n.getPhrase('cr_analytics_min_s'),
-                await window.bcnI18n.getPhrase('cr_analytics_avg_s'),
-                await window.bcnI18n.getPhrase('cr_analytics_max_s'),
+                await window.beaconingAPI.getPhrase('cr_analytics_min_s'),
+                await window.beaconingAPI.getPhrase('cr_analytics_avg_s'),
+                await window.beaconingAPI.getPhrase('cr_analytics_max_s'),
             ],
             datasets: [
                 {

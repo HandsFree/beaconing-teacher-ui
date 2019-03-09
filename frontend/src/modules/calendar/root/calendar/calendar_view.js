@@ -234,7 +234,7 @@ class CalendarView extends Component {
         ];
 
         calendarDayTranslKeys.forEach(async (key) => {
-            const dayName = await window.bcnI18n.getPhrase(key);
+            const dayName = await window.beaconingAPI.getPhrase(key);
 
             const cellProm = new CalendarHeadingCell().attach({ dayName });
             rows.push(cellProm);

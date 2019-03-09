@@ -37,7 +37,7 @@ class GLPBox extends Component {
                     this.unassignPlan();
                 },
             },
-            await window.bcnI18n.getPhrase('cr_unassign'),
+            await window.beaconingAPI.getPhrase('cr_unassign'),
         );
 
         return div(
@@ -59,7 +59,7 @@ class GLPBox extends Component {
                         {
                             href: `//${window.location.host}/lesson_manager#view?id=${glpID}`,
                         },
-                        await window.bcnI18n.getPhrase('view'),
+                        await window.beaconingAPI.getPhrase('view'),
                     ),
                     !fromGroupID ? unassignEl : [],
                 ),
@@ -78,7 +78,7 @@ class GLPBox extends Component {
             return;
         }
 
-        const unassignGLPTransl = await window.bcnI18n.getPhrase('con_unassign_glp');
+        const unassignGLPTransl = await window.beaconingAPI.getPhrase('con_unassign_glp');
         if (!confirm(unassignGLPTransl)) {
             return;
         }
@@ -95,7 +95,7 @@ class GLPBox extends Component {
                 elementID: false,
                 heading: 'Success',
                 type: 'success',
-                message: await window.bcnI18n.getPhrase('sc_sa'),
+                message: await window.beaconingAPI.getPhrase('sc_sa'),
             });
 
             document.body.appendChild(statusMessageEl);
@@ -109,7 +109,7 @@ class GLPBox extends Component {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: await window.bcnI18n.getPhrase('err_student_una'),
+            message: await window.beaconingAPI.getPhrase('err_student_una'),
         });
 
         document.body.appendChild(statusMessageEl);

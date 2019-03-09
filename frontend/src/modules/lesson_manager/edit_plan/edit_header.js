@@ -29,7 +29,7 @@ class EditHeader extends Component {
                 elementID: false,
                 heading: 'Success',
                 type: 'success',
-                message: await window.bcnI18n.getPhrase('sc_glp_del'),
+                message: await window.beaconingAPI.getPhrase('sc_glp_del'),
             });
 
             document.body.appendChild(statusMessageEl);
@@ -43,7 +43,7 @@ class EditHeader extends Component {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: await window.bcnI18n.getPhrase('err_glp_nd'),
+            message: await window.beaconingAPI.getPhrase('err_glp_nd'),
         });
 
         document.body.appendChild(statusMessageEl);
@@ -73,9 +73,9 @@ class EditHeader extends Component {
                         {
                             href: `//${window.location.host}/lesson_manager`,
                         },
-                        span(await window.bcnI18n.getPhrase('lm_library')),
+                        span(await window.beaconingAPI.getPhrase('lm_library')),
                     ),
-                    a('.current', await window.bcnI18n.getPhrase('edit_glp')),
+                    a('.current', await window.beaconingAPI.getPhrase('edit_glp')),
                 );
             } else {
                 div(
@@ -85,16 +85,16 @@ class EditHeader extends Component {
                         {
                             href: `//${window.location.host}/lesson_manager`,
                         },
-                        span(await window.bcnI18n.getPhrase('lm_library')),
+                        span(await window.beaconingAPI.getPhrase('lm_library')),
                     ),
                     a(
                         '.crumb',
                         {
                             href: `//${window.location.host}/lesson_manager#view?id=${id}`,
                         },
-                        span(await window.bcnI18n.getPhrase('lm_plan_overview')),
+                        span(await window.beaconingAPI.getPhrase('lm_plan_overview')),
                     ),
-                    a('.current', await window.bcnI18n.getPhrase('edit_glp')),
+                    a('.current', await window.beaconingAPI.getPhrase('edit_glp')),
                 );
             }
         };
@@ -111,13 +111,13 @@ class EditHeader extends Component {
                         {
                             href: `//${window.location.host}/authoring_tool?id=${encodeURIComponent(glp.id)}`,
                         },
-                        button('.action', await window.bcnI18n.getPhrase('lm_open_at')),
+                        button('.action', await window.beaconingAPI.getPhrase('lm_open_at')),
                     ),
                     currentUser === glp.owner ? button(
                         '.delete',
                         {
                             onclick: async () => {
-                                const confirmDelGLPTranslation = await window.bcnI18n.getPhrase('con_delete_glp');
+                                const confirmDelGLPTranslation = await window.beaconingAPI.getPhrase('con_delete_glp');
 
                                 const doDelete = confirm(confirmDelGLPTranslation);
                                 if (doDelete) {
@@ -125,7 +125,7 @@ class EditHeader extends Component {
                                 }
                             },
                         },
-                        await window.bcnI18n.getPhrase('delete'),
+                        await window.beaconingAPI.getPhrase('delete'),
                     ) : [],
                 ),
             ),
@@ -145,9 +145,9 @@ class EditHeader extends Component {
                             }
                         },
                     },
-                    a('.tab.active', await window.bcnI18n.getPhrase('lm_details')),
-                    a('.tab.disabled-tab', await window.bcnI18n.getPhrase('lm_assignees')),
-                    a('.tab.disabled-tab', await window.bcnI18n.getPhrase('lm_files')),
+                    a('.tab.active', await window.beaconingAPI.getPhrase('lm_details')),
+                    a('.tab.disabled-tab', await window.beaconingAPI.getPhrase('lm_assignees')),
+                    a('.tab.disabled-tab', await window.beaconingAPI.getPhrase('lm_files')),
                 ),
             ),
         );

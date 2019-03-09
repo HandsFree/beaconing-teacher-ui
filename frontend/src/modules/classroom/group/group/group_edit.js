@@ -92,14 +92,14 @@ class StudentEdit extends Form {
         const groupButton = document.getElementById('update-group-button');
 
         if (completed) {
-            groupButton.textContent = await window.bcnI18n.getPhrase('cr_group_update');
-            doneButton.textContent = await window.bcnI18n.getPhrase('done');
+            groupButton.textContent = await window.beaconingAPI.getPhrase('cr_group_update');
+            doneButton.textContent = await window.beaconingAPI.getPhrase('done');
 
             return;
         }
 
-        groupButton.textContent = await window.bcnI18n.getPhrase('cr_group_update');
-        doneButton.textContent = await window.bcnI18n.getPhrase('cancel');
+        groupButton.textContent = await window.beaconingAPI.getPhrase('cr_group_update');
+        doneButton.textContent = await window.beaconingAPI.getPhrase('cancel');
     }
 
     async checkGroupName() {
@@ -110,7 +110,7 @@ class StudentEdit extends Form {
         }
 
         if (this.state.groupName !== this.group.name && this.groups.indexOf(this.state.groupName.toLowerCase()) !== -1) {
-            const errMsg = await window.bcnI18n.getPhrase('err_group_name_exists');
+            const errMsg = await window.beaconingAPI.getPhrase('err_group_name_exists');
             this.addError('group-name-status', errMsg);
 
             return false;
@@ -122,7 +122,7 @@ class StudentEdit extends Form {
 
     async checkFields() {
         let success = true;
-        const emptyMsg = await window.bcnI18n.getPhrase('err_required_empty');
+        const emptyMsg = await window.beaconingAPI.getPhrase('err_required_empty');
 
         if (this.state.groupName === '') {
             this.addError('group-name-status', emptyMsg);
@@ -134,7 +134,7 @@ class StudentEdit extends Form {
         }
 
         if (this.studentList.length < 2) {
-            this.addError('group-students-status', await window.bcnI18n.getPhrase('err_more_students_needed'));
+            this.addError('group-students-status', await window.beaconingAPI.getPhrase('err_more_students_needed'));
             success = false;
         }
 
@@ -144,7 +144,7 @@ class StudentEdit extends Form {
                 elementID: false,
                 heading: 'Error',
                 type: 'error',
-                message: await window.bcnI18n.getPhrase('err_form'),
+                message: await window.beaconingAPI.getPhrase('err_form'),
             });
 
             this.appendView(statusMessageEl);
@@ -184,7 +184,7 @@ class StudentEdit extends Form {
                 elementID: false,
                 heading: 'Success',
                 type: 'success',
-                message: await window.bcnI18n.getPhrase('sc_group_up'),
+                message: await window.beaconingAPI.getPhrase('sc_group_up'),
             });
 
             this.appendView(statusMessageEl);
@@ -202,7 +202,7 @@ class StudentEdit extends Form {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: await window.bcnI18n.getPhrase('err_group_nu'),
+            message: await window.beaconingAPI.getPhrase('err_group_nu'),
         });
 
         this.changeButtons(false);
@@ -223,7 +223,7 @@ class StudentEdit extends Form {
             groupStudents: studentsArr,
         });
 
-        const updatingText = await window.bcnI18n.getPhrase('updating');
+        const updatingText = await window.beaconingAPI.getPhrase('updating');
 
         return div(
             '.flex-column',
@@ -233,7 +233,7 @@ class StudentEdit extends Form {
                     '.margin-25.flex-column',
                     div(
                         '.general-info',
-                        p(`${await window.bcnI18n.getPhrase('cr_group_edit_info')}:`),
+                        p(`${await window.beaconingAPI.getPhrase('cr_group_edit_info')}:`),
                     ),
                     form(
                         '.create-group',
@@ -241,8 +241,8 @@ class StudentEdit extends Form {
                             '.label-group',
                             div(
                                 '.split',
-                                div('.title-area', span(await window.bcnI18n.getPhrase('cr_group_name'))),
-                                div('.desc-area', await window.bcnI18n.getPhrase('cr_group_name_desc')),
+                                div('.title-area', span(await window.beaconingAPI.getPhrase('cr_group_name'))),
+                                div('.desc-area', await window.beaconingAPI.getPhrase('cr_group_name_desc')),
                                 div(
                                     '.input-area',
                                     label(
@@ -251,7 +251,7 @@ class StudentEdit extends Form {
                                             '#group-name.text-field',
                                             {
                                                 type: 'text',
-                                                placeholder: await window.bcnI18n.getPhrase('cr_group_enter_name'),
+                                                placeholder: await window.beaconingAPI.getPhrase('cr_group_enter_name'),
                                                 value: this.state.groupName,
                                                 oninput: (event) => {
                                                     const { target } = event;
@@ -272,8 +272,8 @@ class StudentEdit extends Form {
                             '.label-group',
                             div(
                                 '.split',
-                                div('.title-area', span(await window.bcnI18n.getPhrase('cr_students'))),
-                                div('.desc-area', await window.bcnI18n.getPhrase('cr_students_group_desc')),
+                                div('.title-area', span(await window.beaconingAPI.getPhrase('cr_students'))),
+                                div('.desc-area', await window.beaconingAPI.getPhrase('cr_students_group_desc')),
                                 div(
                                     '.input-area',
                                     studentsListEl,
@@ -290,7 +290,7 @@ class StudentEdit extends Form {
                                         this.emit('EditDoneClicked');
                                     },
                                 },
-                                await window.bcnI18n.getPhrase('cancel'),
+                                await window.beaconingAPI.getPhrase('cancel'),
                             ),
                             div(
                                 '#update-group-button.button-submit',
@@ -302,7 +302,7 @@ class StudentEdit extends Form {
                                         target.textContent = `${updatingText}...`;
                                     },
                                 },
-                                await window.bcnI18n.getPhrase('cr_group_update'),
+                                await window.beaconingAPI.getPhrase('cr_group_update'),
                             ),
                         ),
                     ),

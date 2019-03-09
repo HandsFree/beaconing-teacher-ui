@@ -27,7 +27,7 @@ class MissionDetail extends Component {
                     {
                         href: `#mission?id=${this.props.id}&index=${this.props.index}`,
                     },
-                    await window.bcnI18n.getPhrase('view'),
+                    await window.beaconingAPI.getPhrase('view'),
                 ),
             ),
             div(

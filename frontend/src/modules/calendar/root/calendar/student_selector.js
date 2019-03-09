@@ -16,7 +16,7 @@ class CalendarSelectedGroup extends Component {
                 '.title',
                 p('.item-name.fake-link', a(
                     {
-                        title: await window.bcnI18n.getPhrase('cal_view_in_classroom'),
+                        title: await window.beaconingAPI.getPhrase('cal_view_in_classroom'),
                         href: `//${window.location.host}/classroom/group?id=${id}`,
                     },
                     `${name}`,
@@ -52,7 +52,7 @@ class CalendarSelectedGroup extends Component {
                             this.emit('RefreshCalendarView');
                         },
                     },
-                    await window.bcnI18n.getPhrase('view'),
+                    await window.beaconingAPI.getPhrase('view'),
                 )),
             ),
         );
@@ -118,7 +118,7 @@ class StudentSelector extends Component {
         const loading = new Loading();
 
         const loadingEl = await loading.attach({
-            msg: await window.bcnI18n.getPhrase('ld_students'),
+            msg: await window.beaconingAPI.getPhrase('ld_students'),
         });
 
         return section(
@@ -151,7 +151,7 @@ class GroupSelector extends Component {
         const loading = new Loading();
 
         const loadingEl = await loading.attach({
-            msg: await window.bcnI18n.getPhrase('ld_groups'),
+            msg: await window.beaconingAPI.getPhrase('ld_groups'),
         });
 
         return section(

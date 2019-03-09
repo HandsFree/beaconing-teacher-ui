@@ -1,6 +1,10 @@
 package serv
 
 import (
+	"log"
+	"net/http"
+
+	"github.com/HandsFree/beaconing-teacher-ui/backend/cfg"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/req"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/upload"
 	"github.com/gin-gonic/gin"
@@ -12,6 +16,40 @@ func registerAPI(router *gin.Engine) {
 	// ---
 
 	v1 := router.Group("/api/v1/")
+
+	lang := v1.Group("lang")
+	{
+		lang.GET("/:code/phrase/:key", func(c *gin.Context) {
+			langCode := c.Param("code")
+			phraseKey := c.Param("key")
+
+			transSet, ok := cfg.Translations[phraseKey]
+			if !ok {
+				log.Println("warning: translation SET not found for", phraseKey)
+				c.JSON(http.StatusOK, map[string]string{
+					"translation": "Translation not found!",
+				})
+				return
+			}
+
+			translation, ok := transSet[langCode]
+			if !ok {
+				log.Println("warning: phrase translation not found for", phraseKey, "language is", langCode)
+				c.JSON(http.StatusOK, map[string]string{
+					"translation": "Translation not found!",
+				})
+				return
+			}
+
+			c.JSON(http.StatusOK, map[string]string{
+				"translation": translation,
+			})
+		})
+
+		lang.POST("/phrase/", func(c *gin.Context) {
+			// TODO!
+		})
+	}
 
 	// FIXME(Felix): this probably falls under some kind of
 	// category. activity/activities?

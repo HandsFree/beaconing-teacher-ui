@@ -68,7 +68,7 @@ class StudentBox extends Component {
     }
 
     async assign(assignButton: HTMLElement) {
-        const assignStudentTransl = await window.bcnI18n.getPhrase('con_assign_student');
+        const assignStudentTransl = await window.beaconingAPI.getPhrase('con_assign_student');
         if (!confirm(assignStudentTransl)) {
             return;
         }
@@ -78,7 +78,7 @@ class StudentBox extends Component {
             student,
         } = this.props;
 
-        assignButton.textContent = `${await window.bcnI18n.getPhrase('lm_assigning')}...`;
+        assignButton.textContent = `${await window.beaconingAPI.getPhrase('lm_assigning')}...`;
 
         const status = await window.beaconingAPI.assignStudent(student.id, glpID);
         const statusMessage = new Status();
@@ -92,7 +92,7 @@ class StudentBox extends Component {
                 elementID: false,
                 heading: 'Success',
                 type: 'success',
-                message: await window.bcnI18n.getPhrase('sc_student_asg'),
+                message: await window.beaconingAPI.getPhrase('sc_student_asg'),
             });
 
             document.body.appendChild(statusMessageEl);
@@ -106,10 +106,10 @@ class StudentBox extends Component {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: await window.bcnI18n.getPhrase('err_student_na'),
+            message: await window.beaconingAPI.getPhrase('err_student_na'),
         });
 
-        assignButton.textContent = await window.bcnI18n.getPhrase('lm_assign');
+        assignButton.textContent = await window.beaconingAPI.getPhrase('lm_assign');
 
         document.body.appendChild(statusMessageEl);
     }
@@ -126,7 +126,7 @@ class StudentBox extends Component {
                     h4(
                         '.username',
                         {
-                            title: await window.bcnI18n.getPhrase('username'),
+                            title: await window.beaconingAPI.getPhrase('username'),
                         },
                         student.username,
                     ),

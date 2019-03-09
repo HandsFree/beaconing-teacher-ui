@@ -58,8 +58,8 @@ class StudentMain extends Component {
         const el = div(
             '#pane-container.flex-column.flex-grow',
             div('.student-analytics-title.margin-left-20.margin-right-20',
-                h2(await window.bcnI18n.getPhrase('student_analytics')),
-                p(await window.bcnI18n.getPhrase('student_prog_chart')),
+                h2(await window.beaconingAPI.getPhrase('student_analytics')),
+                p(await window.beaconingAPI.getPhrase('student_prog_chart')),
             ),
             analyticsEl,
         );

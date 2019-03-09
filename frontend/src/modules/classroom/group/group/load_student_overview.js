@@ -51,7 +51,7 @@ class LoadStudentOverview extends Component {
                 '#student-overview',
                 div(
                     '.flex-container',
-                    p(await window.bcnI18n.getPhrase('widget_so_no_group')),
+                    p(await window.beaconingAPI.getPhrase('widget_so_no_group')),
                 ),
             );
         }
@@ -77,18 +77,18 @@ class LoadStudentOverview extends Component {
             const miData = improvement.slice(0, 3);
 
             const bestPerformingEl = await bestPerforming.attach({
-                title: await window.bcnI18n.getPhrase('widget_so_bp'),
-                msg: await window.bcnI18n.getPhrase('widget_so_op'),
+                title: await window.beaconingAPI.getPhrase('widget_so_bp'),
+                msg: await window.beaconingAPI.getPhrase('widget_so_op'),
                 data: bpData,
             });
             const needsAttentionEl = await needsAttention.attach({
-                title: await window.bcnI18n.getPhrase('widget_so_na'),
-                msg: await window.bcnI18n.getPhrase('widget_so_op'),
+                title: await window.beaconingAPI.getPhrase('widget_so_na'),
+                msg: await window.beaconingAPI.getPhrase('widget_so_op'),
                 data: naData,
             });
             const mostImprovementEl = await mostImprovement.attach({
-                title: await window.bcnI18n.getPhrase('widget_so_mi'),
-                msg: await window.bcnI18n.getPhrase('widget_so_oi'),
+                title: await window.beaconingAPI.getPhrase('widget_so_mi'),
+                msg: await window.beaconingAPI.getPhrase('widget_so_oi'),
                 data: miData,
             });
 
@@ -109,7 +109,7 @@ class LoadStudentOverview extends Component {
             sortEl,
             div(
                 '.flex-container',
-                p(await window.bcnI18n.getPhrase('widget_so_few')),
+                p(await window.beaconingAPI.getPhrase('widget_so_few')),
             ),
         );
     }

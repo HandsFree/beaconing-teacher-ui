@@ -8,7 +8,7 @@ const config = async (progress) => {
         type: 'bar',
         data: {
             labels: [
-                await window.bcnI18n.getPhrase('cr_analytics_sp'),
+                await window.beaconingAPI.getPhrase('cr_analytics_sp'),
             ],
             datasets: [
                 {

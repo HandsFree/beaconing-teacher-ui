@@ -1,19 +1,29 @@
 package cfg
 
 import (
+	"bufio"
 	"io/ioutil"
 	"log"
+	"os"
+	"strings"
 
 	"github.com/BurntSushi/toml"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
+	jsoniter "github.com/json-iterator/go"
 )
 
 type tomlConfig struct {
-	Title  string
-	Auth   authInfo
-	DB     databaseInfo
-	Server serverInfo
-	Debug  debugInfo
+	Title        string
+	Auth         authInfo
+	Localisation localisationInfo
+	DB           databaseInfo
+	Server       serverInfo
+	Debug        debugInfo
+}
+
+type localisationInfo struct {
+	KeyFile string `toml:"key_file"`
+	MapFile string `toml:"map_file"`
 }
 
 type databaseInfo struct {
@@ -45,6 +55,10 @@ type debugInfo struct {
 // the toml config file.
 var Beaconing tomlConfig
 
+// maybe some type aliasing is due here!
+var Translations map[string]map[string]string
+var TranslationKeys map[string]string
+
 // LoadConfig loads the configuration file from
 // cfg/config.toml and parses it into go structures
 func LoadConfig() {
@@ -62,4 +76,48 @@ func LoadConfig() {
 		log.Fatal(decodeErr)
 		return
 	}
+
+	TranslationKeys = LoadTranslationKeys()
+	Translations = LoadTranslations()
+}
+
+func LoadTranslations() map[string]map[string]string {
+	mapFile := Beaconing.Localisation.MapFile
+
+	data, err := ioutil.ReadFile(mapFile)
+	if err != nil {
+		panic(err)
+	}
+
+	var result map[string]map[string]string
+	if err := jsoniter.Unmarshal(data, &result); err != nil {
+		panic(err)
+	}
+
+	return result
+}
+
+func LoadTranslationKeys() map[string]string {
+	keyFile := Beaconing.Localisation.KeyFile
+
+	file, err := os.Open(keyFile)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+
+	result := map[string]string{}
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := scanner.Text()
+		cols := strings.Split(line, "=>")
+		key, english := cols[0], cols[1]
+		result[english] = key
+	}
+
+	if err := scanner.Err(); err != nil {
+		log.Fatal(err)
+	}
+	return result
 }

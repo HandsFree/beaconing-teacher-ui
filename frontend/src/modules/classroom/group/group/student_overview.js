@@ -47,12 +47,12 @@ class StudentOverview extends Component {
     async render() {
         return div(
             '#student-overview-container.status.flex-column.flex-align-center',
-            p(await window.bcnI18n.getPhrase('widget_so_title')),
+            p(await window.beaconingAPI.getPhrase('widget_so_title')),
             div(
                 '.content',
                 div(
                     '#student-overview',
-                    p(`${await window.bcnI18n.getPhrase('ld')}...`),
+                    p(`${await window.beaconingAPI.getPhrase('ld')}...`),
                 ),
             ),
         );
@@ -68,7 +68,7 @@ class StudentOverview extends Component {
 
         const el = div(
             '#student-overview-container.status.flex-column.flex-align-center',
-            p(await window.bcnI18n.getPhrase('widget_so_title')),
+            p(await window.beaconingAPI.getPhrase('widget_so_title')),
             div(
                 '.content',
                 loadStudentOverviewEl,

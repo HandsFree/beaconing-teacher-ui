@@ -13,7 +13,7 @@ class Loading extends Component {
             return;
         }
 
-        this.msg = await window.bcnI18n.getPhrase('ld');
+        this.msg = await window.beaconingAPI.getPhrase('ld');
     }
 
     async render() {

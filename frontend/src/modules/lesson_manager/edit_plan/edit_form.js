@@ -96,11 +96,11 @@ class EditGLPForm extends Form {
 
     async resetSubmit() {
         const saveButton = document.getElementById('save-plan-button');
-        saveButton.textContent = await window.bcnI18n.getPhrase('lm_save_plan');
+        saveButton.textContent = await window.beaconingAPI.getPhrase('lm_save_plan');
     }
 
     async checkGLPName() {
-        const errMsg = await window.bcnI18n.getPhrase('err_glp_name_exists');
+        const errMsg = await window.beaconingAPI.getPhrase('err_glp_name_exists');
 
         if (this.state.planName === '') {
             this.removeAll('plan-name-status');
@@ -125,7 +125,7 @@ class EditGLPForm extends Form {
 
     async checkFields() {
         let success = true;
-        const emptyMsg = await window.bcnI18n.getPhrase('err_required_empty');
+        const emptyMsg = await window.beaconingAPI.getPhrase('err_required_empty');
 
         if (this.state.planName === '') {
             this.addError('plan-name-status', emptyMsg);
@@ -162,7 +162,7 @@ class EditGLPForm extends Form {
         }
 
         if (this.state.planYear !== '' && !(/^[0-9]{4}$/).test(this.state.planYear)) {
-            const errMsg = await window.bcnI18n.getPhrase('err_plan_year_not_valid');
+            const errMsg = await window.beaconingAPI.getPhrase('err_plan_year_not_valid');
             this.addError('plan-year-status', errMsg);
             success = false;
         }
@@ -173,7 +173,7 @@ class EditGLPForm extends Form {
                 elementID: false,
                 heading: 'Error',
                 type: 'error',
-                message: await window.bcnI18n.getPhrase('err_form'),
+                message: await window.beaconingAPI.getPhrase('err_form'),
             });
 
             this.appendView(statusMessageEl);
@@ -233,7 +233,7 @@ class EditGLPForm extends Form {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: await window.bcnI18n.getPhrase('err_plan_nc'),
+            message: await window.beaconingAPI.getPhrase('err_plan_nc'),
         });
 
         this.appendView(statusMessageEl);
@@ -254,7 +254,7 @@ class EditGLPForm extends Form {
     }
 
     async render() {
-        const savingText = await window.bcnI18n.getPhrase('saving');
+        const savingText = await window.beaconingAPI.getPhrase('saving');
 
         return div(
             '.flex-column',
@@ -274,8 +274,8 @@ class EditGLPForm extends Form {
                             '.label-group',
                             div(
                                 '.split',
-                                div('.title-area', span(await window.bcnI18n.getPhrase('lm_plan_name'))),
-                                div('.desc-area', await window.bcnI18n.getPhrase('lm_plan_name_desc')),
+                                div('.title-area', span(await window.beaconingAPI.getPhrase('lm_plan_name'))),
+                                div('.desc-area', await window.beaconingAPI.getPhrase('lm_plan_name_desc')),
                                 div(
                                     '.input-area',
                                     label(
@@ -284,7 +284,7 @@ class EditGLPForm extends Form {
                                             '#plan-name.text-field',
                                             {
                                                 type: 'text',
-                                                placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_name'),
+                                                placeholder: await window.beaconingAPI.getPhrase('lm_enter_plan_name'),
                                                 value: this.state.planName,
                                                 oninput: (event) => {
                                                     const { target } = event;
@@ -305,8 +305,8 @@ class EditGLPForm extends Form {
                             '.label-group',
                             div(
                                 '.split',
-                                div('.title-area', span(await window.bcnI18n.getPhrase('lm_plan_desc'))),
-                                div('.desc-area', await window.bcnI18n.getPhrase('lm_plan_desc_desc')),
+                                div('.title-area', span(await window.beaconingAPI.getPhrase('lm_plan_desc'))),
+                                div('.desc-area', await window.beaconingAPI.getPhrase('lm_plan_desc_desc')),
                                 div(
                                     '.input-area',
                                     label(
@@ -314,7 +314,7 @@ class EditGLPForm extends Form {
                                         textarea(
                                             '#plan-description',
                                             {
-                                                placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_desc'),
+                                                placeholder: await window.beaconingAPI.getPhrase('lm_enter_plan_desc'),
                                                 value: this.state.planDescription,
                                                 oninput: (event) => {
                                                     const { target } = event;
@@ -338,8 +338,8 @@ class EditGLPForm extends Form {
                             '.label-group',
                             div(
                                 '.split',
-                                div('.title-area', span(await window.bcnI18n.getPhrase('lm_plan_cat'))),
-                                div('.desc-area', await window.bcnI18n.getPhrase('lm_plan_cat_desc')),
+                                div('.title-area', span(await window.beaconingAPI.getPhrase('lm_plan_cat'))),
+                                div('.desc-area', await window.beaconingAPI.getPhrase('lm_plan_cat_desc')),
                                 div(
                                     '.input-area',
                                     label(
@@ -359,28 +359,28 @@ class EditGLPForm extends Form {
                                                     value: 'science',
                                                     selected: this.state.category === 'science',
                                                 },
-                                                await window.bcnI18n.getPhrase('lm_science'),
+                                                await window.beaconingAPI.getPhrase('lm_science'),
                                             ),
                                             option(
                                                 {
                                                     value: 'technology',
                                                     selected: this.state.category === 'technology',
                                                 },
-                                                await window.bcnI18n.getPhrase('lm_tech'),
+                                                await window.beaconingAPI.getPhrase('lm_tech'),
                                             ),
                                             option(
                                                 {
                                                     value: 'engineering',
                                                     selected: this.state.category === 'engineering',
                                                 },
-                                                await window.bcnI18n.getPhrase('lm_eng'),
+                                                await window.beaconingAPI.getPhrase('lm_eng'),
                                             ),
                                             option(
                                                 {
                                                     value: 'maths',
                                                     selected: this.state.category === 'maths',
                                                 },
-                                                await window.bcnI18n.getPhrase('lm_maths'),
+                                                await window.beaconingAPI.getPhrase('lm_maths'),
                                             ),
                                         ),
                                     ),
@@ -392,8 +392,8 @@ class EditGLPForm extends Form {
                             '.label-group',
                             div(
                                 '.split',
-                                div('.title-area', span(await window.bcnI18n.getPhrase('lm_plan_domain'))),
-                                div('.desc-area', await window.bcnI18n.getPhrase('lm_plan_domain_desc')),
+                                div('.title-area', span(await window.beaconingAPI.getPhrase('lm_plan_domain'))),
+                                div('.desc-area', await window.beaconingAPI.getPhrase('lm_plan_domain_desc')),
                                 div(
                                     '.input-area',
                                     label(
@@ -402,7 +402,7 @@ class EditGLPForm extends Form {
                                             '#plan-domain.text-field',
                                             {
                                                 type: 'text',
-                                                placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_domain'),
+                                                placeholder: await window.beaconingAPI.getPhrase('lm_enter_plan_domain'),
                                                 value: this.state.planDomain,
                                                 oninput: (event) => {
                                                     const { target } = event;
@@ -421,8 +421,8 @@ class EditGLPForm extends Form {
                             '.label-group',
                             div(
                                 '.split',
-                                div('.title-area', span(await window.bcnI18n.getPhrase('lm_plan_topic'))),
-                                div('.desc-area', await window.bcnI18n.getPhrase('lm_plan_topic_desc')),
+                                div('.title-area', span(await window.beaconingAPI.getPhrase('lm_plan_topic'))),
+                                div('.desc-area', await window.beaconingAPI.getPhrase('lm_plan_topic_desc')),
                                 div(
                                     '.input-area',
                                     label(
@@ -431,7 +431,7 @@ class EditGLPForm extends Form {
                                             '#plan-topic.text-field',
                                             {
                                                 type: 'text',
-                                                placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_topic'),
+                                                placeholder: await window.beaconingAPI.getPhrase('lm_enter_plan_topic'),
                                                 value: this.state.planTopic,
                                                 oninput: (event) => {
                                                     const { target } = event;
@@ -450,8 +450,8 @@ class EditGLPForm extends Form {
                             '.label-group',
                             div(
                                 '.split',
-                                div('.title-area', span(await window.bcnI18n.getPhrase('lm_plan_ag'))),
-                                div('.desc-area', await window.bcnI18n.getPhrase('lm_plan_ag_desc')),
+                                div('.title-area', span(await window.beaconingAPI.getPhrase('lm_plan_ag'))),
+                                div('.desc-area', await window.beaconingAPI.getPhrase('lm_plan_ag_desc')),
                                 div(
                                     '.input-area',
                                     label(
@@ -460,7 +460,7 @@ class EditGLPForm extends Form {
                                             '#plan-age-group.text-field',
                                             {
                                                 type: 'text',
-                                                placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_ag'),
+                                                placeholder: await window.beaconingAPI.getPhrase('lm_enter_plan_ag'),
                                                 value: this.state.planAgeGroup,
                                                 oninput: (event) => {
                                                     const { target } = event;
@@ -479,8 +479,8 @@ class EditGLPForm extends Form {
                             '.label-group',
                             div(
                                 '.split',
-                                div('.title-area', span(await window.bcnI18n.getPhrase('lm_plan_year'))),
-                                div('.desc-area', await window.bcnI18n.getPhrase('lm_plan_year_desc')),
+                                div('.title-area', span(await window.beaconingAPI.getPhrase('lm_plan_year'))),
+                                div('.desc-area', await window.beaconingAPI.getPhrase('lm_plan_year_desc')),
                                 div(
                                     '.input-area',
                                     label(
@@ -489,7 +489,7 @@ class EditGLPForm extends Form {
                                             '#plan-year.text-field',
                                             {
                                                 type: 'text',
-                                                placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_year'),
+                                                placeholder: await window.beaconingAPI.getPhrase('lm_enter_plan_year'),
                                                 value: this.state.planYear,
                                                 pattern: '[0-9]{4}',
                                                 oninput: (event) => {
@@ -510,8 +510,8 @@ class EditGLPForm extends Form {
                             '.label-group',
                             div(
                                 '.split',
-                                div('.title-area', span(await window.bcnI18n.getPhrase('lm_plan_los'))),
-                                div('.desc-area', await window.bcnI18n.getPhrase('lm_plan_los_desc')),
+                                div('.title-area', span(await window.beaconingAPI.getPhrase('lm_plan_los'))),
+                                div('.desc-area', await window.beaconingAPI.getPhrase('lm_plan_los_desc')),
                                 div(
                                     '.input-area',
                                     label(
@@ -519,7 +519,7 @@ class EditGLPForm extends Form {
                                         textarea(
                                             '#plan-learning-objectives',
                                             {
-                                                placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_los'),
+                                                placeholder: await window.beaconingAPI.getPhrase('lm_enter_plan_los'),
                                                 value: this.state.planLearningObjectives.join('\n'),
                                                 oninput: (event) => {
                                                     const { target } = event;
@@ -543,8 +543,8 @@ class EditGLPForm extends Form {
                             '.label-group',
                             div(
                                 '.split',
-                                div('.title-area', span(await window.bcnI18n.getPhrase('lm_plan_comps'))),
-                                div('.desc-area', await window.bcnI18n.getPhrase('lm_plan_comps_desc')),
+                                div('.title-area', span(await window.beaconingAPI.getPhrase('lm_plan_comps'))),
+                                div('.desc-area', await window.beaconingAPI.getPhrase('lm_plan_comps_desc')),
                                 div(
                                     '.input-area.flex-column',
                                     label(
@@ -568,7 +568,7 @@ class EditGLPForm extends Form {
                                             },
                                         ),
                                         div('.check-box'),
-                                        span(await window.bcnI18n.getPhrase('lm_cac')),
+                                        span(await window.beaconingAPI.getPhrase('lm_cac')),
                                     ),
                                     label(
                                         '.inline',
@@ -591,7 +591,7 @@ class EditGLPForm extends Form {
                                             },
                                         ),
                                         div('.check-box'),
-                                        span(await window.bcnI18n.getPhrase('lm_ps')),
+                                        span(await window.beaconingAPI.getPhrase('lm_ps')),
                                     ),
                                     label(
                                         '.inline',
@@ -614,7 +614,7 @@ class EditGLPForm extends Form {
                                             },
                                         ),
                                         div('.check-box'),
-                                        span(await window.bcnI18n.getPhrase('lm_if')),
+                                        span(await window.beaconingAPI.getPhrase('lm_if')),
                                     ),
                                 ),
                                 div('.status-area'),
@@ -624,8 +624,8 @@ class EditGLPForm extends Form {
                             '.label-group',
                             div(
                                 '.split',
-                                div('.title-area', span(await window.bcnI18n.getPhrase('lm_vis'))),
-                                div('.desc-area', await window.bcnI18n.getPhrase('lm_plan_vis_desc')),
+                                div('.title-area', span(await window.beaconingAPI.getPhrase('lm_vis'))),
+                                div('.desc-area', await window.beaconingAPI.getPhrase('lm_plan_vis_desc')),
                                 div(
                                     '.input-area.flex-column',
                                     label(
@@ -649,7 +649,7 @@ class EditGLPForm extends Form {
                                             },
                                         ),
                                         div('.radio-box'),
-                                        span(await window.bcnI18n.getPhrase('lm_public')),
+                                        span(await window.beaconingAPI.getPhrase('lm_public')),
                                     ),
                                     label(
                                         '.inline',
@@ -672,7 +672,7 @@ class EditGLPForm extends Form {
                                             },
                                         ),
                                         div('.radio-box'),
-                                        span(await window.bcnI18n.getPhrase('lm_private')),
+                                        span(await window.beaconingAPI.getPhrase('lm_private')),
                                     ),
                                 ),
                                 div('.status-area'),
@@ -693,7 +693,7 @@ class EditGLPForm extends Form {
                                         }
                                     },
                                 },
-                                await window.bcnI18n.getPhrase('lm_save_plan'),
+                                await window.beaconingAPI.getPhrase('lm_save_plan'),
                             ),
                         ),
                     ),

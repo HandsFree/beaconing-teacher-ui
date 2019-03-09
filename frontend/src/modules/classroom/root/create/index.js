@@ -23,7 +23,7 @@ class CreateStudent extends RootComponent {
             footer.attach(),
             mainNav.attach(),
             secondNav.attach({
-                title: await window.bcnI18n.getPhrase('cr'),
+                title: await window.beaconingAPI.getPhrase('cr'),
                 innerNav: innerNav.attach(),
             }),
             studentForm.attach(),

@@ -30,7 +30,7 @@ class MissionDetails extends Component {
                 missionsProm.push(missionEl);
             }
 
-            const missionsText = await window.bcnI18n.getPhrase('lm_missions');
+            const missionsText = await window.beaconingAPI.getPhrase('lm_missions');
     
             return Promise.all(missionsProm)
                 .then(missionsEl => div(
@@ -45,7 +45,7 @@ class MissionDetails extends Component {
 
         return div(
             '#missions-details',
-            div('.title', h4(`${await window.bcnI18n.getPhrase('lm_missions')}:`)),
+            div('.title', h4(`${await window.beaconingAPI.getPhrase('lm_missions')}:`)),
         );
     }
 }

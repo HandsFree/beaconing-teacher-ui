@@ -50,7 +50,7 @@ class AssignOptions extends Component {
             '#assign-options',
             div(
                 '.flex-column',
-                div('.title', h4(`${await window.bcnI18n.getPhrase('cr_students')}:`)),
+                div('.title', h4(`${await window.beaconingAPI.getPhrase('cr_students')}:`)),
                 div(
                     '.students-container',
                     studentsEl,
@@ -58,7 +58,7 @@ class AssignOptions extends Component {
             ),
             div(
                 '.flex-column',
-                div('.title', h4(`${await window.bcnI18n.getPhrase('cr_groups')}:`)),
+                div('.title', h4(`${await window.beaconingAPI.getPhrase('cr_groups')}:`)),
                 div(
                     '.groups-container',
                     groupsEl,

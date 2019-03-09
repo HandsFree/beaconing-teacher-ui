@@ -27,11 +27,11 @@ class CalendarController extends Component {
             'cal_sept', 'cal_oct', 'cal_nov', 'cal_dec',
         ];
         const monthIndex = date.month();
-        return window.bcnI18n.getPhrase(monthNames[monthIndex]);
+        return window.beaconingAPI.getPhrase(monthNames[monthIndex]);
     }
 
     async render() {
-        const calTranslation = await window.bcnI18n.getPhrase('cal');
+        const calTranslation = await window.beaconingAPI.getPhrase('cal');
 
         let controllerTitle = calTranslation;
         
@@ -67,9 +67,9 @@ class CalendarController extends Component {
 
         const year = currDate.format('YYYY');
 
-        const prevMonthTranslation = await window.bcnI18n.getPhrase('cal_prev');
-        const currMonthTranslation = await window.bcnI18n.getPhrase('cal_current');
-        const nextMonthTranslation = await window.bcnI18n.getPhrase('cal_next');
+        const prevMonthTranslation = await window.beaconingAPI.getPhrase('cal_prev');
+        const currMonthTranslation = await window.beaconingAPI.getPhrase('cal_current');
+        const nextMonthTranslation = await window.beaconingAPI.getPhrase('cal_next');
 
         return div(
             '.calendar-control',

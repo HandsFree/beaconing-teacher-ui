@@ -11,7 +11,7 @@ class GroupStudents extends Component {
         const loading = new Loading();
 
         const loadingEl = await loading.attach({
-            msg: await window.bcnI18n.getPhrase('ld_students'),
+            msg: await window.beaconingAPI.getPhrase('ld_students'),
         });
 
         return section(
@@ -60,7 +60,7 @@ class GroupStudents extends Component {
 
         const el = div(
             '#group-students-container.status',
-            p(await window.bcnI18n.getPhrase('err_no_students_assigned')),
+            p(await window.beaconingAPI.getPhrase('err_no_students_assigned')),
         );
 
         this.updateView(el);

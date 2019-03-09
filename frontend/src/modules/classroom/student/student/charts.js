@@ -30,11 +30,11 @@ class Charts extends Component {
         const completionGraph = new CompletionGraph();
         const rightWrongGraph = new RightWrongGraph();
 
-        const qoText = await window.bcnI18n.getPhrase('rw_question_overview');
-        const rwText = await window.bcnI18n.getPhrase('cr_analytics_rw');
-        const sopText = await window.bcnI18n.getPhrase('cr_analytics_sop');
-        const mamText = await window.bcnI18n.getPhrase('cr_analytics_mam');
-        const aspText = await window.bcnI18n.getPhrase('cr_analytics_asp');
+        const qoText = await window.beaconingAPI.getPhrase('rw_question_overview');
+        const rwText = await window.beaconingAPI.getPhrase('cr_analytics_rw');
+        const sopText = await window.beaconingAPI.getPhrase('cr_analytics_sop');
+        const mamText = await window.beaconingAPI.getPhrase('cr_analytics_mam');
+        const aspText = await window.beaconingAPI.getPhrase('cr_analytics_asp');
 
         const graphWrapper = (title, el) => div(
             '.tile.spacing.flex-column.flex-3',

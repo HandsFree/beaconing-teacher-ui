@@ -18,17 +18,17 @@ class MissionDetails extends Component {
     async render() {
         return div(
             '#mission-details',
-            div('.title', h4(await window.bcnI18n.getPhrase('lm_mission_details'))),
+            div('.title', h4(await window.beaconingAPI.getPhrase('lm_mission_details'))),
             div(
                 '.large-details',
                 div(
                     '.detail',
-                    strong(`${await window.bcnI18n.getPhrase('description')}:`),
+                    strong(`${await window.beaconingAPI.getPhrase('description')}:`),
                     p(this.state.mission.description),
                 ),
                 div(
                     '.detail',
-                    strong(`${await window.bcnI18n.getPhrase('lm_skills')}:`),
+                    strong(`${await window.beaconingAPI.getPhrase('lm_skills')}:`),
                     p(this.state.mission.skills),
                 ),
             ),

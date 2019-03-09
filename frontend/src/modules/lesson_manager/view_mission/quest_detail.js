@@ -19,7 +19,7 @@ class QuestDetail extends Component {
             div(
                 '.title',
                 strong(this.props.quest.name),
-                a(await window.bcnI18n.getPhrase('view')),
+                a(await window.beaconingAPI.getPhrase('view')),
             ),
         );
     }

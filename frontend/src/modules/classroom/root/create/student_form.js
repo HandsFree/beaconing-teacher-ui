@@ -80,7 +80,7 @@ class StudentForm extends Form {
 
     async resetSubmit() {
         const studentButton = document.getElementById('create-student-button');
-        studentButton.textContent = await window.bcnI18n.getPhrase('cr_create_student');
+        studentButton.textContent = await window.beaconingAPI.getPhrase('cr_create_student');
     }
 
     async checkUsername() {
@@ -91,7 +91,7 @@ class StudentForm extends Form {
         }
 
         if (this.students.indexOf(this.state.studentUsername.toLowerCase()) !== -1) {
-            const errMsg = await window.bcnI18n.getPhrase('err_username_exists');
+            const errMsg = await window.beaconingAPI.getPhrase('err_username_exists');
             this.addError('student-username-status', errMsg);
 
             return false;
@@ -103,7 +103,7 @@ class StudentForm extends Form {
 
     async checkFields() {
         let success = true;
-        const emptyMsg = await window.bcnI18n.getPhrase('err_required_empty');
+        const emptyMsg = await window.beaconingAPI.getPhrase('err_required_empty');
 
         this.removeErrors();
 
@@ -137,7 +137,7 @@ class StudentForm extends Form {
                 elementID: false,
                 heading: 'Error',
                 type: 'error',
-                message: await window.bcnI18n.getPhrase('err_form'),
+                message: await window.beaconingAPI.getPhrase('err_form'),
             });
 
             this.appendView(statusMessageEl);
@@ -185,7 +185,7 @@ class StudentForm extends Form {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: await window.bcnI18n.getPhrase('err_student_nc'),
+            message: await window.beaconingAPI.getPhrase('err_student_nc'),
         });
 
         this.appendView(statusMessageEl);
@@ -195,7 +195,7 @@ class StudentForm extends Form {
 
     async afterCreation(student: Object) {
         const pcEL = new PostCreation().attach({
-            title: await window.bcnI18n.getPhrase('sc_student_cre'),
+            title: await window.beaconingAPI.getPhrase('sc_student_cre'),
             id: student.id,
         });
 
@@ -203,7 +203,7 @@ class StudentForm extends Form {
     }
 
     async render() {
-        const creatingText = await window.bcnI18n.getPhrase('creating');
+        const creatingText = await window.beaconingAPI.getPhrase('creating');
 
         return div(
             '.flex-column',
@@ -217,9 +217,9 @@ class StudentForm extends Form {
                             href: `//${window.location.host}/classroom`,
                         },
                         i('.icon-angle-left'),
-                        await window.bcnI18n.getPhrase('go_back'),
+                        await window.beaconingAPI.getPhrase('go_back'),
                     ),
-                    h1(await window.bcnI18n.getPhrase('cr_create_student')),
+                    h1(await window.beaconingAPI.getPhrase('cr_create_student')),
                     div('.empty-spacer', ' '),
                 ),
             ),
@@ -233,8 +233,8 @@ class StudentForm extends Form {
                             '.label-group',
                             div(
                                 '.split',
-                                div('.title-area', span(await window.bcnI18n.getPhrase('cr_student_username'))),
-                                div('.desc-area', await window.bcnI18n.getPhrase('cr_student_username_desc')),
+                                div('.title-area', span(await window.beaconingAPI.getPhrase('cr_student_username'))),
+                                div('.desc-area', await window.beaconingAPI.getPhrase('cr_student_username_desc')),
                                 div(
                                     '.input-area',
                                     label(
@@ -243,7 +243,7 @@ class StudentForm extends Form {
                                             '#student-username.text-field',
                                             {
                                                 type: 'text',
-                                                placeholder: await window.bcnI18n.getPhrase('cr_enter_username'),
+                                                placeholder: await window.beaconingAPI.getPhrase('cr_enter_username'),
                                                 oninput: (event) => {
                                                     const { target } = event;
 
@@ -263,8 +263,8 @@ class StudentForm extends Form {
                             '.label-group',
                             div(
                                 '.split',
-                                div('.title-area', span(await window.bcnI18n.getPhrase('cr_student_fn'))),
-                                div('.desc-area', await window.bcnI18n.getPhrase('cr_student_fn_desc')),
+                                div('.title-area', span(await window.beaconingAPI.getPhrase('cr_student_fn'))),
+                                div('.desc-area', await window.beaconingAPI.getPhrase('cr_student_fn_desc')),
                                 div(
                                     '.input-area',
                                     label(
@@ -273,7 +273,7 @@ class StudentForm extends Form {
                                             '#student-first-name.text-field',
                                             {
                                                 type: 'text',
-                                                placeholder: await window.bcnI18n.getPhrase('cr_enter_fn'),
+                                                placeholder: await window.beaconingAPI.getPhrase('cr_enter_fn'),
                                                 oninput: (event) => {
                                                     const { target } = event;
 
@@ -291,8 +291,8 @@ class StudentForm extends Form {
                             '.label-group',
                             div(
                                 '.split',
-                                div('.title-area', span(await window.bcnI18n.getPhrase('cr_student_ln'))),
-                                div('.desc-area', await window.bcnI18n.getPhrase('cr_student_ln_desc')),
+                                div('.title-area', span(await window.beaconingAPI.getPhrase('cr_student_ln'))),
+                                div('.desc-area', await window.beaconingAPI.getPhrase('cr_student_ln_desc')),
                                 div(
                                     '.input-area',
                                     label(
@@ -301,7 +301,7 @@ class StudentForm extends Form {
                                             '#student-last-name.text-field',
                                             {
                                                 type: 'text',
-                                                placeholder: await window.bcnI18n.getPhrase('cr_enter_ln'),
+                                                placeholder: await window.beaconingAPI.getPhrase('cr_enter_ln'),
                                                 oninput: (event) => {
                                                     const { target } = event;
 
@@ -319,8 +319,8 @@ class StudentForm extends Form {
                             '.label-group',
                             div(
                                 '.split',
-                                div('.title-area', span(await window.bcnI18n.getPhrase('cr_student_yg'))),
-                                div('.desc-area', await window.bcnI18n.getPhrase('cr_student_yg_desc')),
+                                div('.title-area', span(await window.beaconingAPI.getPhrase('cr_student_yg'))),
+                                div('.desc-area', await window.beaconingAPI.getPhrase('cr_student_yg_desc')),
                                 div(
                                     '.input-area',
                                     label(
@@ -329,7 +329,7 @@ class StudentForm extends Form {
                                             '#student-year-group.text-field',
                                             {
                                                 type: 'text',
-                                                placeholder: await window.bcnI18n.getPhrase('cr_enter_yg'),
+                                                placeholder: await window.beaconingAPI.getPhrase('cr_enter_yg'),
                                                 oninput: (event) => {
                                                     const { target } = event;
 
@@ -347,8 +347,8 @@ class StudentForm extends Form {
                             '.label-group',
                             div(
                                 '.split',
-                                div('.title-area', span(await window.bcnI18n.getPhrase('cr_student_lang'))),
-                                div('.desc-area', await window.bcnI18n.getPhrase('cr_student_lang_desc')),
+                                div('.title-area', span(await window.beaconingAPI.getPhrase('cr_student_lang'))),
+                                div('.desc-area', await window.beaconingAPI.getPhrase('cr_student_lang_desc')),
                                 div(
                                     '.input-area',
                                     label(
@@ -432,7 +432,7 @@ class StudentForm extends Form {
                                         window.location.href = `//${window.location.host}/classroom`;
                                     },
                                 },
-                                await window.bcnI18n.getPhrase('cancel'),
+                                await window.beaconingAPI.getPhrase('cancel'),
                             ),
                             div(
                                 '#create-student-button.button-submit',
@@ -444,7 +444,7 @@ class StudentForm extends Form {
                                         target.textContent = `${creatingText}...`;
                                     },
                                 },
-                                await window.bcnI18n.getPhrase('cr_create_student'),
+                                await window.beaconingAPI.getPhrase('cr_create_student'),
                             ),
                         ),
                     ),

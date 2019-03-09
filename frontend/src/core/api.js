@@ -162,7 +162,9 @@ class APICore {
 
     async getCurrentUser() {
         const profile = await this.get(`//${window.location.host}/api/v1/profile`);
-
+        if (!window.sessionStorage.hasOwnProperty('langCode')) {
+            window.sessionStorage.setItem('langCode', profile.language);
+        }
         return profile;
     }
 
@@ -172,6 +174,9 @@ class APICore {
         const editJSON = JSON.stringify(data);
 
         const status = await this.put(`//${window.location.host}/api/v1/profile`, editJSON);
+
+        // cache the language we set.
+        window.sessionStorage.setItem('langCode', data.language);
 
         // console.log(student);
 
@@ -238,6 +243,29 @@ class APICore {
         const req = `assignedglps${hard ? '_hard' : ''}`;
         const glps = await this.get(`//${window.location.host}/api/v1/student/${id}/${req}?ig=true`);
         return glps;
+    }
+
+    async getPhrase(key: string) {
+        const langCode = window.sessionStorage.getItem('langCode') ?? 'en-GB';
+
+        // this is some hacky caching until i properly
+        // finish localisation on the backend.
+        const hashedKey = `${langCode}__${key}`;
+        console.log('checking cache for ', hashedKey);
+
+        if (window.sessionStorage.hasOwnProperty(hashedKey)) {
+            console.log('cache hit!');
+            return window.sessionStorage.getItem(hashedKey);
+        }
+
+        const response = await this.get(`//${window.location.host}/api/v1/lang/${langCode}/phrase/${key}`);
+        if (response.translation) {
+            const trans = response.translation;
+            // cache it
+            window.sessionStorage.setItem(hashedKey, trans);
+            return trans;
+        }
+        return 'No translation found';
     }
 
     async getGroupAssigned(id: number, hard: bool = false) {

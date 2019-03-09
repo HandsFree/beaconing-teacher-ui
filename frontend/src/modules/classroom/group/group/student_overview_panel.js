@@ -43,7 +43,7 @@ class Panel extends Component {
                 if (score <= 0) {
                     div(
                         '.progress-bar',
-                        await window.bcnI18n.getPhrase('err_no_data'),
+                        await window.beaconingAPI.getPhrase('err_no_data'),
                     );
                 } else {
                     div(

@@ -107,12 +107,12 @@ class NewPlanForm extends Form {
                 '.flex-column',
                 div(
                     '.flex-column',
-                    strong(await window.bcnI18n.getPhrase('description')),
+                    strong(await window.beaconingAPI.getPhrase('description')),
                     p(description),
                 ),
                 div(
                     '.flex-column',
-                    strong(await window.bcnI18n.getPhrase('lm_author')),
+                    strong(await window.beaconingAPI.getPhrase('lm_author')),
                     p(author),
                 ),
             );
@@ -151,11 +151,11 @@ class NewPlanForm extends Form {
 
     async resetSubmit() {
         const planButton = document.getElementById('create-plan-button');
-        planButton.textContent = await window.bcnI18n.getPhrase('lm_create_plan');
+        planButton.textContent = await window.beaconingAPI.getPhrase('lm_create_plan');
     }
 
     async checkGLPName() {
-        const errMsg = await window.bcnI18n.getPhrase('err_glp_name_exists');
+        const errMsg = await window.beaconingAPI.getPhrase('err_glp_name_exists');
 
         if (this.state.planName === '') {
             this.removeAll('plan-name-status');
@@ -178,7 +178,7 @@ class NewPlanForm extends Form {
 
     async checkFields() {
         let success = true;
-        const emptyMsg = await window.bcnI18n.getPhrase('err_required_empty');
+        const emptyMsg = await window.beaconingAPI.getPhrase('err_required_empty');
 
         if (this.state.planName === '') {
             this.addError('plan-name-status', emptyMsg);
@@ -215,7 +215,7 @@ class NewPlanForm extends Form {
         }
 
         if (this.state.planYear !== '' && !(/^[0-9]{4}$/).test(this.state.planYear)) {
-            const errMsg = await window.bcnI18n.getPhrase('err_plan_year_not_valid');
+            const errMsg = await window.beaconingAPI.getPhrase('err_plan_year_not_valid');
             this.addError('plan-year-status', errMsg);
             success = false;
         }
@@ -226,7 +226,7 @@ class NewPlanForm extends Form {
                 elementID: false,
                 heading: 'Error',
                 type: 'error',
-                message: await window.bcnI18n.getPhrase('err_form'),
+                message: await window.beaconingAPI.getPhrase('err_form'),
             });
 
             this.appendView(statusMessageEl);
@@ -286,7 +286,7 @@ class NewPlanForm extends Form {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: await window.bcnI18n.getPhrase('err_plan_nc'),
+            message: await window.beaconingAPI.getPhrase('err_plan_nc'),
         });
 
         this.appendView(statusMessageEl);
@@ -296,7 +296,7 @@ class NewPlanForm extends Form {
 
     async afterCreation(glp: Object) {
         const pcEL = new PostCreation().attach({
-            title: await window.bcnI18n.getPhrase('sc_glp_cre'),
+            title: await window.beaconingAPI.getPhrase('sc_glp_cre'),
             id: glp.id,
         });
 
@@ -304,10 +304,10 @@ class NewPlanForm extends Form {
     }
 
     async render() {
-        const creatingText = await window.bcnI18n.getPhrase('creating');
+        const creatingText = await window.beaconingAPI.getPhrase('creating');
 
         const gameplotOptions = [];
-        const noneOption = option(await window.bcnI18n.getPhrase('none'), { value: 0 });
+        const noneOption = option(await window.beaconingAPI.getPhrase('none'), { value: 0 });
 
         gameplotOptions.push(noneOption);
 
@@ -328,9 +328,9 @@ class NewPlanForm extends Form {
                             href: `//${window.location.host}/lesson_manager`,
                         },
                         i('.icon-angle-left'),
-                        await window.bcnI18n.getPhrase('go_back'),
+                        await window.beaconingAPI.getPhrase('go_back'),
                     ),
-                    h1(await window.bcnI18n.getPhrase('lm_create_new_plan')),
+                    h1(await window.beaconingAPI.getPhrase('lm_create_new_plan')),
                     div('.empty-spacer', ' '),
                 ),
             ),
@@ -344,8 +344,8 @@ class NewPlanForm extends Form {
                             '.label-group',
                             div(
                                 '.split',
-                                div('.title-area', span(await window.bcnI18n.getPhrase('lm_plan_name'))),
-                                div('.desc-area', await window.bcnI18n.getPhrase('lm_plan_name_desc')),
+                                div('.title-area', span(await window.beaconingAPI.getPhrase('lm_plan_name'))),
+                                div('.desc-area', await window.beaconingAPI.getPhrase('lm_plan_name_desc')),
                                 div(
                                     '.input-area',
                                     label(
@@ -354,7 +354,7 @@ class NewPlanForm extends Form {
                                             '#plan-name.text-field',
                                             {
                                                 type: 'text',
-                                                placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_name'),
+                                                placeholder: await window.beaconingAPI.getPhrase('lm_enter_plan_name'),
                                                 oninput: (event) => {
                                                     const { target } = event;
 
@@ -374,8 +374,8 @@ class NewPlanForm extends Form {
                             '.label-group',
                             div(
                                 '.split',
-                                div('.title-area', span(await window.bcnI18n.getPhrase('lm_plan_desc'))),
-                                div('.desc-area', await window.bcnI18n.getPhrase('lm_plan_desc_desc')),
+                                div('.title-area', span(await window.beaconingAPI.getPhrase('lm_plan_desc'))),
+                                div('.desc-area', await window.beaconingAPI.getPhrase('lm_plan_desc_desc')),
                                 div(
                                     '.input-area',
                                     label(
@@ -383,7 +383,7 @@ class NewPlanForm extends Form {
                                         textarea(
                                             '#plan-description',
                                             {
-                                                placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_desc'),
+                                                placeholder: await window.beaconingAPI.getPhrase('lm_enter_plan_desc'),
                                                 oninput: (event) => {
                                                     const { target } = event;
                                                     const { value } = target;
@@ -406,8 +406,8 @@ class NewPlanForm extends Form {
                             '.label-group',
                             div(
                                 '.split',
-                                div('.title-area', span(await window.bcnI18n.getPhrase('lm_plan_cat'))),
-                                div('.desc-area', await window.bcnI18n.getPhrase('lm_plan_cat_desc')),
+                                div('.title-area', span(await window.beaconingAPI.getPhrase('lm_plan_cat'))),
+                                div('.desc-area', await window.beaconingAPI.getPhrase('lm_plan_cat_desc')),
                                 div(
                                     '.input-area',
                                     label(
@@ -422,10 +422,10 @@ class NewPlanForm extends Form {
                                                 },
                                                 required: true,
                                             },
-                                            option(await window.bcnI18n.getPhrase('lm_science'), { value: 'science' }),
-                                            option(await window.bcnI18n.getPhrase('lm_tech'), { value: 'technology' }),
-                                            option(await window.bcnI18n.getPhrase('lm_eng'), { value: 'engineering' }),
-                                            option(await window.bcnI18n.getPhrase('lm_maths'), { value: 'maths' }),
+                                            option(await window.beaconingAPI.getPhrase('lm_science'), { value: 'science' }),
+                                            option(await window.beaconingAPI.getPhrase('lm_tech'), { value: 'technology' }),
+                                            option(await window.beaconingAPI.getPhrase('lm_eng'), { value: 'engineering' }),
+                                            option(await window.beaconingAPI.getPhrase('lm_maths'), { value: 'maths' }),
                                         ),
                                     ),
                                 ),
@@ -436,8 +436,8 @@ class NewPlanForm extends Form {
                             '.label-group',
                             div(
                                 '.split',
-                                div('.title-area', span(await window.bcnI18n.getPhrase('lm_plan_domain'))),
-                                div('.desc-area', await window.bcnI18n.getPhrase('lm_plan_domain_desc')),
+                                div('.title-area', span(await window.beaconingAPI.getPhrase('lm_plan_domain'))),
+                                div('.desc-area', await window.beaconingAPI.getPhrase('lm_plan_domain_desc')),
                                 div(
                                     '.input-area',
                                     label(
@@ -446,7 +446,7 @@ class NewPlanForm extends Form {
                                             '#plan-domain.text-field',
                                             {
                                                 type: 'text',
-                                                placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_domain'),
+                                                placeholder: await window.beaconingAPI.getPhrase('lm_enter_plan_domain'),
                                                 oninput: (event) => {
                                                     const { target } = event;
 
@@ -464,8 +464,8 @@ class NewPlanForm extends Form {
                             '.label-group',
                             div(
                                 '.split',
-                                div('.title-area', span(await window.bcnI18n.getPhrase('lm_plan_topic'))),
-                                div('.desc-area', await window.bcnI18n.getPhrase('lm_plan_topic_desc')),
+                                div('.title-area', span(await window.beaconingAPI.getPhrase('lm_plan_topic'))),
+                                div('.desc-area', await window.beaconingAPI.getPhrase('lm_plan_topic_desc')),
                                 div(
                                     '.input-area',
                                     label(
@@ -474,7 +474,7 @@ class NewPlanForm extends Form {
                                             '#plan-topic.text-field',
                                             {
                                                 type: 'text',
-                                                placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_topic'),
+                                                placeholder: await window.beaconingAPI.getPhrase('lm_enter_plan_topic'),
                                                 oninput: (event) => {
                                                     const { target } = event;
 
@@ -492,8 +492,8 @@ class NewPlanForm extends Form {
                             '.label-group',
                             div(
                                 '.split',
-                                div('.title-area', span(await window.bcnI18n.getPhrase('lm_plan_ag'))),
-                                div('.desc-area', await window.bcnI18n.getPhrase('lm_plan_ag_desc')),
+                                div('.title-area', span(await window.beaconingAPI.getPhrase('lm_plan_ag'))),
+                                div('.desc-area', await window.beaconingAPI.getPhrase('lm_plan_ag_desc')),
                                 div(
                                     '.input-area',
                                     label(
@@ -502,7 +502,7 @@ class NewPlanForm extends Form {
                                             '#plan-age-group.text-field',
                                             {
                                                 type: 'text',
-                                                placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_ag'),
+                                                placeholder: await window.beaconingAPI.getPhrase('lm_enter_plan_ag'),
                                                 oninput: (event) => {
                                                     const { target } = event;
 
@@ -520,8 +520,8 @@ class NewPlanForm extends Form {
                             '.label-group',
                             div(
                                 '.split',
-                                div('.title-area', span(await window.bcnI18n.getPhrase('lm_plan_year'))),
-                                div('.desc-area', await window.bcnI18n.getPhrase('lm_plan_year_desc')),
+                                div('.title-area', span(await window.beaconingAPI.getPhrase('lm_plan_year'))),
+                                div('.desc-area', await window.beaconingAPI.getPhrase('lm_plan_year_desc')),
                                 div(
                                     '.input-area',
                                     label(
@@ -530,7 +530,7 @@ class NewPlanForm extends Form {
                                             '#plan-year.text-field',
                                             {
                                                 type: 'text',
-                                                placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_year'),
+                                                placeholder: await window.beaconingAPI.getPhrase('lm_enter_plan_year'),
                                                 pattern: '[0-9]{4}',
                                                 oninput: (event) => {
                                                     const { target } = event;
@@ -549,8 +549,8 @@ class NewPlanForm extends Form {
                             '.label-group',
                             div(
                                 '.split.extra',
-                                div('.title-area', span(await window.bcnI18n.getPhrase('lm_plan_gp'))),
-                                div('.desc-area', await window.bcnI18n.getPhrase('lm_plan_gp_desc')),
+                                div('.title-area', span(await window.beaconingAPI.getPhrase('lm_plan_gp'))),
+                                div('.desc-area', await window.beaconingAPI.getPhrase('lm_plan_gp_desc')),
                                 div(
                                     '.input-area',
                                     label(
@@ -579,8 +579,8 @@ class NewPlanForm extends Form {
                             '.label-group',
                             div(
                                 '.split',
-                                div('.title-area', span(await window.bcnI18n.getPhrase('lm_plan_los'))),
-                                div('.desc-area', await window.bcnI18n.getPhrase('lm_plan_los_desc')),
+                                div('.title-area', span(await window.beaconingAPI.getPhrase('lm_plan_los'))),
+                                div('.desc-area', await window.beaconingAPI.getPhrase('lm_plan_los_desc')),
                                 div(
                                     '.input-area',
                                     label(
@@ -588,7 +588,7 @@ class NewPlanForm extends Form {
                                         textarea(
                                             '#plan-learning-objectives',
                                             {
-                                                placeholder: await window.bcnI18n.getPhrase('lm_enter_plan_los'),
+                                                placeholder: await window.beaconingAPI.getPhrase('lm_enter_plan_los'),
                                                 oninput: (event) => {
                                                     const { target } = event;
                                                     const { value } = target;
@@ -611,8 +611,8 @@ class NewPlanForm extends Form {
                             '.label-group',
                             div(
                                 '.split',
-                                div('.title-area', span(await window.bcnI18n.getPhrase('lm_plan_comps'))),
-                                div('.desc-area', await window.bcnI18n.getPhrase('lm_plan_comps_desc')),
+                                div('.title-area', span(await window.beaconingAPI.getPhrase('lm_plan_comps'))),
+                                div('.desc-area', await window.beaconingAPI.getPhrase('lm_plan_comps_desc')),
                                 div(
                                     '.input-area.flex-column',
                                     label(
@@ -635,7 +635,7 @@ class NewPlanForm extends Form {
                                             },
                                         ),
                                         div('.check-box'),
-                                        span(await window.bcnI18n.getPhrase('lm_cac')),
+                                        span(await window.beaconingAPI.getPhrase('lm_cac')),
                                     ),
                                     label(
                                         '.inline',
@@ -657,7 +657,7 @@ class NewPlanForm extends Form {
                                             },
                                         ),
                                         div('.check-box'),
-                                        span(await window.bcnI18n.getPhrase('lm_ps')),
+                                        span(await window.beaconingAPI.getPhrase('lm_ps')),
                                     ),
                                     label(
                                         '.inline',
@@ -679,7 +679,7 @@ class NewPlanForm extends Form {
                                             },
                                         ),
                                         div('.check-box'),
-                                        span(await window.bcnI18n.getPhrase('lm_if')),
+                                        span(await window.beaconingAPI.getPhrase('lm_if')),
                                     ),
                                 ),
                                 div('.status-area'),
@@ -689,8 +689,8 @@ class NewPlanForm extends Form {
                             '.label-group',
                             div(
                                 '.split',
-                                div('.title-area', span(await window.bcnI18n.getPhrase('lm_vis'))),
-                                div('.desc-area', await window.bcnI18n.getPhrase('lm_plan_vis_desc')),
+                                div('.title-area', span(await window.beaconingAPI.getPhrase('lm_vis'))),
+                                div('.desc-area', await window.beaconingAPI.getPhrase('lm_plan_vis_desc')),
                                 div(
                                     '.input-area.flex-column',
                                     label(
@@ -713,7 +713,7 @@ class NewPlanForm extends Form {
                                             },
                                         ),
                                         div('.radio-box'),
-                                        span(await window.bcnI18n.getPhrase('lm_public')),
+                                        span(await window.beaconingAPI.getPhrase('lm_public')),
                                     ),
                                     label(
                                         '.inline',
@@ -736,7 +736,7 @@ class NewPlanForm extends Form {
                                             },
                                         ),
                                         div('.radio-box'),
-                                        span(await window.bcnI18n.getPhrase('lm_private')),
+                                        span(await window.beaconingAPI.getPhrase('lm_private')),
                                     ),
                                 ),
                                 div('.status-area'),
@@ -752,7 +752,7 @@ class NewPlanForm extends Form {
                                         window.location.href = `//${window.location.host}/lesson_manager`;
                                     },
                                 },
-                                await window.bcnI18n.getPhrase('cancel'),
+                                await window.beaconingAPI.getPhrase('cancel'),
                             ),
                             div(
                                 '#create-plan-button.button-submit',
@@ -764,7 +764,7 @@ class NewPlanForm extends Form {
                                         target.textContent = `${creatingText}...`;
                                     },
                                 },
-                                await window.bcnI18n.getPhrase('lm_create_plan'),
+                                await window.beaconingAPI.getPhrase('lm_create_plan'),
                             ),
                         ),
                     ),

@@ -17,12 +17,12 @@ const config = async (yours, others) => {
         type: 'polarArea',
         data: {
             labels: [
-                await window.bcnI18n.getPhrase('cr_analytics_sp'),
-                await window.bcnI18n.getPhrase('cr_analytics_asp'),
+                await window.beaconingAPI.getPhrase('cr_analytics_sp'),
+                await window.beaconingAPI.getPhrase('cr_analytics_asp'),
             ],
             datasets: [
                 {
-                    label: await window.bcnI18n.getPhrase('cr_analytics_p'),
+                    label: await window.beaconingAPI.getPhrase('cr_analytics_p'),
                     data: [
                         studentScore,
                         averageScore,

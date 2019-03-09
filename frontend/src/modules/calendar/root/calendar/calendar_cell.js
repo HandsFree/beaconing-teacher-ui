@@ -38,7 +38,7 @@ class CalendarCell extends Component {
                         window.sessionStorage.setItem('calendarDayData', JSON.stringify(data));
                         this.emit('UpdateCalendarContainer');
                     },
-                    title: await window.bcnI18n.getPhrase('view'),
+                    title: await window.beaconingAPI.getPhrase('view'),
                 },
                 i('.icon-link-ext-alt'),
             ),
