@@ -167,7 +167,7 @@ class AssignedGLPs extends Component {
             // FIXME
             glps.push({
                 glp,
-                assignedGLPID: glp.id,
+                linkId: glp.linkId,
                 dashboardLink,
             });
 
@@ -292,13 +292,15 @@ class AssignedGLPs extends Component {
             const promArr = [];
 
             for (const glp of assignedGLPs) {
+                console.log('hi there the glp is', glp);
+
                 const glpBox = new GLPBox();
 
                 const glpBoxProm = glpBox.attach({
+                    groupID: id,
                     glpID: glp.id,
                     name: glp.name,
-                    groupID: id,
-                    assignedGLPID: glp.assignedGLPID,
+                    linkId: glp.linkId,
                     dashboardLink: glp.dashboardLink,
                 });
 

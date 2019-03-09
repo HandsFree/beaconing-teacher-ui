@@ -116,7 +116,7 @@ class CalendarView extends Component {
         for (const glpObj of assigned) {
             const obj = {
                 glp: glpObj,
-                assignedGLPID: glpObj.id,
+                linkId: glpObj.linkId,
                 availableFrom: glpObj.availableFrom,
             };
             glps.push(obj);

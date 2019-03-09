@@ -59,11 +59,11 @@ class GLPBox extends Component {
         }
 
         const {
-            assignedGLPID,
+            linkId,
             groupID,
         } = this.props;
 
-        const status = await window.beaconingAPI.unassignGroup(groupID, assignedGLPID);
+        const status = await window.beaconingAPI.unassignGroup(groupID, linkId);
         const statusMessage = new Status();
 
         console.log('[Unassign Group] status:', status ? 'success' : 'failed');

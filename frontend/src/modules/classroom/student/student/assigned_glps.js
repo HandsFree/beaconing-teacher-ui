@@ -35,7 +35,7 @@ class AssignedGLPs extends Component {
                     glpID: glp.id,
                     name: glp.name,
                     studentID: id,
-                    assignedGLPID: glp.assignedId,
+                    linkId: glp.linkId,
                     fromGroupID: glp.fromStudentGroupId,
                     fromGroupName: glp.fromStudentGroupName,
                 });

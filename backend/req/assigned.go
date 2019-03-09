@@ -58,16 +58,16 @@ func GetAssignedGLPsHardRequest() gin.HandlerFunc {
 
 		assignedGlpsBody := api.GetAssignedGLPS(s, studentID, includeGroups)
 
-		type glp struct {
+		type GLPLink struct {
 			Name                 string `json:"name"`
-			AssignedID           uint64 `json:"id"`
+			LinkID               uint64 `json:"id"`
 			ID                   uint64 `json:"gamifiedLessonPathId"`
 			AvailableFrom        string `json:"availableFrom"`
 			FromStudentGroupID   uint64 `json:"studentGroupId"`
 			FromStudentGroupName string `json:"studentGroupName"`
 		}
 
-		var req []glp
+		var req []GLPLink
 		if err := jsoniter.Unmarshal([]byte(assignedGlpsBody), &req); err != nil {
 			util.Error("GetAssignedGLPsHardRequest: failed to decode assigned GLPS", err)
 		}
@@ -78,19 +78,19 @@ func GetAssignedGLPsHardRequest() gin.HandlerFunc {
 		// this is basically a merged object of the entity.GLP
 		// with the glp above from the assignedglps request.
 		// a bit confusing, i know!
-		type modifiedGLP struct {
+		type ModifiedGLP struct {
 			*entity.GLP
-			AssignedID           uint64 `json:"assignedId"`
+			LinkID               uint64 `json:"linkId"`
 			AvailableFrom        string `json:"availableFrom"`
 			FromStudentGroupID   uint64 `json:"fromStudentGroupId"`
 			FromStudentGroupName string `json:"fromStudentGroupName"`
 		}
 
-		glps := make([]*modifiedGLP, len(req))
-		queue := make(chan *modifiedGLP, 1)
+		glps := make([]*ModifiedGLP, len(req))
+		queue := make(chan *ModifiedGLP, 1)
 
 		for _, g := range req {
-			go func(g glp) {
+			go func(g GLPLink) {
 				// TODO pass in whether or not we want
 				// to minify the glp.
 				res, err := api.GetGLP(s, g.ID, true)
@@ -99,9 +99,9 @@ func GetAssignedGLPsHardRequest() gin.HandlerFunc {
 					return
 				}
 
-				queue <- &modifiedGLP{
+				queue <- &ModifiedGLP{
 					res,
-					g.AssignedID,
+					g.LinkID,
 					g.AvailableFrom,
 					g.FromStudentGroupID,
 					g.FromStudentGroupName,
@@ -182,13 +182,17 @@ func GetStudentGroupAssignedHardRequest() gin.HandlerFunc {
 
 		assignedGlpsBody := api.GetGroupAssignedGLPS(s, groupID)
 
-		type glp struct {
-			Name          string `json:"name"`
-			ID            uint64 `json:"gamifiedLessonPathId"`
-			AvailableFrom string `json:"availableFrom"`
+		type GLPLink struct {
+			LinkID         uint64 `json:"id"`
+			Name           string `json:"name"`
+			StudentGroupID uint64 `json:"studentGroupId"`
+			ID             uint64 `json:"gamifiedLessonPathId"`
+			AvailableFrom  string `json:"availableFrom"`
+			AvailableUntil string `json:"availableUntil"`
+			Priority       string `json:"priority"`
 		}
 
-		var req []glp
+		var req []GLPLink
 		if err := jsoniter.Unmarshal([]byte(assignedGlpsBody), &req); err != nil {
 			util.Error("GetAssignedGLPsHardRequest: failed to decode assigned GLPS", err)
 		}
@@ -196,16 +200,18 @@ func GetStudentGroupAssignedHardRequest() gin.HandlerFunc {
 		var wg sync.WaitGroup
 		wg.Add(len(req))
 
-		type modifiedGLP struct {
+		type ModifiedGLP struct {
 			*entity.GLP
-			AvailableFrom string `json:"availableFrom"`
+			LinkID         uint64 `json:"linkId"`
+			AvailableFrom  string `json:"availableFrom"`
+			AvailableUntil string `json:"availableUntil"`
 		}
 
-		glps := []*modifiedGLP{}
-		queue := make(chan *modifiedGLP, 1)
+		glps := []*ModifiedGLP{}
+		queue := make(chan *ModifiedGLP, 1)
 
 		for _, g := range req {
-			go func(g glp) {
+			go func(g GLPLink) {
 				// TODO pass in whether or not we want
 				// to minify the glp.
 				res, err := api.GetGLP(s, g.ID, true)
@@ -214,7 +220,12 @@ func GetStudentGroupAssignedHardRequest() gin.HandlerFunc {
 					return
 				}
 
-				queue <- &modifiedGLP{res, g.AvailableFrom}
+				queue <- &ModifiedGLP{
+					res,
+					g.LinkID,
+					g.AvailableFrom,
+					g.AvailableUntil,
+				}
 			}(g)
 		}
 

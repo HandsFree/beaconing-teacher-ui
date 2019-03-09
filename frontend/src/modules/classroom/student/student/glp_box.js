@@ -69,7 +69,7 @@ class GLPBox extends Component {
 
     async unassignPlan() {
         const {
-            assignedGLPID,
+            linkId,
             studentID,
             fromGroupID,
         } = this.props;
@@ -83,7 +83,7 @@ class GLPBox extends Component {
             return;
         }
 
-        const status = await window.beaconingAPI.unassignStudent(studentID, assignedGLPID);
+        const status = await window.beaconingAPI.unassignStudent(studentID, linkId);
         const statusMessage = new Status();
 
         console.log('[Unassign Student] status:', status ? 'success' : 'failed');
