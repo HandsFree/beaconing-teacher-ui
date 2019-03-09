@@ -10,7 +10,6 @@ import InnerNav from '../../inner_nav';
 import APISearch from '../../../search/api';
 import Sort from './sort';
 import GLPHandle from './glp_handle';
-import CreatePlanButton from './create_plan_button';
 
 class Library extends RootComponent {
     async render() {
@@ -22,7 +21,6 @@ class Library extends RootComponent {
         const search = new APISearch();
         const sort = new Sort();
         const glpHandle = new GLPHandle();
-        const createPlanButton = new CreatePlanButton();
 
         return Promise.all([
             header.attach(),
@@ -37,7 +35,6 @@ class Library extends RootComponent {
             }),
             sort.attach(),
             glpHandle.attach(),
-            createPlanButton.attach(),
         ]).then((values) => {
             const [
                 headerEl,
@@ -47,7 +44,6 @@ class Library extends RootComponent {
                 searchEl,
                 sortEl,
                 glpHandleEl,
-                createPlanButtonEl,
             ] = values;
 
             return div(
@@ -60,7 +56,6 @@ class Library extends RootComponent {
                     main(
                         '#new-plans',
                         section(
-                            createPlanButtonEl,
                             searchEl,
                         ),
                         section(

@@ -100,17 +100,6 @@ class APISearchStatic extends Component {
 
         const noResultsStr = await window.bcnI18n.getPhrase('lm_no_results');
 
-        let lastQuery = '';
-        const searchHandler = () => {
-            console.log('checking for search');
-
-            const { query } = this.queryObj;
-            if (query !== '' && lastQuery !== query) {
-                this.doSearch();
-                lastQuery = query;
-            }
-        };
-
         let typingTimer;
 
         // how many ms to wait till we do the

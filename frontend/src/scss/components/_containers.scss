@@ -133,6 +133,9 @@
 }
 
 .plans-container {
+	display: grid;
+	grid-template-columns: 33% 33% 33%;
+
     .status {
         flex-grow: 1;
         justify-content: center;
@@ -229,6 +232,27 @@
 					height: 5em;
 				}
 			}
+		}
+	}
+}
+
+.create-plan-link {
+	display: flex;
+}
+
+.create-glp-card {
+	background: #f5f5f5;
+	justify-content: space-around;
+
+	> .content {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		h3 {
+			margin: 0;
+			padding: 0;
+			font-size: 4em;
 		}
 	}
 }

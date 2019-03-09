@@ -44,13 +44,11 @@ class GLPBox extends Component {
                     div(
                         p(
                             '.owner',
-                            strong(`${await window.bcnI18n.getPhrase('lm_owner')} `),
-                            owner,
+                            `${await window.bcnI18n.getPhrase('lm_owner')} ${owner}`,
                         ),
-                    ),
-                    
+                    ),                    
                     div(
-                        '.toolbar',
+                        '.toolbar.margin-top-10',
                         a(
                             '.item',
                             {

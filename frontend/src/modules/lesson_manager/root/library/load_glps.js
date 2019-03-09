@@ -1,5 +1,5 @@
 // @flow
-import { div, span } from '../../../../core/html';
+import { a, h3, div, span } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 import GLPBox from './glp_box';
@@ -152,6 +152,21 @@ class LoadGLPs extends Component {
         if (this.state.endReached) {
             this.removeLoadButtons();
         }
+
+        const createPlanCard = div(
+            '.glp-box.create-glp-card.flex-4',
+            div(
+                '.content',
+                h3('.create-btn', '+'),
+            ),
+        );
+        promArr.push(a(
+            '.fake-link.create-plan-link',
+            {
+                href: '#new_plan',
+            },
+            createPlanCard,
+        ));
 
         for (const glp of values) {
             // console.log(glp);

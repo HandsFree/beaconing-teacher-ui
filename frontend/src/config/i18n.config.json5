@@ -1704,7 +1704,7 @@
     },
 
     lm_owner: {
-        'en-GB': 'Owner',
+        'en-GB': 'Owned by',
         'fr-FR': 'Propriétaire',
         'es-ES': 'Propietario',
         'it-IT': 'Proprietario',
