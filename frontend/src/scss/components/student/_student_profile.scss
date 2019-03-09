@@ -39,6 +39,9 @@
 }
 
 #assigned-plans-container {
+	display: grid;
+	grid-template-columns: 33% 33% 33%;
+
 	padding: 2em;
 
 	&.status {

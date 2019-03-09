@@ -18,7 +18,7 @@ class GLPBox extends Component {
             fromGroupName,
         } = this.props;
 
-        const fromGroupEl = fromGroupName ? h4(
+        const fromGroupEl = h4(
             '.group',
             'From group: ',
             a(
@@ -28,20 +28,30 @@ class GLPBox extends Component {
                 },
                 fromGroupName,
             ),
-        ) : [];
+        );
+
+        const unassignEl = a(
+            '.item',
+            {
+                onclick: () => {
+                    this.unassignPlan();
+                },
+            },
+            await window.bcnI18n.getPhrase('cr_unassign'),
+        );
 
         return div(
-            '.glp-assigned-box.flex-4.flex-column',
+            '.small-box.flex-4.flex-column',
             div(
                 '.title',
                 div(
                     '.flex-column',
                     h3('.name', name),
+                    fromGroupName ? fromGroupEl : [],
                 ),
             ),
             div(
-                '.content',
-                fromGroupEl,
+                '.content.margin-top-10',
                 div(
                     '.toolbar',
                     a(
@@ -51,15 +61,7 @@ class GLPBox extends Component {
                         },
                         await window.bcnI18n.getPhrase('view'),
                     ),
-                    !fromGroupID ? a(
-                        '.item',
-                        {
-                            onclick: () => {
-                                this.unassignPlan();
-                            },
-                        },
-                        await window.bcnI18n.getPhrase('cr_unassign'),
-                    ) : [],
+                    !fromGroupID ? unassignEl : [],
                 ),
             ),
         );

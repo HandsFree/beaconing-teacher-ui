@@ -7,6 +7,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func GetStudentsNotAssignedToRequest() gin.HandlerFunc {
+	return func(s *gin.Context) {
+	}
+}
+
 func GetStudentsRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
 		resp, err := api.GetStudents(s)

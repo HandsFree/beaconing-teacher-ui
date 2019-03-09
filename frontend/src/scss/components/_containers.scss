@@ -162,7 +162,7 @@
 		padding: 0.9em;
 		background: $border_color;
 	}
-
+	
 	> .title {
 		justify-content: space-between;
 		align-items: center;
@@ -171,6 +171,10 @@
 		h3 {
 			font-weight: bold;
 			font-size: 1.25em;
+			margin: 0.25em;
+		}
+
+		.owner {
 			margin: 0.25em;
 		}
 
@@ -184,8 +188,8 @@
 	> .content {
 		padding: 0.9em;
 		justify-content: space-between;
-
-		.topic, .domain, .created, .modified, .owner {
+		
+		.topic, .domain, .created, .modified {
 			flex-direction: column;
 
 			p {

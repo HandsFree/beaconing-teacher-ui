@@ -14,7 +14,6 @@ class GLPBox extends Component {
             updateDate,
             id,
             owner,
-            currentUser,
         } = this.props;
 
         let dateCreatedText = await window.bcnI18n.getPhrase('lm_not_rec');
@@ -41,6 +40,15 @@ class GLPBox extends Component {
                 div(
                     '.flex-column',
                     h3('.name', name),
+
+                    div(
+                        p(
+                            '.owner',
+                            strong(`${await window.bcnI18n.getPhrase('lm_owner')} `),
+                            owner,
+                        ),
+                    ),
+                    
                     div(
                         '.toolbar',
                         a(
@@ -70,16 +78,6 @@ class GLPBox extends Component {
             div(
                 '.content.flex-column',
                 div(
-                    '.domain',
-                    strong(`${await window.bcnI18n.getPhrase('lm_domain')}:`),
-                    p(domain),
-                ),
-                div(
-                    '.topic',
-                    strong(`${await window.bcnI18n.getPhrase('lm_topic')}:`),
-                    p(topic),
-                ),
-                div(
                     '.created',
                     strong(`${await window.bcnI18n.getPhrase('lm_created')}:`),
                     p(
@@ -90,6 +88,16 @@ class GLPBox extends Component {
                     ),
                 ),
                 div(
+                    '.domain',
+                    strong(`${await window.bcnI18n.getPhrase('lm_domain')}:`),
+                    p(domain),
+                ),
+                div(
+                    '.topic',
+                    strong(`${await window.bcnI18n.getPhrase('lm_topic')}:`),
+                    p(topic),
+                ),
+                div(
                     '.modified',
                     strong(`${await window.bcnI18n.getPhrase('lm_mod')}:`),
                     p(
@@ -98,11 +106,6 @@ class GLPBox extends Component {
                         },
                         dateUpdatedText,
                     ),
-                ),
-                div(
-                    '.owner',
-                    strong(`${await window.bcnI18n.getPhrase('lm_owner')}:`),
-                    p(owner),
                 ),
             ),
         );
