@@ -224,6 +224,8 @@ golang.org/x/sys v0.0.0-20190308024555-584f3b12f43e h1:9QnTto6Kz7F8lnfmwHh3z/6Ku
 golang.org/x/sys v0.0.0-20190308024555-584f3b12f43e/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/sys v0.0.0-20190309124602-980fc434d28e h1:7GgiehORn5bzJ/CU30NRNGcna2XvfPvpKn0sAHzckEw=
 golang.org/x/sys v0.0.0-20190309124602-980fc434d28e/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
+golang.org/x/sys v0.0.0-20190310063414-10058d7d4faa h1:+UpeHC59790awsxR37sPamfNOBLZ9tg3Y78X60KI3ss=
+golang.org/x/sys v0.0.0-20190310063414-10058d7d4faa/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 google.golang.org/genproto v0.0.0-20180831171423-11092d34479b/go.mod h1:JiN7NxoALGmiZfu7CAH4rXhgtRTLTxftemlI0sWmxmc=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405 h1:yhCVgyC4o1eVCa2tZl7eS0r+SDo693bJlVdllGtEeKM=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
