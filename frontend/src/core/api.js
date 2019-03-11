@@ -125,7 +125,7 @@ class APICore {
         return false;
     }
 
-    async getGLPs(sortQuery: string, orderQuery: string, minify: ?boolean, indexNumber: ?number, stepNumber: ?number) {        
+    async getGLPs(sortQuery: string, orderQuery: string, minify: ?boolean, indexNumber: ?number, stepNumber: ?number) {
         const sortOptions = new Map();
 
         if (sortQuery !== 'default') {
@@ -253,9 +253,11 @@ class APICore {
         const hashedKey = `${langCode}__${key}`;
         console.log('checking cache for ', hashedKey);
 
-        if (window.sessionStorage.hasOwnProperty(hashedKey)) {
-            console.log('cache hit!');
-            return window.sessionStorage.getItem(hashedKey);
+        const cache = window.sessionStorage.getItem(hashedKey);
+
+        if (cache) {
+            // console.log('cache hit!');
+            return cache;
         }
 
         const response = await this.get(`//${window.location.host}/api/v1/lang/${langCode}/phrase/${key}`);
@@ -281,7 +283,7 @@ class APICore {
         return groups;
     }
 
-    // similar getGroup(id), but for cases where we 
+    // similar getGroup(id), but for cases where we
     // want to perform getStudent() on the result of getGroup()
     async getStudentsFromGroup(id: number) {
         const students = await this.get(`//${window.location.host}/api/v1/students_from_studentgroup/${id}`);
