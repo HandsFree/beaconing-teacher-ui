@@ -37,11 +37,11 @@ const timeout = 120 * time.Second
 // GetOutboundIP is a helper function to get the
 // current computers outbound IP.
 func GetOutboundIP() net.IP {
-	if os.Getenv("USELOCAL") == "1" {
+	if cfg.Beaconing.Server.Local {
 		return net.ParseIP("127.0.0.1")
 	}
 
-	conn, err := net.Dial("udp", "8.8.8.8:80")
+	conn, err := net.Dial("udp", "1.1.1.1:80")
 	if err != nil {
 		log.Fatal(err)
 	}

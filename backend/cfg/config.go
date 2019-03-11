@@ -39,6 +39,7 @@ type authInfo struct {
 }
 
 type serverInfo struct {
+	Local        bool `toml:"local"`
 	Host         string `toml:"host"`
 	Port         uint16 `toml:"port"`
 	RootPath     string `toml:"root_path"`

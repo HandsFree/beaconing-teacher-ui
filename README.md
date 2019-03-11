@@ -94,6 +94,7 @@ id = "teacherui"
 secret = "UrqTSjfnaWsaJHCTfGeU6YyEVNa3c2QzE8GrTLcoK1kljsNB3HrG6jXAGI6q8wKR"
 
 [server]
+local = true
 host = ""
 port = 8080
 root_path = "./../frontend/public/"
@@ -110,6 +111,13 @@ grmon = false
 Place `config.toml` in `backend/cfg/`.
 
 By default the server requests to the API and scripts will be loaded from the external IP address.
+
+To stop the use of the external IP address, and to make the callback link become 127.0.0.1, you must set `local` to `true`:
+
+```toml
+[server]
+local = true
+```
 
 To provide a static URL enter one into the host variable under server without the trailing slash:
 
