@@ -275,7 +275,7 @@ class EditGLPForm extends Form {
                             div(
                                 '.split',
                                 div('.title-area', span(await window.beaconingAPI.getPhrase('lm_plan_name'))),
-                                div('.desc-area', await window.beaconingAPI.getPhrase('lm_plan_name_desc')),
+                                div('.desc-area', await window.beaconingAPI.getPhrase('name_for_lp_help')),
                                 div(
                                     '.input-area',
                                     label(

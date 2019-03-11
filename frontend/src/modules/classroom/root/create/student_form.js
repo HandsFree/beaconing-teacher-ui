@@ -273,7 +273,7 @@ class StudentForm extends Form {
                                             '#student-first-name.text-field',
                                             {
                                                 type: 'text',
-                                                placeholder: await window.beaconingAPI.getPhrase('cr_enter_fn'),
+                                                placeholder: await window.beaconingAPI.getPhrase('pf_teacher_fn_enter'),
                                                 oninput: (event) => {
                                                     const { target } = event;
 
@@ -301,7 +301,7 @@ class StudentForm extends Form {
                                             '#student-last-name.text-field',
                                             {
                                                 type: 'text',
-                                                placeholder: await window.beaconingAPI.getPhrase('cr_enter_ln'),
+                                                placeholder: await window.beaconingAPI.getPhrase('pf_teacher_fn_enter'),
                                                 oninput: (event) => {
                                                     const { target } = event;
 

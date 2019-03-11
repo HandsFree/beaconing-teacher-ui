@@ -75,7 +75,7 @@ class EditHeader extends Component {
                         },
                         span(await window.beaconingAPI.getPhrase('lm_library')),
                     ),
-                    a('.current', await window.beaconingAPI.getPhrase('edit_glp')),
+                    a('.current', await window.beaconingAPI.getPhrase('pc_edit_glp')),
                 );
             } else {
                 div(
@@ -94,7 +94,7 @@ class EditHeader extends Component {
                         },
                         span(await window.beaconingAPI.getPhrase('lm_plan_overview')),
                     ),
-                    a('.current', await window.beaconingAPI.getPhrase('edit_glp')),
+                    a('.current', await window.beaconingAPI.getPhrase('pc_edit_glp')),
                 );
             }
         };
@@ -111,7 +111,7 @@ class EditHeader extends Component {
                         {
                             href: `//${window.location.host}/authoring_tool?id=${encodeURIComponent(glp.id)}`,
                         },
-                        button('.action', await window.beaconingAPI.getPhrase('lm_open_at')),
+                        button('.action', await window.beaconingAPI.getPhrase('open_in_at')),
                     ),
                     currentUser === glp.owner ? button(
                         '.delete',
