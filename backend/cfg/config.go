@@ -62,7 +62,7 @@ var TranslationKeys map[string]string
 // LoadConfig loads the configuration file from
 // cfg/config.toml and parses it into go structures
 func LoadConfig() {
-	filePath := "cfg/config.toml"
+	filePath := "./cfg/config.toml"
 
 	util.Verbose("Loading configuration file from ", filePath)
 

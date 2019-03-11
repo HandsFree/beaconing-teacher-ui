@@ -97,12 +97,19 @@ secret = "UrqTSjfnaWsaJHCTfGeU6YyEVNa3c2QzE8GrTLcoK1kljsNB3HrG6jXAGI6q8wKR"
 host = ""
 port = 8080
 root_path = "./../frontend/public/"
-glp_files_path = "dist/glp_files/"
+glp_files_path = "./glp_files/"
+
+[localisation]
+map_file = "./trans.map"
+key_file = "./trans.keys"
+
+[debug]
+grmon = false
 ```
 
 Place `config.toml` in `backend/cfg/`.
 
-By default the server requests to the API and scripts will be loaded from the external IP address. 
+By default the server requests to the API and scripts will be loaded from the external IP address.
 
 To provide a static URL enter one into the host variable under server without the trailing slash:
 
