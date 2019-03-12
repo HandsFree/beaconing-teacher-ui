@@ -231,6 +231,8 @@ golang.org/x/sys v0.0.0-20190309124602-980fc434d28e h1:7GgiehORn5bzJ/CU30NRNGcna
 golang.org/x/sys v0.0.0-20190309124602-980fc434d28e/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/sys v0.0.0-20190310063414-10058d7d4faa h1:+UpeHC59790awsxR37sPamfNOBLZ9tg3Y78X60KI3ss=
 golang.org/x/sys v0.0.0-20190310063414-10058d7d4faa/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
+golang.org/x/sys v0.0.0-20190312014256-c8c8c57fd1e1 h1:awXtzxOX8kIR10xmKD0gP1KAPV2rnrEOvygczXDC97I=
+golang.org/x/sys v0.0.0-20190312014256-c8c8c57fd1e1/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/text v0.3.0/go.mod h1:NqM8EUOU14njkJ3fqMW+pc6Ldnwhi/IjpwHt7yyuwOQ=
 google.golang.org/genproto v0.0.0-20180831171423-11092d34479b/go.mod h1:JiN7NxoALGmiZfu7CAH4rXhgtRTLTxftemlI0sWmxmc=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405 h1:yhCVgyC4o1eVCa2tZl7eS0r+SDo693bJlVdllGtEeKM=
