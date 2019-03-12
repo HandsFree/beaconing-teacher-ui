@@ -37,6 +37,8 @@ github.com/gin-contrib/gzip v0.0.0-20190226025929-3ee4a99e5892 h1:Om6I4CNNtLEa0G
 github.com/gin-contrib/gzip v0.0.0-20190226025929-3ee4a99e5892/go.mod h1:fGBJBCdt6qCZuCAOwWuFhBB4OOq9EFqlo5dEaFhhu5w=
 github.com/gin-contrib/gzip v0.0.0-20190301224657-b07653c4b4b1 h1:sJGXTnFO7XX1rNelGdQyAY4FEGUZAFbhCQq9zlsEAf4=
 github.com/gin-contrib/gzip v0.0.0-20190301224657-b07653c4b4b1/go.mod h1:fGBJBCdt6qCZuCAOwWuFhBB4OOq9EFqlo5dEaFhhu5w=
+github.com/gin-contrib/gzip v0.0.1 h1:ezvKOL6jH+jlzdHNE4h9h8q8uMpDQjyl0NN0Jd7jozc=
+github.com/gin-contrib/gzip v0.0.1/go.mod h1:fGBJBCdt6qCZuCAOwWuFhBB4OOq9EFqlo5dEaFhhu5w=
 github.com/gin-contrib/sentry v0.0.0-20180827025903-aa42345b40e5 h1:RiiUViASOJXmlBuyAj+NEMo2XNhvu87/vP53vhFzaRs=
 github.com/gin-contrib/sentry v0.0.0-20180827025903-aa42345b40e5/go.mod h1:5j0zXgpfMv4byKaAkkJdV4tGp0GizpJGLpRsvlLEHCQ=
 github.com/gin-contrib/sentry v0.0.0-20181227224406-7a3855b0e756 h1:Fhtxwbtp9hMWakxDHwkEeNp6qr42+isO4haCqg8WCXo=

@@ -7,7 +7,7 @@ require (
 	github.com/certifi/gocertifi v0.0.0-20190105023059-abcd57078448 // indirect
 	github.com/felixangell/fuzzysearch v1.0.1-0.20180204213259-cfc75cad5319
 	github.com/getsentry/raven-go v0.2.0
-	github.com/gin-contrib/gzip v0.0.0-20190301224657-b07653c4b4b1
+	github.com/gin-contrib/gzip v0.0.1
 	github.com/gin-contrib/sentry v0.0.0-20190302065000-d4eec0a60d7d
 	github.com/gin-contrib/sessions v0.0.0-20190226030128-1532893d996f
 	github.com/gin-contrib/sse v0.0.0-20190302031122-5545eab6dad3 // indirect
