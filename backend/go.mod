@@ -23,6 +23,6 @@ require (
 	github.com/thinkerou/favicon v0.1.0
 	golang.org/x/net v0.0.0-20190311223657-d8887717615a // indirect
 	golang.org/x/sync v0.0.0-20190228034959-e225da77a7e6 // indirect
-	golang.org/x/sys v0.0.0-20190312014256-c8c8c57fd1e1 // indirect
+	golang.org/x/sys v0.0.0-20190312224922-fead79001313 // indirect
 	gopkg.in/h2non/filetype.v1 v1.0.5
 )
