@@ -15,7 +15,7 @@ require (
 	github.com/golang/protobuf v1.3.0 // indirect
 	github.com/json-iterator/go v1.1.5
 	github.com/lib/pq v1.0.0
-	github.com/mattn/go-isatty v0.0.6 // indirect
+	github.com/mattn/go-isatty v0.0.7 // indirect
 	github.com/mattn/go-runewidth v0.0.4 // indirect
 	github.com/olekukonko/tablewriter v0.0.1
 	github.com/pkg/errors v0.8.1 // indirect
