@@ -76,7 +76,7 @@
     "thread-loader": "1.2.0",
     "uglifyjs-webpack-plugin": "2.1.2",
     "webpack": "4.29.6",
-    "webpack-cli": "3.2.3",
+    "webpack-cli": "3.3.0",
     "webpack-dashboard": "2.1.0",
     "webpack-dev-server": "3.2.1"
   },
