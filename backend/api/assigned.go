@@ -10,14 +10,13 @@ import (
 
 	"github.com/lib/pq"
 
-	"github.com/HandsFree/beaconing-teacher-ui/backend/activity"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 )
 
-// this is a little funky.
+// FIXME move this into Parse.
 func unwrapStudentAssignObject(s *gin.Context, studentID uint64, assignID uint64) (uint64, error) {
 	type Assignment struct {
 		ID        uint64 `json:"id"`
@@ -39,40 +38,6 @@ func unwrapStudentAssignObject(s *gin.Context, studentID uint64, assignID uint64
 	}
 
 	return 0, errors.New("No such GLP for assignID " + fmt.Sprintf("%d", assignID))
-}
-
-func removeActivePlan(s *gin.Context, planID uint64) error {
-	teacherID, err := GetUserID(s)
-	if err != nil {
-		util.Error("No such current user (removeActivePlan)", err.Error())
-		return err
-	}
-
-	util.Verbose("Removing active plan ", planID, " by ", teacherID)
-
-	query := "DELETE FROM active_plan WHERE teacher_id = $1 AND plan = $2"
-	_, err = API.db.Exec(query, teacherID, planID)
-	if err != nil {
-		util.Error(err.Error())
-	}
-	return err
-}
-
-func insertActivePlan(s *gin.Context, planID uint64) error {
-	teacherID, err := GetUserID(s)
-	if err != nil {
-		util.Error("No such current user (insertActivePlan)", err.Error())
-		return err
-	}
-
-	util.Verbose("Inserting active plan ", planID, " by ", teacherID)
-
-	query := "INSERT INTO active_plan (creation_date, teacher_id, plan) VALUES($1, $2, $3)"
-	_, err = API.db.Exec(query, time.Now(), teacherID, planID)
-	if err != nil {
-		util.Error(err.Error())
-	}
-	return err
 }
 
 // AssignStudentToGLP assigns the given student (by id) to the given GLP (by id),
@@ -103,19 +68,6 @@ func AssignStudentToGLP(s *gin.Context, studentID uint64, glpID uint64, from, to
 		util.Info("[AssignStudentToGLP] Status Returned: ", status)
 		return "", nil
 	}
-
-	id, err := GetUserID(s)
-	if err != nil {
-		util.Error("No such user when assigning GLP", err.Error())
-		return string(resp), nil
-	}
-
-	if err := insertActivePlan(s, glpID); err != nil {
-		util.Error("Failed to insert active plan")
-		return string(resp), nil
-	}
-
-	API.WriteActivity(id, activity.StudentAssignGLPActivity, resp)
 	return string(resp), nil
 }
 
@@ -141,19 +93,6 @@ func AssignGroupToGLP(s *gin.Context, groupID uint64, glpID uint64, from, to tim
 		util.Info("[AssignGroupToGLP] Status Returned: ", status)
 		return "", nil
 	}
-
-	id, err := GetUserID(s)
-	if err != nil {
-		util.Error("No such user when assigning GLP", err.Error())
-		return string(resp), nil
-	}
-
-	if err := insertActivePlan(s, glpID); err != nil {
-		util.Error("Failed to insert active plan")
-		return string(resp), nil
-	}
-
-	API.WriteActivity(id, activity.GroupAssignGLPActivity, resp)
 	return string(resp), nil
 }
 
@@ -243,11 +182,6 @@ func DeleteAssignedGLP(s *gin.Context, studentID uint64, linkID uint64) string {
 		return ""
 	}
 
-	if err := removeActivePlan(s, glpID); err != nil {
-		util.Error("Failed to remove active plan", err.Error())
-		return ""
-	}
-
 	resp, err, status := DoTimedRequest(s, "DELETE",
 		API.getPath(s, "students/", fmt.Sprintf("%d", studentID), "/assignedGlps/", fmt.Sprintf("%d", linkID)),
 	)
@@ -262,27 +196,12 @@ func DeleteAssignedGLP(s *gin.Context, studentID uint64, linkID uint64) string {
 		return ""
 	}
 
-	teacherID, err := GetUserID(s)
-	if err != nil {
-		util.Error("No such current user (removeActivePlan)", err.Error())
-		return string(resp)
-	}
-
-	API.WriteActivity(teacherID, activity.StudentUnassignGLPActivity, resp)
 	return string(resp)
 }
 
 // DeleteGroupAssignedGLP deletes the given {glpID} from the {groupID}
 // or "un-assigns" the glp.
 func DeleteGroupAssignedGLP(s *gin.Context, groupID uint64, glpID uint64) string {
-	/* TODO
-
-	if err := removeActivePlan(s, glpID); err != nil {
-		util.Error("Failed to remove active plan", err.Error())
-		return ""
-	}
-	*/
-
 	resp, err, status := DoTimedRequest(s, "DELETE",
 		API.getPath(s, "studentgroups/", fmt.Sprintf("%d", groupID), "/assignedGlps/", fmt.Sprintf("%d", glpID)),
 	)
@@ -297,12 +216,5 @@ func DeleteGroupAssignedGLP(s *gin.Context, groupID uint64, glpID uint64) string
 		return ""
 	}
 
-	teacherID, err := GetUserID(s)
-	if err != nil {
-		util.Error("No such current user (removeActivePlan)", err.Error())
-		return string(resp)
-	}
-
-	API.WriteActivity(teacherID, activity.GroupUnassignGLPActivity, resp)
 	return string(resp)
 }

@@ -9,7 +9,7 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/bcicen/grmon/agent"
+	grmon "github.com/bcicen/grmon/agent"
 	raven "github.com/getsentry/raven-go"
 
 	"github.com/HandsFree/beaconing-teacher-ui/backend/api"

@@ -79,51 +79,10 @@ func GetCurrentUser(s *gin.Context) (*entity.CurrentUser, error) {
 }
 
 func getUserAvatar(s *gin.Context, id uint64) (string, error) {
-	cache := LittleCacheInstance()
-
-	avatarKey := fmt.Sprintf("avatar_%d", id)
-
-	avatar, err := cache.Get(avatarKey)
-	if err == nil {
-		return string(avatar), nil
-	}
-
-	query := "SELECT avatar_blob FROM student_avatar WHERE student_id = $1"
-	rows, err := API.db.Query(query, id)
-	if err != nil {
-		util.Error(err.Error())
-		return "", err
-	}
-
-	defer rows.Close()
-	for rows.Next() {
-		var avatarHash []byte
-
-		err = rows.Scan(&avatarHash)
-		if err != nil {
-			util.Error("Failed to request row in avatar_blob query!", err.Error())
-			continue
-		}
-
-		data := avatarHash
-		cache.Set(avatarKey, data)
-		return string(data), nil
-	}
-
-	if err := rows.Err(); err != nil {
-		util.Error("getUserAvatar DB Error", err.Error())
-		return "", err
-	}
-
 	return "", errors.New("Failed to get avatar_blob of user")
 }
 
 func setUserAvatar(s *gin.Context, id uint64, username string) (string, error) {
-	if API.db == nil {
-		util.Error("No database connection has been established")
-		return "", errors.New("No database connection")
-	}
-
 	input := fmt.Sprintf("%d%s", id, username)
 	hmac512 := hmac.New(sha512.New, []byte("what should the secret be!"))
 	hmac512.Write([]byte(input))
@@ -131,12 +90,7 @@ func setUserAvatar(s *gin.Context, id uint64, username string) (string, error) {
 	avatarHash := base64.StdEncoding.EncodeToString(hmac512.Sum(nil))
 	util.Verbose("Setting avatar hash for student ", id, username, " to ", avatarHash)
 
-	query := "INSERT INTO student_avatar (student_id, avatar_blob) VALUES($1, $2)"
-	_, err := API.db.Exec(query, id, avatarHash)
-	if err != nil {
-		util.Error(err.Error())
-		return "", err
-	}
+	// TODO store avatar hash in the cache
 
 	return avatarHash, nil
 }

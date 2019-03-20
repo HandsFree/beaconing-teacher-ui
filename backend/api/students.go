@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/HandsFree/beaconing-teacher-ui/backend/activity"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 	"github.com/gin-gonic/gin"
@@ -163,14 +162,6 @@ func PostStudent(s *gin.Context) (string, error) {
 		util.Info("[PostStudent] Status Returned: ", status)
 		return "", nil
 	}
-
-	currUserID, err := GetUserID(s)
-	if err != nil {
-		util.Error("No such user", err.Error())
-		return string(resp), err
-	}
-
-	API.WriteActivity(currUserID, activity.CreateStudentActivity, resp)
 	return string(resp), nil
 }
 

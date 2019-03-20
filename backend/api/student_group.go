@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/HandsFree/beaconing-teacher-ui/backend/activity"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
@@ -52,13 +51,6 @@ func CreateStudentGroup(s *gin.Context) (string, error) {
 		return "", nil
 	}
 
-	id, err := GetUserID(s)
-	if err != nil {
-		util.Error("No such current user", err.Error())
-		return string(resp), err
-	}
-
-	API.WriteActivity(id, activity.CreateStudentGroupActivity, resp)
 	return string(resp), nil
 }
 
@@ -128,13 +120,6 @@ func DeleteStudentGroup(s *gin.Context, id int64) (string, error) {
 		return "", nil
 	}
 
-	currUserID, err := GetUserID(s)
-	if err != nil {
-		util.Error("No such current user", err.Error())
-		return string(req), err
-	}
-
-	API.WriteActivity(currUserID, activity.DeleteStudentGroupActivity, req)
 	return string(req), nil
 }
 

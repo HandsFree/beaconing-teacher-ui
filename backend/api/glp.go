@@ -3,12 +3,10 @@ package api
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"net/http"
 	"strconv"
 
-	"github.com/HandsFree/beaconing-teacher-ui/backend/activity"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 	"github.com/gin-gonic/gin"
@@ -94,13 +92,6 @@ func PutGLP(s *gin.Context, id int) (string, error) {
 		return "", nil
 	}
 
-	userID, err := GetUserID(s)
-	if err != nil {
-		util.Error("No such current user", err.Error())
-		return string(resp), err
-	}
-
-	API.WriteActivity(userID, activity.PutGLPActivity, resp)
 	return string(resp), nil
 }
 
@@ -138,111 +129,7 @@ func CreateGLP(s *gin.Context) (string, error) {
 		return string(resp), err
 	}
 
-	API.WriteActivity(id, activity.CreateGLPActivity, resp)
 	return string(resp), nil
-}
-
-// GetMostAssigned most assigned by the current user.
-func GetMostAssigned(s *gin.Context) ([]*entity.GLP, error) {
-	if API.db == nil {
-		util.Error("No database connection has been established")
-		return nil, errors.New("No database connection")
-	}
-
-	teacherID, err := GetUserID(s)
-	if err != nil {
-		util.Error("No such current user", err.Error())
-		return []*entity.GLP{}, err
-	}
-
-	// we only want to select the plans that are active
-	// that have been created by the teacher that is currently
-	// active
-	query := "SELECT plan, count(*) FROM active_plan WHERE teacher_id = $1 GROUP BY plan ORDER BY count(*) DESC"
-	rows, err := API.db.Query(query, fmt.Sprintf("%d", teacherID))
-	if err != nil {
-		util.Error(err.Error())
-		return nil, err
-	}
-
-	popular := []*entity.GLP{}
-	defer rows.Close()
-	for rows.Next() {
-		var glpID uint64
-		var count uint64
-
-		err = rows.Scan(&glpID, &count)
-		if err != nil {
-			util.Error("Failed to request row in GetRecentlyAssigned query!", err.Error())
-			continue
-		}
-
-		glp, err := GetGLP(s, glpID, true)
-		if err != nil {
-			util.Error("GetRecentlyAssigned", err.Error())
-			continue
-		}
-
-		popular = append(popular, glp)
-	}
-
-	return popular, nil
-}
-
-// GetRecentlyAssignedGLPS ...
-func GetRecentlyAssignedGLPS(s *gin.Context, reverse bool) ([]*entity.GLP, error) {
-	if API.db == nil {
-		util.Error("No database connection has been established")
-		return nil, errors.New("No database connection")
-	}
-
-	teacherID, err := GetUserID(s)
-	if err != nil {
-		util.Error("No such current user", err.Error())
-		return []*entity.GLP{}, err
-	}
-
-	// we only want to select the plans that are active
-	// that have been created by the teacher that is currently
-	// active
-	query := "SELECT plan FROM active_plan WHERE teacher_id = $1 GROUP BY plan, creation_date ORDER BY creation_date ASC"
-	if reverse {
-		query = "SELECT plan FROM active_plan WHERE teacher_id = $1 GROUP BY plan, creation_date ORDER BY creation_date DESC"
-	}
-
-	rows, err := API.db.Query(query, fmt.Sprintf("%d", teacherID))
-	if err != nil {
-		util.Error(err.Error())
-		return nil, err
-	}
-
-	recentlyAssigned := []*entity.GLP{}
-
-	defer rows.Close()
-	for rows.Next() {
-		var glpID uint64
-
-		err = rows.Scan(&glpID)
-		if err != nil {
-			util.Error("Failed to request row in GetRecentlyAssigned query!", err.Error())
-			continue
-		}
-
-		glp, err := GetGLP(s, glpID, true)
-		if err != nil {
-			util.Error("GetRecentlyAssigned", err.Error())
-			continue
-		}
-
-		recentlyAssigned = append(recentlyAssigned, glp)
-	}
-
-	if err := rows.Err(); err != nil {
-		util.Error("GetRecentlyAssignedGLPS DB Error", err.Error())
-		return nil, err
-	}
-
-	return recentlyAssigned, nil
 }
 
 // GetGLPS requests all of the GLPs from the core
@@ -339,12 +226,5 @@ func DeleteGLP(s *gin.Context, id uint64) (string, error) {
 		return "", nil
 	}
 
-	teacherID, err := GetUserID(s)
-	if err != nil {
-		util.Error("No such current user", err.Error())
-		return string(resp), err
-	}
-
-	API.WriteActivity(teacherID, activity.DeleteGLPActivity, resp)
 	return string(resp), nil
 }
