@@ -5,64 +5,65 @@ import Loading from '../../../loading';
 import nullishCheck from '../../../../core/util';
 
 class CalendarSelectedGroup extends Component {
+    clicked() {
+        const { id, name } = this.props;
+
+        // don't do anything if we've already selected
+        // this group
+        if (window.sessionStorage.getItem('calendarSelectionType') === 'groups') {
+            const data = nullishCheck(window.sessionStorage.getItem('calendarSelection'), 'none');
+            if (data !== 'none') {
+                const groupData = JSON.parse(data);
+                if (groupData.group !== null && groupData.group.id === id) {
+                    return;
+                }
+            }
+        }
+
+        window.sessionStorage.setItem('calendarSelection', JSON.stringify({
+            student: null,
+            group: {
+                id,
+                name,
+            },
+        }));
+
+        this.emit('RefreshCalendarController');
+        this.emit('RefreshCalendarView');
+    }
+
     async render() {
         const {
             id,
             name,
         } = this.props;
 
-        return div('.small-box',
+        const {
+            username,
+        } = this.props;
+
+        const card = div(
+            '.small-box',
             div(
                 '.title',
-                p('.item-name.fake-link', a(
-                    {
-                        title: await window.beaconingAPI.getPhrase('cal_view_in_classroom'),
-                        href: `//${window.location.host}/classroom/group?id=${id}`,
-                    },
+                p(
+                    '.item-name',
                     `${name}`,
-                )),
+                ),
             ),
-            div(
-                '.box-buttons',
-                p(a(
-                    '.fake-link',
-                    {
-                        onclick: () => {
-                            // don't do anything if we've already selected
-                            // this group
-                            if (window.sessionStorage.getItem('calendarSelectionType') === 'groups') {
-                                const data = nullishCheck(window.sessionStorage.getItem('calendarSelection'), 'none');
-                                if (data !== 'none') {
-                                    const groupData = JSON.parse(data);
-                                    if (groupData.group !== null && groupData.group.id === id) {
-                                        return;
-                                    }
-                                }
-                            }
-
-                            window.sessionStorage.setItem('calendarSelection', JSON.stringify({
-                                student: null,
-                                group: {
-                                    id,
-                                    name,
-                                },
-                            }));
-
-                            this.emit('RefreshCalendarController');
-                            this.emit('RefreshCalendarView');
-                        },
-                    },
-                    await window.beaconingAPI.getPhrase('view'),
-                )),
-            ),
+        );
+        return a(
+            '.fake-link',
+            {
+                onclick: () => this.clicked(),
+            },
+            card,
         );
     }
 }
 
 class CalendarSelectedStudent extends Component {
     clicked() {
-        console.log('doing the clicky business');
-        
         const { id, username } = this.props;
         
         // don't do anything if we've already selected

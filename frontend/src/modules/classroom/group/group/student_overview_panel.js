@@ -62,7 +62,7 @@ class Panel extends Component {
             };
 
             studentsEl.push(div(
-                '.student',
+                '.student.student-overview-card',
                 div(
                     '.flex-container.flex-column.flex-spacearound.flex-grow',
                     div(

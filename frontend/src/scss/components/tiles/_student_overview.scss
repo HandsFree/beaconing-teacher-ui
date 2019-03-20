@@ -69,16 +69,18 @@
 		}
 	}
 
+	.student-overview-card {
+	}
+
 	.student-section {
 		flex-grow: 1;
 		flex-direction: column;
 		padding: 0.25em;
 
-		> .title {
+		.title {
 			padding: 1.5em 0.25em;
 			flex-grow: 1;
-			text-align: center;
-			justify-content: center;
+			text-align: left;
 
 			h3 {
 				font-weight: 400;
@@ -90,15 +92,13 @@
 
 	.students {
 		flex-direction: column;
-		padding: 0 0.75em;
-
+		margin: 0.5em;
+		padding: 1em 2em;
+			
 		.student {
-			border-bottom: 1px solid rgba(#7c8ea0, 0.5);
+			border: 2px solid $border_color;
+			background: #fff;
 			padding: 0.75em 0;
-
-			&:last-child {
-				border-bottom: none;
-			}
 
 			.student-profile-image {
 				margin: 0.5em 0.5em 0.5em 0;
