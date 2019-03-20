@@ -19,7 +19,8 @@ func GetStudentOverview() gin.HandlerFunc {
 			util.Warn("warning, fetchCount has an illegal value")
 		}
 
-		// TODO: request students, make sure they are sorted
+		// IMPLEMENT
+		// request students, make sure they are sorted
 		// best to worst (or worst to best depending on ctx)
 		req := StudentOverviewJSON{
 			BestPerforming:  genDummyStudentData(fetchCount),

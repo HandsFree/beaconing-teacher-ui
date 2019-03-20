@@ -124,14 +124,10 @@ func (a *CoreAPIManager) getPath(s *gin.Context, args ...string) string {
 	return fmt.Sprintf("%s", path)
 }
 
-// hm.
 func Cache() *cache.Cache {
 	return API.cache
 }
 
-// TODO the toml layout for loading the
-// database could be a lot better.
-// but for now it works.
 func newAPIHelper() *CoreAPIManager {
 	return &CoreAPIManager{
 		APIPath: cfg.Beaconing.Server.BeaconingAPIRoute,

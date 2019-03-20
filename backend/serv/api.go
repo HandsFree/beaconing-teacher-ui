@@ -18,6 +18,7 @@ func registerAPI(router *gin.Engine) {
 
 	lang := v1.Group("lang")
 	{
+		// FIXME move into a handler func.
 		lang.GET("/:code/phrase/:key", func(c *gin.Context) {
 			langCode := c.Param("code")
 			phraseKey := c.Param("key")
@@ -45,6 +46,8 @@ func registerAPI(router *gin.Engine) {
 			})
 		})
 
+		// IMPLEMENT
+		// ask for various phrases
 		lang.POST("/phrase/", func(c *gin.Context) {
 			// TODO!
 		})
