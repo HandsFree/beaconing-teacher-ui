@@ -8,6 +8,8 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/patrickmn/go-cache"
+
 	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 	"github.com/gin-gonic/gin"
@@ -49,10 +51,8 @@ func GetCurrentUser(s *gin.Context) (*entity.CurrentUser, error) {
 	// and re-load it.
 	// TODO if we fail again return some error
 	// identicon and spit the error out in the logs
-	avatar, err := getUserAvatar(s, teacher.ID)
-	if err != nil {
-		util.Error("getUserAvatar", err.Error())
-
+	avatar, ok := getUserAvatar(s, teacher.ID)
+	if !ok {
 		avatar, err = setUserAvatar(s, teacher.ID, teacher.Username)
 		if err != nil {
 			util.Error("setUserAvatar", err.Error())
@@ -64,8 +64,13 @@ func GetCurrentUser(s *gin.Context) (*entity.CurrentUser, error) {
 	return teacher, nil
 }
 
-func getUserAvatar(s *gin.Context, id uint64) (string, error) {
-	return "", errors.New("Failed to get avatar_blob of user")
+func getUserAvatar(s *gin.Context, id uint64) (string, bool) {
+	val, ok := Cache().Get(fmt.Sprintf("%d", id))
+	// cache miss. no errors to report here.
+	if !ok {
+		return "", false
+	}
+	return val.(string), true
 }
 
 func setUserAvatar(s *gin.Context, id uint64, username string) (string, error) {
@@ -74,9 +79,9 @@ func setUserAvatar(s *gin.Context, id uint64, username string) (string, error) {
 	hmac512.Write([]byte(input))
 
 	avatarHash := base64.StdEncoding.EncodeToString(hmac512.Sum(nil))
-	util.Verbose("Setting avatar hash for student ", id, username, " to ", avatarHash)
+	util.Verbose("caching avatar hash for student", id, username, "to", avatarHash)
 
-	// TODO store avatar hash in the cache
-
+	idString := fmt.Sprintf("%d", id)
+	Cache().Set(idString, avatarHash, cache.DefaultExpiration)
 	return avatarHash, nil
 }

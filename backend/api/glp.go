@@ -123,12 +123,6 @@ func CreateGLP(s *gin.Context) (string, error) {
 		return "", nil
 	}
 
-	id, err := GetUserID(s)
-	if err != nil {
-		util.Error("No such current user", err.Error())
-		return string(resp), err
-	}
-
 	return string(resp), nil
 }
 

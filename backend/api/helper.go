@@ -6,6 +6,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/patrickmn/go-cache"
+
 	"github.com/gin-gonic/gin"
 
 	// psql stuff
@@ -108,6 +110,7 @@ func SetupAPIHelper() {
 // as well as caching any json/requests that are frequently requested
 type CoreAPIManager struct {
 	APIPath string
+	cache   *cache.Cache
 }
 
 // getPath creates an API path, appending on the given beaconing URL
@@ -121,11 +124,18 @@ func (a *CoreAPIManager) getPath(s *gin.Context, args ...string) string {
 	return fmt.Sprintf("%s", path)
 }
 
+// hm.
+func Cache() *cache.Cache {
+	return API.cache
+}
+
 // TODO the toml layout for loading the
 // database could be a lot better.
 // but for now it works.
 func newAPIHelper() *CoreAPIManager {
 	return &CoreAPIManager{
+		// TODO change this to be a config setting
 		APIPath: "https://core.beaconing.eu/api/",
+		cache:   cache.New(30*time.Minute, 10*time.Minute),
 	}
 }

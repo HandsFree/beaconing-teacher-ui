@@ -5,7 +5,6 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/HandsFree/beaconing-teacher-ui/backend/api"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 	"github.com/gin-gonic/gin"
@@ -161,12 +160,8 @@ func SortByRecentlyUpdated(s *gin.Context, plans []*entity.GLP, order SortingOpt
 }
 
 func SortByMostAssigned(s *gin.Context, plans []*entity.GLP, order SortingOption) ([]*entity.GLP, error) {
-	glps, err := api.GetMostAssigned(s)
-	if err != nil {
-		util.Error("failed to get most assigned glps")
-		return plans, err
-	}
-	return glps, nil
+	// FIXME
+	return plans, nil
 }
 
 func boolToInt(b bool) int8 {
@@ -217,16 +212,7 @@ func SortByOwnedByMe(s *gin.Context, plans []*entity.GLP, order SortingOption) (
 }
 
 func SortByRecentlyAssigned(s *gin.Context, plans []*entity.GLP, order SortingOption) ([]*entity.GLP, error) {
-	// TODO we do a load for the GLPS and basically
-	// throw them out to reload the ones that have been
-	// recently assigned
-	// i.e. this could be faster
-	glps, err := api.GetRecentlyAssignedGLPS(s, true)
-	if err != nil {
-		util.Error("failed to get recently assigned glps")
-		return plans, err
-	}
-	return glps, nil
+	return plans, nil
 }
 
 type sortable []string

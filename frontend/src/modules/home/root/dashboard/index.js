@@ -1,5 +1,5 @@
 // @flow
-import { div, main, section } from '../../../../core/html';
+import { div, main, section, h1 } from '../../../../core/html';
 
 import { RootComponent } from '../../../../core/component';
 import Header from '../../../header/root';
@@ -15,6 +15,9 @@ class Dashboard extends RootComponent {
         const mainNav = new MainNav();
         // const dashboardNav = new DashboardNav();
         const widgets = new Widgets();
+
+        const teacher = await window.beaconingAPI.getCurrentUser();
+        const { firstName, lastName } = teacher.teacherSettings;
 
         return Promise.all([
             header.attach(),
@@ -38,6 +41,9 @@ class Dashboard extends RootComponent {
                     '.flex-container.expand',
                     mainNavEl,
                     main(
+                        // TODO. i18n
+                        h1(`Welcome, ${firstName}`),
+
                         // section('.flex-column', dashboardNavEl),
                         widgetsEl,
                     ),

@@ -44,10 +44,8 @@ func GetStudents(s *gin.Context) (string, error) {
 	// TODO we could easily batch this into one SQL
 	// query... also caching this wouldn't be so hard either.
 	for _, student := range students {
-		avatar, err := getUserAvatar(s, student.ID)
-		if err != nil {
-			util.Error("getUserAvatar", err.Error())
-
+		avatar, ok := getUserAvatar(s, student.ID)
+		if !ok {
 			avatar, err = setUserAvatar(s, student.ID, student.Username)
 			if err != nil {
 				util.Error("setUserAvatar", err.Error())

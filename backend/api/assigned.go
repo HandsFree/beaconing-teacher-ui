@@ -160,15 +160,6 @@ func GetGroupAssignedGLPS(s *gin.Context, groupID uint64) string {
 // DeleteAssignedGLP deletes the given {glpID} from the {studentID}
 // or "un-assigns" the glp.
 func DeleteAssignedGLP(s *gin.Context, studentID uint64, linkID uint64) string {
-	// NOTE we have to unwrap it _BEFORE_ we do the request
-	// otherwise we will have removed the request and there will
-	// be nothing for us to parse!
-	glpID, err := unwrapStudentAssignObject(s, studentID, linkID)
-	if err != nil {
-		util.Error("Can't unwrap student assign object ", err.Error())
-		return ""
-	}
-
 	resp, err, status := DoTimedRequest(s, "DELETE",
 		API.getPath(s, "students/", fmt.Sprintf("%d", studentID), "/assignedGlps/", fmt.Sprintf("%d", linkID)),
 	)

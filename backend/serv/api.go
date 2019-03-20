@@ -6,7 +6,6 @@ import (
 
 	"github.com/HandsFree/beaconing-teacher-ui/backend/cfg"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/req"
-	"github.com/HandsFree/beaconing-teacher-ui/backend/upload"
 	"github.com/gin-gonic/gin"
 )
 
@@ -58,13 +57,6 @@ func registerAPI(router *gin.Engine) {
 
 		// FIXME: move somewhere, e.g. /students/
 		v1.GET("student_overview", req.GetStudentOverview())
-	}
-
-	fileUpload := v1.Group("upload")
-	{
-		fileUpload.POST("/:id", upload.PostGLPFiles())
-
-		fileUpload.DELETE("/:id/:file", upload.DeleteGLPFile())
 	}
 
 	authAPI := v1.Group("auth")

@@ -154,29 +154,7 @@ func loadGLPFiles(folderName string) []glpFile {
 
 func GetGLPFilesRequest() gin.HandlerFunc {
 	return func(s *gin.Context) {
-		idParam := s.Param("id")
-		id, err := strconv.ParseUint(idParam, 10, 64)
-		if err != nil || id < 0 {
-			s.String(http.StatusBadRequest, "Client Error: Invalid GLP ID")
-			return
-		}
-
-		folderPath, err := api.GetGLPFilesFolderName(id)
-		if err != nil {
-			s.AbortWithError(http.StatusBadRequest, err)
-			return
-		}
-
-		files := loadGLPFiles(folderPath)
-
-		filesJSON, err := jsoniter.Marshal(files)
-		if err != nil {
-			s.AbortWithError(http.StatusInternalServerError, err)
-			return
-		}
-
-		s.Header("Content-Type", "application/json")
-		s.String(http.StatusOK, string(filesJSON))
+		// TODO core.beaconing.eu/api-docs
 	}
 }
 

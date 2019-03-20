@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/HandsFree/beaconing-teacher-ui/backend/api"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/entity"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 	"github.com/gin-gonic/gin"
@@ -23,16 +22,7 @@ func GetActiveLessonPlansWidget() gin.HandlerFunc {
 
 		lps := []entity.LessonPlanWidget{}
 
-		assignedPlans, err := api.GetRecentlyAssignedGLPS(s, true)
-		if err != nil {
-			util.Error("GetActiveLessonPlansWidget: ", err.Error())
-			return
-		}
-
-		for _, glp := range assignedPlans {
-			lessonPlan := NewLessonPlanWidget(glp.Name, glp.Desc, glp.ID)
-			lps = append(lps, lessonPlan)
-		}
+		//FIXME
 
 		lpsCount := float64(len(lps))
 		size := int(math.Min(float64(limitParam), lpsCount))
