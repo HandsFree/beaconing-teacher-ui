@@ -37,6 +37,5 @@ func PutProfile(s *gin.Context) (string, error) {
 		return "", nil
 	}
 
-	// todo is this an activity or not?
 	return string(resp), nil
 }
