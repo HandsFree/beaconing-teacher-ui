@@ -99,28 +99,21 @@ func AssignGroupToGLP(s *gin.Context, groupID uint64, glpID uint64, from, to tim
 // GetAssignedGLPS returns a JSON string of all of the
 // glps that have been assigned to the given student {studentID}.
 func GetAssignedGLPS(s *gin.Context, studentID uint64, includeGroups bool) string {
-	cache := BigCacheInstance()
-
 	// FIXME shall we support this:
 	// NOTE we can set the ?includeAnalytics=true flag here if necessary.
 
 	apiPath := API.getPath(s, "students/", fmt.Sprintf("%d", studentID), "/assignedGlps", fmt.Sprintf("?includeGroups=%s", strconv.FormatBool(includeGroups)))
 
-	resp, err := cache.Get(apiPath)
+	var status int
+	resp, err, status := DoTimedRequest(s, "GET", apiPath)
 	if err != nil {
-		var status int
-		resp, err, status = DoTimedRequest(s, "GET", apiPath)
-		if err != nil {
-			util.Error("GetAssignedGLPS", err.Error())
-			return ""
-		}
+		util.Error("GetAssignedGLPS", err.Error())
+		return ""
+	}
 
-		if status != http.StatusOK {
-			util.Info("[GetAssignedGLPS] Status Returned: ", status)
-			return ""
-		}
-
-		cache.Set(apiPath, []byte(resp))
+	if status != http.StatusOK {
+		util.Info("[GetAssignedGLPS] Status Returned: ", status)
+		return ""
 	}
 
 	return string(resp)
@@ -149,12 +142,7 @@ func GetGroupAssignedGLPS(s *gin.Context, groupID uint64) string {
 	// we can do the following for this req:
 	// includeAnalytics=true
 
-	cache := LittleCacheInstance()
 	apiPath := API.getPath(s, "studentgroups/", fmt.Sprintf("%d", groupID), "/assignedGlps")
-
-	if resp, err := cache.Get(apiPath); err == nil {
-		return string(resp)
-	}
 
 	resp, err, status := DoTimedRequest(s, "GET", apiPath)
 	if err != nil {
@@ -166,7 +154,6 @@ func GetGroupAssignedGLPS(s *gin.Context, groupID uint64) string {
 		return ""
 	}
 
-	cache.Set(apiPath, resp)
 	return string(resp)
 }
 

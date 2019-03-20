@@ -135,13 +135,7 @@ func CreateGLP(s *gin.Context) (string, error) {
 // GetGLPS requests all of the GLPs from the core
 // API returned as a json string
 func GetGLPS(s *gin.Context, minify bool) (string, error) {
-	cache := BigCacheInstance()
 	apiPath := API.getPath(s, "gamifiedlessonpaths/", fmt.Sprintf("?noContent=%s", strconv.FormatBool(minify)))
-
-	resp, err := cache.Get(apiPath)
-	if err == nil {
-		return string(resp), nil
-	}
 
 	resp, err, status := DoTimedRequest(s, "GET", apiPath)
 	if err != nil {
@@ -150,10 +144,9 @@ func GetGLPS(s *gin.Context, minify bool) (string, error) {
 	}
 	if status != http.StatusOK {
 		util.Info("[GetGLPS] Status Returned: ", status)
-		return "", nil
+		return "", err
 	}
 
-	cache.Set(apiPath, resp)
 	return string(resp), nil
 }
 
@@ -161,40 +154,24 @@ func GetGLPS(s *gin.Context, minify bool) (string, error) {
 // the string of json retrieved _as well as_ the parsed json object
 // see entity.GLP
 func GetGLP(s *gin.Context, id uint64, minify bool) (*entity.GLP, error) {
-	cache := LittleCacheInstance()
-
 	apiPath := API.getPath(s, "gamifiedlessonpaths/",
 		fmt.Sprintf("%d", id),
 		fmt.Sprintf("?noContent=%s", strconv.FormatBool(minify)))
 
-	doCache := func(cache *CacheWrapper) []byte {
-		resp, err, status := DoTimedRequest(s, "GET", apiPath)
+	resp, err, status := DoTimedRequest(s, "GET", apiPath)
 
-		if err != nil {
-			util.Error("GetGLP", err.Error())
-			return []byte{}
-		}
-
-		if status != http.StatusOK {
-			util.Info("[GetGLP] Status Returned: ", status)
-			return []byte{}
-		}
-
-		payLoad := []byte(resp)
-		cache.Set(apiPath, payLoad)
-		return payLoad
+	if err != nil {
+		util.Error("GetGLP", err.Error())
+		return nil, err
 	}
 
-	resp, err := cache.Get(apiPath)
-	if err != nil {
-		resp = doCache(cache)
+	if status != http.StatusOK {
+		util.Info("[GetGLP] Status Returned: ", status)
+		return nil, err
 	}
 
 	data := &entity.GLP{}
 	if err := jsoniter.Unmarshal(resp, data); err != nil {
-		// bad cache data. recache
-		doCache(cache)
-
 		util.Error("GetGLP", err.Error())
 		return nil, err
 	}

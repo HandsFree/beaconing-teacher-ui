@@ -1,16 +1,11 @@
 package api
 
 import (
-	"errors"
 	"fmt"
 	"log"
 	"strings"
 	"time"
 
-	"database/sql"
-
-	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
-	"github.com/allegro/bigcache"
 	"github.com/gin-gonic/gin"
 
 	// psql stuff
@@ -109,38 +104,10 @@ func SetupAPIHelper() {
 	API = newAPIHelper()
 }
 
-const CachingDisabled = true
-
-type CacheWrapper struct {
-	*bigcache.BigCache
-}
-
-func newCacheWrapper(inst *bigcache.BigCache) *CacheWrapper {
-	return &CacheWrapper{inst}
-}
-
-func (c *CacheWrapper) Get(key string) ([]byte, error) {
-	if CachingDisabled {
-		return []byte{}, errors.New("Caching disabled")
-	}
-	return c.BigCache.Get(key)
-}
-
-func LittleCacheInstance() *CacheWrapper {
-	return API.littleCache
-}
-
-func BigCacheInstance() *CacheWrapper {
-	return API.cache
-}
-
 // CoreAPIManager manages all of the api middleman requests, etc.
 // as well as caching any json/requests that are frequently requested
 type CoreAPIManager struct {
-	APIPath     string
-	littleCache *CacheWrapper
-	cache       *CacheWrapper
-	db          *sql.DB
+	APIPath string
 }
 
 // getPath creates an API path, appending on the given beaconing URL
@@ -158,94 +125,7 @@ func (a *CoreAPIManager) getPath(s *gin.Context, args ...string) string {
 // database could be a lot better.
 // but for now it works.
 func newAPIHelper() *CoreAPIManager {
-	util.BigLog(util.VerboseLog, "Creating new API instance:\n",
-		"* DB USER:", cfg.Beaconing.DB.Username, "\n",
-		"* DB PASS:", cfg.Beaconing.DB.Password, "\n",
-		"* DB NAME:", cfg.Beaconing.DB.Name, "\n",
-		"* DB SSL ENABLED:", cfg.Beaconing.DB.SSL)
-
-	sslMode := "verify-full"
-	if !cfg.Beaconing.DB.SSL {
-		sslMode = "disable"
-	}
-
-	connStr := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=%s",
-		cfg.Beaconing.DB.Username,
-		cfg.Beaconing.DB.Password,
-		cfg.Beaconing.DB.Name,
-		sslMode)
-
-	util.Verbose("Attempting connection to PSQL database")
-
-	db, err := sql.Open("postgres", connStr)
-	if err != nil {
-		util.Fatal("Failed to open db conn", err.Error())
-	}
-
-	err = db.Ping()
-	if err != nil {
-		util.Fatal("Failed to open db conn", err.Error())
-	}
-
-	util.Verbose("Database connection established")
-
-	// the smaller cache is for more smaller cache
-	// writes which are perhaps more frequent and
-	// in addition are cached for less time.
-	littleCache, err := bigcache.NewBigCache(bigcache.Config{
-		Shards:             1024,
-		LifeWindow:         1 * time.Minute,
-		MaxEntriesInWindow: 1000 * 10 * 60,
-		MaxEntrySize:       500,
-		Verbose:            true,
-		HardMaxCacheSize:   8192,
-		OnRemove:           nil,
-	})
-
-	// this is the big cache which is for larger
-	// caches, e.g. the /glps request which will
-	// return a 16 MB response..
-	cache, err := bigcache.NewBigCache(bigcache.Config{
-		// number of shards (must be a power of 2)
-		Shards: 1024,
-
-		// time after which entry can be evicted
-		LifeWindow: 10 * time.Minute,
-
-		// rps * lifeWindow, used only in initial memory allocation
-		MaxEntriesInWindow: 1000 * 10 * 60,
-
-		// max entry size in bytes, used only in initial memory allocation
-		// -- about a 24mb max entry.
-		MaxEntrySize: 8192 * 3,
-
-		// prints information about additional memory allocation
-		Verbose: true,
-
-		// NOTICE
-		// glp is assumed to be around a 16 MB request so 16384
-		// bytes. the hard max cache size allows for 32 of these requests
-		// (also used for other data we cache)
-
-		// cache will not allocate more memory than this limit, value in MB
-		// if value is reached then the oldest entries can be overridden for the new ones
-		// 0 value means no size limit
-		HardMaxCacheSize: 16384 * 32,
-
-		// callback fired when the oldest entry is removed because of its expiration time or no space left
-		// for the new entry, or because delete was called. A bitmask representing the reason will be returned.
-		// Default value is nil which means no callback and it prevents from unwrapping the oldest entry.
-		OnRemove: nil,
-	})
-
-	if err != nil {
-		log.Println("failed to initialize cache")
-	}
-
 	return &CoreAPIManager{
-		APIPath:     "https://core.beaconing.eu/api/",
-		littleCache: newCacheWrapper(littleCache),
-		cache:       newCacheWrapper(cache),
-		db:          db,
+		APIPath: "https://core.beaconing.eu/api/",
 	}
 }

@@ -27,27 +27,15 @@ func GetUserID(s *gin.Context) (uint64, error) {
 // GetCurrentUser returns an object with information about the current
 // user, as well as the JSON string decoded from the object.
 func GetCurrentUser(s *gin.Context) (*entity.CurrentUser, error) {
-	cache := LittleCacheInstance()
-
-	doCache := func(cache *CacheWrapper) []byte {
-		resp, err, status := DoTimedRequest(s, "GET", API.getPath(s, "currentuser"))
-		if err != nil {
-			util.Error("GetCurrentUser", err.Error())
-			return []byte{}
-		}
-
-		if status != http.StatusOK {
-			util.Info("[GetCurrentUser] Status Returned: ", status)
-			return []byte{}
-		}
-
-		cache.Set("profile", resp)
-		return resp
+	resp, err, status := DoTimedRequest(s, "GET", API.getPath(s, "currentuser"))
+	if err != nil {
+		util.Error("GetCurrentUser", err.Error())
+		return nil, err
 	}
 
-	resp, err := cache.Get("profile")
-	if err != nil {
-		resp = doCache(cache)
+	if status != http.StatusOK {
+		util.Info("[GetCurrentUser] Status Returned: ", status)
+		return nil, err
 	}
 
 	teacher := &entity.CurrentUser{}
@@ -55,8 +43,6 @@ func GetCurrentUser(s *gin.Context) (*entity.CurrentUser, error) {
 		util.Error("GetCurrentUser", err.Error())
 		return nil, err
 	}
-
-	// TODO probably some caching can be done here.
 
 	// try load the user avatar from the local
 	// database, if we fail  set the user avatar

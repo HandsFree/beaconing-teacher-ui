@@ -9,33 +9,15 @@ import (
 )
 
 func Student(s *gin.Context, id uint64) (entity.Student, error) {
-	cache := api.BigCacheInstance()
-
-	doCache := func(cache *api.CacheWrapper) []byte {
-		data, err := api.GetStudent(s, id)
-		if err != nil {
-			util.Error("parse.Student", err.Error())
-			return []byte{}
-		}
-
-		payload := []byte(data)
-		cache.Set("parse_student", payload)
-		return payload
-	}
-
-	resp, err := cache.Get("parse_student")
+	resp, err := api.GetStudent(s, id)
 	if err != nil {
-		resp = doCache(cache)
+		util.Error("parse.Student", err.Error())
+		return entity.Student{}, err
 	}
 
 	// conv json -> objects
 	var student entity.Student
 	if err := jsoniter.Unmarshal([]byte(resp), &student); err != nil {
-		// the data in the cache might be bad in which
-		// case we should re-cache the data so that
-		// we dont repeat this error every request.
-		doCache(cache)
-
 		util.Error("parse.Student", err)
 		return entity.Student{}, err
 	}
@@ -44,33 +26,15 @@ func Student(s *gin.Context, id uint64) (entity.Student, error) {
 }
 
 func Students(s *gin.Context) ([]*entity.Student, error) {
-	cache := api.BigCacheInstance()
-
-	doCache := func(cache *api.CacheWrapper) []byte {
-		data, err := api.GetStudents(s)
-		if err != nil {
-			util.Error("parse.Students", err.Error())
-			return []byte{}
-		}
-
-		payload := []byte(data)
-		cache.Set("parse_students", payload)
-		return payload
-	}
-
-	resp, err := cache.Get("parse_students")
+	resp, err := api.GetStudents(s)
 	if err != nil {
-		resp = doCache(cache)
+		util.Error("parse.Students", err.Error())
+		return []*entity.Student{}, err
 	}
 
 	// conv json -> objects
 	var students []*entity.Student
 	if err := jsoniter.Unmarshal([]byte(resp), &students); err != nil {
-		// the data in the cache might be bad in which
-		// case we should re-cache the data so that
-		// we dont repeat this error every request.
-		doCache(cache)
-
 		util.Error("parse.Students", err)
 		return nil, err
 	}

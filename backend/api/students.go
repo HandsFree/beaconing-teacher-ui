@@ -24,33 +24,19 @@ import (
 // one thing I want to do is extract all the id's from the json
 // then we can do one big query to the database asking for all of the ids
 func GetStudents(s *gin.Context) (string, error) {
-	cache := BigCacheInstance()
-
-	doCache := func(cache *CacheWrapper) []byte {
-		resp, err, status := DoTimedRequest(s, "GET", API.getPath(s, "students"))
-		if err != nil {
-			util.Error("GetStudents", err.Error())
-			return []byte{}
-		}
-
-		if status != http.StatusOK {
-			util.Info("[GetStudents] Status Returned: ", status)
-			return []byte{}
-		}
-
-		payLoad := []byte(resp)
-		cache.Set("students", payLoad)
-		return payLoad
+	resp, err, status := DoTimedRequest(s, "GET", API.getPath(s, "students"))
+	if err != nil {
+		util.Error("GetStudents", err.Error())
+		return "", err
 	}
 
-	resp, err := cache.Get("students")
-	if err != nil {
-		resp = doCache(cache)
+	if status != http.StatusOK {
+		util.Info("[GetStudents] Status Returned: ", status)
+		return "", err
 	}
 
 	students := []*entity.Student{}
 	if err := jsoniter.Unmarshal(resp, &students); err != nil {
-		go doCache(cache)
 		util.Error("GetStudents", err.Error(), "resp was", string(resp))
 		return "", err
 	}
@@ -85,29 +71,17 @@ func GetStudents(s *gin.Context) (string, error) {
 // re-encode it. if anything fails, including hashing the avatar,
 // this will return an empty string and an error.
 func GetStudent(s *gin.Context, studentID uint64) (string, error) {
-	cache := LittleCacheInstance()
 	apiPath := API.getPath(s, "students/", fmt.Sprintf("%d", studentID))
 
-	doCache := func(cache *CacheWrapper) []byte {
-		data, err, status := DoTimedRequest(s, "GET", apiPath)
-		if err != nil {
-			util.Error("GetStudent", err.Error())
-			return []byte{}
-		}
-
-		if status != http.StatusOK {
-			util.Info("[GetStudent] Status Returned: ", status)
-			return []byte{}
-		}
-
-		payLoad := []byte(data)
-		cache.Set(apiPath, payLoad)
-		return payLoad
+	data, err, status := DoTimedRequest(s, "GET", apiPath)
+	if err != nil {
+		util.Error("GetStudent", err.Error())
+		return "", err
 	}
 
-	data, err := cache.Get(apiPath)
-	if err != nil {
-		data = doCache(cache)
+	if status != http.StatusOK {
+		util.Info("[GetStudent] Status Returned: ", status)
+		return "", err
 	}
 
 	// turn into json and slap in the student encoding hash
@@ -115,11 +89,11 @@ func GetStudent(s *gin.Context, studentID uint64) (string, error) {
 	// FIXME/TODO this is stupid and slower!!
 	student := &entity.Student{}
 	if err := jsoniter.Unmarshal(data, student); err != nil {
-		go doCache(cache)
 		util.Error("GetStudent", err.Error())
 		return "", err
 	}
 
+	// sets the identicon sha to the studentID+studentUsername
 	input := fmt.Sprintf("%d%s", student.ID, student.Username)
 	hmac512 := hmac.New(sha512.New, []byte("what should the secret be!"))
 	hmac512.Write([]byte(input))
