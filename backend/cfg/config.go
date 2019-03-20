@@ -16,7 +16,6 @@ type tomlConfig struct {
 	Title        string
 	Auth         authInfo
 	Localisation localisationInfo
-	DB           databaseInfo
 	Server       serverInfo
 	Debug        debugInfo
 }
@@ -26,24 +25,18 @@ type localisationInfo struct {
 	MapFile string `toml:"map_file"`
 }
 
-type databaseInfo struct {
-	Username string `toml:"username"`
-	Password string `toml:"password"`
-	Name     string `toml:"name"`
-	SSL      bool   `toml:"ssl"`
-}
-
 type authInfo struct {
 	ID     string `toml:"id"`
 	Secret string `toml:"secret"`
 }
 
 type serverInfo struct {
-	Local        bool `toml:"local"`
-	Host         string `toml:"host"`
-	Port         uint16 `toml:"port"`
-	RootPath     string `toml:"root_path"`
-	GlpFilesPath string `toml:"glp_files_path"`
+	Local             bool   `toml:"local"`
+	Host              string `toml:"host"`
+	Port              uint16 `toml:"port"`
+	RootPath          string `toml:"root_path"`
+	GlpFilesPath      string `toml:"glp_files_path"`
+	BeaconingAPIRoute string `toml:"beaconing_api_route"`
 }
 
 type debugInfo struct {

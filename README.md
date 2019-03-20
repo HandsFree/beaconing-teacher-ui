@@ -11,11 +11,6 @@
   <a href="http://beaconing.eu/">Website</a> • <a href="https://www.facebook.com/beaconing/">Facebook</a> • <a href="https://twitter.com/BeaconingEU">Twitter</a>
 </p>
 <p align="center">
-  <a href="https://waffle.io/HandsFree/beaconing-teacher-ui">
-    <img src="https://badge.waffle.io/HandsFree/beaconing-teacher-ui.svg?columns=all" alt="Waffle.io">
-  </a>
-</p>
-<p align="center">
   <a href="https://semaphoreci.com/juddus/beaconing-teacher-ui">
     <img src="https://semaphoreci.com/api/v1/juddus/beaconing-teacher-ui/branches/nightly/badge.svg" alt="Build Status">
   </a>
@@ -83,12 +78,6 @@ The config file is stored in cfg/config.toml. Below is an example of a configura
 
 config.toml
 ```toml
-[db]
-username = "beaconing_db_user"
-password = "123ABCCBA"
-name = "beaconing"
-ssl = false
-
 [auth]
 id = "teacherui"
 secret = "UrqTSjfnaWsaJHCTfGeU6YyEVNa3c2QzE8GrTLcoK1kljsNB3HrG6jXAGI6q8wKR"
@@ -99,6 +88,7 @@ host = ""
 port = 8080
 root_path = "./../frontend/public/"
 glp_files_path = "./glp_files/"
+beaconing_api_route = "https://core.beaconing.eu/api/"
 
 [localisation]
 map_file = "./trans.map"
@@ -143,18 +133,6 @@ $ export GIN_MODE=release
 fish
 ```
 $ set -x GIN_MODE release
-```
-
-#### Database configuration
-A schema for the PSQL DB is provided in the root of the repo.
-
-The user `beaconing_db_user` will be created with the default password of `123ABCCBA`
-
-##### Applying the schema
-```
-$ sudo -u postgres -i
-$ createdb beaconing
-$ psql beaconing < beaconing.schema.sql
 ```
 
 #### Running the backend

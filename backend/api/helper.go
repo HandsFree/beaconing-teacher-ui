@@ -134,8 +134,7 @@ func Cache() *cache.Cache {
 // but for now it works.
 func newAPIHelper() *CoreAPIManager {
 	return &CoreAPIManager{
-		// TODO change this to be a config setting
-		APIPath: "https://core.beaconing.eu/api/",
+		APIPath: cfg.Beaconing.Server.BeaconingAPIRoute,
 		cache:   cache.New(30*time.Minute, 10*time.Minute),
 	}
 }
