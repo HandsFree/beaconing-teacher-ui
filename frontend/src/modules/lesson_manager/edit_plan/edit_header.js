@@ -110,6 +110,7 @@ class EditHeader extends Component {
                     a(
                         {
                             href: `//${window.location.host}/authoring_tool?id=${encodeURIComponent(glp.id)}`,
+                            target: '_BLANK',
                         },
                         button('.action', await window.beaconingAPI.getPhrase('open_in_at')),
                     ),
