@@ -25,6 +25,7 @@ echo "protocol = \"\"" >> cfg/config.toml
 echo "port = 8080" >> cfg/config.toml
 echo "root_path = \"./files\"" >> cfg/config.toml
 echo "glp_files_path = \"glp_files/\"" >> cfg/config.toml
+echo "beaconing_api_route = \"https://core.beaconing.eu/api/\"" >> cfg/config.toml
 echo "[localisation]" >> cfg/config.toml
 echo "map_file = \"./trans.map\"" >> cfg/config.toml
 echo "key_file = \"./trans.keys\"" >> cfg/config.toml
