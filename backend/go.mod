@@ -22,7 +22,7 @@ require (
 	github.com/pkg/errors v0.8.1 // indirect
 	github.com/stretchr/testify v1.3.0
 	github.com/thinkerou/favicon v0.1.0
-	golang.org/x/net v0.0.0-20190404005034-b630fd6fe46b // indirect
+	golang.org/x/net v0.0.0-20190404235954-eb5bcb51f2a3 // indirect
 	golang.org/x/sync v0.0.0-20190228034959-e225da77a7e6 // indirect
 	golang.org/x/sys v0.0.0-20190404005218-81d4e9dc473e // indirect
 	gopkg.in/h2non/filetype.v1 v1.0.5
