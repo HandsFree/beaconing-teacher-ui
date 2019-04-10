@@ -4,7 +4,7 @@ require (
 	github.com/BurntSushi/toml v0.3.1
 	github.com/allegro/bigcache v1.2.0
 	github.com/bcicen/grmon v0.0.0-20180322004815-9e5e49d99f7c
-	github.com/certifi/gocertifi v0.0.0-20190105023059-abcd57078448 // indirect
+	github.com/certifi/gocertifi v0.0.0-20190410014155-59a85de7f35e // indirect
 	github.com/felixangell/fuzzysearch v1.0.1-0.20180204213259-cfc75cad5319
 	github.com/getsentry/raven-go v0.2.0
 	github.com/gin-contrib/gzip v0.0.1
