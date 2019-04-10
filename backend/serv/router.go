@@ -52,40 +52,47 @@ func createSessionSecret(size int) []byte {
 	return sessionKey
 }
 
+// GetRouterEngine is where the magic happens. This is the
+// core router. Its been split up into this separate function for
+// easily creating engine instances for external testing.
+//
+// this is invoked from main.go
 func GetRouterEngine() *gin.Engine {
 	router := gin.Default()
 
 	// use ssessions with cookie store
-	store := cookie.NewStore(createSessionSecret(32), createSessionSecret(16))
-	router.Use(sessions.Sessions("beaconing", store))
+	cookieStore := cookie.NewStore(createSessionSecret(32), createSessionSecret(16))
 
-	// gzip resources
-	router.Use(gzip.Gzip(gzip.BestSpeed))
+	router.Use(
+		sessions.Sessions("beaconing", cookieStore),
 
-	// Add favicon
-	router.Use(favicon.New("./favicon.ico"))
+		// gzip resources
+		gzip.Gzip(gzip.BestSpeed),
 
-	// token auth middleware
-	router.Use(TokenAuth())
+		// specify favicon
+		favicon.New("./favicon.ico"),
 
-	// Add sentry for development
-	router.Use(sentry.Recovery(raven.DefaultClient, false))
+		// token auth middleware
+		TokenAuth(),
 
-	// 404 page.
+		// sentry for dev logs
+		sentry.Recovery(raven.DefaultClient, false),
+	)
+
+	// set a 404 for no route.
 	router.NoRoute(func(c *gin.Context) {
 		c.AbortWithStatus(http.StatusNotFound)
 	})
 
-	// Load the main template file
+	// this is the main template file.
 	router.LoadHTMLFiles("./templates/index.html", "./templates/unauthorised_user.html")
 
-	// Serve all static files
+	// the dist with all the static files.
 	router.Static("/dist", "./../frontend/public/dist")
 
 	router.RedirectTrailingSlash = true
 
 	registerPages(router)
-	registerWidgets(router)
 	registerAPI(router)
 
 	return router

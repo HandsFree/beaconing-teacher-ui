@@ -40,7 +40,8 @@ Licensed under GNU AGPLv3. See the `LICENSE.md` file for the full license.
 
 ## Installation
 Cloning the repo should be done using Go:
-```
+
+```bash
 $ go get github.com/HandsFree/beaconing-teacher-ui
 ```
 
@@ -48,26 +49,28 @@ $ go get github.com/HandsFree/beaconing-teacher-ui
 #### Installing deps
 As simple as running yarn.
 In the frontend folder run:
-```
+
+```bash
 $ yarn
 ```
-#### Building
-Can be build in either production mode (uglified and minified):
 
-```
+#### Building
+Can be built in either production mode (uglified and minified):
+
+```bash
 $ yarn bp
 ```
 
-or in development mode:
+Or in development mode:
 
-```
+```bash
 $ yarn b
 ```
 
 ### Backend
 #### Installing
 In the backend folder type:
-```
+```bash
 $ go build -o beaconing
 ```
 
@@ -126,18 +129,18 @@ Changes to the host configuration will only take place once gin is running in Re
 To change gin to Release mode the variable `GIN_MODE` must be exported with the value `release`:
 
 bash
-```
+```bash
 $ export GIN_MODE=release
 ```
 
 fish
-```
+```bash
 $ set -x GIN_MODE release
 ```
 
 #### Running the backend
 In the backend folder:
-```
+```bash
 $ ./beaconing
 ```
 

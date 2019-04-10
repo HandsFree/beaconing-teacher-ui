@@ -87,6 +87,13 @@ const optLoaders = [
     // },
 ];
 
+const videoFileLoader = {
+    loader: 'file-loader',
+    options: {
+        outputPath: 'videos/',
+    },
+};
+
 //
 // ─── MAIN CONFIG ────────────────────────────────────────────────────────────────
 //
@@ -140,6 +147,12 @@ const mainSettings = (dev, devServer, dash, verbose) => {
                         ...optLoaders,
                         postCSSLoader,
                         'sass-loader',
+                    ],
+                },
+                {
+                    test: /\.mp4$/,
+                    use: [
+                        videoFileLoader,
                     ],
                 },
                 {

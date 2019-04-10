@@ -28,8 +28,6 @@ var API *CoreAPIManager
 // timeout for api requests (set to 120 seconds temporarily)
 const timeout = 120 * time.Second
 
-// ────────────────────────────────────────────────────────────────────────────────
-
 // GetOutboundIP is a helper function to get the
 // current computers outbound IP.
 func GetOutboundIP() net.IP {

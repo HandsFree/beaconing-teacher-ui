@@ -1,0 +1,82 @@
+.shortcuts-container {
+    display: flex;
+    justify-content: space-around;
+    margin: 3em auto;
+}
+
+.shortcut {
+    display: flex;
+    background:white;
+    border: 2px solid $border_color;
+    padding: 2em;
+    margin-right: 3em;
+
+    i {
+        font-size: 2.5em;
+        color: $bcn_light_orange;
+    }
+
+    &:last-child {
+        margin-right: 0;
+    }
+}
+
+.greeting {
+    > h1 {
+        margin-bottom: 0;
+    }
+}
+
+.dashboard-container {
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    grid-template-areas: "text" "video";
+}
+
+.dashboard-intro {
+    grid-area: text;
+}
+
+.video-container {
+    grid-area: video;
+}
+.video-container .video {
+    width: 100%;
+    border: 2px solid $border_color;
+    outline: none;
+}
+
+// bulletin board stuff
+
+.bulletin-board {
+    display: flex;
+    outline: none;
+    background: $border_color;
+    flex-direction: column;
+    border: 2px solid $border_color;
+    margin-top: 2.5em;
+}
+
+.bulletin-response {
+    display: flex;
+    flex-direction: column;
+    min-width: 4em;
+}
+
+.bulletin-message {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    align-items: stretch;
+    width: 100%;
+
+    > .title {
+        font-weight: 400;
+    }
+}
+
+.bulletin-input {
+    border: none;
+    background: $border_color;
+    outline: none;
+}

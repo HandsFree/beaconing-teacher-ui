@@ -19,6 +19,10 @@ type Profile struct {
 	Address Address `json:"address"`
 }
 
+type Students struct {
+	Data []Student
+}
+
 type Student struct {
 	ID              uint64  `json:"id"`
 	Username        string  `json:"username"`

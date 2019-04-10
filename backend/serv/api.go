@@ -16,6 +16,11 @@ func registerAPI(router *gin.Engine) {
 
 	v1 := router.Group("/api/v1/")
 
+	{
+		// FIXME move this under a category. do we still need this?
+		v1.GET("active_lesson_plans", req.GetActiveLessonPlansWidget())
+	}
+
 	lang := v1.Group("lang")
 	{
 		// FIXME move into a handler func.

@@ -60,12 +60,15 @@ func LoadConfig() {
 
 	util.Verbose("Loading configuration file from ", filePath)
 
+	// read the file
 	configFileData, fileReadErr := ioutil.ReadFile(filePath)
 	if fileReadErr != nil {
 		log.Fatal("Failed to read file ", filePath, "\n- error: ", fileReadErr.Error())
 		return
 	}
 
+	// decode this file as toml, any problems with the
+	// toml code will be caught here.
 	if _, decodeErr := toml.Decode(string(configFileData), &Beaconing); decodeErr != nil {
 		log.Fatal(decodeErr)
 		return
@@ -102,10 +105,25 @@ func LoadTranslationKeys() map[string]string {
 
 	result := map[string]string{}
 
+	// here we read the translation keys
+	// with a scanner, processing it line by line
 	scanner := bufio.NewScanner(file)
+
 	for scanner.Scan() {
 		line := scanner.Text()
+
+		// a translation key looks like this
+		// key => val
+		// so we can simply split like so
 		cols := strings.Split(line, "=>")
+
+		// if there aren't two values then
+		// the mapping on this line is malformed.
+		if len(cols) != 2 {
+			log.Fatal("Malformed trans key file, specifically this line:\n\t", line)
+			continue
+		}
+
 		key, english := cols[0], cols[1]
 		result[english] = key
 	}

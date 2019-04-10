@@ -7,3 +7,9 @@ type LessonPlan struct {
 	ID  uint64 `json:"id"`
 	GLP *GLP   `json:"glp"`
 }
+
+type LessonPlanWidget struct {
+	Name string `json:"name"`
+	Desc string `json:"description"`
+	Link string `json:"link"`
+}

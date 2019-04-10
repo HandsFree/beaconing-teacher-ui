@@ -8,7 +8,7 @@ const {
     link, main, meta, meter, nav, option, p, pre, script,
     section, select, small, span, strong, summary,
     textarea, u, ul,
-    table, tr, td, th,
+    table, tr, td, th, video, source,
 } = require('hyperscript-helpers')(h);
 
 export {
@@ -19,5 +19,5 @@ export {
     link, main, meta, meter, nav, option, p, pre, script,
     section, select, small, span, strong, summary,
     textarea, u, ul,
-    table, tr, td, th,
+    table, tr, td, th, video, source,
 };
