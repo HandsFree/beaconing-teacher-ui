@@ -29,20 +29,18 @@
 
 .dashboard-container {
     display: grid;
-    grid-template-columns: 2fr 3fr;
-    grid-template-areas: "text" "video";
+    grid-template-columns: 60% 40%;
 }
 
 .dashboard-intro {
-    grid-area: text;
+    display: flex;
+    flex-direction: column;
 }
 
 .video-container {
-    grid-area: video;
 }
-.video-container .video {
+.video-container video {
     width: 100%;
-    border: 2px solid $border_color;
     outline: none;
 }
 

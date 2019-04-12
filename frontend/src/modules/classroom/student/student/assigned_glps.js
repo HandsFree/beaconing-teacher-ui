@@ -60,7 +60,7 @@ class AssignedGLPs extends Component {
                 {
                     href: `//${window.location.host}/lesson_manager`,
                 },
-                await window.beaconingAPI.getPhrase('cr_go_to_lib'),
+                await window.beaconingAPI.getPhrase('pc_go_library'),
             ),
         );
 
