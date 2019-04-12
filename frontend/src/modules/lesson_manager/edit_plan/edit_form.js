@@ -84,9 +84,9 @@ class EditGLPForm extends Form {
             planYear: this.glp?.year || 0,
             planLearningObjectives: this.glp?.learningObjectives || [],
             planCompetences: {
-                communicationAndCollaboration: this.glp?.competences.indexOf('communicationAndCollaboration') !== -1,
-                problemSolving: this.glp?.competences.indexOf('problemSolving') !== -1,
-                informationFluency: this.glp?.competences.indexOf('informationFluency') !== -1,
+                communicationAndCollaboration: this.glp?.competences?.indexOf('communicationAndCollaboration') !== -1,
+                problemSolving: this.glp?.competences?.indexOf('problemSolving') !== -1,
+                informationFluency: this.glp?.competences?.indexOf('informationFluency') !== -1,
             },
             planPublic: this.glp?.public,
         };
