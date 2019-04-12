@@ -16,7 +16,7 @@ func registerAPI(router *gin.Engine) {
 	lang := v1.Group("lang")
 	{
 		lang.GET("/:code/phrase/:key", req.GetTranslation())
-		lang.POST("/phrase", req.GetTranslationPhrases())
+		lang.POST("/phrases", req.GetTranslationPhrases())
 	}
 
 	// FIXME(Felix): this probably falls under some kind of

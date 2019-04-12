@@ -30,7 +30,7 @@ func main() {
 	api.SetupAPIHelper()
 
 	server := &http.Server{
-		Addr:    fmt.Sprintf(":%d", cfg.Beaconing.Server.Port),
+		Addr:    fmt.Sprintf("%s:%d", cfg.Beaconing.Server.Host, cfg.Beaconing.Server.Port),
 		Handler: serv.GetRouterEngine(),
 	}
 
