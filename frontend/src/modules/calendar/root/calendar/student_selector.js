@@ -1,5 +1,12 @@
 // @flow
-import { a, section, p, div } from '../../../../core/html';
+import {
+    a,
+    section,
+    p,
+    div,
+    input,
+} from '../../../../core/html';
+
 import { Component } from '../../../../core/component';
 import Loading from '../../../loading';
 import nullishCheck from '../../../../core/util';
@@ -34,12 +41,7 @@ class CalendarSelectedGroup extends Component {
 
     async render() {
         const {
-            id,
             name,
-        } = this.props;
-
-        const {
-            username,
         } = this.props;
 
         const card = div(
@@ -114,7 +116,60 @@ class CalendarSelectedStudent extends Component {
     }
 }
 
-class StudentSelector extends Component {
+class StudentList extends Component {
+    updateHooks = {
+        'FilterStudentList': this.filterStudentList,
+    };
+
+    async init() {
+        const studentsSet = await window.beaconingAPI.getStudents();
+        this.state = {
+            studentsSet: studentsSet,
+            selected: studentsSet,
+        };
+    }
+
+    filterStudentList(event: CustomEvent) {
+        const { detail } = event;
+        
+        const { value } = detail.target;
+
+        let selected = [];
+
+        const query = value.toLowerCase();
+        for (const student of this.state.studentsSet) {
+            const { username } = student;
+            if (username.toLowerCase().indexOf(query) != -1) {
+                selected.push(student);
+            }
+        }
+
+        this.state.selected = selected;
+        this.reloadAndRender();
+    }
+
+    async reloadAndRender() {
+        const selItemsProm = [];
+        const { selected } = this.state;
+
+        for (const student of selected) {
+            const selItem = new CalendarSelectedStudent();
+            const selItemEl = selItem.attach({
+                id: student.id,
+                username: student.username,
+            });
+            selItemsProm.push(selItemEl);
+        }
+
+        const studentsEl = await Promise.all(selItemsProm).then(elements => elements);
+        this.updateView(
+            div(
+                '.calendar-students-list',
+                studentsEl,
+            )
+        );
+    }
+
     async render() {
         const loading = new Loading();
 
@@ -122,32 +177,72 @@ class StudentSelector extends Component {
             msg: await window.beaconingAPI.getPhrase('ld_students'),
         });
 
-        return section(
-            '.flex-column',
-            loadingEl,
-        );
+        return div(loadingEl);
     }
 
     async afterMount() {
-        const studentsSet = await window.beaconingAPI.getStudents();
-        const selItemsProm = [];
-
-        for (const student of studentsSet) {
-            const selItem = new CalendarSelectedStudent();
-            const selItemEl = selItem.attach({
-                id: student.id,
-                username: student.username,
-            });
-
-            selItemsProm.push(selItemEl);
-        }
-
-        const studentsEl = await Promise.all(selItemsProm).then(elements => elements);
-        this.updateView(studentsEl);
+        // this is kindy of hacky but the rendering
+        // is delegated to the following function so
+        // it can be invoked when the updatehook is called.
+        this.reloadAndRender();
     }
 }
 
-class GroupSelector extends Component {
+class StudentSelector extends Component {
+    async render() {
+        const studentsList = new StudentList();
+        const studentsListEl = await studentsList.attach();
+
+        return section(
+            '.flex-column',
+
+            input(
+                '.calendar-student-filter-box',
+                {
+                    type: 'text',
+                    placeholder: 'Filter by student name',
+                    onkeyup: (event) => {
+                        this.emit('FilterStudentList', event);
+                    },
+                },
+            ),
+            studentsListEl,
+        );
+    }
+}
+
+class GroupList extends Component {
+    updateHooks = {
+        'FilterGroupList': this.filterGroupList,
+    };
+
+    async init() {
+        const groupSet = await window.beaconingAPI.getGroups();
+        this.state = {
+            groupSet: groupSet,
+            selected: groupSet,
+        };
+    }
+
+    filterGroupList(event: CustomEvent) {
+        const { detail } = event;
+        
+        const { value } = detail.target;
+
+        let selected = [];
+
+        const query = value.toLowerCase();
+        for (const group of this.state.groupSet) {
+            const { name } = group;
+            if (name.toLowerCase().indexOf(query) != -1) {
+                selected.push(group);
+            }
+        }
+
+        this.state.selected = selected;
+        this.reloadAndRender();
+    }
+    
     async render() {
         const loading = new Loading();
 
@@ -161,22 +256,53 @@ class GroupSelector extends Component {
         );
     }
 
-    async afterMount() {
-        const groupSet = await window.beaconingAPI.getGroups();
+    async reloadAndRender() {
         const selItemsProm = [];
-
-        for (const group of groupSet) {
+        
+        const { selected } = this.state;
+        for (const group of selected) {
             const selItem = new CalendarSelectedGroup();
             const selItemEl = selItem.attach({
                 id: group.id,
                 name: group.name,
             });
-
             selItemsProm.push(selItemEl);
         }
 
         const groupsEl = await Promise.all(selItemsProm).then(elements => elements);
-        this.updateView(groupsEl);
+        this.updateView(
+            div(
+                '.calendar-groups-list',
+                groupsEl,
+            )
+        );
+    }
+
+    async afterMount() {
+        this.reloadAndRender();
+    }
+}
+
+class GroupSelector extends Component {
+    async render() {
+        const groupList = new GroupList();
+        const groupListEl = await groupList.attach();
+
+        return section(
+            '.flex-column',
+
+            input(
+                '.calendar-student-filter-box',
+                {
+                    type: 'text',
+                    placeholder: 'Filter by group name',
+                    onkeyup: (event) => {
+                        this.emit('FilterGroupList', event);
+                    },
+                },
+            ),
+            groupListEl,
+        );
     }
 }
 

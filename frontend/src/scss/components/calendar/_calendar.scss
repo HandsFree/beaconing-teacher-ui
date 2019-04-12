@@ -84,6 +84,18 @@
 	border: 2px solid $border_color;
 }
 
+.calendar-student-filter-box {
+	display: block;
+	border: 2px solid $border_color;
+	margin: 0.5em;
+	padding: 1em 2em;
+}
+
+.calendar-students-list, .calendar-groups-list {
+	display: flex;
+	flex-direction: column;
+}
+
 .prev-month,
 .next-month {
 	color: #999;

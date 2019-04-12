@@ -26,7 +26,6 @@ class CalendarController extends Component {
     }
 
     async init() {
-        console.log('INIT CAL');
         const interfaceKeys = [
             'cal', 'cal_prev', 'cal_current', 'cal_next',
         ];
