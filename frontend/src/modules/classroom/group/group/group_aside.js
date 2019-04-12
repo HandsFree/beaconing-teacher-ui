@@ -12,6 +12,11 @@ import {
 import { Component } from '../../../../core/component';
 import Status from '../../../status';
 
+const translationKeys = [
+    'con_delete_group', 'err_group_nd', 'edit', 'cr_students',
+    'cr_assigned_glps',
+];
+
 class GroupAside extends Component {
     editMode: boolean = false;
 
@@ -69,7 +74,7 @@ class GroupAside extends Component {
             return;
         }
 
-        const delGroupTranslation = await window.beaconingAPI.getPhrase('con_delete_group');
+        const delGroupTranslation = this.state.trans.get('con_delete_group');
         if (!confirm(delGroupTranslation)) {
             return;
         }
@@ -91,13 +96,17 @@ class GroupAside extends Component {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: await window.beaconingAPI.getPhrase('err_group_nd'),
+            message: this.state.trans.get('err_group_nd'),
         });
 
         this.appendView(statusMessageEl);
     }
 
     async init() {
+        this.state = {
+            trans: await window.beaconingAPI.getPhrases(...translationKeys),
+        };
+
         const group = await window.beaconingAPI.getGroup(this.props.id);
 
         if (group) {
@@ -119,7 +128,7 @@ class GroupAside extends Component {
                 a(
                     '#group-edit-button',
                     {
-                        title: await window.beaconingAPI.getPhrase('edit'),
+                        title: this.state.trans.get('edit'),
                         onclick: () => {
                             this.handleEditClick();
                         },
@@ -140,7 +149,7 @@ class GroupAside extends Component {
                             this.emit('GroupStudentsClicked');
                         },
                     },
-                    span(await window.beaconingAPI.getPhrase('cr_students')),
+                    span(this.state.trans.get('cr_students')),
                 ),
                 a(
                     '.item',
@@ -152,7 +161,7 @@ class GroupAside extends Component {
                             this.emit('AssignedGLPsClicked');
                         },
                     },
-                    span(await window.beaconingAPI.getPhrase('cr_assigned_glps')),
+                    span(this.state.trans.get('cr_assigned_glps')),
                 ),
                 a(
                     '.item',

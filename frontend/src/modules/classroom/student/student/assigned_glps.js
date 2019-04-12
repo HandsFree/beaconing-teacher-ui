@@ -38,6 +38,7 @@ class AssignedGLPs extends Component {
                     linkId: glp.linkId,
                     fromGroupID: glp.fromStudentGroupId,
                     fromGroupName: glp.fromStudentGroupName,
+                    readOnly: glp.readOnly,
                 });
 
                 promArr.push(glpBoxProm);

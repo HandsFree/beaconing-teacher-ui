@@ -292,8 +292,6 @@ class AssignedGLPs extends Component {
             const promArr = [];
 
             for (const glp of assignedGLPs) {
-                console.log('hi there the glp is', glp);
-
                 const glpBox = new GLPBox();
 
                 const glpBoxProm = glpBox.attach({
@@ -302,6 +300,7 @@ class AssignedGLPs extends Component {
                     name: glp.name,
                     linkId: glp.linkId,
                     dashboardLink: glp.dashboardLink,
+                    readOnly: glp.readOnly,
                 });
 
                 promArr.push(glpBoxProm);

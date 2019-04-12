@@ -4,7 +4,18 @@ import { div, a, h3 } from '../../../../core/html';
 import { Component } from '../../../../core/component';
 import Status from '../../../status';
 
+const translationKeys = [
+    'view', 'analytics', 'cr_unassign', 'con_unassign_glp',
+    'sc_sa', 'err_group_una',
+];
+
 class GLPBox extends Component {
+    async init() {
+        this.state = {
+            trans: await window.beaconingAPI.getPhrases(...translationKeys),
+        };
+    }
+
     async render() {
         const {
             name,
@@ -29,14 +40,14 @@ class GLPBox extends Component {
                         {
                             href: `//${window.location.host}/lesson_manager#view?id=${glpID}`,
                         },
-                        await window.beaconingAPI.getPhrase('view'),
+                        this.state.trans.get('view'),
                     ),
                     a(
                         '.item',
                         {
                             href: `//${window.location.host}/classroom/group#analytics?id=${glpID}`,
                         },
-                        await window.beaconingAPI.getPhrase('analytics'),
+                        this.state.trans.get('analytics'),
                     ),
                     a(
                         '.item',
@@ -45,7 +56,7 @@ class GLPBox extends Component {
                                 this.unassignPlan();
                             },
                         },
-                        await window.beaconingAPI.getPhrase('cr_unassign'),
+                        this.state.trans.get('cr_unassign'),
                     ),
                 ),
             ),
@@ -53,7 +64,7 @@ class GLPBox extends Component {
     }
 
     async unassignPlan() {
-        const unassignGLPTransl = await window.beaconingAPI.getPhrase('con_unassign_glp');
+        const unassignGLPTransl = this.state.trans.get('con_unassign_glp');
         if (!confirm(unassignGLPTransl)) {
             return;
         }
@@ -75,7 +86,7 @@ class GLPBox extends Component {
                 elementID: false,
                 heading: 'Success',
                 type: 'success',
-                message: await window.beaconingAPI.getPhrase('sc_sa'),
+                message: this.state.trans.get('sc_sa'),
             });
 
             document.body.appendChild(statusMessageEl);
@@ -89,7 +100,7 @@ class GLPBox extends Component {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: await window.beaconingAPI.getPhrase('err_group_una'),
+            message: this.state.trans.get('err_group_una'),
         });
 
         document.body.appendChild(statusMessageEl);

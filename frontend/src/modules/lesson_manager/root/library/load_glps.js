@@ -182,7 +182,7 @@ class LoadGLPs extends Component {
                     updateDate: glp.updatedAt,
                     id: glp.id,
                     owner: glp.owner,
-                    currentUser,
+                    readOnly: glp.readOnly,
                 });
 
                 promArr.push(glpBoxProm);

@@ -4,7 +4,25 @@ import { div, p, a, h3, strong } from '../../../../core/html';
 import { Component } from '../../../../core/component';
 import Status from '../../../status';
 
+const interfaceKeys = [
+    'lm_not_rec', 'never', 'lm_owner', 'view', 'lm_assign', 'lm_created',
+    'lm_domain', 'lm_mod', 'lm_topic',
+];
+
+// TODO
+// in theory it would be better to do the getPhrase once
+// then pass it to this GLPBox, but that's a bit messy
+// passing UI text data to a component
+//
+// however, it would probably be a bit quicker than
+// performong a getPhrase request for every GLPBox.
 class GLPBox extends Component {
+    async init() {
+        this.state = {
+            trans: await window.beaconingAPI.getPhrases(...interfaceKeys),
+        };
+    }
+
     async render() {
         const {
             name,
@@ -14,11 +32,13 @@ class GLPBox extends Component {
             updateDate,
             id,
             owner,
+            readOnly,
         } = this.props;
+        console.log(this.props);
 
-        let dateCreatedText = await window.beaconingAPI.getPhrase('lm_not_rec');
+        let dateCreatedText = this.state.trans.get('lm_not_rec');
         let timeCreatedText = '';
-        let dateUpdatedText = await window.beaconingAPI.getPhrase('never');
+        let dateUpdatedText = this.state.trans.get('never');
         let timeUpdatedText = '';
 
         if (creationDate && creationDate !== '0001-01-01T00:00:00Z') {
@@ -33,6 +53,15 @@ class GLPBox extends Component {
             timeUpdatedText = dateObj.toTimeString();
         }
 
+        // edit button for this glp.
+        const editItem = a(
+            '.item',
+            {
+                href: `#edit?id=${encodeURIComponent(id)}`,
+            },
+            this.state.trans.get('edit'),
+        );
+
         return div(
             '.glp-box.flex-4.flex-column',
             div(
@@ -44,7 +73,7 @@ class GLPBox extends Component {
                     div(
                         p(
                             '.owner',
-                            `${await window.beaconingAPI.getPhrase('lm_owner')} ${owner}`,
+                            `${this.state.trans.get('lm_owner')} ${owner}`,
                         ),
                     ),                    
                     div(
@@ -54,21 +83,15 @@ class GLPBox extends Component {
                             {
                                 href: `#view?id=${encodeURIComponent(id)}`,
                             },
-                            await window.beaconingAPI.getPhrase('view'),
+                            this.state.trans.get('view'),
                         ),
-                        a(
-                            '.item',
-                            {
-                                href: `#edit?id=${encodeURIComponent(id)}`,
-                            },
-                            await window.beaconingAPI.getPhrase('edit'),
-                        ),
+                        readOnly ? [] : editItem,
                         a(
                             '.item',
                             {
                                 href: `#assign?id=${encodeURIComponent(id)}`,
                             },
-                            await window.beaconingAPI.getPhrase('lm_assign'),
+                            this.state.trans.get('lm_assign'),
                         ),
                     ),
                 ),
@@ -77,7 +100,7 @@ class GLPBox extends Component {
                 '.content.flex-column',
                 div(
                     '.created',
-                    strong(`${await window.beaconingAPI.getPhrase('lm_created')}:`),
+                    strong(`${this.state.trans.get('lm_created')}:`),
                     p(
                         {
                             title: timeCreatedText,
@@ -87,17 +110,17 @@ class GLPBox extends Component {
                 ),
                 div(
                     '.domain',
-                    strong(`${await window.beaconingAPI.getPhrase('lm_domain')}:`),
+                    strong(`${this.state.trans.get('lm_domain')}:`),
                     p(domain),
                 ),
                 div(
                     '.topic',
-                    strong(`${await window.beaconingAPI.getPhrase('lm_topic')}:`),
+                    strong(this.state.trans.get('lm_topic')),
                     p(topic),
                 ),
                 div(
                     '.modified',
-                    strong(`${await window.beaconingAPI.getPhrase('lm_mod')}:`),
+                    strong(`${this.state.trans.get('lm_mod')}:`),
                     p(
                         {
                             title: timeUpdatedText,

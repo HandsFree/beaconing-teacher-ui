@@ -7,6 +7,11 @@ import Sort from './student_overview_sort';
 import Panel from './student_overview_panel';
 import nullishCheck from '../../../../core/util';
 
+const translationKeys = [
+    'widget_so_no_group', 'widget_so_bp', 'widget_so_op', 'widget_so_na',
+    'widget_so_mi', 'widget_so_oi', 'widget_so_few', 
+];
+
 class LoadStudentOverview extends Component {
     state = {
         overview: {},
@@ -22,6 +27,10 @@ class LoadStudentOverview extends Component {
             id,
             sort,
         } = this.props;
+
+        this.state = {
+            trans: await window.beaconingAPI.getPhrases(...translationKeys),
+        };
 
         const groups = await window.beaconingAPI.getGroups();
 
@@ -51,7 +60,7 @@ class LoadStudentOverview extends Component {
                 '#student-overview',
                 div(
                     '.flex-container',
-                    p(await window.beaconingAPI.getPhrase('widget_so_no_group')),
+                    p(this.state.trans.get('widget_so_no_group')),
                 ),
             );
         }
@@ -77,18 +86,18 @@ class LoadStudentOverview extends Component {
             const miData = improvement.slice(0, 3);
 
             const bestPerformingEl = await bestPerforming.attach({
-                title: await window.beaconingAPI.getPhrase('widget_so_bp'),
-                msg: await window.beaconingAPI.getPhrase('widget_so_op'),
+                title: this.state.trans.get('widget_so_bp'),
+                msg: this.state.trans.get('widget_so_op'),
                 data: bpData,
             });
             const needsAttentionEl = await needsAttention.attach({
-                title: await window.beaconingAPI.getPhrase('widget_so_na'),
-                msg: await window.beaconingAPI.getPhrase('widget_so_op'),
+                title: this.state.trans.get('widget_so_na'),
+                msg: this.state.trans.get('widget_so_op'),
                 data: naData,
             });
             const mostImprovementEl = await mostImprovement.attach({
-                title: await window.beaconingAPI.getPhrase('widget_so_mi'),
-                msg: await window.beaconingAPI.getPhrase('widget_so_oi'),
+                title: this.state.trans.get('widget_so_mi'),
+                msg: this.state.trans.get('widget_so_oi'),
                 data: miData,
             });
 
@@ -109,7 +118,7 @@ class LoadStudentOverview extends Component {
             sortEl,
             div(
                 '.flex-container',
-                p(await window.beaconingAPI.getPhrase('widget_so_few')),
+                p(this.state.trans.get('widget_so_few')),
             ),
         );
     }
