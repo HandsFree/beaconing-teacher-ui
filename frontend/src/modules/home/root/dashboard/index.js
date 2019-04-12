@@ -101,7 +101,7 @@ class DashboardContent extends Component {
                     a(
                         '.shortcut',
                         {
-                            href: '#',
+                            href: '/lesson_manager',
                             title: 'Lesson Manager',
                         },
                         div(
@@ -112,7 +112,7 @@ class DashboardContent extends Component {
                     a(
                         '.shortcut',
                         {
-                            href: '#',
+                            href: '/classroom',
                             title: 'Classroom',
                         },
                         div(
@@ -123,7 +123,7 @@ class DashboardContent extends Component {
                     a(
                         '.shortcut',
                         {
-                            href: '#',
+                            href: 'search',
                             title: 'Search',
                         },
                         div(
