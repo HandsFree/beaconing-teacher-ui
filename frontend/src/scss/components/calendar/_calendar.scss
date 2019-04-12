@@ -7,7 +7,7 @@
 	flex-grow: 1;
 	width: 14.28%;
 
-	padding: 0 0.8em;
+	padding: 0;
 	overflow: hidden;
 	list-style: none;
 }
@@ -32,9 +32,11 @@
 	border: 2px solid $border_color;
 }
 
+/* the buttons and the date go in here !*/
 .calendar-cell-meta {
 	display: flex;
 	justify-content: space-between;
+	padding: 0 0.8em;
 }
 
 .calendar-day {

@@ -37,6 +37,9 @@ class CalendarSelectedGroup extends Component {
 
         this.emit('RefreshCalendarController');
         this.emit('RefreshCalendarView');
+
+        // scroll up!
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     async render() {
@@ -89,6 +92,9 @@ class CalendarSelectedStudent extends Component {
         }));
         this.emit('RefreshCalendarController');
         this.emit('RefreshCalendarView');
+
+        // scroll up!
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     async render() {
