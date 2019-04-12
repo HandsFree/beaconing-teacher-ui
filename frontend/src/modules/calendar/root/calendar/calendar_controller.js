@@ -5,6 +5,11 @@ import { a, h2, p, div } from '../../../../core/html';
 import { Component } from '../../../../core/component';
 import nullishCheck from '../../../../core/util';
 
+const monthTranslationKeys = [
+    'cal_jan', 'cal_feb', 'cal_mar', 'cal_apr', 'cal_may', 'cal_jun', 'cal_jul', 'cal_aug',
+    'cal_sept', 'cal_oct', 'cal_nov', 'cal_dec',
+];
+
 // the top menu options above the calendar
 class CalendarController extends Component {
     updateHooks = {
@@ -20,18 +25,30 @@ class CalendarController extends Component {
         this.updateView(await this.render());
     }
 
-    // FIXME
-    async getTranslatedMonthName(date) {
-        const monthNames = [
-            'cal_jan', 'cal_feb', 'cal_mar', 'cal_apr', 'cal_may', 'cal_jun', 'cal_jul', 'cal_aug',
-            'cal_sept', 'cal_oct', 'cal_nov', 'cal_dec',
+    async init() {
+        console.log('INIT CAL');
+        const interfaceKeys = [
+            'cal', 'cal_prev', 'cal_current', 'cal_next',
         ];
-        const monthIndex = date.month();
-        return window.beaconingAPI.getPhrases(...monthNames);
+        this.state = {
+            monthTranslations: await window.beaconingAPI.getPhrases(...monthTranslationKeys),
+            interfaceTranslations: await window.beaconingAPI.getPhrases(...interfaceKeys),
+        };
+        console.log(this.state.interfaceTranslations);
     }
+    
+    async getTranslatedMonthName(date) {
+        const monthIndex = date.month();
+        const transKey = monthTranslationKeys[monthIndex];
 
+        // this is weird since the translations are actually
+        // an object, and we're accessing it like an array
+        // but its valid js syntax!
+        return this.state.monthTranslations.get(transKey);
+    }
+    
     async render() {
-        const calTranslation = await window.beaconingAPI.getPhrase('cal');
+        const calTranslation = this.state.interfaceTranslations.get('cal');
 
         let controllerTitle = calTranslation;
         
@@ -67,9 +84,10 @@ class CalendarController extends Component {
 
         const year = currDate.format('YYYY');
 
-        const prevMonthTranslation = await window.beaconingAPI.getPhrase('cal_prev');
-        const currMonthTranslation = await window.beaconingAPI.getPhrase('cal_current');
-        const nextMonthTranslation = await window.beaconingAPI.getPhrase('cal_next');
+        // TODO, DRY!
+        const prevMonthTranslation = this.state.interfaceTranslations.get('cal_prev');
+        const currMonthTranslation = this.state.interfaceTranslations.get('cal_current');
+        const nextMonthTranslation = this.state.interfaceTranslations.get('cal_next');
 
         return div(
             '.calendar-control',

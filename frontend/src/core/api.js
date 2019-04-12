@@ -270,10 +270,13 @@ class APICore {
             keys: to_find,
         };
         const resp = await this.post(`//${window.location.host}/api/v1/lang/phrases`, JSON.stringify(request));
-        if (resp.translation_set) {
-            console.log('the translation set returned was', resp.translation_set);
-        }
+        for (const [key, val] of Object.entries(resp.translation_set)) {
+            // add to cache.
+            const hashedKey = `${langCode}__${key}`;
+            window.sessionStorage.setItem(hashedKey, val);
 
+            results.set(key, val);
+        }
         return results;
     }
 

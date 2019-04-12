@@ -20,13 +20,6 @@ COPY . /go/src/github.com/HandsFree/beaconing-teacher-ui
 # Set root dir for commands
 WORKDIR /go/src/github.com/HandsFree/beaconing-teacher-ui/backend
 
-# Setup PostgreSQL
-USER postgres
-RUN service postgresql start &&\
-    createdb beaconing &&\
-    cd /go/src/github.com/HandsFree/beaconing-teacher-ui/ &&\
-    psql beaconing < beaconing.schema.sql
-
 # Build
 # TODO: use non-root user
 USER root
