@@ -73,7 +73,7 @@ class AlternativesGraph extends Component {
         } = graphData;
 
         if (correct === 0 && incorrect === 0) {
-            return div(h2(await window.beaconingAPI.getPhrase('err_no_data')));
+            return p(await window.beaconingAPI.getPhrase('err_no_data'));
         }
 
         const ctx: CanvasRenderingContext2D = this.view.getContext('2d');

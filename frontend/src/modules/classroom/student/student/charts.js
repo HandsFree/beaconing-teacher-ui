@@ -33,7 +33,7 @@ class Charts extends Component {
         const qoText = await window.beaconingAPI.getPhrase('rw_question_overview');
         const rwText = await window.beaconingAPI.getPhrase('cr_analytics_rw');
         const sopText = await window.beaconingAPI.getPhrase('cr_analytics_sop');
-        const mamText = await window.beaconingAPI.getPhrase('cr_analytics_mam');
+        const mamText = await window.beaconingAPI.getPhrase('min_avg_max');
         const aspText = await window.beaconingAPI.getPhrase('cr_analytics_asp');
 
         const graphWrapper = (title, el) => div(
