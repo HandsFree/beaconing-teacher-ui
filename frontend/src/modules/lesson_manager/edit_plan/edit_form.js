@@ -62,18 +62,13 @@ class EditGLPForm extends Form {
 
     async init() {
         const { glp } = this.props;
-        const glps = await window.beaconingAPI.getGLPs('owned', 'desc', true);
-
+        
         if (!glp) {
             throw new Error('[EditGLPForm] no glp provided!');
         }
-
+        
         this.glp = glp;
-
-        if (glps) {
-            this.glps = glps;
-        }
-
+        
         this.state = {
             planName: this.glp?.name || '',
             planCategory: this.glp?.category || '',
@@ -109,7 +104,8 @@ class EditGLPForm extends Form {
         }
 
         if (this.state.planName !== this.glp.name) {
-            for (const glp of this.glps) {
+            const glps = await window.beaconingAPI.getGLPs('owned', 'desc', true);
+            for (const glp of glps) {
                 if (glp.name.toLowerCase() === this.state.planName.toLowerCase()) {
                     this.addError('plan-name-status', errMsg);
                     this.resetSubmit();
