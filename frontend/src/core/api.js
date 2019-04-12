@@ -245,19 +245,50 @@ class APICore {
         return glps;
     }
 
+    async getPhrases(...keys: string[]) {
+        const langCode = window.sessionStorage.getItem('langCode') ?? 'en-GB';
+
+        // we return a map of keys => phrases
+        let results = new Map();
+
+        // first we look in the local cache to see if
+        // we already have these keys,
+        // any keys we dont find we put in the to_find array.
+        let to_find = [];
+        for (const key of keys) {
+            const hashedKey = `${langCode}__${key}`;
+            const cached = window.sessionStorage.getItem(hashedKey);
+            if (cached) {
+                results.set(key, cached);
+            } else {
+                to_find.push(key);
+            }
+        }
+
+        const request = {
+            language_code: langCode,
+            keys: to_find,
+        };
+        const resp = await this.post(`//${window.location.host}/api/v1/lang/phrases`, JSON.stringify(request));
+        if (resp.translation_set) {
+            console.log('the translation set returned was', resp.translation_set);
+        }
+
+        return results;
+    }
+
     async getPhrase(key: string) {
         const langCode = window.sessionStorage.getItem('langCode') ?? 'en-GB';
 
         // this is some hacky caching until i properly
         // finish localisation on the backend.
         const hashedKey = `${langCode}__${key}`;
-        console.log('checking cache for ', hashedKey);
 
-        const cache = window.sessionStorage.getItem(hashedKey);
+        // console.log('checking cache for ', hashedKey);
 
-        if (cache) {
-            // console.log('cache hit!');
-            return cache;
+        const cached = window.sessionStorage.getItem(hashedKey);
+        if (cached) {
+            return cached;
         }
 
         const response = await this.get(`//${window.location.host}/api/v1/lang/${langCode}/phrase/${key}`);

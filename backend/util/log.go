@@ -57,13 +57,13 @@ func Log(level LogLevel, msg ...interface{}) {
 		fallthrough
 	case FatalLog:
 		pipe = os.Stderr
-		fmt.Printf(Bold(Red(when)))
+		fmt.Printf(when)
 	case VerboseLog:
-		fmt.Print(Bold(Green(when)))
+		fmt.Print(when)
 	case InfoLog:
-		fmt.Print(Bold(when))
+		fmt.Print(when)
 	case WarnLog:
-		fmt.Print(Bold(Yellow(when)))
+		fmt.Print(when)
 	}
 	fmt.Fprintln(pipe, msg...)
 }
@@ -79,13 +79,13 @@ func BigLog(level LogLevel, msg ...interface{}) {
 		fallthrough
 	case FatalLog:
 		pipe = os.Stderr
-		fmt.Println(Bold(Red(when)))
+		fmt.Println(when)
 	case VerboseLog:
-		fmt.Println(Bold(Green(when)))
+		fmt.Println(when)
 	case InfoLog:
-		fmt.Println(Bold(when))
+		fmt.Println(when)
 	case WarnLog:
-		fmt.Println(Bold(Yellow(when)))
+		fmt.Println(when)
 	}
 
 	fmt.Fprintln(pipe, msg...)

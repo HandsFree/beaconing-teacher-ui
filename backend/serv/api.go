@@ -1,15 +1,11 @@
 package serv
 
 import (
-	"github.com/HandsFree/beaconing-teacher-ui/backend/req"
 	"github.com/gin-gonic/gin"
+	"github.com/hands-free/beaconing-teacher-ui/backend/req"
 )
 
 func registerAPI(router *gin.Engine) {
-	// ---
-	// GIN WRAPPERS: API
-	// ---
-
 	v1 := router.Group("/api/v1/")
 
 	{
@@ -19,8 +15,8 @@ func registerAPI(router *gin.Engine) {
 
 	lang := v1.Group("lang")
 	{
-		// FIXME move into a handler func.
-		lang.GET("/:code/phrase/:key", req.GetPhrase())
+		lang.GET("/:code/phrase/:key", req.GetTranslation())
+		lang.POST("/phrase", req.GetTranslationPhrases())
 	}
 
 	// FIXME(Felix): this probably falls under some kind of

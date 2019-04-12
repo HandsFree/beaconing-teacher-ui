@@ -235,6 +235,7 @@ func GetStudentGroupAssignedHardRequest() gin.HandlerFunc {
 				wg.Done()
 			}
 		}()
+		close(queue)
 
 		wg.Wait()
 

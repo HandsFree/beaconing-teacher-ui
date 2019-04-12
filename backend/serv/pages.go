@@ -24,7 +24,7 @@ type Page struct {
 const pagesDirectory = "dist/beaconing/pages"
 
 func newPage(title string, script string) *Page {
-	const host = api.GetProtocol() + api.GetBaseLink()
+	host := api.GetProtocol() + api.GetBaseLink()
 	return &Page{
 		Title:    title,
 		Script:   script,

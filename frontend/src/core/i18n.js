@@ -27,6 +27,7 @@ class I18n {
         await this.currUser;
     }
 
+    // @deprecated
     async getPhrase(key: string) {
         if (!this.langFetched) {
             await this.fetchLang();

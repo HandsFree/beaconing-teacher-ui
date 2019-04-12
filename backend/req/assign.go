@@ -8,8 +8,6 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/lib/pq"
-
 	"github.com/HandsFree/beaconing-teacher-ui/backend/api"
 	"github.com/HandsFree/beaconing-teacher-ui/backend/util"
 	"github.com/gin-contrib/sessions"
@@ -44,7 +42,7 @@ func GetAssignRequest() gin.HandlerFunc {
 
 		fromParam := s.Param("from")
 
-		var from pq.NullTime
+		var from time.Time
 		if fromParam != "" {
 			fromTime, err := time.Parse(time.RFC3339, fromParam)
 			if err != nil {
@@ -55,14 +53,14 @@ func GetAssignRequest() gin.HandlerFunc {
 				// just say it's been assigned from the current
 				// time.
 			}
-			from = pq.NullTime{Time: fromTime, Valid: true}
+			from = fromTime
 		} else {
-			from = pq.NullTime{Time: time.Now(), Valid: true}
+			from = time.Now()
 		}
 
 		toParam := s.Param("to")
 
-		var to pq.NullTime
+		var to time.Time
 		if toParam != "" {
 			toTime, err := time.Parse(time.RFC3339, toParam)
 			if err != nil {
@@ -70,10 +68,7 @@ func GetAssignRequest() gin.HandlerFunc {
 				s.AbortWithError(http.StatusBadRequest, err)
 				return
 			}
-			to = pq.NullTime{
-				Time:  toTime,
-				Valid: true,
-			}
+			to = toTime
 		}
 
 		// register the GLP in the session
