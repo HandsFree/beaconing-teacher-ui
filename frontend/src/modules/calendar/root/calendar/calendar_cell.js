@@ -12,10 +12,20 @@ import { Component } from '../../../../core/component';
 
 // an individual cell in the calendar
 class CalendarCell extends Component {
+    async init() {
+        this.state = {
+            viewTranslation: await window.beaconingAPI.getPhrase('view'),
+        }
+    }
+
     async render() {
         const {
             dayNumber, cellDate, eventList, encodedEvents,
         } = this.props;
+
+        const {
+            viewTranslation
+        } = this.state;
 
         let classList = '.calendar-cell';
 
@@ -38,7 +48,7 @@ class CalendarCell extends Component {
                         window.sessionStorage.setItem('calendarDayData', JSON.stringify(data));
                         this.emit('UpdateCalendarContainer');
                     },
-                    title: await window.beaconingAPI.getPhrase('view'),
+                    title: viewTranslation,
                 },
                 i('.icon-link-ext-alt'),
             ),
