@@ -113,6 +113,13 @@
 
 	border-left: 4px solid $border_color;
 
+	.toolbar {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		width: 100%;
+	}
+
     > .title {
 		h3 {
             margin: 0;
