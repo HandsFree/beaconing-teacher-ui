@@ -1,3 +1,5 @@
+# TODO we can use golang:alpine probably since
+# we dont depend on postgres anymore.
 FROM crowdriff/docker-go-postgres:latest
 
 # Installing packages
@@ -14,18 +16,32 @@ RUN apt-get update &&\
 # Make go folder
 RUN mkdir -p /go/src/github.com/HandsFree/beaconing-teacher-ui
 
-# Copy code to folder
 COPY . /go/src/github.com/HandsFree/beaconing-teacher-ui
 
-# Set root dir for commands
-WORKDIR /go/src/github.com/HandsFree/beaconing-teacher-ui/backend
+RUN mkdir -p /go/src/github.com/HandsFree/teacherui-backend
+
+# quick hack to fix the current arch changes,
+# clone the backend into the backend repo
+RUN git clone http://github.com/HandsFree/teacherui-backend /data/backend &&\
+    cp -r /data/backend/* /go/src/github.com/HandsFree/teacherui-backend/
+
+# Set root dir for commands, we'll be performing
+# the commands from the teacherui-backend folder.
+WORKDIR /go/src/github.com/HandsFree/teacherui-backend
+
+RUN ls -la /go/src/github.com/HandsFree/teacherui-backend
 
 # Build
 # TODO: use non-root user
 USER root
-RUN go get &&\
-    go build -o beaconing &&\
-    cd ../frontend &&\
+
+# update all go deps, build into beaconing binary.
+# cd into the frontend and build.
+RUN go get && go build -o beaconing
+
+WORKDIR /go/src/github.com/HandsFree/beaconing-teacher-ui
+
+RUN cd frontend &&\
     rm -rf node_modules &&\
     rm yarn.lock &&\
     yarn &&\
