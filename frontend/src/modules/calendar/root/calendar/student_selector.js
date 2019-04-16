@@ -140,6 +140,7 @@ class StudentList extends Component {
         
         const { value } = detail.target;
 
+
         let selected = [];
 
         const query = value.toLowerCase();
@@ -158,7 +159,9 @@ class StudentList extends Component {
         const selItemsProm = [];
         const { selected } = this.state;
 
-        for (const student of selected) {
+        const numItemsToShow = 10;
+
+        for (const student of selected.slice(0, numItemsToShow)) {
             const selItem = new CalendarSelectedStudent();
             const selItemEl = selItem.attach({
                 id: student.id,
@@ -265,8 +268,10 @@ class GroupList extends Component {
     async reloadAndRender() {
         const selItemsProm = [];
         
+        const numItemsToShow = 10;
+
         const { selected } = this.state;
-        for (const group of selected) {
+        for (const group of selected.slice(0, numItemsToShow)) {
             const selItem = new CalendarSelectedGroup();
             const selItemEl = selItem.attach({
                 id: group.id,
