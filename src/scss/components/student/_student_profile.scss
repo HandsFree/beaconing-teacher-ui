@@ -88,7 +88,9 @@
 	}
 
 	.toolbar {
-		justify-content: flex-end;
+		display: flex;
+		justify-content: space-between;
+		width: 100%;
 
 		a.item {
 			@extend .link-underline;

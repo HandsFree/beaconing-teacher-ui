@@ -23,7 +23,7 @@ class GLPBox extends Component {
         } = this.props;
 
         return div(
-            '.glp-assigned-box.flex-4.flex-column',
+            '.small-box.flex-4.flex-column',
             div(
                 '.title',
                 div(
@@ -32,24 +32,24 @@ class GLPBox extends Component {
                 ),
             ),
             div(
-                '.content',
+                '.content.margin-top-20',
                 div(
                     '.toolbar',
-                    a(
+                    div(a(
                         '.item',
                         {
                             href: `//${window.location.host}/lesson_manager#view?id=${glpID}`,
                         },
                         this.state.trans.get('view'),
-                    ),
-                    a(
+                    )),
+                    div(a(
                         '.item',
                         {
                             href: `//${window.location.host}/classroom/group#analytics?id=${glpID}`,
                         },
                         this.state.trans.get('analytics'),
-                    ),
-                    a(
+                    )),
+                    div(a(
                         '.item',
                         {
                             onclick: () => {
@@ -57,7 +57,7 @@ class GLPBox extends Component {
                             },
                         },
                         this.state.trans.get('cr_unassign'),
-                    ),
+                    )),
                 ),
             ),
         );
