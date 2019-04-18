@@ -21,9 +21,6 @@ Licensed under GNU AGPLv3. See the `LICENSE.md` file for the full license.
 
 ## Installation
 ### Installing deps
-As simple as running yarn.
-In the frontend folder run:
-
 ```bash
 $ yarn install
 ```
