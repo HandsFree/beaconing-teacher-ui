@@ -14,6 +14,7 @@ class StudentBox extends Component {
             firstName,
             lastName,
             identiconSha512,
+            usernameTrans,
         } = this.props;
 
         const studentName = do {
@@ -24,7 +25,7 @@ class StudentBox extends Component {
                     h4(
                         '.username',
                         {
-                            title: await window.beaconingAPI.getPhrase('username'),
+                            title: usernameTrans,
                         },
                         username,
                     ),

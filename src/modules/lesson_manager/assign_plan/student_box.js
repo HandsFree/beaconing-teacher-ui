@@ -115,7 +115,7 @@ class StudentBox extends Component {
     }
 
     async render() {
-        const { student } = this.props;
+        const { student, usernameTrans } = this.props;
         const { profile } = student;
 
         const studentName = do {
@@ -126,7 +126,7 @@ class StudentBox extends Component {
                     h4(
                         '.username',
                         {
-                            title: await window.beaconingAPI.getPhrase('username'),
+                            title: usernameTrans,
                         },
                         student.username,
                     ),

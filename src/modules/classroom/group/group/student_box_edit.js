@@ -3,13 +3,14 @@ import { div, h4, input, h3 } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 
-class StudentBox extends Component {
+class StudentBox extends Component {    
     async render() {
         const {
             id,
             username,
             profile,
             checked,
+            usernameTrans,
         } = this.props;
 
         console.log(checked);
@@ -22,7 +23,7 @@ class StudentBox extends Component {
                     h4(
                         '.username',
                         {
-                            title: await window.beaconingAPI.getPhrase('username'),
+                            title: usernameTrans,
                         },
                         username,
                     ),

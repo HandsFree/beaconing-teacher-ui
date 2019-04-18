@@ -19,6 +19,15 @@ class PlanHeader extends Component {
         const glpName = nullishCheck(this.state.glp?.name, await window.beaconingAPI.getPhrase('lm_unnamed_glp'));
         const playUrl = nullishCheck(this.state.glp?.playUrl, `http://gameplots.beaconing.eu/game/?externs=http://core.beaconing.eu/api/gamifiedlessonpaths/${this.state.glp.id}/externconfig`);
 
+        const readOnly = this.state.glp?.readOnly;
+        
+        const editButton = a(
+            {
+                href: `#edit?id=${encodeURIComponent(this.state.glp.id)}`,
+            },
+            await window.beaconingAPI.getPhrase('edit'),
+        );
+
         return div(
             '#plan-header',
             div(
@@ -48,12 +57,7 @@ class PlanHeader extends Component {
                     },
                     await window.beaconingAPI.getPhrase('lm_assign'),
                 ),
-                a(
-                    {
-                        href: `#edit?id=${encodeURIComponent(this.state.glp.id)}`,
-                    },
-                    await window.beaconingAPI.getPhrase('edit'),
-                ),
+                readOnly ? [] : editButton,
             ),
         );
     }

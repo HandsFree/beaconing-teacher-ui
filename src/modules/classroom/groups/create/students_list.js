@@ -14,6 +14,8 @@ class StudentsList extends Component {
         const students = Object.values(this.state.students);
         const promArr = [];
 
+        const usernameTrans = await window.beaconingAPI.getPhrase('username');
+
         for (const student of students) {
             const {
                 id,
@@ -27,6 +29,7 @@ class StudentsList extends Component {
                 id,
                 username,
                 profile,
+                usernameTrans,
             });
 
             promArr.push(studentBoxProm);

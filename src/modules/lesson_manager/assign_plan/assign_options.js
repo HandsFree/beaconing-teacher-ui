@@ -23,11 +23,14 @@ class AssignOptions extends Component {
         const studentsProm = [];
         const groupsProm = [];
 
+        const usernameTrans = await window.beaconingAPI.getPhrase('username');
+
         for (const student of this.state.students) {
             const studentBox = new StudentBox();
             const studentBoxEl = studentBox.attach({
                 student,
                 glpID: this.props.id,
+                usernameTrans,
             });
 
             studentsProm.push(studentBoxEl);

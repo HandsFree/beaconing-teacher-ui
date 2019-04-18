@@ -27,6 +27,7 @@ class GroupStudents extends Component {
         if (students) {
             const promArr = [];
 
+            const usernameTrans = await window.beaconingAPI.getPhrase('username');
             for (const studentObj of students) {
                 console.log(studentObj);
 
@@ -40,6 +41,7 @@ class GroupStudents extends Component {
                         firstName: studentObj.profile.firstName,
                         lastName: studentObj.profile.lastName,
                         identiconSha512: studentObj.identiconSha512,
+                        usernameTrans,
                     });
 
                     promArr.push(studentBoxProm);

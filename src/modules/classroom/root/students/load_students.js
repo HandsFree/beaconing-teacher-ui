@@ -52,6 +52,8 @@ class LoadStudents extends Component {
             ),
         );
 
+        const usernameTrans = await window.beaconingAPI.getPhrase('username');
+
         for (const student of students) {
             const {
                 id,
@@ -73,6 +75,7 @@ class LoadStudents extends Component {
                 firstName,
                 lastName,
                 identiconSha512,
+                usernameTrans,
             });
 
             promArr.push(studentBoxProm);
