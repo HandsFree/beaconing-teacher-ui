@@ -12,6 +12,8 @@
 </p>
 
 # Repo Information
+Note, the backend code can be found [here](//github.com/HandsFree/teacherui-backend).
+
 ## License
 Licensed under GNU AGPLv3. See the `LICENSE.md` file for the full license.
 
