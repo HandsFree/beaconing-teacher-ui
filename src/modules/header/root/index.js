@@ -50,6 +50,10 @@ class Header extends Component {
                     {
                         href: `//${window.location.host}/auth/logout`,
                         tabIndex: 2,
+                        onclick: () => {
+                            window.sessionStorage.clear();
+                            window.localStorage.clear();
+                        },
                     },
                     await window.beaconingAPI.getPhrase('log_out')
                 ),
