@@ -8,6 +8,20 @@ class MainNav extends Component {
         path: window.location.pathname.slice(1),
     };
 
+    transKeys = [
+        'nav_home',
+        'cr',
+        'lm',
+        'cal',
+        'nav_forum',
+        'nav_search',
+        'nav_access',
+    ];
+
+    async init() {
+        this.state.phrases = await window.beaconingAPI.getPhrases(...this.transKeys);
+    }
+
     async render() {
         const { path } = this.state;
 
@@ -22,7 +36,7 @@ class MainNav extends Component {
                         tabIndex: '1',
                     },
                     i('.icon-home'),
-                    span(await window.beaconingAPI.getPhrase('nav_home')),
+                    span(this.state.phrases.get('nav_home')),
                 ),
                 a(
                     /^classroom/.test(path) ? '.item.active-orange' : '.item',
@@ -31,7 +45,7 @@ class MainNav extends Component {
                         tabIndex: 1,
                     },
                     i('.icon-graduation-cap'),
-                    span(await window.beaconingAPI.getPhrase('cr')),
+                    span(this.state.phrases.get('cr')),
                 ),
                 a(
                     /^lesson_manager/.test(path) ? '.item.active-orange' : '.item',
@@ -40,7 +54,7 @@ class MainNav extends Component {
                         tabIndex: 1,
                     },
                     i('.icon-authoring'),
-                    span(await window.beaconingAPI.getPhrase('lm')),
+                    span(this.state.phrases.get('lm')),
                 ),
                 a(
                     /^calendar/.test(path) ? '.item.active-orange' : '.item',
@@ -49,7 +63,7 @@ class MainNav extends Component {
                         tabIndex: 1,
                     },
                     i('.icon-calendar'),
-                    span(await window.beaconingAPI.getPhrase('cal')),
+                    span(this.state.phrases.get('cal')),
                 ),
                 a(
                     /^forum/.test(path) ? '.item.active-orange' : '.item',
@@ -59,7 +73,7 @@ class MainNav extends Component {
                         tabIndex: 1,
                     },
                     i('.icon-chat'),
-                    span(await window.beaconingAPI.getPhrase('nav_forum')),
+                    span(this.state.phrases.get('nav_forum')),
                 ),
             ),
             div(
@@ -71,7 +85,7 @@ class MainNav extends Component {
                         tabIndex: 1,
                     },
                     i('.icon-search'),
-                    span(await window.beaconingAPI.getPhrase('nav_search')),
+                    span(this.state.phrases.get('nav_search')),
                 ),
                 a(
                     '.item',
@@ -82,7 +96,7 @@ class MainNav extends Component {
                         tabIndex: 1,
                     },
                     i('.icon-key-inv'),
-                    span(await window.beaconingAPI.getPhrase('nav_access')),
+                    span(this.state.phrases.get('nav_access')),
                 ),
             ),
         );

@@ -245,6 +245,9 @@ class APICore {
         return glps;
     }
 
+    /*
+        returns a map of keys => values
+    */
     async getPhrases(...keys: string[]) {
         const langCode = window.sessionStorage.getItem('langCode') ?? 'en-GB';
 
