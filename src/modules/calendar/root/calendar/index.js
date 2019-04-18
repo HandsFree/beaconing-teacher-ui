@@ -55,7 +55,7 @@ class CalendarDayView extends Component {
         }
 
         // FIXME(i18n)
-        const dateEl = `${moment(date).format('dddd - Do of MMMM, YYYY')} (${events.length} events today)`;
+        const dateEl = `${moment(date).format('dddd - Do of MMMM, YYYY')} (${events.length})`;
 
         return div(
             '.calendar-day-container',

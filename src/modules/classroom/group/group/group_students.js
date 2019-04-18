@@ -24,7 +24,7 @@ class GroupStudents extends Component {
         const { id } = this.props;
         const students = await window.beaconingAPI.getStudentsFromGroup(id);
 
-        if (students) {
+        if (students && students.length != 0) {
             const promArr = [];
 
             const usernameTrans = await window.beaconingAPI.getPhrase('username');
@@ -62,7 +62,7 @@ class GroupStudents extends Component {
 
         const el = div(
             '#group-students-container.status',
-            p(await window.beaconingAPI.getPhrase('err_no_students_assigned')),
+            p(await window.beaconingAPI.getPhrase('no_students_assigned')),
         );
 
         this.updateView(el);

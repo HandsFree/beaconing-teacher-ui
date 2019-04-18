@@ -67,7 +67,7 @@ class GLPBox extends Component {
             div(
                 '.title',
                 div(
-                    '.flex-column',
+                    '.flex-column.full-width',
                     h3('.name', name),
 
                     div(
@@ -75,9 +75,9 @@ class GLPBox extends Component {
                             '.owner',
                             `${this.state.trans.get('lm_owner')} ${owner}`,
                         ),
-                    ),                    
+                    ),        
                     div(
-                        '.toolbar.margin-top-10',
+                        '.toolbar.margin-top-20',
                         a(
                             '.item',
                             {

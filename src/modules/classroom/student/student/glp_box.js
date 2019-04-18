@@ -51,7 +51,7 @@ class GLPBox extends Component {
                 ),
             ),
             div(
-                '.content.margin-top-10',
+                '.content.margin-top-20',
                 div(
                     '.toolbar',
                     a(
