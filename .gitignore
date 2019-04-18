@@ -1,6 +1,6 @@
 # Mostly created by https://www.gitignore.io/
 
-public/
+public/beaconing
 
 backend/beaconing
 

@@ -12,6 +12,39 @@
     }
 }
 
+#assign-tabs {
+    margin-top: 0.5em;
+    border-bottom: 1px solid #e1e4e8;
+
+    .tab-container {
+        justify-content: space-around;
+        flex-grow: 1;
+        position: relative;
+        top: 1px;
+    }
+
+    a {
+        &.tab {
+            padding: 0.5em 0.2em 0.75em;
+            text-align: center;
+            flex-grow: 1;
+            font-size: 1.15em;
+
+            &.active {
+                font-weight: 400;
+                border-top: 2px solid $bcn_light_orange;
+                border-left: 1px solid #e1e4e8;
+                border-right: 1px solid #e1e4e8;
+                background: white;
+            }
+        }
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}
+
 .students-container, .groups-container {
     display: grid;
     grid-template-columns: 32% 32% 32%;

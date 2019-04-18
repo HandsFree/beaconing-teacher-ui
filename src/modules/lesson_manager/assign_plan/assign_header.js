@@ -36,7 +36,7 @@ class AssignHeader extends Component {
                 a('.current', await window.beaconingAPI.getPhrase('lm_assign')),
             ),
             div(
-                '.name-group',
+                '.flex-align-center.flex-spacebetween',
                 h1(await window.beaconingAPI.getPhrase('lm_assigning')),
                 h2(this.state.glp.name),
             ),

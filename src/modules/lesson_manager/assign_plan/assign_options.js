@@ -1,5 +1,5 @@
 // @flow
-import { div, h4 } from '../../../core/html';
+import { div, nav, h4, a } from '../../../core/html';
 
 import { Component } from '../../../core/component';
 import StudentBox from './student_box';
@@ -48,9 +48,29 @@ class AssignOptions extends Component {
 
         return div(
             '#assign-options',
+            nav('#assign-tabs',
+                div(
+                    '.tab-container',
+                    {
+                        onmouseover: () => {
+                            if (!this.tooltipsActive) {
+                                tippy('.disabled-tab', {
+                                    content: 'Disabled',
+                                    arrow: true,
+                                });
+
+                                this.tooltipsActive = true;
+                            }
+                        },
+                    },
+                    a('.tab.active', `${await window.beaconingAPI.getPhrase('cr_students')}`),
+                    a('.tab', `${await window.beaconingAPI.getPhrase('cr_groups')}`),
+                ),
+            ),
+
+            // todo!
             div(
-                '.flex-column',
-                div('.title', h4(`${await window.beaconingAPI.getPhrase('cr_students')}:`)),
+                '.flex-column.margin-top-20',
                 div(
                     '.students-container',
                     studentsEl,
@@ -58,7 +78,6 @@ class AssignOptions extends Component {
             ),
             div(
                 '.flex-column',
-                div('.title', h4(`${await window.beaconingAPI.getPhrase('cr_groups')}:`)),
                 div(
                     '.groups-container',
                     groupsEl,
