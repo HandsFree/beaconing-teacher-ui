@@ -1,5 +1,5 @@
 // @flow
-import { section } from '../../../core/html';
+import { section, div } from '../../../core/html';
 
 import { Component } from '../../../core/component';
 import MissionHeader from './mission_header';
@@ -41,28 +41,22 @@ class LoadMission extends Component {
     }
 
     async render() {
-        const missionHeader = new MissionHeader();
         const missionDetails = new MissionDetails();
         const questDetails = new QuestDetails();
 
-        const missionHeaderEl = await missionHeader.attach(this.props);
         const missionDetailsEl = await missionDetails.attach(this.props);
         const questDetailsEl = await questDetails.attach(this.props);
 
-        return [
-            section(
-                '.flex-column',
-                missionHeaderEl,
-            ),
-            section(
+        return div('.flex-column.mission-detail',
+            div(
                 '.flex-column',
                 missionDetailsEl,
             ),
-            section(
+            div(
                 '.flex-column',
                 questDetailsEl,
             ),
-        ];
+        );
     }
 }
 

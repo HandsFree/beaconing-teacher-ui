@@ -47,5 +47,6 @@
 
 .students-container, .groups-container {
     display: grid;
-    grid-template-columns: 32% 32% 32%;
+    grid-template-columns: repeat(3, 33%);
+    width: 100%;
 }

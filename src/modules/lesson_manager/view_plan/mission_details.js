@@ -3,6 +3,7 @@ import { div, h4 } from '../../../core/html';
 
 import { Component } from '../../../core/component';
 import MissionDetail from './mission_detail';
+import LoadMission from '../view_mission/load_mission';
 
 class MissionDetails extends Component {
     async init() {
@@ -20,7 +21,7 @@ class MissionDetails extends Component {
 
         if (this.state.glp.content?.missions) {
             for (const [index, missionObj] of this.state.glp.content.missions.entries()) {
-                const mission = new MissionDetail();
+                const mission = new LoadMission();
                 const missionEl = mission.attach({
                     mission: missionObj,
                     index,
@@ -45,7 +46,7 @@ class MissionDetails extends Component {
 
         return div(
             '#missions-details',
-            div('.title', h4(`${await window.beaconingAPI.getPhrase('lm_missions')}:`)),
+            div('.title', h4('!!! No missions available.')),
         );
     }
 }

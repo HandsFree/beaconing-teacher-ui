@@ -5,37 +5,89 @@ import { Component } from '../../../core/component';
 import StudentBox from './student_box';
 import GroupBox from './group_box';
 
-class AssignOptions extends Component {
+class TabControlPane extends Component {
+    updateHooks = {
+        RefreshGroups: this.refreshGroups,
+        RefreshStudents: this.refreshStudents,
+    };
+
     async init() {
-        if (!this.props.id) {
-            // console.log(this.props);
-            throw new Error('[Assign Options] GLP ID not provided');
-        }
-
-        const students = await window.beaconingAPI.getStudents();
-        this.state.students = students;
-
-        const groups = await window.beaconingAPI.getGroups();
-        this.state.groups = groups;
+        this.selectionType = 'students';
     }
 
+    async refreshGroups() {
+        this.selectionType = 'groups';
+        this.updateView(await this.render());
+    }
+
+    async refreshStudents() {
+        this.selectionType = 'students';
+        this.updateView(await this.render());
+    }
+    
     async render() {
-        const studentsProm = [];
-        const groupsProm = [];
+        return nav('#assign-tabs',
+            div(
+                '.tab-container',
+                a(
+                    `.tab ${this.selectionType == 'students' ? '.active' : ''}`, 
+                    {
+                        onclick: (evt) => {
+                            this.emit('RefreshStudents');
+                        },
+                    },
+                    `${await window.beaconingAPI.getPhrase('cr_students')}`
+                ),
+                a(
+                    `.tab ${this.selectionType == 'groups' ? '.active' : ''}`, 
+                    {
+                        onclick: () => {
+                            this.emit('RefreshGroups');
+                        },
+                    },
+                    `${await window.beaconingAPI.getPhrase('cr_groups')}`
+                ),
+            ),
+        );
+    }
+}
 
-        const usernameTrans = await window.beaconingAPI.getPhrase('username');
+class TabView extends Component {
+    state = {};
+    updateHooks = {
+        RefreshGroups: this.refreshGroups,
+        RefreshStudents: this.refreshStudents,
+    };
 
-        for (const student of this.state.students) {
-            const studentBox = new StudentBox();
-            const studentBoxEl = studentBox.attach({
-                student,
-                glpID: this.props.id,
-                usernameTrans,
-            });
+    async init() {
+        const students = await window.beaconingAPI.getStudents();
+        const groups = await window.beaconingAPI.getGroups();
 
-            studentsProm.push(studentBoxEl);
+        this.state = {
+            students: students,
+            groups: groups,
+        };
+    }
+
+    async refreshGroups() {
+        this.updateView(await this.renderGroups());
+    }
+
+    async refreshStudents() {
+        this.updateView(await this.renderStudents());
+    }
+    
+    async afterMount() {
+        this.updateView(await this.renderStudents());
+    }
+
+    async renderGroups() {
+        const { groups } = this.state;
+        if (!groups) {
+            return h4('failed');
         }
 
+        const groupsProm = [];
         for (const group of this.state.groups) {
             const groupBox = new GroupBox();
             const groupBoxEl = groupBox.attach({
@@ -46,47 +98,79 @@ class AssignOptions extends Component {
             groupsProm.push(groupBoxEl);
         }
 
-        const studentsEl = await Promise.all(studentsProm).then(elements => elements);
         const groupsEl = await Promise.all(groupsProm).then(elements => elements);
 
         return div(
-            '#assign-options',
-            nav('#assign-tabs',
-                div(
-                    '.tab-container',
-                    {
-                        onmouseover: () => {
-                            if (!this.tooltipsActive) {
-                                tippy('.disabled-tab', {
-                                    content: 'Disabled',
-                                    arrow: true,
-                                });
-
-                                this.tooltipsActive = true;
-                            }
-                        },
-                    },
-                    a('.tab.active', `${await window.beaconingAPI.getPhrase('cr_students')}`),
-                    a('.tab', `${await window.beaconingAPI.getPhrase('cr_groups')}`),
-                ),
-            ),
-
-            // todo!
-            div(
-                '.flex-column.margin-top-20',
-                div(
-                    '.students-container',
-                    studentsEl,
-                ),
-            ),
-            div(
-                '.flex-column',
-                div(
-                    '.groups-container',
-                    groupsEl,
-                ),
-            ),
+            '.groups-container',
+            groupsEl,
         );
+    }
+
+    async renderStudents() {
+        const { students } = this.state;
+        if (!students) {
+            return h4('failed');
+        }
+
+        const studentsProm = [];
+
+        const usernameTrans = await window.beaconingAPI.getPhrase('username');
+        for (const student of students) {
+            const studentBox = new StudentBox();
+            const studentBoxEl = studentBox.attach({
+                student,
+                glpID: this.props.id,
+                usernameTrans,
+            });
+
+            studentsProm.push(studentBoxEl);
+        }
+        const studentsEl = await Promise.all(studentsProm).then(elements => elements);
+
+        return div(
+            '.students-container',
+            studentsEl,
+        );
+    }
+
+    async render() {
+        return div(
+            '.groups-container',
+        );
+    }
+}
+
+class AssignOptions extends Component {
+    async init() {
+        if (!this.props.id) {
+            // console.log(this.props);
+            throw new Error('[Assign Options] GLP ID not provided');
+        }
+    }
+
+    async render() {
+        const { id } = this.props.id;
+
+        const tabControl = new TabControlPane();
+        const tabView = new TabView();
+
+        return Promise.all([
+            tabControl.attach(),
+            tabView.attach(),
+        ]).then((values) => {
+            const [
+                tabControlEl,
+                tabViewEl,
+            ] = values;
+
+            return div(
+                '#assign-options',
+                tabControlEl,
+                div('.margin-top-20',
+                    tabViewEl,
+                ),
+            );
+        });
     }
 }
 

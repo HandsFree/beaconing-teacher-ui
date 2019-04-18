@@ -16,7 +16,7 @@ class AssignHeader extends Component {
 
     async render() {
         return div(
-            '#assign-header',
+            '#assign-header.flex-column',
             div(
                 '.breadcrumb',
                 a(
@@ -37,8 +37,7 @@ class AssignHeader extends Component {
             ),
             div(
                 '.flex-align-center.flex-spacebetween',
-                h1(await window.beaconingAPI.getPhrase('lm_assigning')),
-                h2(this.state.glp.name),
+                h1(`${await window.beaconingAPI.getPhrase('lm_assigning')} '${this.state.glp.name}'`),
             ),
             div('.header-spacer'),
         );

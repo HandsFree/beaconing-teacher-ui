@@ -1,5 +1,5 @@
 // @flow
-import { div, a, h1, nav, span } from '../../../core/html';
+import { div, a, h1, nav, button, span } from '../../../core/html';
 
 import { Component } from '../../../core/component';
 import nullishCheck from '../../../core/util';
@@ -25,7 +25,7 @@ class PlanHeader extends Component {
             {
                 href: `#edit?id=${encodeURIComponent(this.state.glp.id)}`,
             },
-            await window.beaconingAPI.getPhrase('edit'),
+            button('.action', await window.beaconingAPI.getPhrase('edit')),
         );
 
         return div(
@@ -41,23 +41,26 @@ class PlanHeader extends Component {
                 ),
                 a('.current', await window.beaconingAPI.getPhrase('lm_plan_overview')),
             ),
-            h1(glpName),
-            nav(
-                '.mini',
-                a(
-                    {
-                        href: playUrl,
-                        target: '_blank',
-                    },
-                    await window.beaconingAPI.getPhrase('lm_play'),
+            div(
+                '.titlebar',
+                h1(glpName),
+                nav(
+                    '.mini',
+                    a(
+                        {
+                            href: playUrl,
+                            target: '_blank',
+                        },
+                        button('.action', await window.beaconingAPI.getPhrase('lm_play')),
+                    ),
+                    a(
+                        {
+                            href: `#assign?id=${this.state.glp.id}`,
+                        },
+                        button('.action', await window.beaconingAPI.getPhrase('lm_assign')),
+                    ),
+                    readOnly ? [] : editButton,
                 ),
-                a(
-                    {
-                        href: `#assign?id=${this.state.glp.id}`,
-                    },
-                    await window.beaconingAPI.getPhrase('lm_assign'),
-                ),
-                readOnly ? [] : editButton,
             ),
         );
     }

@@ -16,20 +16,23 @@ class MissionDetails extends Component {
     }
 
     async render() {
+        const { mission } = this.state;
+        console.log('mission is', mission);
+
         return div(
-            '#mission-details',
-            div('.title', h4(await window.beaconingAPI.getPhrase('lm_mission_details'))),
+            '#mission-details.flex-column',
+            div('.title', h4(mission.name)),
             div(
-                '.large-details',
+                '.large-details.flex-column',
                 div(
                     '.detail',
                     strong(`${await window.beaconingAPI.getPhrase('description')}:`),
-                    p(this.state.mission.description),
+                    p(mission.description),
                 ),
                 div(
                     '.detail',
                     strong(`${await window.beaconingAPI.getPhrase('lm_skills')}:`),
-                    p(this.state.mission.skills),
+                    p(mission.skills),
                 ),
             ),
         );

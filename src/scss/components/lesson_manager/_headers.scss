@@ -1,11 +1,49 @@
 #plan-header {
+    flex-direction: column;
     justify-content: space-between;
-    align-items: center;
     font-size: 1em;
     padding-bottom: 0.5em;
 
     @media screen and (max-width: 46.875em) {
         font-size: 0.85em;
+    }
+
+    button {
+        font-size: 0.8em;
+        margin: 0 0.25em;
+        padding: 0.2em 0.4em;
+        border-radius: 0;
+        background: #f8f8f8;
+
+        &.delete {
+            color: #B20601;
+            border: 2px solid #F9CFCE;
+        }
+
+        &.action {
+            color: $primary_font_colour_alt;
+            border: 2px solid #cfd3da;
+        }
+
+        &:hover {
+            cursor: pointer;
+            background: none;
+        }
+
+        @include for-tablet-portrait-up {
+            font-size: 0.9em;
+            padding: 0.25em 0.5em;
+        }
+
+        @include for-tablet-landscape-up {
+            font-size: 1em;
+            padding: 0.3em 0.75em;
+        }
+    }
+
+    .titlebar {
+        display: flex;
+        justify-content: space-between;
     }
 
     .back {
