@@ -29,7 +29,7 @@
     "flow": "./node_modules/.bin/flow",
     "lint": "./node_modules/.bin/eslint",
     "lint-all": "./node_modules/.bin/eslint ./src/",
-    "clean": "./node_modules/.bin/rimraf './public/dist/beaconing/pages/*' './public/dist/beaconing/*.js' './public/dist/beaconing/*.css' './node_modules/.cache/*'"
+    "clean": "./node_modules/.bin/rimraf './public/dist/beaconing/*' './node_modules/.cache/*'"
   },
   "devDependencies": {
     "@babel/core": "7.4.3",
