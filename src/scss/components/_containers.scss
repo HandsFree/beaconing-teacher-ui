@@ -1,58 +1,60 @@
 #app {
-	flex-direction: column;
-	min-height: 100vh;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 .flex-container {
-	display: flex;
+    display: flex;
 }
 
 .group-list-container {
-	display: grid;
-	grid-template-columns: 25% 25% 25% 25%;
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
 }
 
 #group-students-container {
-	display: grid;
-	grid-template-columns: 50% 50%;
-	padding: 1em;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    padding: 1em;
 }
 
 .result-container {
-	display: grid;
-	grid-template-columns: 33% 33% 33%;
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
 }
 
 .student-list-container {
-	display: grid;
-	grid-template-columns: 33% 33% 33%;
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
 }
 
 .create-group-box {
-	display: flex;
+    display: flex;
 
-	// fixme!
-	padding: 0.83em !important;
-	background: $border_color;
+    // fixme!
+    padding: 0.83em !important;
+    background: $border_color;
 
-	// fixme.
-	justify-content: space-around !important;
+    // fixme.
+    justify-content: space-around !important;
 
-	h2 {
-		margin: 0;
-	}
+    h2 {
+        margin: 0;
+        color: #72a16d;
+    }
 }
 
 .create-student-box {
-	display: flex;
-	justify-content: space-around;
-	padding: 0;
-	background: $border_color;
+    display: flex;
+    justify-content: space-around;
+    padding: 0;
+    background: $border_color;
 
-	h1 {
-		font-size: 2.5em;
-		margin: 0.68em;
-	}
+    h1 {
+        font-size: 2.5em;
+        margin: 0.68em;
+        color: #72a16d;
+    }
 }
 
 .student-box {
@@ -60,33 +62,33 @@
     margin: 0.5em;
 
     figure {
-		background: $border_color;
-		padding: 1em;
-		margin: 0 0.25em 0 0;
+        background: $border_color;
+        padding: 1em;
+        margin: 0 0.25em 0 0;
 
         img {
             width: 4em;
             height: auto;
         }
     }
-    
+
     .info {
         justify-content: space-around;
 
         .title {
-			padding: 1em;
+            padding: 1em;
 
             h3 {
                 margin: 0 0 0.2em;
                 font-weight: 400;
                 font-size: 1.5em;
-			}
-			
-			h4.username {
-				font-weight: 300;
-				margin: 0;
-				color: $primary_font_colour_faded;
-			}
+            }
+
+            h4.username {
+                font-weight: 300;
+                margin: 0;
+                color: $primary_font_colour_faded;
+            }
         }
 
         a {
@@ -106,33 +108,33 @@
 }
 
 .small-box {
-	display: flex;
-	border: 2px solid $border_color;
+    display: flex;
+    border: 2px solid $border_color;
     margin: 0.5em;
-	padding: 1em 2em;
-	justify-content: space-between;
+    padding: 1em 2em;
+    justify-content: space-between;
 
-	border-left: 4px solid $border_color;
+    border-left: 4px solid $border_color;
 
-	.toolbar {
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		width: 100%;
-	}
+    .toolbar {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+    }
 
     > .title {
-		h3 {
+        h3 {
             margin: 0;
             font-weight: 400;
             font-size: 1.2em;
-		}
+        }
 
-		h4 {
-			font-weight: 300;
-			margin: 0;
-			color: $primary_font_colour_faded;
-		}
+        h4 {
+            font-weight: 300;
+            margin: 0;
+            color: $primary_font_colour_faded;
+        }
     }
 
     a {
@@ -141,8 +143,8 @@
 }
 
 .plans-container {
-	display: grid;
-	grid-template-columns: 33% 33% 33%;
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
 
     .status {
         flex-grow: 1;
@@ -156,119 +158,120 @@
 }
 
 .glp-box {
-	margin: 0.5em;
-	border: 2px solid $border_color;
+    margin: 0.5em;
+    border: 2px solid $border_color;
 
-	.toolbar {
-		display: flex;
-		justify-content: space-between;
-		width: 100%;
+    .toolbar {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
 
-		a.item {
-			@extend .link-underline;
-			padding: 0.1em;
-			margin: 0 0.15em;
-			font-weight: 400;
-			//font-size: 0.9em;
-		}
-	}
+        a.item {
+            @extend .link-underline;
+            padding: 0.1em;
+            margin: 0 0.15em;
+            font-weight: 400;
+            //font-size: 0.9em;
+        }
+    }
 
-	.title {
-		padding: 0.9em;
-		background: $border_color;
+    .title {
+        padding: 0.9em;
+        background: $border_color;
 
-		.full-width {
-			width: 100%;
-		}
-	}
-	
-	> .title {
-		justify-content: space-between;
-		align-items: center;
-		margin-bottom: 0.25em;
+        .full-width {
+            width: 100%;
+        }
+    }
 
-		h3 {
-			font-weight: bold;
-			font-size: 1.25em;
-			margin: 0.25em;
-		}
+    > .title {
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.25em;
 
-		.owner {
-			margin: 0.25em;
-		}
+        h3 {
+            font-weight: bold;
+            font-size: 1.25em;
+            margin: 0.25em;
+        }
 
-		h4 {
-			font-weight: 400;
-			font-size: 1.15em;
-			margin: 0.25em;
-		}
-	}
+        .owner {
+            margin: 0.25em;
+        }
 
-	> .content {
-		padding: 0.9em;
-		justify-content: space-between;
-		
-		.topic, .domain, .created, .modified {
-			flex-direction: column;
+        h4 {
+            font-weight: 400;
+            font-size: 1.15em;
+            margin: 0.25em;
+        }
+    }
 
-			p {
-				margin-left: 0.25em;
-			}
-		}
+    > .content {
+        padding: 0.9em;
+        justify-content: space-between;
 
-		.link-underline {
-			margin-left: 0.25em;
-		}
+        .topic, .domain, .created, .modified {
+            flex-direction: column;
 
-		strong {
-			font-weight: 400;
-		}
+            p {
+                margin-left: 0.25em;
+            }
+        }
 
-		figure {
-			margin-left: 0;
+        .link-underline {
+            margin-left: 0.25em;
+        }
 
-			img {
-				border-radius: 50%;
-				padding: 0.25em;
-				width: 8em;
-				height: 8em;
+        strong {
+            font-weight: 400;
+        }
 
-				@media screen and (min-width: 64em) and (max-width: 104.9375em) {
-					width: 7em;
-					height: 7em;
-				}
+        figure {
+            margin-left: 0;
 
-				@media screen and (min-width: 40em) and (max-width: 63.9375em) {
-					width: 6em;
-					height: 6em;
-				}
+            img {
+                border-radius: 50%;
+                padding: 0.25em;
+                width: 8em;
+                height: 8em;
 
-				@media screen and (max-width: 39.9375em) {
-					width: 5em;
-					height: 5em;
-				}
-			}
-		}
-	}
+                @media screen and (min-width: 64em) and (max-width: 104.9375em) {
+                    width: 7em;
+                    height: 7em;
+                }
+
+                @media screen and (min-width: 40em) and (max-width: 63.9375em) {
+                    width: 6em;
+                    height: 6em;
+                }
+
+                @media screen and (max-width: 39.9375em) {
+                    width: 5em;
+                    height: 5em;
+                }
+            }
+        }
+    }
 }
 
 .create-plan-link {
-	display: flex;
+    display: flex;
 }
 
 .create-glp-card {
-	background: #f5f5f5;
-	justify-content: space-around;
+    background: #f5f5f5;
+    justify-content: space-around;
 
-	> .content {
-		display: flex;
-		justify-content: center;
-		align-items: center;
+    > .content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
-		h3 {
-			margin: 0;
-			padding: 0;
-			font-size: 4em;
-		}
-	}
+        h3 {
+            margin: 0;
+            padding: 0;
+            font-size: 4em;
+            color: #72a16d;
+        }
+    }
 }
