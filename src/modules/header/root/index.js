@@ -1,9 +1,8 @@
 // @flow
 import Identicon from 'identicon.js';
-
 import { div, header, a, img, span } from '../../../core/html';
-
 import { Component } from '../../../core/component';
+import logoImg from '../../../images/logo.png';
 
 class Header extends Component {
     state = {
@@ -39,7 +38,7 @@ class Header extends Component {
                         href: `//${window.location.host}/`,
                     },
                     img({
-                        src: `//${window.location.host}/dist/beaconing/images/logo.png`,
+                        src: logoImg,
                         alt: await window.beaconingAPI.getPhrase('logo_title'),
                     }),
                 ),

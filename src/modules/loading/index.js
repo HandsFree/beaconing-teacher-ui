@@ -1,7 +1,7 @@
 // @flow
 import { div, img, span } from '../../core/html';
-
 import { Component } from '../../core/component';
+import loadingImg from '../../images/loading.gif';
 
 class Loading extends Component {
     msg = '';
@@ -22,7 +22,7 @@ class Loading extends Component {
             div(
                 '.loading',
                 img({
-                    src: `//${window.location.host}/dist/beaconing/images/loading.gif`,
+                    src: loadingImg,
                     alt: this.msg,
                 }),
                 span(`${this.msg}...`),

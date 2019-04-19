@@ -71,6 +71,27 @@ const docsFileLoader = {
     },
 };
 
+const imageFileLoader = {
+    loader: 'file-loader',
+    options: {
+        outputPath: 'images/',
+    },
+};
+
+const fontFileLoader = {
+    loader: 'file-loader',
+    options: {
+        outputPath: 'fonts/',
+    },
+};
+
+const videoFileLoader = {
+    loader: 'file-loader',
+    options: {
+        outputPath: 'videos/',
+    },
+};
+
 const optLoaders = [
     {
         loader: 'cache-loader',
@@ -86,13 +107,6 @@ const optLoaders = [
     //     },
     // },
 ];
-
-const videoFileLoader = {
-    loader: 'file-loader',
-    options: {
-        outputPath: 'videos/',
-    },
-};
 
 //
 // ─── MAIN CONFIG ────────────────────────────────────────────────────────────────
@@ -159,6 +173,18 @@ const mainSettings = (dev, devServer, dash, verbose) => {
                     test: /\.pdf$/,
                     use: [
                         docsFileLoader,
+                    ],
+                },
+                {
+                    test: /\.(jpg|png|gif)$/,
+                    use: [
+                        imageFileLoader,
+                    ],
+                },
+                {
+                    test: /\.(eot|svg|ttf|woff|woff2)$/,
+                    use: [
+                        fontFileLoader,
                     ],
                 },
                 {

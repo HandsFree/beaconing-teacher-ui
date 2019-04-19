@@ -1,7 +1,8 @@
 @charset "UTF-8";
 
 // load fonts
-@import 'fonts';
+@import 'fonts/external';
+@import 'fonts/fontello';
 
 // variables
 @import 'variables/all';
