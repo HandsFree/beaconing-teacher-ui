@@ -10,6 +10,25 @@ class GLPDetails extends Component {
             throw new Error('[GLP Details] GLP ID not provided');
         }
 
+        this.state.trans = await window.beaconingAPI.getPhrases(
+            'lm_cac',
+            'lm_ps',
+            'lm_if',
+            'lm_not_rec',
+            'never',
+            'lm_glp_details',
+            'lm_age',
+            'lm_domain',
+            'lm_year',
+            'lm_owner',
+            'description',
+            'lm_topic',
+            'lm_los',
+            'lm_comps',
+            'lm_created',
+            'lm_mod',  
+        );
+
         const sessionGLP = JSON.parse(window.sessionStorage.getItem(`glp_${this.props.id}`));
         this.state.glp = sessionGLP.glp;
     }
@@ -32,9 +51,9 @@ class GLPDetails extends Component {
             }
         };
 
-        const cac = await window.beaconingAPI.getPhrase('lm_cac');
-        const ps = await window.beaconingAPI.getPhrase('lm_ps');
-        const info = await window.beaconingAPI.getPhrase('lm_if');
+        const cac = this.state.trans.get('lm_cac');
+        const ps = this.state.trans.get('lm_ps');
+        const info = this.state.trans.get('lm_if');
 
         const competences = do {
             if (this.state.glp.competences) {
@@ -59,9 +78,9 @@ class GLPDetails extends Component {
             }
         };
 
-        let dateCreatedText = await window.beaconingAPI.getPhrase('lm_not_rec');
+        let dateCreatedText = this.state.trans.get('lm_not_rec');
         let timeCreatedText = '';
-        let dateUpdatedText = await window.beaconingAPI.getPhrase('never');
+        let dateUpdatedText = this.state.trans.get('never');
         let timeUpdatedText = '';
 
         if (this.state.glp.createdAt && this.state.glp.createdAt !== '0001-01-01T00:00:00Z') {
@@ -78,27 +97,27 @@ class GLPDetails extends Component {
 
         return div(
             '#plan-details',
-            div('.title', h4(`${await window.beaconingAPI.getPhrase('lm_glp_details')}:`)),
+            div('.title', h4(`${this.state.trans.get('lm_glp_details')}:`)),
             div(
                 '.small-details',
                 div(
                     '.detail',
-                    strong(`${await window.beaconingAPI.getPhrase('lm_age')}: `),
+                    strong(`${this.state.trans.get('lm_age')}: `),
                     span(this.state.glp.ageGroup),
                 ),
                 div(
                     '.detail',
-                    strong(`${await window.beaconingAPI.getPhrase('lm_domain')}: `),
+                    strong(`${this.state.trans.get('lm_domain')}: `),
                     span(this.state.glp.domain),
                 ),
                 div(
                     '.detail',
-                    strong(`${await window.beaconingAPI.getPhrase('lm_year')}: `),
+                    strong(`${this.state.trans.get('lm_year')}: `),
                     span(this.state.glp.year),
                 ),
                 div(
                     '.detail',
-                    strong(`${await window.beaconingAPI.getPhrase('lm_owner')}: `),
+                    strong(`${this.state.trans.get('lm_owner')}: `),
                     span(this.state.glp.owner),
                 ),
             ),
@@ -106,27 +125,27 @@ class GLPDetails extends Component {
                 '.large-details',
                 div(
                     '.detail',
-                    strong(`${await window.beaconingAPI.getPhrase('description')}:`),
+                    strong(`${this.state.trans.get('description')}:`),
                     p(this.state.glp.description),
                 ),
                 div(
                     '.detail',
-                    strong(`${await window.beaconingAPI.getPhrase('lm_topic')}:`),
+                    strong(`${this.state.trans.get('lm_topic')}:`),
                     p(this.state.glp.topic),
                 ),
                 div(
                     '.detail',
-                    strong(`${await window.beaconingAPI.getPhrase('lm_los')}:`),
+                    strong(`${this.state.trans.get('lm_los')}:`),
                     learningObjectives,
                 ),
                 div(
                     '.detail',
-                    strong(`${await window.beaconingAPI.getPhrase('lm_comps')}:`),
+                    strong(`${this.state.trans.get('lm_comps')}:`),
                     competences,
                 ),
                 div(
                     '.detail',
-                    strong(`${await window.beaconingAPI.getPhrase('lm_created')}:`),
+                    strong(`${this.state.trans.get('lm_created')}:`),
                     p(
                         {
                             title: timeCreatedText,
@@ -136,7 +155,7 @@ class GLPDetails extends Component {
                 ),
                 div(
                     '.detail',
-                    strong(`${await window.beaconingAPI.getPhrase('lm_mod')}:`),
+                    strong(`${this.state.trans.get('lm_mod')}:`),
                     p(
                         {
                             title: timeUpdatedText,

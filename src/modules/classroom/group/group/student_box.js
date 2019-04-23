@@ -8,6 +8,14 @@ import Status from '../../../status';
 import nullishCheck from '../../../../core/util';
 
 class StudentBox extends Component {
+    async init() {
+        this.state.trans = await window.beaconingAPI.getPhrases(
+            'con_remove_student',
+            'sc_sa',
+            'err_student_una',
+        );
+    }
+
     async render() {
         const {
             studentID,
@@ -109,7 +117,7 @@ class StudentBox extends Component {
     }
 
     async removeStudent() {
-        const removeStudentTransl = await window.beaconingAPI.getPhrase('con_remove_student');
+        const removeStudentTransl = this.state.trans.get('con_remove_student');
         if (!confirm(removeStudentTransl)) {
             return;
         }
@@ -131,7 +139,7 @@ class StudentBox extends Component {
                 elementID: false,
                 heading: 'Success',
                 type: 'success',
-                message: await window.beaconingAPI.getPhrase('sc_sa'),
+                message: this.state.trans.get('sc_sa'),
             });
 
             document.body.appendChild(statusMessageEl);
@@ -145,7 +153,7 @@ class StudentBox extends Component {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: await window.beaconingAPI.getPhrase('err_student_una'),
+            message: this.state.trans.get('err_student_una'),
         });
 
         document.body.appendChild(statusMessageEl);

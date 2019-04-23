@@ -6,8 +6,12 @@ import ResultBox from './result_box';
 
 class SearchResults extends Component {
     async init() {
-        const query = decodeURIComponent(this.props.query);
+        this.state.trans = await window.beaconingAPI.getPhrases(
+            'username',
+            'cr_students',
+        );
 
+        const query = decodeURIComponent(this.props.query);
         this.state.results = await window.beaconingAPI.getSearchResults({ query });
     }
 
@@ -22,7 +26,7 @@ class SearchResults extends Component {
         if (MatchedStudents.length > 0) {
             const promArr = [];
 
-            const studentUsernameStr = await window.beaconingAPI.getPhrase('username');
+            const studentUsernameStr = this.state.trans.get('username');
             for (const student of MatchedStudents) {
                 const resultBox = new ResultBox();
                 const { profile } = student;
@@ -59,7 +63,7 @@ class SearchResults extends Component {
                 '.result-group',
                 div(
                     '.title',
-                    h4(`${await window.beaconingAPI.getPhrase('cr_students')}:`),
+                    h4(`${this.state.trans.get('cr_students')}:`),
                 ),
                 div(
                     '.flex-container.flex-wrap.result-container',

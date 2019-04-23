@@ -15,6 +15,7 @@ class APICore {
     async doRequest(link: string, req: Object) {
         return fetch(link, req).catch((err) => {
             console.log('[API Core] Error: ', err);
+            console.log('...', link);
         });
     }
 

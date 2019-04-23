@@ -114,11 +114,19 @@ class GLPAnalyticsInfo {
 }
 
 class AssignedGLPs extends Component {
+    async init() {
+        this.state.trans = await window.beaconingAPI.getPhrases(
+            'ld_plans',
+            'err_no_assigned_glps',
+            'pc_go_library',
+        );
+    }
+
     async render() {
         const loading = new Loading();
 
         const loadingEl = await loading.attach({
-            msg: await window.beaconingAPI.getPhrase('ld_plans'),
+            msg: this.state.trans.get('ld_plans'),
         });
 
         return section(
@@ -317,13 +325,13 @@ class AssignedGLPs extends Component {
 
         const el = div(
             '#assigned-plans-container.status.flex-column.flex-align-center',
-            p(await window.beaconingAPI.getPhrase('err_no_assigned_glps')),
+            p(this.state.trans.get('err_no_assigned_glps')),
             a(
                 '.link-underline',
                 {
                     href: `//${window.location.host}/lesson_manager`,
                 },
-                await window.beaconingAPI.getPhrase('pc_go_library'),
+                this.state.trans.get('pc_go_library'),
             ),
         );
 

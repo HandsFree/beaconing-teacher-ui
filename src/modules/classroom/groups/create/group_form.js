@@ -53,6 +53,25 @@ class GroupForm extends Form {
     async init() {
         const groups = await window.beaconingAPI.getGroups();
 
+        this.state.trans = await window.beaconingAPI.getPhrases(
+            'cr_create_group',
+            'err_group_name_exists',
+            'err_required_empty',
+            'err_more_students_needed',
+            'err_form',
+            'err_group_nc',
+            'sc_group_cre',
+            'creating',
+            'cr_group_edit_info',
+            'cr_group_name',
+            'cr_group_name_desc',
+            'cr_group_enter_name',
+            'cr_students',
+            'cr_students_group_desc',
+            'cancel',
+            'cr_create_group',
+        );
+
         if (groups) {
             this.processGroups(groups);
         }
@@ -82,7 +101,7 @@ class GroupForm extends Form {
 
     async resetSubmit() {
         const groupButton = document.getElementById('create-group-button');
-        groupButton.textContent = await window.beaconingAPI.getPhrase('cr_create_group');
+        groupButton.textContent = this.state.trans.get('cr_create_group');
     }
 
     async checkGroupName() {
@@ -93,7 +112,7 @@ class GroupForm extends Form {
         }
 
         if (this.groups.indexOf(this.state.groupName.toLowerCase()) !== -1) {
-            const errMsg = await window.beaconingAPI.getPhrase('err_group_name_exists');
+            const errMsg = this.state.trans.get('err_group_name_exists');
             this.addError('group-name-status', errMsg);
 
             return false;
@@ -105,7 +124,7 @@ class GroupForm extends Form {
 
     async checkFields() {
         let success = true;
-        const emptyMsg = await window.beaconingAPI.getPhrase('err_required_empty');
+        const emptyMsg = this.state.trans.get('err_required_empty');
 
         if (this.state.groupName === '') {
             this.addError('group-name-status', emptyMsg);
@@ -117,7 +136,7 @@ class GroupForm extends Form {
         }
 
         if (this.studentList.length < 2) {
-            this.addError('group-students-status', await window.beaconingAPI.getPhrase('err_more_students_needed'));
+            this.addError('group-students-status', this.state.trans.get('err_more_students_needed'));
             success = false;
         }
 
@@ -127,7 +146,7 @@ class GroupForm extends Form {
                 elementID: false,
                 heading: 'Error',
                 type: 'error',
-                message: await window.beaconingAPI.getPhrase('err_form'),
+                message: this.state.trans.get('err_form'),
             });
 
             this.appendView(statusMessageEl);
@@ -170,7 +189,7 @@ class GroupForm extends Form {
             elementID: false,
             heading: 'Error',
             type: 'error',
-            message: await window.beaconingAPI.getPhrase('err_group_nc'),
+            message: this.state.trans.get('err_group_nc'),
         });
 
         this.appendView(statusMessageEl);
@@ -180,7 +199,7 @@ class GroupForm extends Form {
 
     async afterCreation(group: Object) {
         const pcEL = new PostCreation().attach({
-            title: await window.beaconingAPI.getPhrase('sc_group_cre'),
+            title: this.state.trans.get('sc_group_cre'),
             id: group.id,
         });
 
@@ -192,7 +211,7 @@ class GroupForm extends Form {
 
         const studentsListEl = await studentsList.attach();
 
-        const creatingText = await window.beaconingAPI.getPhrase('creating');
+        const creatingText = this.state.trans.get('creating');
 
         return div(
             '.flex-column',
@@ -202,7 +221,7 @@ class GroupForm extends Form {
                     '.margin-25.flex-column',
                     div(
                         '.general-info',
-                        p(`${await window.beaconingAPI.getPhrase('cr_group_edit_info')}:`),
+                        p(`${this.state.trans.get('cr_group_edit_info')}:`),
                     ),
                     form(
                         '.create-group',
@@ -210,8 +229,8 @@ class GroupForm extends Form {
                             '.label-group',
                             div(
                                 '.split',
-                                div('.title-area', span(await window.beaconingAPI.getPhrase('cr_group_name'))),
-                                div('.desc-area', await window.beaconingAPI.getPhrase('cr_group_name_desc')),
+                                div('.title-area', span(this.state.trans.get('cr_group_name'))),
+                                div('.desc-area', this.state.trans.get('cr_group_name_desc')),
                                 div(
                                     '.input-area',
                                     label(
@@ -220,7 +239,7 @@ class GroupForm extends Form {
                                             '#group-name.text-field',
                                             {
                                                 type: 'text',
-                                                placeholder: await window.beaconingAPI.getPhrase('cr_group_enter_name'),
+                                                placeholder: this.state.trans.get('cr_group_enter_name'),
                                                 oninput: (event) => {
                                                     const { target } = event;
 
@@ -240,8 +259,8 @@ class GroupForm extends Form {
                             '.label-group',
                             div(
                                 '.split',
-                                div('.title-area', span(await window.beaconingAPI.getPhrase('cr_students'))),
-                                div('.desc-area', await window.beaconingAPI.getPhrase('cr_students_group_desc')),
+                                div('.title-area', span(this.state.trans.get('cr_students'))),
+                                div('.desc-area', this.state.trans.get('cr_students_group_desc')),
                                 div(
                                     '.input-area',
                                     studentsListEl,
@@ -259,7 +278,7 @@ class GroupForm extends Form {
                                         window.location.href = `//${window.location.host}/classroom/groups`;
                                     },
                                 },
-                                await window.beaconingAPI.getPhrase('cancel'),
+                                this.state.trans.get('cancel'),
                             ),
                             div(
                                 '#create-group-button.button-submit',
@@ -271,7 +290,7 @@ class GroupForm extends Form {
                                         target.textContent = `${creatingText}...`;
                                     },
                                 },
-                                await window.beaconingAPI.getPhrase('cr_create_group'),
+                                this.state.trans.get('cr_create_group'),
                             ),
                         ),
                     ),

@@ -5,18 +5,25 @@ import { Component } from '../../../../core/component';
 import LoadRecentActivities from './load_recent_activities';
 
 class RecentActivities extends Component {
+    async init() {
+        this.state.trans = await window.beaconingAPI.getPhrases(
+            'widget_ra_title',
+            'ld',
+        );
+    }
+
     async render() {
         return div(
             '.draggable.tile.flex-column.flex-2',
             div(
                 '.title',
-                p(await window.beaconingAPI.getPhrase('widget_ra_title')),
+                p(this.state.trans.get('widget_ra_title')),
             ),
             div(
                 '.content',
                 div(
                     '#recent-activity',
-                    p(`${await window.beaconingAPI.getPhrase('ld')}...`),
+                    p(`${this.state.trans.get('ld')}...`),
                 ),
             ),
         );
@@ -31,7 +38,7 @@ class RecentActivities extends Component {
             '.draggable.tile.flex-column.flex-2',
             div(
                 '.title',
-                p(await window.beaconingAPI.getPhrase('widget_ra_title')),
+                p(this.state.trans.get('widget_ra_title')),
             ),
             div(
                 '.content',

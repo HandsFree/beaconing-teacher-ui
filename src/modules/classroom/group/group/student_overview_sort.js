@@ -15,6 +15,13 @@ class Sort extends Component {
             sort,
         } = this.props;
 
+        this.state.trans = await window.beaconingAPI.getPhrases(
+            'sort_by',
+            'week',
+            'month',
+            'year',
+        );
+
         this.state.classID = id;
         this.state.sort = sort;
     }
@@ -26,7 +33,7 @@ class Sort extends Component {
                 '#student-overview-sort.sort-menu',
                 label(
                     '.select',
-                    span(`${await window.beaconingAPI.getPhrase('sort_by')}: `),
+                    span(`${this.state.trans.get('sort_by')}: `),
                     select(
                         {
                             onchange: (event) => {
@@ -53,21 +60,21 @@ class Sort extends Component {
                                 selected: this.state.sort === 'week',
                                 value: 'week',
                             },
-                            await window.beaconingAPI.getPhrase('week'),
+                            this.state.trans.get('week'),
                         ),
                         option(
                             {
                                 selected: this.state.sort === 'month',
                                 value: 'month',
                             },
-                            await window.beaconingAPI.getPhrase('month'),
+                            this.state.trans.get('month'),
                         ),
                         option(
                             {
                                 selected: this.state.sort === 'year',
                                 value: 'year',
                             },
-                            await window.beaconingAPI.getPhrase('year'),
+                            this.state.trans.get('year'),
                         ),
                     ),
                 ),

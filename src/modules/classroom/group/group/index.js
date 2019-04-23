@@ -26,6 +26,12 @@ class Group extends RootComponent {
             return;
         }
 
+        this.state.trans = await window.beaconingAPI.getPhrases(
+            'no_group',
+            'cr',
+            'sc_group_del',
+        );
+
         const group = await window.beaconingAPI.getGroup(id);
 
         if (!group || Object.keys(group).indexOf('error') !== -1) {
@@ -42,14 +48,14 @@ class Group extends RootComponent {
         const groupMain = new GroupMain();
         const groupAside = new GroupAside();
 
-        const noGroupMsg = await window.beaconingAPI.getPhrase('err_no_group');
+        const noGroupMsg = this.state.trans.get('no_group');
 
         return Promise.all([
             header.attach(),
             footer.attach(),
             mainNav.attach(),
             secondNav.attach({
-                title: await window.beaconingAPI.getPhrase('cr'),
+                title: this.state.trans.get('cr'),
                 innerNav: innerNav.attach(),
             }),
             groupMain.attach(this.params),
@@ -107,13 +113,13 @@ class Group extends RootComponent {
         const secondNav = new SecondNav();
         const innerNav = new InnerNav();
 
-        const groupDelMsg = await window.beaconingAPI.getPhrase('sc_group_del');
+        const groupDelMsg = this.state.trans.get('sc_group_del');
 
         const el = await Promise.all([
             header.attach(),
             mainNav.attach(),
             secondNav.attach({
-                title: await window.beaconingAPI.getPhrase('cr'),
+                title: this.state.trans.get('cr'),
                 innerNav: innerNav.attach(),
             }),
         ]).then((values) => {

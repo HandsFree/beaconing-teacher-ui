@@ -19,6 +19,11 @@ class StudentOverview extends Component {
 
     async init() {
         this.state.classID = this.props.classID;
+        this.state.trans = await window.beaconingAPI.getPhrases(
+            'widget_so_title',
+            'ld',
+            'widget_so_title',
+        );
     }
 
     async updateClass() {
@@ -47,12 +52,12 @@ class StudentOverview extends Component {
     async render() {
         return div(
             '#student-overview-container.status.flex-column.flex-align-center',
-            p(await window.beaconingAPI.getPhrase('widget_so_title')),
+            p(this.state.trans.get('widget_so_title')),
             div(
                 '.content',
                 div(
                     '#student-overview',
-                    p(`${await window.beaconingAPI.getPhrase('ld')}...`),
+                    p(`${this.state.trans.get('ld')}...`),
                 ),
             ),
         );
@@ -68,7 +73,7 @@ class StudentOverview extends Component {
 
         const el = div(
             '#student-overview-container.status.flex-column.flex-align-center',
-            p(await window.beaconingAPI.getPhrase('widget_so_title')),
+            p(this.state.trans.get('widget_so_title')),
             div(
                 '.content',
                 loadStudentOverviewEl,

@@ -10,6 +10,17 @@ import InnerNav from '../../inner_nav';
 import nullishCheck from '../../../../core/util';
 
 class QuestBox extends Component {
+    async init() {
+        this.state.trans = await window.beaconingAPI.getPhrases(
+            'cr_no_analytics',
+            'an_lbg_dash_title',
+            'an_scenes_dash_title',
+            'an_scenes',
+            'an_scenes_desc',
+            'an_dashboard',
+        );
+    }
+
     async render() {
         const {
             name,
@@ -18,9 +29,9 @@ class QuestBox extends Component {
         } = this.props;
 
         const sceneList = [];
-        const noAnMsg = await window.beaconingAPI.getPhrase('cr_no_analytics');
-        const dashMsg = await window.beaconingAPI.getPhrase('an_dashboard');
-        const dashTitleMsg = await window.beaconingAPI.getPhrase('an_lbg_dash_title');
+        const noAnMsg = this.state.trans.get('cr_no_analytics');
+        const dashMsg = this.state.trans.get('an_dashboard');
+        const dashTitleMsg = this.state.trans.get('an_lbg_dash_title');
 
         for (const [id, scene] of scenes) {
             const {
@@ -86,9 +97,9 @@ class QuestBox extends Component {
                     {
                         href: dashboardLink,
                         target: '_BLANK',
-                        title: await window.beaconingAPI.getPhrase('an_scenes_dash_title'),
+                        title: this.state.trans.get('an_scenes_dash_title'),
                     },
-                    await window.beaconingAPI.getPhrase('an_dashboard'),
+                    this.state.trans.get('an_dashboard'),
                 )),
             ),
 
@@ -96,8 +107,8 @@ class QuestBox extends Component {
             // if there are scenes.
             sceneList.length > 0 ? div(
                 '.margin-block',
-                h4(await window.beaconingAPI.getPhrase('an_scenes')),
-                p(await window.beaconingAPI.getPhrase('an_scenes_desc')),
+                h4(this.state.trans.get('an_scenes')),
+                p(this.state.trans.get('an_scenes_desc')),
                 div('.scenes-container', sceneList),
             ) : [],
         );
@@ -105,6 +116,13 @@ class QuestBox extends Component {
 }
 
 class MissionBox extends Component {
+    async init() {
+        this.state.trans = await window.beaconingAPI.getPhrases(
+            'an_mission_dash_title',
+            'an_dashboard',
+        );
+    }
+    
     async render() {
         const {
             name,
@@ -128,9 +146,9 @@ class MissionBox extends Component {
                     {
                         href: dashboardLink,
                         target: '_BLANK',
-                        title: await window.beaconingAPI.getPhrase('an_mission_dash_title'),
+                        title: this.state.trans.get('an_mission_dash_title'),
                     },
-                    await window.beaconingAPI.getPhrase('an_dashboard'),
+                    this.state.trans.get('an_dashboard'),
                 )),
             ),
             div(
@@ -142,11 +160,21 @@ class MissionBox extends Component {
 }
 
 class AnalyticsMain extends Component {
+    async init() {
+        this.state.trans = await window.beaconingAPI.getPhrases(
+            'cr_no_analytics',
+            'an_main_dashboard_link',
+            'analytics',
+            'an_main_dashboard_desc',
+            'lm_missions',
+        );
+    }
+
     async render() {
         const rawData = nullishCheck(window.sessionStorage.getItem('assignedAnalyticsData'), 'none');
         if (rawData === 'none') {
             console.log('[AnalyticsMain] data not in session storage');
-            return h2(await window.beaconingAPI.getPhrase('cr_no_analytics'));
+            return h2(this.state.trans.get('cr_no_analytics'));
         }
 
         // avoid type issues
@@ -169,7 +197,7 @@ class AnalyticsMain extends Component {
 
         if (nullishCheck(theGLP?.dashboardLink, '') === '') {
             console.log('[AnalyticsMain] no dashboard link');
-            return h2(await window.beaconingAPI.getPhrase('cr_no_analytics'));
+            return h2(this.state.trans.get('cr_no_analytics'));
         }
 
         const {
@@ -197,22 +225,28 @@ class AnalyticsMain extends Component {
                                 href: dashboardLink,
                                 target: '_BLANK',
                             },
-                            await window.beaconingAPI.getPhrase('an_main_dashboard_link'),
+                            this.state.trans.get('an_main_dashboard_link'),
                         ),
                     ),
-                    h2(await window.beaconingAPI.getPhrase('analytics')),
+                    h2(this.state.trans.get('analytics')),
                 ),
 
-                p(await window.beaconingAPI.getPhrase('an_main_dashboard_desc')),
+                p(this.state.trans.get('an_main_dashboard_desc')),
             ),
 
-            h2(await window.beaconingAPI.getPhrase('lm_missions')),
+            h2(this.state.trans.get('lm_missions')),
             await Promise.all(missionProms).then(el => el),
         ];
     }
 }
 
 class AnalyticsOverview extends RootComponent {
+    async init() {
+        this.state.trans = await window.beaconingAPI.getPhrases(
+            'cr',
+        );
+    }
+
     async render() {
         const header = new Header();
         const footer = new Footer();
@@ -226,7 +260,7 @@ class AnalyticsOverview extends RootComponent {
             footer.attach(),
             mainNav.attach(),
             secondNav.attach({
-                title: await window.beaconingAPI.getPhrase('cr'),
+                title: this.state.trans.get('cr'),
                 innerNav: innerNav.attach(),
             }),
             mainPanel.attach(this.params),

@@ -11,12 +11,21 @@ class PlanHeader extends Component {
             throw new Error('[Plan Header] GLP ID not provided');
         }
 
+        this.state.trans = await window.beaconingAPI.getPhrases(
+            'lm_unnamed_glp',
+            'edit',
+            'lm_library',
+            'lm_plan_overview',
+            'lm_play',
+            'lm_assign',  
+        );
+
         const sessionGLP = JSON.parse(window.sessionStorage.getItem(`glp_${this.props.id}`));
         this.state.glp = sessionGLP.glp;
     }
 
     async render() {
-        const glpName = nullishCheck(this.state.glp?.name, await window.beaconingAPI.getPhrase('lm_unnamed_glp'));
+        const glpName = nullishCheck(this.state.glp?.name, this.state.trans.get('lm_unnamed_glp'));
         const playUrl = nullishCheck(this.state.glp?.playUrl, `http://gameplots.beaconing.eu/game/?externs=http://core.beaconing.eu/api/gamifiedlessonpaths/${this.state.glp.id}/externconfig`);
 
         const readOnly = this.state.glp?.readOnly;
@@ -25,7 +34,7 @@ class PlanHeader extends Component {
             {
                 href: `#edit?id=${encodeURIComponent(this.state.glp.id)}`,
             },
-            button('.action', await window.beaconingAPI.getPhrase('edit')),
+            button('.action', this.state.trans.get('edit')),
         );
 
         return div(
@@ -37,9 +46,9 @@ class PlanHeader extends Component {
                     {
                         href: `//${window.location.host}/lesson_manager`,
                     },
-                    span(await window.beaconingAPI.getPhrase('lm_library')),
+                    span(this.state.trans.get('lm_library')),
                 ),
-                a('.current', await window.beaconingAPI.getPhrase('lm_plan_overview')),
+                a('.current', this.state.trans.get('lm_plan_overview')),
             ),
             div(
                 '.titlebar',
@@ -51,13 +60,13 @@ class PlanHeader extends Component {
                             href: playUrl,
                             target: '_blank',
                         },
-                        button('.action', await window.beaconingAPI.getPhrase('lm_play')),
+                        button('.action', this.state.trans.get('lm_play')),
                     ),
                     a(
                         {
                             href: `#assign?id=${this.state.glp.id}`,
                         },
-                        button('.action', await window.beaconingAPI.getPhrase('lm_assign')),
+                        button('.action', this.state.trans.get('lm_assign')),
                     ),
                     readOnly ? [] : editButton,
                 ),

@@ -7,11 +7,19 @@ import StudentBox from './student_box';
 import StudentOverview from './student_overview';
 
 class GroupStudents extends Component {
+    async init() {
+        this.state.trans = await window.beaconingAPI.getPhrases(
+            'ld_students',
+            'username',
+            'no_students_assigned',
+        );
+    }
+
     async render() {
         const loading = new Loading();
 
         const loadingEl = await loading.attach({
-            msg: await window.beaconingAPI.getPhrase('ld_students'),
+            msg: this.state.trans.get('ld_students'),
         });
 
         return section(
@@ -27,7 +35,7 @@ class GroupStudents extends Component {
         if (students && students.length != 0) {
             const promArr = [];
 
-            const usernameTrans = await window.beaconingAPI.getPhrase('username');
+            const usernameTrans = this.state.trans.get('username');
             for (const studentObj of students) {
                 console.log(studentObj);
 
@@ -62,7 +70,7 @@ class GroupStudents extends Component {
 
         const el = div(
             '#group-students-container.status',
-            p(await window.beaconingAPI.getPhrase('no_students_assigned')),
+            p(this.state.trans.get('no_students_assigned')),
         );
 
         this.updateView(el);

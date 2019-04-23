@@ -1,5 +1,5 @@
 // @flow
-import { div, nav, h4, a } from '../../../core/html';
+import { div, input, nav, h4, a } from '../../../core/html';
 
 import { Component } from '../../../core/component';
 import StudentBox from './student_box';
@@ -9,7 +9,14 @@ class TabControlPane extends Component {
     updateHooks = {
         RefreshGroups: this.refreshGroups,
         RefreshStudents: this.refreshStudents,
+        ProcAssignSearch: this.procAssignSearch,
     };
+
+    async procAssignSearch(event: CustomEvent) {
+        const { detail } = event;
+        const handle = this.selectionType === 'students' ? 'RefreshStudents' : 'RefreshGroups';
+        this.emit(handle, detail);
+    }
 
     async init() {
         this.selectionType = 'students';
@@ -34,6 +41,7 @@ class TabControlPane extends Component {
                     {
                         onclick: (evt) => {
                             this.emit('RefreshStudents');
+                            this.emit('ClearAssignSearchBar');
                         },
                     },
                     `${await window.beaconingAPI.getPhrase('cr_students')}`
@@ -43,6 +51,7 @@ class TabControlPane extends Component {
                     {
                         onclick: () => {
                             this.emit('RefreshGroups');
+                            this.emit('ClearAssignSearchBar');
                         },
                     },
                     `${await window.beaconingAPI.getPhrase('cr_groups')}`
@@ -69,11 +78,15 @@ class TabView extends Component {
         };
     }
 
-    async refreshGroups() {
+    async refreshGroups(event: CustomEvent) {
+        const { detail } = event;
+        this.state.query = detail;
         this.updateView(await this.renderGroups());
     }
 
-    async refreshStudents() {
+    async refreshStudents(event: CustomEvent) {
+        const { detail } = event;
+        this.state.query = detail;
         this.updateView(await this.renderStudents());
     }
     
@@ -84,11 +97,27 @@ class TabView extends Component {
     async renderGroups() {
         const { groups } = this.state;
         if (!groups) {
+            // FIXME
             return h4('failed');
         }
 
+        let selected = [];
+
+        const { query } = this.state;
+        if (query) {
+            for (const group of groups) {
+                console.log('ze group', group);
+                if (group.name.toLowerCase().indexOf(query.toLowerCase()) !== -1) {
+                    selected.push(group);
+                }
+            }
+        } else {
+            // show all the groups
+            selected = groups;
+        }
+
         const groupsProm = [];
-        for (const group of this.state.groups) {
+        for (const group of selected) {
             const groupBox = new GroupBox();
             const groupBoxEl = groupBox.attach({
                 group,
@@ -109,13 +138,28 @@ class TabView extends Component {
     async renderStudents() {
         const { students } = this.state;
         if (!students) {
+            // FIXME
             return h4('failed');
         }
 
         const studentsProm = [];
 
+        let selected = [];
+
+        const { query } = this.state;
+        if (query) {
+            for (const student of students) {
+                if (student.username.toLowerCase().indexOf(query.toLowerCase()) !== -1) {
+                    selected.push(student);
+                }
+            }
+        } else {
+            // show all the groups
+            selected = students;
+        }
+
         const usernameTrans = await window.beaconingAPI.getPhrase('username');
-        for (const student of students) {
+        for (const student of selected) {
             const studentBox = new StudentBox();
             const studentBoxEl = studentBox.attach({
                 student,
@@ -140,6 +184,37 @@ class TabView extends Component {
     }
 }
 
+class AssignSearchBar extends Component {
+    updateHooks = {
+        ClearAssignSearchBar: this.clearSearchBar,
+    };
+
+    async init() {
+        this.state.value = '';
+    }
+
+    async clearSearchBar() {
+        this.state.value = '';
+        this.updateView(await this.render());
+    }
+    
+    async render() {
+        return div('.flex-column',
+            input(
+                '.filter-assign',
+                {
+                    type: 'text',
+                    placeholder: 'Filter assign options',
+                    value: this.state.value,
+                    onkeyup: (event) => {
+                        this.emit('ProcAssignSearch', event.target.value ?? '');
+                    },
+                }
+            ),
+        );
+    }
+}
+
 class AssignOptions extends Component {
     async init() {
         if (!this.props.id) {
@@ -153,18 +228,22 @@ class AssignOptions extends Component {
 
         const tabControl = new TabControlPane();
         const tabView = new TabView();
+        const searchBar = new AssignSearchBar();
 
         return Promise.all([
             tabControl.attach(),
             tabView.attach(),
+            searchBar.attach(),
         ]).then((values) => {
             const [
                 tabControlEl,
                 tabViewEl,
+                searchBarEl,
             ] = values;
 
             return div(
                 '#assign-options',
+                searchBarEl,
                 tabControlEl,
                 div('.margin-top-20',
                     tabViewEl,
