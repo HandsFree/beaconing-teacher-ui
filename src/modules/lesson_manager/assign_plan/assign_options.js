@@ -1,5 +1,5 @@
 // @flow
-import { div, input, nav, h4, a } from '../../../core/html';
+import { div, input, nav, h3, h4, a } from '../../../core/html';
 
 import { Component } from '../../../core/component';
 import StudentBox from './student_box';
@@ -199,19 +199,21 @@ class AssignSearchBar extends Component {
     }
     
     async render() {
-        return div('.flex-column',
-            input(
-                '.filter-assign',
-                {
-                    type: 'text',
-                    placeholder: 'Filter assign options',
-                    value: this.state.value,
-                    onkeyup: (event) => {
-                        this.emit('ProcAssignSearch', event.target.value ?? '');
-                    },
-                }
-            ),
-        );
+        return [
+            div('.flex-column.margin-bottom-20',
+                input(
+                    '.filter-assign',
+                    {
+                        type: 'text',
+                        placeholder: 'Search for a student or group',
+                        value: this.state.value,
+                        onkeyup: (event) => {
+                            this.emit('ProcAssignSearch', event.target.value ?? '');
+                        },
+                    }
+                ),
+            )
+        ];
     }
 }
 
