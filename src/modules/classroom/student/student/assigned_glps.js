@@ -21,14 +21,15 @@ class AssignedGLPs extends Component {
 
     async afterMount() {
         const { id } = this.props;
-        const assignedGLPs = await window.beaconingAPI.getStudentAssigned(id, true);
 
+        const currentUser = await window.beaconingAPI.getCurrentUser();
+        let username = currentUser.username;
+        
+        const assignedGLPs = await window.beaconingAPI.getStudentAssigned(id, true);
         if (assignedGLPs && assignedGLPs.length >= 1) {
             const promArr = [];
 
             for (const glp of assignedGLPs) {
-                console.log('glp! ', glp);
-
                 const glpBox = new GLPBox();
 
                 const glpBoxProm = glpBox.attach({
@@ -39,6 +40,8 @@ class AssignedGLPs extends Component {
                     fromGroupID: glp.fromStudentGroupId,
                     fromGroupName: glp.fromStudentGroupName,
                     readOnly: glp.readOnly,
+                    owner: glp.owner,
+                    username: username,
                 });
 
                 promArr.push(glpBoxProm);

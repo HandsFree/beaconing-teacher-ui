@@ -102,6 +102,10 @@
 	margin-bottom: 1.0em;
 }
 
+.small-box.owned {
+    border-left: 4px solid $bcn_light_orange;
+}
+
 .small-box {
     display: flex;
     border: 2px solid $border_color;
@@ -173,6 +177,10 @@
             font-size: 1.4em;
         }
     }
+}
+
+.glp-box.owned {
+    border-top: 4px solid $bcn_light_orange;
 }
 
 .glp-box {

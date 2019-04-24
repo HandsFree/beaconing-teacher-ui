@@ -16,6 +16,8 @@ class GLPBox extends Component {
             glpID,
             fromGroupID,
             fromGroupName,
+            owner,
+            username,
         } = this.props;
 
         const fromGroupEl = h4(
@@ -40,8 +42,10 @@ class GLPBox extends Component {
             await window.beaconingAPI.getPhrase('cr_unassign'),
         );
 
+        const ownedByMe = owner === username;
+
         return div(
-            '.small-box.flex-4.flex-column',
+            `.small-box.flex-4.flex-column${ownedByMe ? '.owned' : ''}`,
             div(
                 '.title',
                 div(

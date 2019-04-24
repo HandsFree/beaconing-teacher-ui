@@ -4,25 +4,7 @@ import { div, p, a, h3, strong } from '../../../../core/html';
 import { Component } from '../../../../core/component';
 import Status from '../../../status';
 
-const interfaceKeys = [
-    'lm_not_rec', 'never', 'lm_owner', 'view', 'lm_assign', 'lm_created',
-    'lm_domain', 'lm_mod', 'lm_topic',
-];
-
-// TODO
-// in theory it would be better to do the getPhrase once
-// then pass it to this GLPBox, but that's a bit messy
-// passing UI text data to a component
-//
-// however, it would probably be a bit quicker than
-// performong a getPhrase request for every GLPBox.
 class GLPBox extends Component {
-    async init() {
-        this.state = {
-            trans: await window.beaconingAPI.getPhrases(...interfaceKeys),
-        };
-    }
-
     async render() {
         const {
             name,
@@ -33,12 +15,14 @@ class GLPBox extends Component {
             id,
             owner,
             readOnly,
-        } = this.props;
-        console.log(this.props);
 
-        let dateCreatedText = this.state.trans.get('lm_not_rec');
+            currentUser,
+            translationSet,
+        } = this.props;
+
+        let dateCreatedText = translationSet.get('lm_not_rec');
         let timeCreatedText = '';
-        let dateUpdatedText = this.state.trans.get('never');
+        let dateUpdatedText = translationSet.get('never');
         let timeUpdatedText = '';
 
         if (creationDate && creationDate !== '0001-01-01T00:00:00Z') {
@@ -59,11 +43,13 @@ class GLPBox extends Component {
             {
                 href: `#edit?id=${encodeURIComponent(id)}`,
             },
-            this.state.trans.get('edit'),
+            translationSet.get('edit'),
         );
 
+        const ownedByMe = owner === currentUser;
+
         return div(
-            '.glp-box.flex-4.flex-column',
+            `.glp-box.flex-4.flex-column${ownedByMe ? '.owned' : ''}`,
             div(
                 '.title',
                 div(
@@ -73,7 +59,7 @@ class GLPBox extends Component {
                     div(
                         p(
                             '.owner',
-                            `${this.state.trans.get('lm_owner')} ${owner}`,
+                            `${translationSet.get('lm_owner')} ${owner}`,
                         ),
                     ),        
                     div(
@@ -83,7 +69,7 @@ class GLPBox extends Component {
                             {
                                 href: `#view?id=${encodeURIComponent(id)}`,
                             },
-                            this.state.trans.get('view'),
+                            translationSet.get('view'),
                         ),
                         readOnly ? [] : editItem,
                         a(
@@ -91,7 +77,7 @@ class GLPBox extends Component {
                             {
                                 href: `#assign?id=${encodeURIComponent(id)}`,
                             },
-                            this.state.trans.get('lm_assign'),
+                            translationSet.get('lm_assign'),
                         ),
                     ),
                 ),
@@ -100,7 +86,7 @@ class GLPBox extends Component {
                 '.content.flex-column',
                 div(
                     '.created',
-                    strong(`${this.state.trans.get('lm_created')}:`),
+                    strong(`${translationSet.get('lm_created')}:`),
                     p(
                         {
                             title: timeCreatedText,
@@ -110,17 +96,17 @@ class GLPBox extends Component {
                 ),
                 div(
                     '.domain',
-                    strong(`${this.state.trans.get('lm_domain')}:`),
+                    strong(`${translationSet.get('lm_domain')}:`),
                     p(domain),
                 ),
                 div(
                     '.topic',
-                    strong(this.state.trans.get('lm_topic')),
+                    strong(translationSet.get('lm_topic')),
                     p(topic),
                 ),
                 div(
                     '.modified',
-                    strong(`${this.state.trans.get('lm_mod')}:`),
+                    strong(`${translationSet.get('lm_mod')}:`),
                     p(
                         {
                             title: timeUpdatedText,

@@ -141,7 +141,7 @@ class LoadGLPs extends Component {
         const promArr = [];
         const { currentUser } = this.props;
 
-        console.log(values);
+        // console.log(values);
 
         if (values.length === 0) {
             this.removeLoadButtons();
@@ -168,8 +168,12 @@ class LoadGLPs extends Component {
             createPlanCard,
         ));
 
+        const trans = await window.beaconingAPI.getPhrases(
+            'lm_not_rec', 'never', 'lm_owner', 'view', 'lm_assign', 'lm_created',
+            'lm_domain', 'lm_mod', 'lm_topic',
+        );
+
         for (const glp of values) {
-            // console.log(glp);
             if (glp) {
                 const glpBox = new GLPBox();
 
@@ -183,6 +187,8 @@ class LoadGLPs extends Component {
                     id: glp.id,
                     owner: glp.owner,
                     readOnly: glp.readOnly,
+                    translationSet: trans,
+                    currentUser,
                 });
 
                 promArr.push(glpBoxProm);
