@@ -23,7 +23,7 @@ class GroupBox extends Component {
             p('.assign-status'),
         );
         return a(
-            '.fake-link',
+            '.clickable-box-link',
             {
                 onclick: (event) => {
                     const { target } = event;

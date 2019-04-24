@@ -28,47 +28,37 @@
     grid-template-columns: 33% 33% 33%;
 }
 
-.create-group-box {
-    display: flex;
-
-    // fixme!
-    padding: 0.83em !important;
-    background: $border_color;
-
-    // fixme.
-    justify-content: space-around !important;
-
-    h2 {
-        margin: 0;
-        color: #72a16d;
-    }
-}
-
 .create-student-box {
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
+    justify-content: center;
     padding: 0;
     background: $border_color;
-
+    
     h1 {
         font-size: 2.5em;
-        margin: 0.68em;
-        color: #72a16d;
+        margin: 0;
+        color: $success_green;
+        text-align: center;
     }
 }
 
 .student-box {
     border: 2px solid $border_color;
     margin: 0.5em;
+    height: 100%;
 
     figure {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+
         background: $border_color;
-        padding: 1em;
+        padding: 1em 1.25em;
         margin: 0 0.25em 0 0;
 
         img {
-            width: 4em;
-            height: auto;
+            height: 100%;
         }
     }
 
@@ -107,12 +97,18 @@
     }
 }
 
+.clickable-box-link {
+	cursor: pointer;
+	margin-bottom: 1.0em;
+}
+
 .small-box {
     display: flex;
     border: 2px solid $border_color;
     margin: 0.5em;
     padding: 1em 2em;
     justify-content: space-between;
+    height: 100%;
 
     border-left: 4px solid $border_color;
 
@@ -123,7 +119,16 @@
         width: 100%;
     }
 
+    .title {
+        flex-direction: column;
+        justify-content: center;
+    }
+
     > .title {
+        p {
+            margin: 0;
+        }
+
         h3 {
             margin: 0;
             font-weight: 400;
@@ -139,6 +144,19 @@
 
     a {
         @extend .link-underline;
+    }
+}
+
+.create-group-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: $border_color;
+
+    h2 {
+        margin: 0;
+        color: $success_green;
+        text-align: center;
     }
 }
 

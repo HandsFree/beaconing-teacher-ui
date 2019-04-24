@@ -40,6 +40,7 @@ class LoadGroups extends Component {
         const promArr = [];
 
         const createGroupCard = a(
+            '.clickable-box-link',
             {
                 href: '#create',
             },

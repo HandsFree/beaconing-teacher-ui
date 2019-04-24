@@ -69,7 +69,14 @@ class TabView extends Component {
     };
 
     async init() {
-        const students = await window.beaconingAPI.getStudents();
+        if (!this.props.id) {
+            throw new Error('[TabView] GLP ID not provided');
+        }
+        const { id } = this.props;
+
+        const students = await window.beaconingAPI.getUnassignedStudentsOf(id);
+        console.log('unassigned students are ', students);
+
         const groups = await window.beaconingAPI.getGroups();
 
         this.state = {
@@ -258,7 +265,7 @@ class AssignOptions extends Component {
 
         return Promise.all([
             tabControl.attach(),
-            tabView.attach(),
+            tabView.attach(this.props),
             searchBar.attach(),
         ]).then((values) => {
             const [

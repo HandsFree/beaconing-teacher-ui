@@ -29,6 +29,7 @@ class GroupBox extends Component {
         );
 
         return a(
+            '.clickable-box-link',
             {
                 href: `//${window.location.host}/classroom/group?id=${id}`,
             },

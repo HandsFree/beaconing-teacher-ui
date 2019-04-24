@@ -150,7 +150,7 @@ class StudentBox extends Component {
             ),
         );
         return a(
-            '.fake-link',
+            '.clickable-box-link',
             {
                 onclick: (event) => {
                     const { target } = event;

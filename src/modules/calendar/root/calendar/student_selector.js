@@ -4,6 +4,7 @@ import {
     section,
     p,
     div,
+    h3,
     input,
 } from '../../../../core/html';
 
@@ -58,7 +59,7 @@ class CalendarSelectedGroup extends Component {
             ),
         );
         return a(
-            '.fake-link',
+            '.clickable-box-link',
             {
                 onclick: () => this.clicked(),
             },
@@ -100,12 +101,20 @@ class CalendarSelectedStudent extends Component {
     async render() {
         const {
             username,
+            fullName,
         } = this.props;
 
         const card = div(
             '.small-box',
             div(
-                '.title',
+                '.title.flex-column',
+                // the user might not have their
+                // full name registered, but they
+                // definitely have a username.
+                fullName ? h3(
+                    fullName,
+                ) : [],
+
                 p(
                     '.item-name',
                     `${username}`,
@@ -113,7 +122,7 @@ class CalendarSelectedStudent extends Component {
             ),
         );
         return a(
-            '.fake-link',
+            '.clickable-box-link',
             {
                 onclick: () => this.clicked(),
             },
@@ -163,9 +172,17 @@ class StudentList extends Component {
 
         for (const student of selected.slice(0, numItemsToShow)) {
             const selItem = new CalendarSelectedStudent();
+            
+            let fullName;
+            if (student.profile) {
+                const { firstName, lastName } = student.profile;
+                fullName = `${firstName} ${lastName}`;
+            }
+            
             const selItemEl = selItem.attach({
                 id: student.id,
                 username: student.username,
+                fullName: fullName,
             });
             selItemsProm.push(selItemEl);
         }

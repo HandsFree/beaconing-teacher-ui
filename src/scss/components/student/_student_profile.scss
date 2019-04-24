@@ -41,6 +41,11 @@
 #assigned-plans-container {
 	display: grid;
 	grid-template-columns: 33% 33% 33%;
+	row-gap: 1em;
+
+	.small-box {
+		margin-bottom: 0.5em;
+	}
 
 	padding: 2em;
 

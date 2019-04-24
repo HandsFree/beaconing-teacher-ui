@@ -95,6 +95,7 @@ class StudentBox extends Component {
             ),
         );
         return a(
+            '.clickable-box-link',
             {
                 href: `//${window.location.host}/classroom/student?id=${id}`,
             },

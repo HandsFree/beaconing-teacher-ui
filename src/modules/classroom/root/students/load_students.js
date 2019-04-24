@@ -41,6 +41,7 @@ class LoadStudents extends Component {
 
         promArr.push(
             a(
+                '.clickable-box-link',
                 {
                     title: 'Create Student', // TODO(i18n)
                     href: '#create',

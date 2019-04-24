@@ -227,6 +227,11 @@ class APICore {
         return glpStatus;
     }
 
+    async getUnassignedStudentsOf(id: number) {
+        const unassignedStudents = await this.get(`//${window.location.host}/api/v1/glp/${id}/unassigned_students`);
+        return unassignedStudents;
+    }
+
     async getStudents() {
         const students = await this.get(`//${window.location.host}/api/v1/students`);
 
