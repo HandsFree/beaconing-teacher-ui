@@ -1,5 +1,5 @@
 // @flow
-import { div, h3, a } from '../../../../core/html';
+import { div, h4, h3, a } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 
@@ -8,13 +8,20 @@ class GroupBox extends Component {
         const {
             id,
             name,
+            studentCount,
         } = this.props;
+
+        const studentCountEl = h4('.student-count', 
+        studentCount !== 0 
+                ? `${studentCount} students`
+                : `No students`);
 
         const card = div(
             '.small-box',
             div(
-                '.title',
+                '.title.flex-column',
                 h3('.name', name),
+                studentCountEl,
             ),
             div(
                 '.box-buttons',

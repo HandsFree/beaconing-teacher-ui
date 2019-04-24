@@ -1,7 +1,7 @@
 // @flow
 import Identicon from 'identicon.js';
 
-import { section, figure, img, figcaption, nav, a, i } from '../../../../core/html';
+import { div, section, figure, img, figcaption, nav, a, i } from '../../../../core/html';
 import { Component } from '../../../../core/component';
 
 import RecentActivities from './recent_activities';
@@ -52,7 +52,9 @@ class LoadProfile extends Component {
                 }),
                 figcaption(teacherFullName),
             ),
-            recentActivitiesEl,
+            div('.flex-column',
+                recentActivitiesEl,
+            )
         );
     }
 }

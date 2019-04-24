@@ -110,7 +110,7 @@ class APICore {
     }
 
     async getRecentActivities() {
-        const recent = await this.get(`//${window.location.host}/api/v1/recent_activities`);
+        const recent = await this.get(`//${window.location.host}/api/v1/profile/recent_activities`);
         return recent;
     }
 

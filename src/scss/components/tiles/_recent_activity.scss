@@ -14,12 +14,29 @@
 	}
 
 	.activity {
+		display: flex;
+		flex-direction: column;
+
+		background: #fff;
 		padding: 0.75em;
 		justify-content: space-between;
-		border-bottom: 1px solid rgba(#7c8ea0, 0.5);
+		border: 2px solid $border_color;
+		margin: 0.5em;
+		border-left: 4px solid $border_color;
 
-		&:last-child {
-			border-bottom: none;
+		.info {
+			display: flex;
+			width: 100%;
+			flex-direction: row;
+			justify-content: space-between;
+		}
+
+		.action-name {
+			font-weight: normal;
+		}
+
+		.content {
+			padding: 0;
 		}
 
 		@include for-tablet-portrait-up {
@@ -29,24 +46,15 @@
 		@mixin for-tablet-landscape-up {
 			padding: 1.5em;
 		}
+	}
 
-		a {
-			margin-left: 0.4em;
-			font-weight: 400;
-		}
-
-		p {
-			margin: 0;
-		}
-
-		.info {
-			display: inherit;
-		}
-
-		.time {
-			display: inherit;
-			margin-left: 0.5em;
-			font-weight: 400;
-		}
+	.delete {
+		border-left: 4px solid $error_red;
+	}
+	.update {
+		border-left: 4px solid $neutral_blue;
+	}
+	.create {
+		border-left: 4px solid $success_green;
 	}
 }

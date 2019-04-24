@@ -103,11 +103,15 @@ class TabView extends Component {
 
         let selected = [];
 
-        const { query } = this.state;
+        let { query } = this.state;
         if (query) {
+            query = query.toLowerCase();
+
             for (const group of groups) {
-                console.log('ze group', group);
-                if (group.name.toLowerCase().indexOf(query.toLowerCase()) !== -1) {
+                let { name } = group;
+                name = name.toLowerCase();
+
+                if (name.indexOf(query) !== -1) {
                     selected.push(group);
                 }
             }
@@ -146,12 +150,32 @@ class TabView extends Component {
 
         let selected = [];
 
-        const { query } = this.state;
+        let { query } = this.state;
+
         if (query) {
+            query = query.toLowerCase();
+
             for (const student of students) {
-                if (student.username.toLowerCase().indexOf(query.toLowerCase()) !== -1) {
+                let { username } = student;
+                username = username.toLowerCase();
+
+                let found = false;
+
+                // check in the student profile if it exists
+                if (student.profile) {
+                    const { firstName, lastName } = student.profile;
+                    const fullName = `${firstName.toLowerCase()} ${lastName.toLowerCase()}`;
+                    if (fullName.indexOf(query) !== -1) {
+                        selected.push(student);
+                        found = true;
+                    }
+                } 
+                // if student profile doesn't exist or we didnt find anything
+                // search in the username instead.
+                if (!found && username.indexOf(query) !== -1) {
                     selected.push(student);
-                }
+                
+                } 
             }
         } else {
             // show all the groups

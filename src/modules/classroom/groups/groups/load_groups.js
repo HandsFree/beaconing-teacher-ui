@@ -50,10 +50,12 @@ class LoadGroups extends Component {
         );
         promArr.push(createGroupCard);
 
+        // TODO this is a dupe of another GroupBox?
         for (const group of groups) {
             const {
                 id,
                 name,
+                students,
             } = group;
 
             const groupBox = new GroupBox();
@@ -61,6 +63,7 @@ class LoadGroups extends Component {
             const groupBoxProm = groupBox.attach({
                 id,
                 name,
+                studentCount: students.length,
             });
 
             promArr.push(groupBoxProm);

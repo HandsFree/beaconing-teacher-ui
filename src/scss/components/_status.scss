@@ -12,21 +12,21 @@
     max-width: 15em;
 
     &.success {
-        border: 2px solid #a5d6a7;
+        border: 2px solid $success_green_border;
         border-top: none;
-        background: #43a047;
+        background: $success_green;
     }
 
     &.info {
-        border: 2px solid #90caf9;
+        border: 2px solid $neutral_blue_border;
         border-top: none;
-        background: #1e88e5;
+        background: $neutral_blue;
     }
 
     &.error {
-        border: 2px solid #ef9a9a;
+        border: 2px solid $error_red_border;
         border-top: none;
-        background: #e53935;
+        background: $error_red;
     }
 
     strong {

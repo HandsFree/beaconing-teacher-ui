@@ -46,7 +46,15 @@ class ProfileEditForm extends Form {
 
     async init() {
         const currUser = await window.beaconingAPI.getCurrentUser();
-
+        this.teacher = currUser;
+        this.state = {
+            teacherFirstName: currUser.teacherSettings?.firstName ?? '',
+            teacherLastName: currUser.teacherSettings?.lastName ?? '',
+            teacherEmail: currUser.email ?? '',
+            teacherGender: currUser.teacherSettings?.gender ?? 'female',
+            teacherSchool: currUser.teacherSettings?.school ?? '',
+            teacherLang: currUser.language ?? 'en-GB',
+        };
         this.state.trans = await window.beaconingAPI.getPhrases(
             'update',
             'err_required_empty',
@@ -79,16 +87,6 @@ class ProfileEditForm extends Form {
             'cancel',
             'update',
         );
-
-        this.teacher = currUser;
-        this.state = {
-            teacherFirstName: currUser.teacherSettings?.firstName ?? '',
-            teacherLastName: currUser.teacherSettings?.lastName ?? '',
-            teacherEmail: currUser.email ?? '',
-            teacherGender: currUser.teacherSettings?.gender ?? 'female',
-            teacherSchool: currUser.teacherSettings?.school ?? '',
-            teacherLang: currUser.language ?? 'en-GB',
-        };
     }
 
     async resetSubmit() {

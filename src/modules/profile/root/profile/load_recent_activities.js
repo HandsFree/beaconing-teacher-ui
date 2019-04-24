@@ -2,12 +2,12 @@
 import { div, span } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
-import RecentActivityBox from './recent_activity_box';
-import nullishCheck from '../../../../core/util';
+import { StudentActivityBox, GLPActivityBox, AssignedGLPActivityBox } from './recent_activity_box';
 
 class LoadRecentActivities extends Component {
     async init() {
         const recent = await window.beaconingAPI.getRecentActivities();
+        console.log('the recent activites are ', recent);
 
         this.state.recentActivities = recent;
     }
@@ -30,18 +30,36 @@ class LoadRecentActivities extends Component {
 
         for (const activity of values) {
             const {
-                Message,
-                ExecutionTime,
+                type,
+                createdAt,
+                context,
             } = activity;
 
-            const recentActivityBox = new RecentActivityBox();
-            const raBoxProm = recentActivityBox.attach({
-                Message,
-                ExecutionTime,
-                GroupName: nullishCheck(activity?.GroupName, false),
-            });
+            // we split since it's
+            // always student_deleted, glp_created, etc.
+            const target = type.split("_")[0];
 
-            promArr.push(raBoxProm);
+            let recentActivityBox = null;
+            switch (target) {
+                case 'student':
+                    recentActivityBox = new StudentActivityBox();
+                    break;
+                case 'glp':
+                    recentActivityBox = new GLPActivityBox();
+                    break;
+                case 'assignedglp':
+                    recentActivityBox = new AssignedGLPActivityBox();
+                    break;
+            }
+
+            if (recentActivityBox) {
+                const raBoxProm = recentActivityBox.attach({
+                    type,
+                    createdAt,
+                    context,
+                });
+                promArr.push(raBoxProm);
+            }
         }
 
         return Promise.all(promArr)
