@@ -154,9 +154,23 @@ class StudentList extends Component {
 
         const query = value.toLowerCase();
         for (const student of this.state.studentsSet) {
-            const { username } = student;
-            if (username.toLowerCase().indexOf(query) != -1) {
+            const { username, profile } = student;
+
+            let found = false;
+            if (profile) {
+                let { firstName, lastName } = profile;
+                let fullName = `${firstName} ${lastName}`;
+                fullName = fullName.toLowerCase();
+
+                if (fullName.indexOf(query) !== -1) {
+                    selected.push(student);
+                    found = true;
+                }
+            }
+
+            if (!found && username.toLowerCase().indexOf(query) !== -1) {
                 selected.push(student);
+                found = true;
             }
         }
 

@@ -181,7 +181,7 @@ class TabView extends Component {
                 // search in the username instead.
                 if (!found && username.indexOf(query) !== -1) {
                     selected.push(student);
-                
+                    found = true;
                 } 
             }
         } else {
