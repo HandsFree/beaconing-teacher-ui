@@ -1,5 +1,5 @@
 // @flow
-import { div, a, h1, nav, button, span } from '../../../core/html';
+import { div, a, h1, h2, nav, button, span } from '../../../core/html';
 
 import { Component } from '../../../core/component';
 import nullishCheck from '../../../core/util';
@@ -21,7 +21,9 @@ class PlanHeader extends Component {
         );
 
         const sessionGLP = JSON.parse(window.sessionStorage.getItem(`glp_${this.props.id}`));
-        this.state.glp = sessionGLP.glp;
+        if (sessionGLP) {
+            this.state.glp = sessionGLP.glp;
+        }
     }
 
     async render() {
