@@ -143,8 +143,6 @@ class ProfileEditForm extends Form {
             },
         };
 
-        // console.log(obj);
-
         const status = await window.beaconingAPI.editUser(obj);
         const statusMessage = new Status();
 
@@ -179,6 +177,255 @@ class ProfileEditForm extends Form {
         this.appendView(statusMessageEl);
     }
 
+    async renderFirstName() {
+        return div(
+            '.label-group',
+            div(
+                '.split',
+                div('.title-area', span(this.state.trans.get('pf_teacher_fn'))),
+                div('.desc-area', this.state.trans.get('pf_teacher_fn_desc')),
+                div(
+                    '.input-area',
+                    label(
+                        '.required',
+                        input(
+                            '#teacher-first-name.text-field',
+                            {
+                                type: 'text',
+                                placeholder: this.state.trans.get('pf_teacher_fn_enter'),
+                                value: this.state.teacherFirstName,
+                                oninput: (event) => {
+                                    const { target } = event;
+        
+                                    this.state.teacherFirstName = target.value;
+                                },
+                                required: true,
+                            },
+                        ),
+                    ),
+                ),
+                div('#teacher-fn-status.status-area'),
+            ),
+        );
+    }
+
+    async renderLastName() {
+        return div(
+            '.label-group',
+            div(
+                '.split',
+                div('.title-area', span(this.state.trans.get('pf_teacher_ln'))),
+                div('.desc-area', this.state.trans.get('pf_teacher_ln_desc')),
+                div(
+                    '.input-area',
+                    label(
+                        '.required',
+                        input(
+                            '#teacher-last-name.text-field',
+                            {
+                                type: 'text',
+                                placeholder: this.state.trans.get('pf_teacher_ln_enter'),
+                                value: this.state.teacherLastName,
+                                oninput: (event) => {
+                                    const { target } = event;
+        
+                                    this.state.teacherLastName = target.value;
+                                },
+                                required: true,
+                            },
+                        ),
+                    ),
+                ),
+                div('#teacher-ln-status.status-area'),
+            ),
+        );
+    }
+
+    async renderProfilePicture() {
+        return div(
+            '.label-group',
+            div(
+                '.split',
+                div('.title-area', span('Profile Picture')),
+                div('.desc-area', 'Upload a profile picture'),
+                div(
+                    '.input-area',
+                    label(
+                        input(
+                            '#teacher-email.text-field',
+                            {
+                                type: 'file',
+                                placeholder: 'Upload a picture',
+                                accept: 'image/png',
+                                oninput: (event) => {
+                                    const { target } = event;
+                                },
+                            },
+                        ),
+                    ),
+                ),
+                div('.status-area'),
+            ),
+        );
+    }
+
+    async renderGender() {
+        const genderMap = {
+            'male': 'male',
+            'female': 'female',
+            'other': 'other',
+            'pnts': 'prefer_nts',
+        };
+
+        const optionSet = Object.keys(genderMap).map((key, i, a) => {
+            return option(
+                {
+                    value: key,
+                    selected: this.state.teacherGender === key,
+                },
+                this.state.trans.get(genderMap[key]),
+            );
+        });
+        
+        return div(
+            '.label-group',
+            div(
+                '.split',
+                div('.title-area', span(this.state.trans.get('pf_teacher_gender'))),
+                div('.desc-area', this.state.trans.get('pf_teacher_gender_desc')),
+                div(
+                    '.input-area',
+                    label(
+                        '.select',
+                        select(
+                            '#teacher-gender',
+                            {
+                                onchange: (event) => {
+                                    const { target } = event;
+
+                                    this.state.teacherGender = target.value;
+                                },
+                            },
+                            optionSet,
+                        ),
+                    ),
+                ),
+                div('.status-area'),
+            ),
+        );
+    }
+
+    async renderSchool() {
+        return div(
+            '.label-group',
+            div(
+                '.split',
+                div('.title-area', span(this.state.trans.get('pf_teacher_school'))),
+                div('.desc-area', this.state.trans.get('pf_teacher_school_desc')),
+                div(
+                    '.input-area',
+                    label(
+                        input(
+                            '#teacher-school.text-field',
+                            {
+                                type: 'text',
+                                placeholder: this.state.trans.get('pf_teacher_school_enter'),
+                                value: this.state.teacherSchool,
+                                oninput: (event) => {
+                                    const { target } = event;
+        
+                                    this.state.teacherSchool = target.value;
+                                },
+                            },
+                        ),
+                    ),
+                ),
+                div('.status-area'),
+            ),
+        );
+    }
+
+    async renderEmail() {
+        return div(
+            '.label-group',
+            div(
+                '.split',
+                div('.title-area', span(this.state.trans.get('pf_teacher_email'))),
+                div('.desc-area', this.state.trans.get('pf_teacher_email_desc')),
+                div(
+                    '.input-area',
+                    label(
+                        input(
+                            '#teacher-email.text-field',
+                            {
+                                type: 'text',
+                                placeholder: this.state.trans.get('pf_teacher_email_enter'),
+                                value: this.state.teacherEmail,
+                                oninput: (event) => {
+                                    const { target } = event;
+        
+                                    this.state.teacherEmail = target.value;
+                                },
+                            },
+                        ),
+                    ),
+                ),
+                div('.status-area'),
+            ),
+        );
+    }
+
+    async renderLanguage() {
+        const languageMap = {
+            'en-GB': 'English',
+            'fr-FR': 'Français',
+            'es-ES': 'Español',
+            'it-IT': 'Italiano',
+            'de-DE': 'Deutsch',
+            'ro-RO': 'Română',
+            'pl-PL': 'Polskie',
+            'tr-TR': 'Türk',
+            'pt-PT': 'Português',
+        };
+
+        const optionSet = Object.keys(languageMap).map((key) => {
+            return option(
+                {
+                    value: key,
+                    selected: this.state.teacherLang === key,
+                },
+                languageMap[key],
+            );
+        });
+
+        return div(
+            '.label-group',
+            div(
+                '.split',
+                div('.title-area', span(this.state.trans.get('pf_teacher_language'))),
+                div('.desc-area', this.state.trans.get('pf_teacher_language_desc')),
+                div(
+                    '.input-area',
+                    label(
+                        '.select.required',
+                        select(
+                            '#teacher-language',
+                            {
+                                onchange: (event) => {
+                                    const { target } = event;
+
+                                    this.state.teacherLang = target.value;
+                                },
+                            },
+                            optionSet,
+                        ),
+                    ),
+                ),
+                div('.status-area'),
+            ),
+        );
+    }
+
     async render() {
         const updatingText = this.state.trans.get('updating');
 
@@ -206,259 +453,15 @@ class ProfileEditForm extends Form {
                     '.flex-column',
                     form(
                         '.edit-teacher',
-                        div(
-                            '.label-group',
-                            div(
-                                '.split',
-                                div('.title-area', span(this.state.trans.get('pf_teacher_fn'))),
-                                div('.desc-area', this.state.trans.get('pf_teacher_fn_desc')),
-                                div(
-                                    '.input-area',
-                                    label(
-                                        '.required',
-                                        input(
-                                            '#teacher-first-name.text-field',
-                                            {
-                                                type: 'text',
-                                                placeholder: this.state.trans.get('pf_teacher_fn_enter'),
-                                                value: this.state.teacherFirstName,
-                                                oninput: (event) => {
-                                                    const { target } = event;
                         
-                                                    this.state.teacherFirstName = target.value;
-                                                },
-                                                required: true,
-                                            },
-                                        ),
-                                    ),
-                                ),
-                                div('#teacher-fn-status.status-area'),
-                            ),
-                        ),
-                        div(
-                            '.label-group',
-                            div(
-                                '.split',
-                                div('.title-area', span(this.state.trans.get('pf_teacher_ln'))),
-                                div('.desc-area', this.state.trans.get('pf_teacher_ln_desc')),
-                                div(
-                                    '.input-area',
-                                    label(
-                                        '.required',
-                                        input(
-                                            '#teacher-last-name.text-field',
-                                            {
-                                                type: 'text',
-                                                placeholder: this.state.trans.get('pf_teacher_ln_enter'),
-                                                value: this.state.teacherLastName,
-                                                oninput: (event) => {
-                                                    const { target } = event;
-                        
-                                                    this.state.teacherLastName = target.value;
-                                                },
-                                                required: true,
-                                            },
-                                        ),
-                                    ),
-                                ),
-                                div('#teacher-ln-status.status-area'),
-                            ),
-                        ),
-                        div(
-                            '.label-group',
-                            div(
-                                '.split',
-                                div('.title-area', span(this.state.trans.get('pf_teacher_gender'))),
-                                div('.desc-area', this.state.trans.get('pf_teacher_gender_desc')),
-                                div(
-                                    '.input-area',
-                                    label(
-                                        '.select',
-                                        select(
-                                            '#teacher-gender',
-                                            {
-                                                onchange: (event) => {
-                                                    const { target } = event;
-            
-                                                    this.state.teacherGender = target.value;
-                                                },
-                                            },
-                                            option(
-                                                {
-                                                    value: 'female',
-                                                    selected: this.state.teacherGender === 'female',
-                                                },
-                                                this.state.trans.get('female'),
-                                            ),
-                                            option(
-                                                {
-                                                    value: 'male',
-                                                    selected: this.state.teacherGender === 'male',
-                                                },
-                                                this.state.trans.get('male'),
-                                            ),
-                                            option(
-                                                {
-                                                    value: 'other',
-                                                    selected: this.state.teacherGender === 'other',
-                                                },
-                                                this.state.trans.get('other'),
-                                            ),
-                                            option(
-                                                {
-                                                    value: 'pnts',
-                                                    selected: this.state.teacherGender === 'pnts',
-                                                },
-                                                this.state.trans.get('prefer_nts'),
-                                            ),
-                                        ),
-                                    ),
-                                ),
-                                div('.status-area'),
-                            ),
-                        ),
-                        div(
-                            '.label-group',
-                            div(
-                                '.split',
-                                div('.title-area', span(this.state.trans.get('pf_teacher_school'))),
-                                div('.desc-area', this.state.trans.get('pf_teacher_school_desc')),
-                                div(
-                                    '.input-area',
-                                    label(
-                                        input(
-                                            '#teacher-school.text-field',
-                                            {
-                                                type: 'text',
-                                                placeholder: this.state.trans.get('pf_teacher_school_enter'),
-                                                value: this.state.teacherSchool,
-                                                oninput: (event) => {
-                                                    const { target } = event;
-                        
-                                                    this.state.teacherSchool = target.value;
-                                                },
-                                            },
-                                        ),
-                                    ),
-                                ),
-                                div('.status-area'),
-                            ),
-                        ),
-                        div(
-                            '.label-group',
-                            div(
-                                '.split',
-                                div('.title-area', span(this.state.trans.get('pf_teacher_email'))),
-                                div('.desc-area', this.state.trans.get('pf_teacher_email_desc')),
-                                div(
-                                    '.input-area',
-                                    label(
-                                        input(
-                                            '#teacher-email.text-field',
-                                            {
-                                                type: 'text',
-                                                placeholder: this.state.trans.get('pf_teacher_email_enter'),
-                                                value: this.state.teacherEmail,
-                                                oninput: (event) => {
-                                                    const { target } = event;
-                        
-                                                    this.state.teacherEmail = target.value;
-                                                },
-                                            },
-                                        ),
-                                    ),
-                                ),
-                                div('.status-area'),
-                            ),
-                        ),
-                        div(
-                            '.label-group',
-                            div(
-                                '.split',
-                                div('.title-area', span(this.state.trans.get('pf_teacher_language'))),
-                                div('.desc-area', this.state.trans.get('pf_teacher_language_desc')),
-                                div(
-                                    '.input-area',
-                                    label(
-                                        '.select.required',
-                                        select(
-                                            '#teacher-language',
-                                            {
-                                                onchange: (event) => {
-                                                    const { target } = event;
-            
-                                                    this.state.teacherLang = target.value;
-                                                },
-                                            },
-                                            option(
-                                                {
-                                                    value: 'en-GB',
-                                                    selected: this.state.teacherLang === 'en-GB',
-                                                },
-                                                'English',
-                                            ),
-                                            option(
-                                                {
-                                                    value: 'fr-FR',
-                                                    selected: this.state.teacherLang === 'fr_FR',
-                                                },
-                                                'Français',
-                                            ),
-                                            option(
-                                                {
-                                                    value: 'es-ES',
-                                                    selected: this.state.teacherLang === 'es-ES',
-                                                },
-                                                'Español',
-                                            ),
-                                            option(
-                                                {
-                                                    value: 'it-IT',
-                                                    selected: this.state.teacherLang === 'it-IT',
-                                                },
-                                                'Italiano',
-                                            ),
-                                            option(
-                                                {
-                                                    value: 'de-DE',
-                                                    selected: this.state.teacherLang === 'de-DE',
-                                                },
-                                                'Deutsch',
-                                            ),
-                                            option(
-                                                {
-                                                    value: 'ro-RO',
-                                                    selected: this.state.teacherLang === 'ro-RO',
-                                                },
-                                                'Română',
-                                            ),
-                                            option(
-                                                {
-                                                    value: 'pl-PL',
-                                                    selected: this.state.teacherLang === 'pl-PL',
-                                                },
-                                                'Polskie',
-                                            ),
-                                            option(
-                                                {
-                                                    value: 'tr-TR',
-                                                    selected: this.state.teacherLang === 'tr-TR',
-                                                },
-                                                'Türk',
-                                            ),
-                                            option(
-                                                {
-                                                    value: 'pt-PT',
-                                                    selected: this.state.teacherLang === 'pt-PT',
-                                                },
-                                                'Português',
-                                            ),
-                                        ),
-                                    ),
-                                ),
-                                div('.status-area'),
-                            ),
-                        ),
+                        await this.renderFirstName(),
+                        await this.renderLastName(),
+                        // await this.renderProfilePicture(),
+                        await this.renderGender(),
+                        await this.renderSchool(),
+                        await this.renderEmail(),
+                        await this.renderLanguage(),
+
                         div(
                             '.flex-justify-end.margin-top-10',
                             div(
