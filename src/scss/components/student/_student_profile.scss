@@ -38,10 +38,24 @@
 	}
 }
 
+#no-plans-container {
+	display: flex;
+	padding: 2em;
+	flex-direction: column;
+}
+
 #assigned-plans-container {
 	display: grid;
-	grid-template-columns: 33% 33% 33%;
+	grid-template-columns: repeat(3, 33%);
 	row-gap: 1em;
+
+	@media screen and (max-width: 63.125em) {
+        grid-template-columns: repeat(2, 50%);
+    }
+
+    @media screen and (max-width: 39.9375em) {
+        grid-template-columns: 100%;
+    }
 
 	.small-box {
 		margin-bottom: 0.5em;

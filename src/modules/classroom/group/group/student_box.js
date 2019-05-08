@@ -13,6 +13,8 @@ class StudentBox extends Component {
             'con_remove_student',
             'sc_sa',
             'err_student_una',
+            'cr_unassign',
+            'view',
         );
     }
 
@@ -89,7 +91,8 @@ class StudentBox extends Component {
         };
 
         const imgData = `data:image/svg+xml;base64,${new Identicon(identiconSha512, options).toString()}`;
-        const card = div(
+        
+        return div(
             '.student-box',
 
             figure(
@@ -103,17 +106,24 @@ class StudentBox extends Component {
                 ),
                 div(
                     '.toolbar',
-                    i('.icon-trash-empty'),
+                    a(
+                        '.item',
+                        {
+                            href: `//${window.location.host}/classroom/student?id=${studentID}`,
+                        },
+                        this.state.trans.get('view'),
+                    ),
+                    a(
+                        '.item',
+                        {
+                            onclick: async () => {
+                                await this.removeStudent();
+                            },
+                        },
+                        this.state.trans.get('cr_unassign'),
+                    ),
                 ),
             ),
-        );
-
-        return a(
-            '.clickable-box-link',
-            {
-                href: `//${window.location.host}/classroom/student?id=${studentID}`,
-            },
-            card,
         );
     }
 

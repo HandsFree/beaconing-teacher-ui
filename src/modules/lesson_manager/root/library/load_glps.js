@@ -170,7 +170,7 @@ class LoadGLPs extends Component {
 
         const trans = await window.beaconingAPI.getPhrases(
             'lm_not_rec', 'never', 'lm_owner', 'view', 'lm_assign', 'lm_created',
-            'lm_domain', 'lm_mod', 'lm_topic',
+            'lm_domain', 'lm_mod', 'lm_topic', 'edit',
         );
 
         for (const glp of values) {

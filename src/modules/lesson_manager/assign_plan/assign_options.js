@@ -77,7 +77,8 @@ class TabView extends Component {
         const students = await window.beaconingAPI.getUnassignedStudentsOf(id);
         console.log('unassigned students are ', students);
 
-        const groups = await window.beaconingAPI.getGroups();
+        const groups = await window.beaconingAPI.getUnassignedGroupsOf(id);
+        console.log('le groups est', groups);
 
         this.state = {
             students: students,
@@ -105,7 +106,7 @@ class TabView extends Component {
         const { groups } = this.state;
         if (!groups) {
             // FIXME
-            return h4('failed');
+            return h4('###failed');
         }
 
         let selected = [];
@@ -150,7 +151,7 @@ class TabView extends Component {
         const { students } = this.state;
         if (!students) {
             // FIXME
-            return h4('failed');
+            return h4('###failed');
         }
 
         const studentsProm = [];

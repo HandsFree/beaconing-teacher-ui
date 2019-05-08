@@ -2,31 +2,31 @@
 import { div, span, a } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
-import { StudentActivityBox, GLPActivityBox, AssignedGLPActivityBox } from './recent_activity_box';
+import { AssignedGLPActivityBox } from './recent_activity_box';
 
-class LoadRecentActivities extends Component {
+class LoadRecentlyAssigned extends Component {
     updateHooks = {
-        loadMoreActivities: this.loadMoreActivities,
+        loadMoreAssigned: this.loadMoreAssigned,
     };
 
     state = {
-        activityLimit: 5,
+        assignedLimit: 5,
     };
 
-    async loadMoreActivities() {
-        this.state.activityLimit += 5;
+    async loadMoreAssigned() {
+        this.state.assignedLimit += 5;
         this.updateView(await this.render());
     }
-    
-    async init() {
-        const recent = await window.beaconingAPI.getRecentActivities();
-        console.log('the recently activities are ', recent);
 
-        this.state.recentActivities = recent;
+    async init() {
+        const recent = await window.beaconingAPI.getRecentlyAssigned();
+        console.log('the recently assigned stuff is ', recent);
+
+        this.state.recentlyAssigned = recent;
     }
 
     async render() {
-        let values = Object.values(this.state.recentActivities);
+        let values = Object.values(this.state.recentlyAssigned);
 
         if (values.length < 1) {
             // Add some style
@@ -40,7 +40,7 @@ class LoadRecentActivities extends Component {
         }
 
         // how many events to show
-        const maxEventsCount = this.state.activityLimit;
+        const maxEventsCount = this.state.assignedLimit;
         let showLoader = maxEventsCount < values.length;
         values = values.slice(0, Math.min(values.length, maxEventsCount));
 
@@ -57,21 +57,18 @@ class LoadRecentActivities extends Component {
             // always student_deleted, glp_created, etc.
             const target = type.split("_")[0];
 
-            let recentActivityBox = null;
+            let recentlyAssignedBox = null;
             switch (target) {
-                case 'student':
-                    recentActivityBox = new StudentActivityBox();
-                    break;
-                case 'glp':
-                    recentActivityBox = new GLPActivityBox();
-                    break;
                 case 'assignedglp':
-                    recentActivityBox = new AssignedGLPActivityBox();
+                    recentlyAssignedBox = new AssignedGLPActivityBox();
+                    break;
+                default:
+                    console.log('this should never happen');
                     break;
             }
 
-            if (recentActivityBox) {
-                const raBoxProm = recentActivityBox.attach({
+            if (recentlyAssignedBox) {
+                const raBoxProm = recentlyAssignedBox.attach({
                     type,
                     createdAt,
                     context,
@@ -89,7 +86,7 @@ class LoadRecentActivities extends Component {
                     'Load more',
                     {
                         onclick: () => {
-                            this.emit('loadMoreActivities');
+                            this.emit('loadMoreAssigned');
                         }
                     }
                 ) : [],
@@ -98,4 +95,4 @@ class LoadRecentActivities extends Component {
     }
 }
 
-export default LoadRecentActivities;
+export default LoadRecentlyAssigned;

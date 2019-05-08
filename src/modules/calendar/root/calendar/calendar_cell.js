@@ -27,13 +27,6 @@ class CalendarCell extends Component {
             viewTranslation
         } = this.state;
 
-        let classList = '.calendar-cell';
-
-        // add the current day class to highlight the current day.
-        if (moment().isSame(cellDate, 'D')) {
-            classList += '.current-day';
-        }
-
         const el = await eventList;
 
         const viewDayEl = p('.view-calendar-day',
@@ -54,8 +47,8 @@ class CalendarCell extends Component {
             ),
         );
 
-        return div(
-            classList,
+        const cell = div(
+            '.calendar-cell',
             div(
                 '.calendar-cell-meta',
                 p('.calendar-day', dayNumber),
@@ -64,10 +57,16 @@ class CalendarCell extends Component {
 
             // TODO this is where events go
             // if their due date spans this element!
-            // FIXME: (merge from offline branch?) p('X X X'),
 
             el,
         );
+
+        // add the current day class to highlight the current day.
+        if (moment().isSame(cellDate, 'D')) {
+            cell.classList.add('current-day');
+        }
+
+        return cell;
     }
 }
 

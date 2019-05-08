@@ -109,6 +109,11 @@ class APICore {
         return activePlans;
     }
 
+    async getRecentlyAssigned() {
+        const recent = await this.get(`//${window.location.host}/api/v1/profile/recently_assigned`);
+        return recent;
+    }
+
     async getRecentActivities() {
         const recent = await this.get(`//${window.location.host}/api/v1/profile/recent_activities`);
         return recent;
@@ -163,8 +168,8 @@ class APICore {
 
     async getCurrentUser() {
         const profile = await this.get(`//${window.location.host}/api/v1/profile`);
-        if (!window.sessionStorage.hasOwnProperty('langCode')) {
-            window.sessionStorage.setItem('langCode', profile.language);
+        if (!window.localStorage.hasOwnProperty('langCode')) {
+            window.localStorage.setItem('langCode', profile.language);
         }
         return profile;
     }
@@ -177,7 +182,7 @@ class APICore {
         const status = await this.put(`//${window.location.host}/api/v1/profile`, editJSON);
 
         // cache the language we set.
-        window.sessionStorage.setItem('langCode', data.language);
+        window.localStorage.setItem('langCode', data.language);
 
         // console.log(student);
 
@@ -186,6 +191,66 @@ class APICore {
         }
 
         return editStatus;
+    }
+
+    // RESOURCES
+    
+    async createResourceHandle(name: string, desc: string, file: File, readOnly: bool) {
+        const request = {
+            name: file.name, // TODO
+            desc: desc, // TODO
+            fileName: file.name,
+            contentType: file.type,
+            readOnly: readOnly,
+        };
+        const res = await this.post(`//${window.location.host}/api/v1/resource/`, JSON.stringify(request));
+        return res;
+    }
+
+    async setResourceContent(id: number, data: Blob) {
+        const res = await this.put(`//${window.location.host}/api/v1/resource/${id}/content`, data);
+        return res;
+    }
+
+    async getResource(id: number) {
+        const res = await this.get(`//${window.location.host}/api/v1/resource/${id}`);
+        return res;
+    }
+
+    async getResourceContent(id: number) {
+        const content = await this.get(`//${window.location.host}/api/v1/resource/${id}/content`);
+        return content;
+    }
+
+    async deleteResource(id: number) {
+        let status = false;
+        const msg = await this.delete(`//${window.location.host}/api/v1/resource/${id}`);
+        if (typeof msg === 'object' && msg.success) {
+            status = true;
+        }
+        return status;
+    }
+
+    // GLP
+
+    async getGLPFiles(id: number) {
+        const files = await this.get(`//${window.location.host}/api/v1/glp/${id}/files`);
+        return files;
+    }
+
+    async deleteLinkedResource(id: number, resourceId: number) {
+        let status = false;
+        const msg = await this.delete(`//${window.location.host}/api/v1/glp/${id}/unlink_resource/${resourceId}`);
+        if (typeof msg === 'object' && msg.success) {
+            status = true;
+        }
+        return status;
+    }
+
+    async glpLinkResource(id: number, resourceId: number) {
+        const res = await this.post(`//${window.location.host}/api/v1/glp/${id}/link_resource/${resourceId}`);
+        console.log('link resource:', res);
+        return res;
     }
 
     async getGLP(id: number, minify: boolean = false) {
@@ -227,9 +292,19 @@ class APICore {
         return glpStatus;
     }
 
+    async getAssignedStudentsOf(id: number) {
+        const assignedStudents = await this.get(`//${window.location.host}/api/v1/glp/${id}/assigned_students`);
+        return assignedStudents;
+    }
+
     async getUnassignedStudentsOf(id: number) {
         const unassignedStudents = await this.get(`//${window.location.host}/api/v1/glp/${id}/unassigned_students`);
         return unassignedStudents;
+    }
+
+    async getUnassignedGroupsOf(id: number) {
+        const unassignedGroups = await this.get(`//${window.location.host}/api/v1/glp/${id}/unassigned_groups`);
+        return unassignedGroups;
     }
 
     async getStudents() {
@@ -255,7 +330,7 @@ class APICore {
         returns a map of keys => values
     */
     async getPhrases(...keys: string[]) {
-        const langCode = window.sessionStorage.getItem('langCode') ?? 'en-GB';
+        const langCode = window.localStorage.getItem('langCode') ?? 'en-GB';
 
         // we return a map of keys => phrases
         let results = new Map();
@@ -266,7 +341,7 @@ class APICore {
         let to_find = [];
         for (const key of keys) {
             const hashedKey = `${langCode}__${key}`;
-            const cached = window.sessionStorage.getItem(hashedKey);
+            const cached = window.localStorage.getItem(hashedKey);
             if (cached) {
                 results.set(key, cached);
             } else {
@@ -282,7 +357,7 @@ class APICore {
         for (const [key, val] of Object.entries(resp.translation_set)) {
             // add to cache.
             const hashedKey = `${langCode}__${key}`;
-            window.sessionStorage.setItem(hashedKey, val);
+            window.localStorage.setItem(hashedKey, val);
 
             results.set(key, val);
         }
@@ -290,7 +365,7 @@ class APICore {
     }
 
     async getPhrase(key: string) {
-        const langCode = window.sessionStorage.getItem('langCode') ?? 'en-GB';
+        const langCode = window.localStorage.getItem('langCode') ?? 'en-GB';
 
         // this is some hacky caching until i properly
         // finish localisation on the backend.
@@ -298,7 +373,7 @@ class APICore {
 
         // console.log('checking cache for ', hashedKey);
 
-        const cached = window.sessionStorage.getItem(hashedKey);
+        const cached = window.localStorage.getItem(hashedKey);
         if (cached) {
             return cached;
         }
@@ -307,7 +382,7 @@ class APICore {
         if (response.translation) {
             const trans = response.translation;
             // cache it
-            window.sessionStorage.setItem(hashedKey, trans);
+            window.localStorage.setItem(hashedKey, trans);
             return trans;
         }
         return 'No translation found';

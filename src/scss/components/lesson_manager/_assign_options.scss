@@ -54,4 +54,12 @@
     display: grid;
     grid-template-columns: repeat(3, 33%);
     width: 100%;
+
+    @media screen and (max-width: 63.125em) {
+        grid-template-columns: repeat(2, 50%);
+    }
+
+    @media screen and (max-width: 39.9375em) {
+        grid-template-columns: 100%;
+    }
 }

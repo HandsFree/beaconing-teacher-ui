@@ -9,23 +9,87 @@
 
 .group-list-container {
     display: grid;
-    grid-template-columns: 25% 25% 25% 25%;
+    grid-template-columns: repeat(4, 25%);
+
+    @media screen and (max-width: 104.9375em) {
+        grid-template-columns: repeat(3, 33%);
+    }
+
+    @media screen and (max-width: 78.125em) {
+        grid-template-columns: repeat(2, 50%);
+    }
+
+    @media screen and (max-width: 39.9375em) {
+        grid-template-columns: 100%;
+    }
 }
 
 #group-students-container {
     display: grid;
-    grid-template-columns: 50% 50%;
+    grid-template-columns: repeat(2, 50%);
+    grid-row-gap: 1em;
     padding: 1em;
+
+    @media screen and (max-width: 104.9375em) {
+        grid-template-columns: repeat(3, 33%);
+    }
+
+    @media screen and (max-width: 78.125em) {
+        grid-template-columns: repeat(2, 50%);
+    }
+
+    @media screen and (max-width: 39.9375em) {
+        grid-template-columns: 100%;
+    }
+}
+
+.profile-widget-container {
+    display: grid;
+    grid-template-columns: repeat(2, 50%);
+    @media screen and (max-width: 39.9375em) {
+        grid-template-columns: 100%;
+    }
 }
 
 .result-container {
     display: grid;
-    grid-template-columns: 33% 33% 33%;
+    grid-template-columns: repeat(3, 33%);
+    grid-row-gap: 1em;
+
+    @media screen and (max-width: 63.935em) {
+        grid-template-columns: repeat(2, 50%);
+    }
+    
+    @media screen and (max-width: 39.9375em) {
+        grid-template-columns: 100%;
+    }
+}
+
+#student-list-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 33%);
+    grid-row-gap: 1em;
+
+    @media screen and (max-width: 50.125em) {
+        grid-template-columns: repeat(2, 50%);
+    }
+
+    @media screen and (max-width: 39.9375em) {
+        grid-template-columns: 100%;
+    }
 }
 
 .student-list-container {
     display: grid;
     grid-template-columns: 33% 33% 33%;
+
+    @media screen and (max-width: 78.125em) {
+        grid-template-columns: repeat(2, 50%);
+    }
+
+    @media screen and (max-width: 63.9375em) {
+        grid-template-columns: 100%;
+    }
 }
 
 .create-student-box {
@@ -67,6 +131,7 @@
 
         .title {
             padding: 1em;
+            padding-bottom: 0;
 
             h3 {
                 margin: 0 0 0.2em;
@@ -121,6 +186,10 @@
         flex-direction: row;
         justify-content: space-between;
         width: 100%;
+
+        @media screen and (max-width: 30em) {
+            flex-direction: column;
+        }
     }
 
     .title {
@@ -167,6 +236,14 @@
 .plans-container {
     display: grid;
     grid-template-columns: 33% 33% 33%;
+
+    @media screen and (max-width: 78.125em) {
+        grid-template-columns: repeat(2, 50%);
+    }
+
+    @media screen and (max-width: 39.9375em) {
+        grid-template-columns: 100%;
+    }
 
     .status {
         flex-grow: 1;
@@ -299,5 +376,75 @@
             font-size: 4em;
             color: #72a16d;
         }
+    }
+}
+
+#glp-assignees-container {
+    display: grid;
+    grid-template-columns: repeat(4, 25%);
+    grid-row-gap: 1em;
+
+    @media screen and (max-width: 104.9375em) {
+        grid-template-columns: repeat(3, 33%);
+    }
+
+    @media screen and (max-width: 78.125em) {
+        grid-template-columns: repeat(2, 50%);
+    }
+
+    @media screen and (max-width: 39.9375em) {
+        grid-template-columns: 100%;
+    }
+}
+
+#glp-files-container {
+    display: grid;
+    grid-template-columns: repeat(2, 50%);
+
+    @media screen and (max-width: 104.9375em) {
+        grid-template-columns: repeat(3, 33%);
+    }
+
+    @media screen and (max-width: 63.935em) {
+        grid-template-columns: repeat(2, 50%);
+    }
+
+    @media screen and (max-width: 46.875em) {
+        grid-template-columns: 100%;
+    }
+
+    .file-box {
+        margin: 0.5em;
+        border: 2px solid $border_color;
+        border-left: 4px solid $border_color;
+        background: #fff;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+
+        .file-type {
+            background: $bcn_light_orange;
+            padding: 0.2em 0.4em;
+            color: #fff;
+        }
+
+        // bit of a hack to center it vertically
+        .file-type, 
+        .file-download,
+        .file-delete {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+
+    // this is the input[type="file"]
+    // that stores the uploaded resource.
+    // we hide this and trigger a click()
+    // event on it.
+    #file-input {
+        display: none;
     }
 }

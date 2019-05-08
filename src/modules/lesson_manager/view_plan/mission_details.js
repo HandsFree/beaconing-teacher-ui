@@ -46,7 +46,7 @@ class MissionDetails extends Component {
 
         return div(
             '#missions-details',
-            div('.title', h4('!!! No missions available.')),
+            div('.title', h4('###No missions available.')),
         );
     }
 }

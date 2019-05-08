@@ -36,7 +36,7 @@ class StudentsList extends Component {
         }
 
         return Promise.all(promArr)
-            .then(elements => div('#student-list.flex-wrap.margin-10', elements));
+            .then(elements => div('#student-list-grid.flex-wrap.margin-10', elements));
     }
 }
 

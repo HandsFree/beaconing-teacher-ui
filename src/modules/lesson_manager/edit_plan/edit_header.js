@@ -16,6 +16,16 @@ import Status from '../../status';
 class EditHeader extends Component {
     tooltipsActive = false;
 
+    state = {
+        selectedTab: 'details',
+    };
+
+    updateHooks = {
+        EditGLP_Assignee: this.toggleAssigneeTab,
+        EditGLP_Files: this.toggleFilesTab,
+        EditGLP_Details: this.toggleDetailsTab,
+    };
+
     async deleteGLP() {
         const status = await window.beaconingAPI.deleteGLP(this.props.id);
         const statusMessage = new Status();
@@ -49,12 +59,30 @@ class EditHeader extends Component {
         document.body.appendChild(statusMessageEl);
     }
 
+    async toggleAssigneeTab() {
+        this.state.selectedTab = 'assignee';
+        this.updateView(await this.render());
+    }
+
+    async toggleFilesTab() {
+        this.state.selectedTab = 'files';
+        this.updateView(await this.render());
+    }
+
+    async toggleDetailsTab() {
+        this.state.selectedTab = 'details';
+        this.updateView(await this.render());
+    }
+
     async render() {
         const {
             glp,
             id,
             currentUser,
+            selectedTab,
         } = this.props;
+
+        this.state.selectedTab = selectedTab;
 
         let fromLibrary = true;
 
@@ -98,6 +126,54 @@ class EditHeader extends Component {
                 );
             }
         };
+
+        const detailsTab = a(
+            '.tab.active', 
+            {
+                onclick: () => {
+                    this.emit('EditGLP_Details');
+                },
+            }, 
+            await window.beaconingAPI.getPhrase('lm_details')
+        );
+
+        const assigneesTab = a(
+            '.tab', 
+            {
+                onclick: () => {
+                    this.emit('EditGLP_Assignee');
+                },
+            }, 
+            await window.beaconingAPI.getPhrase('lm_assignees')
+        );
+        
+        const filesTab = a(
+            '.tab', 
+            {
+                onclick: () => {
+                    this.emit('EditGLP_Files');
+                },
+            }, 
+            await window.beaconingAPI.getPhrase('lm_files')
+        );
+
+        const tabHandles = {
+            'assignee': assigneesTab,
+            'files': filesTab,
+            'details': detailsTab, 
+        };
+
+        let clearActive = (tabs) => {
+            tabs.map((tab) => {
+                tab.classList.remove('active');
+            });
+        };
+
+        const currTab = tabHandles[this.state.selectedTab];
+        if (currTab) {
+            clearActive(Object.values(tabHandles));
+            currTab.classList.add('active');
+        }
 
         return div(
             '#edit-plan-header.flex-column',
@@ -146,9 +222,10 @@ class EditHeader extends Component {
                             }
                         },
                     },
-                    a('.tab.active', await window.beaconingAPI.getPhrase('lm_details')),
-                    a('.tab.disabled-tab', await window.beaconingAPI.getPhrase('lm_assignees')),
-                    a('.tab.disabled-tab', await window.beaconingAPI.getPhrase('lm_files')),
+
+                    detailsTab,
+                    assigneesTab,
+                    filesTab,
                 ),
             ),
         );

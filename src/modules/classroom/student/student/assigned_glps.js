@@ -1,5 +1,5 @@
 // @flow
-import { section, div, p, a } from '../../../../core/html';
+import { section, div, h2, a } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 import Loading from '../../../loading';
@@ -57,8 +57,8 @@ class AssignedGLPs extends Component {
         }
 
         const el = div(
-            '#assigned-plans-container.status.flex-column.flex-align-center',
-            p(await window.beaconingAPI.getPhrase('err_no_assigned_glps')),
+            '#no-plans-container.status.flex-column.flex-align-center',
+            h2(await window.beaconingAPI.getPhrase('err_no_assigned_glps')),
             a(
                 '.link-underline',
                 {

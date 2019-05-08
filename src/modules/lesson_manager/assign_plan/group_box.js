@@ -8,17 +8,18 @@ class GroupBox extends Component {
     async render() {
         const { group } = this.props;
 
-        const studentCountEl = h4('.student-count', 
+        /*
+                const studentCountEl = h4('.student-count', 
             group.students.length !== 0 
                 ? `${group.students.length} students`
                 : `No students`);
+        */
 
         const card = div(
             '.small-box',
             div(
                 '.title.flex-column',
                 h3('.name', group.name),
-                studentCountEl,
             ),
             p('.assign-status'),
         );

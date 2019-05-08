@@ -1,5 +1,5 @@
 // @flow
-import { div, h3, p, a } from '../../../../core/html';
+import { div, h3, p, a, span } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
 
@@ -74,15 +74,17 @@ class StudentActivityBox extends Component {
             div(
                 '.info',
                 div(`.action`, 
-                    h3('.action-name', trans),
-                    h3(' — '),
-                    h3(a(
-                        {
-                            href: `//${window.location.host}/classroom/student?id=${id}`,
-                            title: 'Go to student',
-                        },
-                        name,
-                    )),
+                    h3(
+                        span('.action-name', trans),
+                        ' - ',
+                        a(
+                            {
+                                href: `//${window.location.host}/classroom/student?id=${id}`,
+                                title: '###Go to student',
+                            },
+                            `'${name}'`,
+                        ),
+                    ),
                 ),
                 div(
                     '.time',
@@ -117,15 +119,17 @@ class GLPActivityBox extends Component {
             div(
                 '.info',
                 div('.action', 
-                    h3('.action-name', trans),
-                    h3(' — '),
-                    h3(a(
-                        {
-                            href: `//${window.location.host}/lesson_manager/#view?id=${id}`,
-                            title: 'Go to GLP',
-                        },
-                        name,
-                    )),
+                    h3(
+                        span('.action-name', trans),
+                        ' — ',
+                        a(
+                            {
+                                href: `//${window.location.host}/lesson_manager/#view?id=${id}`,
+                                title: '###Go to GLP',
+                            },
+                            `'${name}'`,
+                        )
+                    ),
                 ),
                 div(
                     '.time',
@@ -160,15 +164,17 @@ class AssignedGLPActivityBox extends Component {
             div(
                 '.info',
                 div('.action.flex-row', 
-                    h3('.action-name', trans),
-                    h3(' — '),
-                    h3(a(
-                        {
-                            href: `//${window.location.host}/#`,
-                            title: 'TODO',
-                        },
-                        `'${name}'`,
-                    )),
+                    h3(
+                        span('.action-name', trans),
+                        ' — ',
+                        a(
+                            {
+                                href: `//${window.location.host}/#`,
+                                title: '###Go to Assigned GLP',
+                            },
+                            `'${name}'`,
+                        )
+                    ),
                 ),
                 div(
                     '.time',

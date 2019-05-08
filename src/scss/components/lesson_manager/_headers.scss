@@ -44,6 +44,10 @@
     .titlebar {
         display: flex;
         justify-content: space-between;
+
+        h1.owned {
+            border-bottom: 4px solid $bcn_light_orange;
+        }
     }
 
     .back {

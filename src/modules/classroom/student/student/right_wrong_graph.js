@@ -25,7 +25,7 @@ class QuestionBox extends Component {
                     onclick: () => {
                         this.toggleQuestions();
                     },
-                    title: 'Click to toggle question set visibility',
+                    title: '###Click to toggle question set visibility',
                 }
             ),
             div('.rw-question-set', showQuestions ? questionSet : []),

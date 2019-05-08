@@ -96,7 +96,7 @@ class SearchResults extends Component {
                 '.result-group',
                 div(
                     '.title',
-                    h4('GLP\'s:'),
+                    h4('###GLP\'s:'),
                 ),
                 div(
                     '.flex-container.flex-wrap.result-container',
@@ -129,7 +129,7 @@ class SearchResults extends Component {
                 '.result-group',
                 div(
                     '.title',
-                    h4('Groups:'),
+                    h4('###Groups:'),
                 ),
                 div(
                     '.flex-container.flex-wrap.result-container',

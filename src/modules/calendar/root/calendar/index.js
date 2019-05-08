@@ -162,11 +162,13 @@ class Calendar extends RootComponent {
 
         const calContainer = new CalendarContainer();
 
+        const calTranslation = await window.beaconingAPI.getPhrase('cal');
+
         return Promise.all([
             header.attach(),
             mainNav.attach(),
             secondNav.attach({
-                title: 'Calendar',
+                title: calTranslation,
                 innerNav: calInnerNav.attach(),
             }),
             calContainer.attach(),

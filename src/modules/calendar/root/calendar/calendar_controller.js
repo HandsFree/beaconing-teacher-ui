@@ -83,10 +83,11 @@ class CalendarController extends Component {
 
         const year = currDate.format('YYYY');
 
-        // TODO, DRY!
-        const prevMonthTranslation = this.state.interfaceTranslations.get('cal_prev');
-        const currMonthTranslation = this.state.interfaceTranslations.get('cal_current');
-        const nextMonthTranslation = this.state.interfaceTranslations.get('cal_next');
+        const { interfaceTranslations } = this.state;
+        
+        const prevMonthTranslation = interfaceTranslations.get('cal_prev');
+        const currMonthTranslation = interfaceTranslations.get('cal_current');
+        const nextMonthTranslation = interfaceTranslations.get('cal_next');
 
         return div(
             '.calendar-control',

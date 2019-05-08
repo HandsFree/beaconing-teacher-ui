@@ -2,13 +2,14 @@
 import { div, p } from '../../../../core/html';
 
 import { Component } from '../../../../core/component';
-import LoadRecentActivities from './load_recent_activities';
+import LoadRecentlyAssigned from './load_recently_assigned';
 
-class RecentActivities extends Component {
+class RecentlyAssigned extends Component {
     async init() {
         this.state.trans = await window.beaconingAPI.getPhrases(
             'widget_ra_title',
             'ld',
+            'recent_plans',
         );
     }
 
@@ -30,21 +31,21 @@ class RecentActivities extends Component {
     }
 
     async afterMount() {
-        const loadActivities = new LoadRecentActivities();
+        const recentlyAssigned = new LoadRecentlyAssigned();
 
-        const loadActivitiesEl = await loadActivities.attach();
+        const recentlyAssignedEl = await recentlyAssigned.attach();
 
         const el = div(
             '.draggable.tile.flex-column.flex-2',
             div(
                 '.title',
-                p(this.state.trans.get('widget_ra_title')),
+                p(this.state.trans.get('recent_plans')),
             ),
             div(
                 '.content',
                 div(
                     '#recent-event',
-                    loadActivitiesEl,
+                    recentlyAssignedEl,
                 ),
             ),
         );
@@ -53,4 +54,4 @@ class RecentActivities extends Component {
     }
 }
 
-export default RecentActivities;
+export default RecentlyAssigned;

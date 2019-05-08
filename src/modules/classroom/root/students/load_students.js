@@ -39,11 +39,13 @@ class LoadStudents extends Component {
         const students = Object.values(this.state.students);
         const promArr = [];
 
+        const createStudentTranslation = await window.beaconingAPI.getPhrase('cr_create_student');
+
         promArr.push(
             a(
                 '.clickable-box-link',
                 {
-                    title: 'Create Student', // TODO(i18n)
+                    title: createStudentTranslation,
                     href: '#create',
                 },
                 div(

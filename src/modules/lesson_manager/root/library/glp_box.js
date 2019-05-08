@@ -46,10 +46,10 @@ class GLPBox extends Component {
             translationSet.get('edit'),
         );
 
-        const ownedByMe = owner === currentUser;
+        const ownedByMe = owner == currentUser;
 
-        return div(
-            `.glp-box.flex-4.flex-column${ownedByMe ? '.owned' : ''}`,
+        const glpBox = div(
+            '.glp-box.flex-4.flex-column',
             div(
                 '.title',
                 div(
@@ -71,7 +71,8 @@ class GLPBox extends Component {
                             },
                             translationSet.get('view'),
                         ),
-                        readOnly ? [] : editItem,
+                        // what about readOnly?
+                        ownedByMe ? editItem : [],
                         a(
                             '.item',
                             {
@@ -116,6 +117,10 @@ class GLPBox extends Component {
                 ),
             ),
         );
+        if (ownedByMe) {
+            glpBox.classList.add('owned');
+        }
+        return glpBox;
     }
 }
 

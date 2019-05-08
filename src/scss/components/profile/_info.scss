@@ -1,17 +1,11 @@
 #teacher-profile-info {
     // justify-content: center;
 
-    figure {
-        justify-items: center;
-        align-items: center;
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-        margin: 2em;
-        padding: 1em;
-
+    .profile-card {
+        margin-bottom: 2em;
+        padding: 0.5em;
+        
         img {
-            border: 2px solid $bcn_light_orange;
             height: 8em;
             width: 8em;
 
@@ -19,6 +13,10 @@
                 height: 10em;
                 width: 10em;
             }
+        }
+
+        .teacher-profile-info {
+            margin-left: 1em;
         }
 
         figcaption {

@@ -2,7 +2,7 @@
 import {
     section,
     div,
-    p,
+    h2,
     a,
 } from '../../../../core/html';
 
@@ -324,8 +324,8 @@ class AssignedGLPs extends Component {
         }
 
         const el = div(
-            '#assigned-plans-container.status.flex-column.flex-align-center',
-            p(this.state.trans.get('err_no_assigned_glps')),
+            '#no-plans-container.status.flex-column.flex-align-center',
+            h2(this.state.trans.get('err_no_assigned_glps')),
             a(
                 '.link-underline',
                 {

@@ -43,6 +43,7 @@
 	font-size: 14pt;
 	font-weight: bold;
 	align-self: flex-end;
+	padding-right: 0.5em;
 }
 
 .view-calendar-day {
@@ -117,6 +118,10 @@
 .calendar-col,
 .calendar-control {
 	display: block;
+}
+
+.underline {
+	text-decoration: underline;
 }
 
 // fake link thing
