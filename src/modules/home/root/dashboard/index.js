@@ -72,14 +72,30 @@ class DashboardContent extends Component {
                 '.dashboard-container',
                 div('.dashboard-intro.about.margin-right-20',
                     p(
-                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean tristique vestibulum metus sit amet varius. Vivamus rhoncus lorem ut arcu porta facilisis. Cras vel dapibus sem, vitae imperdiet arcu. Curabitur laoreet tortor ac tellus sollicitudin porta. Aenean sollicitudin velit neque, at accumsan orci tempus eget. Vestibulum pulvinar erat sapien, quis vulputate dolor blandit ut. Suspendisse eget tempus eros. Etiam vel sagittis lacus. ',
+                        `
+                            DMLL is leading the BEACONING project (15 partners, 3 
+                            years, worth €5.9 million). This project has received funding
+                            from the European Union's Horizon 2020 research and
+                            innovation programme.
+                        `
                     ),
                     p(
-                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean tristique vestibulum metus sit amet varius. Vivamus rhoncus lorem ut arcu porta facilisis. Cras vel dapibus sem, vitae imperdiet arcu. Curabitur laoreet tortor ac tellus sollicitudin porta. Aenean sollicitudin velit neque, at accumsan orci tempus eget. Vestibulum pulvinar erat sapien, quis vulputate dolor blandit ut. Suspendisse eget tempus eros. Etiam vel sagittis lacus. ',
+                        `
+                            The project seeks to pilot such an innovation in a real operational
+                            environment, aligning with DMLL's ethos in disruptive media and
+                            the impact on changing mind-sets and creating new models and
+                            practices of teaching and learning.
+                        `
                     ),
                     p(
-                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean tristique vestibulum metus sit amet varius. Vivamus rhoncus lorem ut arcu porta facilisis. Cras vel dapibus sem, vitae imperdiet arcu. Curabitur laoreet tortor ac tellus sollicitudin porta. Aenean sollicitudin velit neque, at accumsan orci tempus eget. Vestibulum pulvinar erat sapien, quis vulputate dolor blandit ut. Suspendisse eget tempus eros. Etiam vel sagittis lacus. ',
-                    ),
+                        `
+                            BEACONING sets a forefront in multifaceted education
+                            technologies through large-scale piloting of a digital learning
+                            To explore and measure platform that blend physical and digital spaces. As innovation
+                            action strategies, pilots combine opportunities for new ICTs in
+                            multiple ways that merge learning acquired in formal, non-formal BEACONING platform.
+                        `
+                    )
                 ),
                 div(
                     '.video-container.margin-top-20',

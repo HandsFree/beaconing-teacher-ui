@@ -66,12 +66,14 @@ class Panel extends Component {
                 div(
                     '.flex-container.flex-column.flex-spacearound.flex-grow',
                     div(
+                        h3(
                         '.student-name',
-                        a(
-                            {
-                                href: `//${window.location.host}/classroom/student?id=${id}`,
-                            },
-                            username,
+                            a(
+                                {
+                                    href: `//${window.location.host}/classroom/student?id=${id}`,
+                                },
+                                username,
+                            ),
                         ),
                     ),
                     div(

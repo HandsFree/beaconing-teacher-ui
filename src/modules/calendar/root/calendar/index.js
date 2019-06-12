@@ -79,23 +79,6 @@ class CalendarDayView extends Component {
                 p(dateEl),
             ),
 
-            div(
-                '.calendar-day-slot',
-                p(
-                    a(
-                        '.fake-link',
-                        {
-                            onclick: () => {
-                                // TODO: show or redirect to some kind of
-                                // GLP listing page.
-                                alert('hello world');
-                            },
-                        },
-                        'Assign a new event',
-                    ),
-                ),
-            ),
-
             await Promise.all(calendarEventSet).then(el => el),
         );
     }

@@ -7,7 +7,7 @@
 
 		.sort-menu {
 			padding: 0.1em 0.2em;
-			color: #e6eaec;
+			color: #000;
 
 			a {
 				text-decoration: none;
@@ -40,7 +40,7 @@
 		
 				select {
 					margin-left: 0.4em;
-					color: #e6eaec;
+					color: #000;
 					width: 100%;
 					padding: 0.1em;
 					padding-right: 0.8em;
@@ -70,6 +70,8 @@
 	}
 
 	.student-overview-card {
+		padding: 0.5em !important;
+		margin-bottom: 0.5em;
 	}
 
 	.student-section {
@@ -93,7 +95,7 @@
 	.students {
 		flex-direction: column;
 		margin: 0.5em;
-		padding: 1em 2em;
+		padding: 0;
 			
 		.student {
 			border: 2px solid $border_color;
@@ -119,16 +121,12 @@
 			}
 
 			.student-name {
-				color: #91cdff;
-				font-weight: 400;
+				font-size: 14pt;
+				margin: 0;
 
 				&:hover {
 					text-decoration: underline;
 					cursor: pointer;
-				}
-
-				p {
-					margin: 0;
 				}
 			}
 
@@ -136,6 +134,8 @@
 				flex-direction: column;
 
 				p {
+					font-size: 13pt;
+					padding: 0;
 					margin: 0.25em 0;
 				}
 			}
